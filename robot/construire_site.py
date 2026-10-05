@@ -895,7 +895,7 @@ def construire(donnees, sortie, jour):
   <p class="avert">{L("Ce site n'est pas officiel. Vérifiez toujours la fiche officielle avant de répondre : seule elle fait foi.", "هذا الموقع ليس رسميًا. تثبّت دائمًا من البطاقة الرسمية قبل المشاركة: هي وحدها المرجع.")} <a href="a-propos/">{L("Méthode et sources", "المنهجية والمصادر")}</a></p>
 </section>"""
     contenu += "\n" + AVIS
-    titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, par métier et gouvernorat | Alertes appels d'offres"
+    titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, consultation gratuite | Alertes appels d'offres"
     desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
             "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")
     pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld, " hero-photo")))
@@ -912,8 +912,8 @@ def construire(donnees, sortie, jour):
 {liste_html(sel, "../../", jour, f"Aucun appel d'offres « {E(fr)} » ouvert en ce moment. Revenez demain : la liste est mise à jour chaque jour.", f"لا يوجد حاليًا طلب عروض مفتوح في «{ar}». عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres métiers", "اختصاصات أخرى")}</h2>
 {grille(items_m, slug, "../../", "metier", cm, "grille-metiers", True)}"""
-        titre = f"Appels d'offres {fr} Tunisie — {len(sel)} ouverts | Alertes appels d'offres"
-        desc = (f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche officielle HAICOP. "
+        titre = f"Appels d'offres {fr} Tunisie — {len(sel)} ouverts, consultation gratuite | Alertes appels d'offres"
+        desc = (f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche officielle HAICOP. Gratuit, sans inscription. "
                 f"طلبات العروض: {ar}.")
         pages.append((f"metier/{slug}/", page(f"metier/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
@@ -931,9 +931,9 @@ def construire(donnees, sortie, jour):
 {liste_html(sel, "../../", jour, "Aucun appel d'offres ouvert en ce moment pour ce gouvernorat. Revenez demain : la liste est mise à jour chaque jour.", "لا يوجد حاليًا طلب عروض مفتوح في هذه الولاية. عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres gouvernorats", "ولايات أخرى")}</h2>
 {grille(items_g, slug, "../../", "gouvernorat", cg, "grille-gouv")}"""
-        titre = f"{h_fr} (Tunisie) — {len(sel)} ouverts | Alertes appels d'offres"
+        titre = f"{h_fr} (Tunisie) — {len(sel)} ouverts, consultation gratuite | Alertes appels d'offres"
         desc = (f"Appels d'offres publics {'— ' + nom.lower() if special else 'dans le gouvernorat de ' + nom}, encore ouverts, triés par date limite, "
-                f"avec caution et lien vers la fiche officielle HAICOP. {h_ar}.")
+                f"avec caution et lien vers la fiche officielle HAICOP. Gratuit, sans inscription. {h_ar}.")
         pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
     # ---- à propos et sources
@@ -989,7 +989,7 @@ def construire(donnees, sortie, jour):
 </section>
 {BADGES}"""
     titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"
-    desc = "D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
+    desc = "Service gratuit. D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
     pages.append(("a-propos/", page("a-propos/", "../", titre, desc, hero, contenu, v, etat)))
 
     # ---- publier un appel d'offres (entreprises privées, gratuit)
@@ -1037,9 +1037,9 @@ def construire(donnees, sortie, jour):
   <p data-l="ar">إعلانات نشرتها <b>الديوانة التونسية</b> في صفحتها الرسمية <a href="https://www.douane.gov.tn/ar/ventes-aux-encheres-publiques_ar/" rel="noopener">«البيع بالمزاد العلني»</a>، تُقرأ مرة في اليوم. كل بطاقة مرفقة برابط الإعلان الرسمي، وهو المرجع الوحيد.</p>
   <p class="avert">{L("Ce site n'est pas officiel et n'est pas lié à la Douane. Vérifiez toujours l'avis officiel avant de participer.", "هذا الموقع ليس رسميًا ولا علاقة له بالديوانة. تثبّت دائمًا من الإعلان الرسمي قبل المشاركة.")}</p>
 </section>"""
-    titre = f"Ventes aux enchères publiques Tunisie (Douane) — {len(encheres)} ouvertes | Alertes appels d'offres"
+    titre = f"Ventes aux enchères publiques Tunisie (Douane) — {len(encheres)} ouvertes, consultation gratuite | Alertes appels d'offres"
     desc = ("Ventes aux enchères publiques de la Douane tunisienne encore ouvertes : marchandises, véhicules, bétail, avec échéance et lien "
-            "vers l'avis officiel. البيوعات بالمزاد العلني للديوانة التونسية.")
+            "vers l'avis officiel. Gratuit, sans inscription. البيوعات بالمزاد العلني للديوانة التونسية.")
     pages.append(("encheres/", page("encheres/", "../", titre, desc, hero, contenu, v, etat_encheres)))
 
     # ---- écriture

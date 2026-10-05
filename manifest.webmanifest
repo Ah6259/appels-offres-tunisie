@@ -2,7 +2,7 @@
   "id": "/appels-offres-tunisie/",
   "name": "Appels d'offres Tunisie",
   "short_name": "Appels d'offres",
-  "description": "Les appels d'offres publics tunisiens du jour, par métier et par gouvernorat, et les ventes aux enchères.",
+  "description": "Gratuit : les appels d'offres publics tunisiens du jour, par métier et par gouvernorat, et les ventes aux enchères.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
