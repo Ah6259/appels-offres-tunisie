@@ -1134,10 +1134,10 @@
   }
  },
  "lignes_lues": 335,
- "derniere_lecture_reussie": "2026-10-05 01:36",
+ "derniere_lecture_reussie": "2026-10-05 02:06",
  "statut_source": {
-  "etat": "panne",
-  "depuis": "2026-10-05 02:04",
-  "raison": "page injoignable (<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>)"
+  "etat": "ok",
+  "depuis": "2026-10-05 02:06",
+  "raison": ""
  }
 }
