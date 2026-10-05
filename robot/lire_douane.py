@@ -18,6 +18,7 @@ import html
 import json
 import os
 import re
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -47,8 +48,21 @@ VILLES = {
 def telecharger(url):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "fr,ar;q=0.8"})
     try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return r.status, r.read().decode("utf-8", errors="replace")
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return r.status, r.read().decode("utf-8", errors="replace")
+        except urllib.error.URLError as e:
+            # Le site de la Douane envoie une chaîne de certificats incomplète : refusée sur GitHub (Linux),
+            # acceptée par les navigateurs. Lecture publique d'UNE page, rien n'est envoyé : on réessaie
+            # sans vérification du certificat, uniquement pour ce domaine (même méthode que Géant pour le site de l'eau).
+            if "CERTIFICATE_VERIFY_FAILED" not in str(e) or not url.startswith(PREFIXE):
+                raise
+            print("  (certificat incomplet chez douane.gov.tn : nouvel essai sans vérification)")
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            with urllib.request.urlopen(req, timeout=60, context=ctx) as r:
+                return r.status, r.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         return e.code, ""
 
