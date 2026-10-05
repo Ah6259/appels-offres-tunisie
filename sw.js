@@ -4,7 +4,7 @@
 // - CSS / JS / images versionnés (?v=) : cache puis mise à jour en arrière-plan (le ?v= change à chaque modification).
 // - Jamais en cache : requêtes non-GET, autres sites (statistiques, formulaires, Telegram, polices…), pages exclues.
 // Changer CACHE_VERSION pour vider le cache de tous les téléphones.
-const CACHE_VERSION = "1";
+const CACHE_VERSION = "2";
 const PREFIXE = "appels-offres-tunisie-";                       // propre à ce site : tous les sites partagent ah6259.github.io
 const CACHE = PREFIXE + CACHE_VERSION;
 const PORTEE = new URL("./", self.location.href).pathname;   // dossier du site, ex. /appels-offres-tunisie/
