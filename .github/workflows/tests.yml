@@ -19,6 +19,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Fichiers des robots lisibles par GitHub (YAML valide)
+        run: |
+          pip install --quiet pyyaml
+          python -c "import yaml,glob; [print('OK', f, list((yaml.safe_load(open(f, encoding='utf-8')) or {}).get(True) or [])) for f in sorted(glob.glob('.github/workflows/*.yml'))]"
       - run: npm install --no-save --no-package-lock jsdom
       - name: Test du site (pages, filtres, liens HAICOP, FR/AR, SEO)
         run: node tools/test_site.mjs
