@@ -37,6 +37,12 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 22. **Vraie photo** libre de droits (Wikimedia Commons, CC BY 4.0) dans le bandeau et l'image d'aperçu v3, crédit + preuve.
 23. **Sécurité** : robots.txt anti-IA, meta noai, CSP, anti-iframe, anti-copie légère, test « aucun secret ».
 24. Tests : +42 vérifications du site, +43 scénarios ; **sabotages** : 6 sur le site, 5 sur les robots → tous détectés.
+25. **Photo du bandeau pour TOUS les marchés** (05/10 soir, Ahmed : « pas que la construction ») : mosaïque de 4 vraies
+    photos prises en Tunisie (chantier, ordinateur, chambre de clinique, conteneurs au port de Radès), assemblée avec Python
+    Pillow (4 côte à côte sur ordinateur, 2 × 2 sur téléphone) ; licence de chaque photo vérifiée + preuve (HTML, PDF, API,
+    SHA-256) ; crédit de chacune affiché. Image d'aperçu `og-image-v4.png`.
+26. **Pas de traduction automatique** : Chrome proposait l'anglais (pages FR + AR) → `translate="no"` sur `<html>` et
+    `<meta name="google" content="notranslate">` sur les 40 pages ; vérifié par le test (sabotage détecté).
 
 ## À faire avant publication (Ahmed)
 - Créer le dépôt public `Ah6259/appels-offres-tunisie` avec le contenu de `site/`, activer GitHub Pages (branche main, racine).

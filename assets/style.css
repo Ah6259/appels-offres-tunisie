@@ -243,9 +243,10 @@ html[lang="ar"] .trad small{font-family:"Noto Kufi Arabic",Figtree,sans-serif}
 .ic-enchere svg{width:18px;height:18px}
 .ao .cahier{display:block;text-align:center;margin:8px 0 0;font-size:13.5px;font-weight:700}
 
-/* ---- photo du bandeau (vraie photo libre de droits, crédit en petit) ---- */
-.hero.hero-photo{background:linear-gradient(160deg,rgba(43,85,128,.72) 0%,rgba(22,48,74,.45) 55%,rgba(22,48,74,.85) 100%),url(photos/chantier-monastir.jpg) center 40%/cover no-repeat;padding-bottom:70px}
-.hero .credit-photo{margin:0 0 8px;font-size:10.5px;opacity:.8;color:#fff;text-align:end}
+/* ---- photo du bandeau : mosaïque de 4 vraies photos prises en Tunisie (BTP, informatique, santé, port), crédit de chacune en petit ---- */
+.hero.hero-photo{background:linear-gradient(160deg,rgba(43,85,128,.72) 0%,rgba(22,48,74,.45) 55%,rgba(22,48,74,.85) 100%),url(photos/marches-publics-mosaique-carre.jpg) center center/cover no-repeat;padding-bottom:70px}
+@media (min-width:700px){.hero.hero-photo{background-image:linear-gradient(160deg,rgba(43,85,128,.72) 0%,rgba(22,48,74,.45) 55%,rgba(22,48,74,.85) 100%),url(photos/marches-publics-mosaique.jpg)}}
+.hero .credit-photo{margin:0 0 8px;font-size:9.5px;line-height:1.35;opacity:.85;color:#fff;text-align:end}
 .hero-photo h1,.hero-photo .intro{text-shadow:0 1px 6px rgba(0,0,0,.45)}
 .hero .credit-photo a{color:#fff}
 

@@ -18,8 +18,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - 40 pages générées par `robot/construire_site.py` : accueil, 10 métiers, 26 gouvernorats (24 + « Plusieurs » + « National »), à propos,
   `publier/` (entreprises privées), `encheres/` (ventes aux enchères de la Douane).
 - Couleur principale ardoise #24476B (même famille visuelle qu'« Outils pratiques Tunisie »).
-- Bandeau de l'accueil : **vraie photo** libre de droits (`PHOTOS` dans construire_site.py : Habib M'henni, CC BY 4.0, Wikimedia
-  Commons) + dégradé bleu ; crédit sous la photo, dans « À propos » et sur `og-image-v3.png`. Toute nouvelle photo : licence
+- Bandeau de l'accueil : **mosaïque de 4 vraies photos prises en Tunisie** (05/10 soir, Ahmed : « pas que la construction ») :
+  BTP, informatique, santé, port (`PHOTOS` + `MOSAIQUE` / `MOSAIQUE_MOBILE` dans construire_site.py ; 4 côte à côte sur ordinateur,
+  2 × 2 sur téléphone) + dégradé bleu ; crédit de CHAQUE photo sous le titre, dans « À propos » et sur `og-image-v4.png`. Toute nouvelle photo : licence
   vérifiée, preuve dans `preuves conditions d'utilisation/<date>/photos/`, pas de visage ni d'emblème, ≤ 150 Ko.
 - SVG maison : icônes métiers (`ICONES_METIER`), carte schématique de la Tunisie (`carte_tunisie()`).
 - **Réglages d'Ahmed : `robot/reglages.py` seul** (canal Telegram, WhatsApp, formulaire Google + CSV). Vide = caché / « Bientôt ».
@@ -40,8 +41,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (106 vérifications) et `python tools/test_pannes.py` (79 scénarios).
+1. `node tools/test_site.mjs` (108 vérifications) et `python tools/test_pannes.py` (85 scénarios).
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
-4. Image d'aperçu `assets/og-image-v3.png` : si on la change, **nouveau nom** (-v4).
+4. Image d'aperçu `assets/og-image-v4.png` : si on la change, **nouveau nom** (-v5).
+5. Toutes les pages ont `translate="no"` + meta google notranslate (Chrome traduisait en anglais) : vérifié par le test.

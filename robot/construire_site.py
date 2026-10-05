@@ -318,20 +318,45 @@ ILLUSTRATION = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" 
 
 # Vraies photos libres de droits (Wikimedia Commons). Pour CHAQUE photo : crédit + licence affichés sous la photo
 # et dans « À propos », preuve de la licence dans « preuves conditions d'utilisation/<date>/photos/ » (hors dépôt).
+# Bandeau de l'accueil = MOSAÏQUE de 4 vraies photos prises en Tunisie (tous les marchés publics, pas seulement le BTP),
+# assemblée en une seule image (recadrées). Une entrée par photo : chacune est créditée.
+# Deux mises en page des MÊMES 4 photos : 4 côte à côte (ordinateur) et 2 x 2 (téléphone), choisies dans style.css.
+MOSAIQUE = "assets/photos/marches-publics-mosaique.jpg"
+MOSAIQUE_MOBILE = "assets/photos/marches-publics-mosaique-carre.jpg"
 PHOTOS = [{
-    "fichier": "assets/photos/chantier-monastir.jpg",
-    "sujet_fr": "Chantier de construction à Monastir (Tunisie)", "sujet_ar": "حضيرة بناء في المنستير (تونس)",
+    "fichier": MOSAIQUE, "tuile": "en haut à gauche",
+    "sujet_fr": "Travaux et BTP : chantier de construction à Monastir", "sujet_ar": "أشغال وبناء: حضيرة في المنستير",
     "auteur": "Habib M'henni", "licence": "CC BY 4.0", "licence_url": "https://creativecommons.org/licenses/by/4.0/deed.fr",
-    "source_url": "https://commons.wikimedia.org/wiki/File:Chantier_de_construction,_Monastir,_Tunisie_-_25.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Chantier_de_construction,_Monastir,_Tunisie_-_1.jpg",
+    "preuve": "2026-10-05/photos",
+}, {
+    "fichier": MOSAIQUE, "tuile": "en haut à droite",
+    "sujet_fr": "Informatique : ordinateur portable (atelier MedinaPedia, Tunis)", "sujet_ar": "إعلامية: حاسوب محمول (ورشة مدينة بيديا، تونس)",
+    "auteur": "Touzrimounir", "licence": "CC BY-SA 4.0", "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
+    "source_url": "https://commons.wikimedia.org/wiki/File:MedinaPedia_workshop_3.jpg",
+    "preuve": "2026-10-05/photos",
+}, {
+    "fichier": MOSAIQUE, "tuile": "en bas à gauche",
+    "sujet_fr": "Santé : chambre d'une clinique en Tunisie", "sujet_ar": "صحة: غرفة في مصحة بتونس",
+    "auteur": "Habib M'henni", "licence": "CC BY-SA 3.0", "licence_url": "https://creativecommons.org/licenses/by-sa/3.0/deed.fr",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Chambre_clinique_priv%C3%A9e_en_Tunisie,_janvier_2014.jpg",
+    "preuve": "2026-10-05/photos",
+}, {
+    "fichier": MOSAIQUE, "tuile": "en bas à droite",
+    "sujet_fr": "Fournitures et transport : conteneurs au port de Radès", "sujet_ar": "توريدات ونقل: حاويات في ميناء رادس",
+    "auteur": "M. Rais", "licence": "CC BY-SA 3.0", "licence_url": "https://creativecommons.org/licenses/by-sa/3.0/deed.fr",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Port_Rades_01.JPG",
     "preuve": "2026-10-05/photos",
 }]
 
 
-def credit_photo(ph, racine):
-    """Petit crédit sous la photo du bandeau (auteur, licence, source)."""
-    return (f'    <p class="credit-photo" data-photo="{E(ph["fichier"])}">{L("Photo", "صورة")} : {E(ph["auteur"])}, '
-            f'<a href="{E(ph["licence_url"])}" target="_blank" rel="noopener license">{E(ph["licence"])}</a>, '
-            f'<a href="{E(ph["source_url"])}" target="_blank" rel="noopener">Wikimedia Commons</a></p>')
+def credit_photos(photos):
+    """Petit crédit sous le titre du bandeau : CHAQUE photo de la mosaïque (auteur -> page source, licence -> texte)."""
+    morceaux = " · ".join(
+        f'<a href="{E(ph["source_url"])}" target="_blank" rel="noopener">{E(ph["auteur"])}</a> '
+        f'<a href="{E(ph["licence_url"])}" target="_blank" rel="noopener license">{E(ph["licence"])}</a>' for ph in photos)
+    return (f'    <p class="credit-photo" data-photo="{E(MOSAIQUE)} {E(MOSAIQUE_MOBILE)}">{L("Photos", "صور")} '
+            f'<bdi dir="ltr">(Wikimedia Commons) : {morceaux}</bdi></p>')
 
 
 def ecrire_illustration(sortie):
@@ -475,9 +500,10 @@ CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' 
 def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero=""):
     canon = URL_SITE + chemin
     return f"""<!doctype html>
-<html lang="fr" dir="ltr" data-racine="{racine}">
+<html lang="fr" dir="ltr" translate="no" data-racine="{racine}">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="{CSP}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -492,7 +518,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">
 <meta property="og:description" content="{E(description)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{URL_SITE}assets/og-image-v3.png">
+<meta property="og:image" content="{URL_SITE}assets/og-image-v4.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
@@ -774,7 +800,7 @@ def construire(donnees, sortie, jour):
     lib_nouv = "nouveaux aujourd'hui" if n_auj else (f"nouveaux le {dfr(dernier)[:5]}" if dernier else "nouveaux")
     n_urg = sum(1 for a in vis if a["date_limite"] and
                 0 <= (dt.date.fromisoformat(a["date_limite"]) - dt.date.fromisoformat(jour)).days < 7)
-    hero = f"""{credit_photo(PHOTOS[0], "")}
+    hero = f"""{credit_photos(PHOTOS)}
     <h1>{L("Appels d'offres publics en Tunisie", "طلبات العروض العمومية في تونس")}</h1>
     <p class="intro">{L("Chaque jour, les nouveaux appels d'offres de l'État, des communes et des entreprises publiques, triés par métier et par gouvernorat. Résumé court, lien vers la fiche officielle.",
                         "كل يوم، طلبات العروض الجديدة للدولة والبلديات والمنشآت العمومية، مرتبة حسب الاختصاص والولاية، مع ملخص قصير ورابط البطاقة الرسمية.")}</p>"""
@@ -915,7 +941,7 @@ def construire(donnees, sortie, jour):
 </section>
 <section class="carte" id="credits-photos">
   <h2>{L("Crédits des photos", "حقوق الصور")}</h2>
-  <ul class="sources">{"".join(f'<li data-photo="{E(ph["fichier"])}">{L(E(ph["sujet_fr"]), ph["sujet_ar"])} — {L("photo", "صورة")} : <b>{E(ph["auteur"])}</b>, {L("licence", "رخصة")} <a href="{E(ph["licence_url"])}" rel="noopener license">{E(ph["licence"])}</a>, <a href="{E(ph["source_url"])}" rel="noopener">Wikimedia Commons</a>.</li>' for ph in PHOTOS)}</ul>
+  <ul class="sources">{"".join(f'<li data-photo="{E(MOSAIQUE)} {E(MOSAIQUE_MOBILE)}">{L(E(ph["sujet_fr"]) + " (mosaïque, " + ph["tuile"] + ", recadrée)", ph["sujet_ar"])} — {L("photo", "صورة")} : <b>{E(ph["auteur"])}</b>, {L("licence", "رخصة")} <a href="{E(ph["licence_url"])}" rel="noopener license">{E(ph["licence"])}</a>, <a href="{E(ph["source_url"])}" rel="noopener">Wikimedia Commons</a>.</li>' for ph in PHOTOS)}</ul>
 </section>
 {BADGES}"""
     titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"

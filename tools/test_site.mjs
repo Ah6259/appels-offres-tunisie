@@ -59,13 +59,19 @@ check("images : icône du métier sur chaque carte (symbole existant)", cartes.e
 check("images : 10 icônes de métier dans la page", d.querySelectorAll("symbol[id^='i-']").length === 10);
 // Vraies photos : chaque fichier de assets/photos a un crédit (auteur + licence) sous la photo ET dans « À propos »
 const photos = existsSync(join(root, "assets/photos")) ? readdirSync(join(root, "assets/photos")).filter(f => /\.(jpe?g|webp|png)$/i.test(f)) : [];
-check("photo du bandeau : vraie photo (assets/photos), dégradé bleu, ≤ 150 Ko", photos.length >= 1 && !!d.querySelector(".hero.hero-photo") &&
-  /hero-photo\{background:linear-gradient\([^)]*rgba[^;]*url\(photos\//.test(lire("assets/style.css").replace(/\s+/g, "")) &&
+const cssPhotos = lire("assets/style.css").replace(/\s+/g, "");
+check("photo du bandeau : mosaïque de vraies photos (téléphone 2 × 2, ordinateur 4 côte à côte), dégradé bleu, ≤ 150 Ko",
+  photos.length >= 2 && !!d.querySelector(".hero.hero-photo") &&
+  /hero-photo\{background:linear-gradient\([^)]*rgba[^;]*url\(photos\/marches-publics-mosaique-carre\.jpg\)/.test(cssPhotos) &&
+  /@media\(min-width:700px\)\{\.hero\.hero-photo\{background-image:linear-gradient\([^;]*url\(photos\/marches-publics-mosaique\.jpg\)/.test(cssPhotos) &&
   photos.every(f => statSync(join(root, "assets/photos", f)).size <= 150000));
+check("photo du bandeau : plus la photo du casque de chantier (pas que le BTP)", !photos.some(f => /chantier-monastir/.test(f)) && !/chantier-monastir/.test(cssPhotos));
 const credit = d.querySelector(".hero .credit-photo");
-check("photo du bandeau : crédit affiché (auteur, licence CC, lien source Wikimedia)", !!credit && /Habib M'henni/.test(texte(credit)) &&
-  /CC BY/.test(texte(credit)) && [...credit.querySelectorAll("a")].some(a => /commons\.wikimedia\.org/.test(a.href)) &&
-  photos.every(f => credit.dataset.photo === "assets/photos/" + f || lire("index.html").includes(`data-photo="assets/photos/${f}"`)));
+const creditAuteurs = ["Habib M'henni", "Touzrimounir", "M. Rais"];
+check("photo du bandeau : crédit de CHAQUE photo affiché (4 auteurs, licences CC, liens source Wikimedia)", !!credit &&
+  creditAuteurs.every(a => texte(credit).includes(a)) && (texte(credit).match(/CC BY/g) || []).length === 4 &&
+  [...credit.querySelectorAll("a")].filter(a => /commons\.wikimedia\.org\/wiki\/File:/.test(a.href)).length === 4 &&
+  photos.every(f => (credit.dataset.photo || "").split(" ").includes("assets/photos/" + f)));
 const bulles = [...d.querySelectorAll(".carte-tn .tn-b")];
 check("carte de la Tunisie : 24 gouvernorats, chacun lien vers sa page", bulles.length === 24 &&
   bulles.every(b => b.getAttribute("href") === `gouvernorat/${b.dataset.gouv}/`));
@@ -161,19 +167,20 @@ const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : 40 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères)", urls.length === 40);
 const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
-let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true;
+let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v3.png"`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v4.png"`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
   if (!/<h1><span data-l="fr">[^<]+<\/span><span data-l="ar">[^<]+<\/span><\/h1>/.test(h)) { okH1 = false; console.log("   h1 FR+AR : " + chemin); }
   if (!/HAICOP/.test(h) || !/marchespublics\.gov\.tn/.test(h)) okSrc = false;
   if (!/©/.test(h)) okCopy = false;
+  if (!/<html [^>]*translate="no"/.test(h) || !h.includes('<meta name="google" content="notranslate">')) { okTrad = false; console.log("   traduction automatique non bloquée : " + chemin); }
 }
 check("toutes les pages du sitemap existent", okFichiers);
 check("toutes les pages : titre, description, canonical, og:image, og:title, viewport", okSeo);
@@ -181,6 +188,7 @@ check(`toutes les pages : ?v=${v} (empreinte des fichiers assets, change à chaq
 check("toutes les pages : titre h1 en français ET en arabe", okH1);
 check("toutes les pages : mention de la source HAICOP + lien officiel", okSrc);
 check("toutes les pages : mention © (même sans JavaScript)", okCopy);
+check("toutes les pages : pas de traduction automatique par Chrome (translate=\"no\" + meta google notranslate)", okTrad);
 w = await page("index.html", `jour=${JOUR}`);
 check("pied de page : source HAICOP, « pas officiel », ©", /Source : HAICOP/.test(texte(w.document.getElementById("pied"))) &&
   /n'est pas officiel/.test(texte(w.document.getElementById("pied"))) && /© 2026/.test(texte(w.document.getElementById("pied"))));
@@ -216,8 +224,9 @@ check("à propos : avertissement « pas officiel » + « vérifiez toujours la f
 check("à propos : source HAICOP, TUNEPS, lecture lente", /HAICOP/.test(ap) && /TUNEPS/.test(ap) && /lentement/.test(ap));
 check("robots.txt avec le sitemap", /Sitemap: https:\/\/ah6259\.github\.io\/appels-offres-tunisie\/sitemap\.xml/.test(lire("robots.txt")));
 check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lire("LICENSE")));
-const png = readFileSync(join(root, "assets/og-image-v3.png"));
-check("image d'aperçu v3 (photo) 1200 × 630", png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
+const png = readFileSync(join(root, "assets/og-image-v4.png"));
+check("image d'aperçu v4 (mosaïque) 1200 × 630, source tools/og-image.html à jour", lire("tools/og-image.html").includes("og-image-v4.png") &&
+  lire("tools/og-image.html").includes("marches-publics-mosaique") && creditAuteurs.every(a => lire("tools/og-image.html").includes(a)) && png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
 check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets/apple-touch-icon.png"].every(f => existsSync(join(root, f))));
 check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitignore")) && /captures/.test(lire(".gitignore")));
 
@@ -330,9 +339,11 @@ check("ventes aux enchères : une vente expirée (date du visiteur) est masquée
 check("pied de page : liens « Ventes aux enchères » et « Publier un appel d'offres »",
   !!w.document.querySelector('#pied a[href="../encheres/"]') && !!w.document.querySelector('#pied a[href="../publier/"]'));
 w = await page("a-propos/index.html", "lang=fr");
-check("à propos : crédit de chaque photo (auteur, licence, source)", photos.every(f => {
-  const li = w.document.querySelector(`#credits-photos [data-photo="assets/photos/${f}"]`);
-  return li && /CC BY/.test(texte(li)) && /Habib M'henni/.test(texte(li)) && li.querySelector('a[href*="commons.wikimedia.org"]'); }));
+const lisCredits = [...w.document.querySelectorAll("#credits-photos li")];
+check("à propos : crédit de chaque photo de la mosaïque (4 photos : auteur, licence, source)", lisCredits.length === 4 &&
+  creditAuteurs.every(a => lisCredits.some(li => texte(li).includes(a))) &&
+  lisCredits.every(li => /CC BY/.test(texte(li)) && li.querySelector('a[href*="commons.wikimedia.org/wiki/File:"]')) &&
+  photos.every(f => lisCredits.every(li => (li.dataset.photo || "").split(" ").includes("assets/photos/" + f))));
 
 // ---- 10. Sécurité, anti-robots d'IA, anti-copie --------------------------------
 const robots = lire("robots.txt");
