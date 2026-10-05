@@ -29,7 +29,7 @@ du formulaire Google et de son CSV). Vide = bouton caché / « Bientôt ». Les 
 
 Pages : `index.html`, `metier/<métier>/`, `gouvernorat/<gouvernorat>/`, `a-propos/`, `publier/`, `encheres/`.
 Fichiers à la main : `assets/style.css`, `assets/page.js` (langue, en-tête, pied), `assets/app.js` (filtres, tri,
-recherche, étiquettes J-N, dates selon le téléphone du visiteur), `assets/logo.svg`, `assets/og-image-v4.png` (source : `tools/og-image.html`).
+recherche, étiquettes J-N, dates selon le téléphone du visiteur), `assets/logo.svg`, `assets/og-image-v5.jpg` (source : `tools/og-image.html`).
 Photo du bandeau : **mosaïque de 4 vraies photos prises en Tunisie** (BTP, informatique, santé, port de Radès), car les
 marchés publics ne sont pas que la construction : `assets/photos/marches-publics-mosaique.jpg` (ordinateur, 4 côte à côte) et
 `-carre.jpg` (téléphone, 2 × 2). Wikimedia Commons : Habib M'henni (CC BY 4.0 et CC BY-SA 3.0), Touzrimounir (CC BY-SA 4.0),

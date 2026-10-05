@@ -492,8 +492,10 @@ BADGES = f"""<div class="confiance">
 
 # Sécurité (balises meta, GitHub Pages ne permet pas d'en-têtes) : scripts du site seulement, polices Google,
 # formulaires envoyés seulement au site ou à Google Forms ; aucun cadre, aucun plugin.
-CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-       "font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; "
+# GoatCounter (statistiques de visite anonymes, sans cookies) : script gc.zgo.at, envoi vers le compteur.
+COMPTEUR = "https://prix-eaux-tunisie.goatcounter.com"
+CSP = ("default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+       f"font-src 'self' https://fonts.gstatic.com; img-src 'self' data: {COMPTEUR}; connect-src 'self' {COMPTEUR}; "
        "form-action 'self' https://docs.google.com; frame-src 'none'; object-src 'none'; base-uri 'self'")
 
 
@@ -518,7 +520,8 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">
 <meta property="og:description" content="{E(description)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{URL_SITE}assets/og-image-v4.png">
+<meta property="og:image" content="{URL_SITE}assets/og-image-v5.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
@@ -544,6 +547,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 {contenu}
 </main>
 <footer id="pied"><div class="wrap"><p>Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.</p></div></footer>
+<script data-goatcounter="{COMPTEUR}/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
 """

@@ -28,7 +28,8 @@ check(`données : ${ouverts.length} appels d'offres ouverts le ${JOUR} (au moins
 async function page(chemin, params = "") {
   // chaque <script src> est remplacé par son contenu, puis tout s'exécute dans l'ordre de la page
   const dossier = dirname(join(root, chemin));
-  const html = lire(chemin).replace(/<script([^>]*) src="([^"?]+)(\?[^"]*)?"([^>]*)><\/script>/g,
+  // (les scripts externes, comme GoatCounter, ne sont pas chargés)
+  const html = lire(chemin).replace(/<script([^>]*) src="(?!https?:)([^"?]+)(\?[^"]*)?"([^>]*)><\/script>/g,
     (_, a, src) => `<script>${readFileSync(join(dossier, src), "utf8")}</script>`);
   const dom = new JSDOM(html, { url: URL_SITE + chemin.replace("index.html", "") + "?" + params,
                                runScripts: "dangerously", pretendToBeVisual: true });
@@ -173,7 +174,7 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v4.png"`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v5.jpg"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
@@ -196,7 +197,7 @@ try {
   const ld = JSON.parse(lire("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   check("accueil : FAQ JSON-LD valide", ld["@type"] === "FAQPage" && ld.mainEntity.length >= 3);
 } catch (e) { check("accueil : FAQ JSON-LD valide", false); }
-check("accueil : seulement 3 balises <script> (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 3);
+check("accueil : seulement 4 balises <script> dont GoatCounter (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 4);
 
 // ---- 4. Pages métier et gouvernorat ------------------------------------------
 let okM = true, okG = true;
@@ -224,9 +225,15 @@ check("à propos : avertissement « pas officiel » + « vérifiez toujours la f
 check("à propos : source HAICOP, TUNEPS, lecture lente", /HAICOP/.test(ap) && /TUNEPS/.test(ap) && /lentement/.test(ap));
 check("robots.txt avec le sitemap", /Sitemap: https:\/\/ah6259\.github\.io\/appels-offres-tunisie\/sitemap\.xml/.test(lire("robots.txt")));
 check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lire("LICENSE")));
-const png = readFileSync(join(root, "assets/og-image-v4.png"));
-check("image d'aperçu v4 (mosaïque) 1200 × 630, source tools/og-image.html à jour", lire("tools/og-image.html").includes("og-image-v4.png") &&
-  lire("tools/og-image.html").includes("marches-publics-mosaique") && creditAuteurs.every(a => lire("tools/og-image.html").includes(a)) && png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
+// taille d'une image JPEG : lue dans son en-tête SOF (marqueurs FFC0 à FFC2)
+const tailleJpeg = b => { for (let o = 2; o < b.length - 9;) { const m = b[o + 1], n = b.readUInt16BE(o + 2);
+  if (m >= 0xC0 && m <= 0xC2) return [b.readUInt16BE(o + 7), b.readUInt16BE(o + 5)]; o += 2 + n; } return [0, 0]; };
+const jpg = readFileSync(join(root, "assets/og-image-v5.jpg"));
+const [lj, hj] = tailleJpeg(jpg);
+check("image d'aperçu v5 (mosaïque) 1200 × 630, source tools/og-image.html à jour", lire("tools/og-image.html").includes("og-image-v5.jpg") &&
+  lire("tools/og-image.html").includes("marches-publics-mosaique") && creditAuteurs.every(a => lire("tools/og-image.html").includes(a)) && lj === 1200 && hj === 630);
+check(`image d'aperçu JPEG < 250 Ko (sinon WhatsApp n'affiche qu'une petite vignette) : ${Math.round(jpg.length / 1024)} Ko`,
+  jpg[0] === 0xFF && jpg[1] === 0xD8 && jpg.length < 250000);
 check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets/apple-touch-icon.png"].every(f => existsSync(join(root, f))));
 check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitignore")) && /captures/.test(lire(".gitignore")));
 
@@ -354,16 +361,20 @@ const IA = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-Web"
   "HTTrack", "WebCopier", "WebZIP", "Offline Explorer", "wget", "SiteSnagger"];
 check(`robots.txt : les ${IA.length} robots d'IA et aspirateurs sont interdits`, IA.every(interdit));
 check("robots.txt : Googlebot, Bingbot et les autres robots restent autorisés", ["Googlebot", "Bingbot", "*"].every(u => !interdit(u)));
-let okMeta = true;
+let okMeta = true, okGc = true;
 for (const u of urls) {
   const h = lire(u.replace(URL_SITE, "") + "index.html");
   if (!/<meta name="robots" content="noai, noimageai">/.test(h) || !/<meta name="referrer" content="strict-origin-when-cross-origin">/.test(h)) okMeta = false;
   const csp = (h.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/) || [])[1] || "";
-  if (!/script-src 'self';/.test(csp) || !/object-src 'none'/.test(csp) || !/form-action 'self' https:\/\/docs\.google\.com/.test(csp) ||
+  if (!/script-src 'self' https:\/\/gc\.zgo\.at;/.test(csp) || !/object-src 'none'/.test(csp) || !/form-action 'self' https:\/\/docs\.google\.com/.test(csp) ||
       /unsafe-eval/.test(csp) || /script-src[^;]*unsafe-inline/.test(csp)) { okMeta = false; console.log("   CSP : " + u); }
+  if (!h.includes('<script data-goatcounter="https://prix-eaux-tunisie.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>') ||
+      !/connect-src[^;]*https:\/\/prix-eaux-tunisie\.goatcounter\.com/.test(csp) || !/img-src[^;]*https:\/\/prix-eaux-tunisie\.goatcounter\.com/.test(csp)) {
+    okGc = false; console.log("   GoatCounter : " + u); }
   if ([...h.matchAll(/<a [^>]*href="https?:\/\/[^"]+"[^>]*>/g)].some(m => !/rel="[^"]*noopener/.test(m[0]))) { okMeta = false; console.log("   lien externe sans noopener : " + u); }
 }
 check("toutes les pages : meta noai, referrer, CSP stricte (scripts du site seulement, formulaires Google permis), liens externes noopener", okMeta);
+check("toutes les pages : statistiques GoatCounter (sans cookies) chargées, CSP compatible (script gc.zgo.at, envoi vers le compteur)", okGc);
 const pj = lire("assets/page.js"), css = lire("assets/style.css").replace(/\s+/g, "");
 check("anti-copie : script commun chargé (clic droit/glisser sur images, source ajoutée au texte copié, anti-iframe)",
   /contextmenu/.test(pj) && /dragstart/.test(pj) && /clipboardData\.setData/.test(pj) && /Source : /.test(pj) && /window\.top !== window\.self/.test(pj));
