@@ -28,5 +28,7 @@ jobs:
         run: node tools/test_site.mjs
       - name: Test du service worker (installation sur le telephone)
         run: node tools/test_sw.mjs
+      - name: Test de la section Votre avis (envoi Formspree simule)
+        run: node tools/test_avis.mjs
       - name: Scénarios de panne des robots
         run: python tools/test_pannes.py

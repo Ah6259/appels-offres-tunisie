@@ -494,9 +494,43 @@ BADGES = f"""<div class="confiance">
 # formulaires envoyés seulement au site ou à Google Forms ; aucun cadre, aucun plugin.
 # GoatCounter (statistiques de visite anonymes, sans cookies) : script gc.zgo.at, envoi vers le compteur.
 COMPTEUR = "https://prix-eaux-tunisie.goatcounter.com"
+# « Votre avis » (règle d'Ahmed du 05/10/2026 : sur chacun de ses sites) : envoi au clic vers Formspree (assets/avis.js)
+FORMSPREE = "https://formspree.io"
 CSP = ("default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-       f"font-src 'self' https://fonts.gstatic.com; img-src 'self' data: {COMPTEUR}; connect-src 'self' {COMPTEUR}; "
-       "form-action 'self' https://docs.google.com; frame-src 'none'; object-src 'none'; base-uri 'self'")
+       f"font-src 'self' https://fonts.gstatic.com; img-src 'self' data: {COMPTEUR}; connect-src 'self' {COMPTEUR} {FORMSPREE}; "
+       f"form-action 'self' https://docs.google.com {FORMSPREE}; frame-src 'none'; object-src 'none'; base-uri 'self'")
+
+
+# Section « Votre avis » de l'accueil (envoi par assets/avis.js, champs cachés site + page)
+AVIS = """<section class="carte avis" id="avis" aria-labelledby="avis-titre">
+  <h2 id="avis-titre"><span data-l="fr">Votre avis</span><span data-l="ar">رأيك يهمّنا</span></h2>
+  <p class="avis-intro"><span data-l="fr">Une remarque, une erreur, une idée ? Écrivez-nous : chaque message est lu.</span><span data-l="ar">ملاحظة، خطأ، فكرة؟ اكتب لنا: كل رسالة تُقرأ.</span></p>
+  <form id="avis-form" action="https://formspree.io/f/mwlpakqj" method="POST">
+    <fieldset>
+      <legend><span data-l="fr">Votre note (facultatif)</span><span data-l="ar">تقييمك (اختياري)</span></legend>
+      <div class="avis-notes">
+        <label><input type="radio" name="note" value="😀 Très bien"><span class="emoji" aria-hidden="true">😀</span><span class="avis-cache"><span data-l="fr">Très bien</span><span data-l="ar">ممتاز</span></span></label>
+        <label><input type="radio" name="note" value="🙂 Bien"><span class="emoji" aria-hidden="true">🙂</span><span class="avis-cache"><span data-l="fr">Bien</span><span data-l="ar">جيد</span></span></label>
+        <label><input type="radio" name="note" value="😐 Moyen"><span class="emoji" aria-hidden="true">😐</span><span class="avis-cache"><span data-l="fr">Moyen</span><span data-l="ar">متوسط</span></span></label>
+        <label><input type="radio" name="note" value="🙁 Pas bien"><span class="emoji" aria-hidden="true">🙁</span><span class="avis-cache"><span data-l="fr">Pas bien</span><span data-l="ar">سيئ</span></span></label>
+      </div>
+    </fieldset>
+    <label class="avis-etiquette" for="avis-message"><span data-l="fr">Votre message</span><span data-l="ar">رسالتك</span></label>
+    <textarea id="avis-message" name="message" required maxlength="1000" rows="4" data-ph-fr="Ce qui vous plaît, ce qui manque, une erreur à corriger…" data-ph-ar="ما يعجبك، ما ينقص، خطأ يجب تصحيحه…"></textarea>
+    <span class="avis-compte" id="avis-compte" aria-live="off">0 / 1000</span>
+    <label class="avis-etiquette" for="avis-email"><span data-l="fr">Votre e-mail (facultatif, pour vous répondre)</span><span data-l="ar">بريدك الإلكتروني (اختياري، للرد عليك)</span></label>
+    <input type="email" id="avis-email" name="email" autocomplete="email" maxlength="200" data-ph-fr="nom@example.com" data-ph-ar="nom@example.com">
+    <input type="hidden" name="site" value="Alertes appels d&#39;offres Tunisie">
+    <input type="hidden" name="page" value="">
+    <input type="hidden" name="_subject" value="Avis — Alertes appels d&#39;offres Tunisie">
+    <input type="text" name="_gotcha" class="avis-piege" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="avis-actions">
+      <button type="submit" class="avis-envoyer"><span data-l="fr">Envoyer</span><span data-l="ar">إرسال</span></button>
+      <span id="avis-status" role="status" aria-live="polite"></span>
+    </div>
+    <p class="avis-mention"><span data-l="fr">Votre avis est envoyé au créateur du site (service Formspree). Rien n&#39;est envoyé sans clic sur « Envoyer ».</span><span data-l="ar">يُرسل رأيك إلى صاحب الموقع (خدمة ⁨Formspree⁩). لا يُرسل أي شيء دون الضغط على «إرسال».</span></p>
+  </form>
+</section>"""
 
 
 def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero=""):
@@ -536,6 +570,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 {STYLE_ICONES}
 {jsonld}<script src="{racine}assets/page.js?v={v}"></script>
 <script src="{racine}assets/app.js?v={v}"></script>
+<script src="{racine}assets/avis.js?v={v}"></script>
 </head>
 <body data-maj="{etat['maj']}" data-maj-texte="{etat['maj_texte']}" data-panne="{'1' if etat['panne'] else '0'}">
 {SPRITE}
@@ -718,7 +753,7 @@ def carte_enchere(v, racine):
 # ------------------------------------------------------------ construction
 def version_assets(sortie):
     h = hashlib.sha1()
-    for f in ("style.css", "page.js", "app.js"):
+    for f in ("style.css", "page.js", "app.js", "avis.js"):
         p = os.path.join(sortie, "assets", f)
         if os.path.exists(p):
             with open(p, "rb") as fh:
@@ -859,6 +894,7 @@ def construire(donnees, sortie, jour):
   </ol>
   <p class="avert">{L("Ce site n'est pas officiel. Vérifiez toujours la fiche officielle avant de répondre : seule elle fait foi.", "هذا الموقع ليس رسميًا. تثبّت دائمًا من البطاقة الرسمية قبل المشاركة: هي وحدها المرجع.")} <a href="a-propos/">{L("Méthode et sources", "المنهجية والمصادر")}</a></p>
 </section>"""
+    contenu += "\n" + AVIS
     titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, par métier et gouvernorat | Alertes appels d'offres"
     desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
             "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")

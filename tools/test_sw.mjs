@@ -148,8 +148,9 @@ try {
   b = navigateur(); b.reseau = async () => b.rep("x");
   check("requête POST : non interceptée", !(await b.demande("", { methode: "POST" })).intercepte);
   for (const u of ["https://prix-eaux-tunisie.goatcounter.com/count?p=/", "https://gc.zgo.at/count.js", "https://docs.google.com/forms/d/x/formResponse",
-                   "https://api.telegram.org/bot/x", "https://fonts.googleapis.com/css2?family=x"])
+                   "https://api.telegram.org/bot/x", "https://fonts.googleapis.com/css2?family=x", "https://formspree.io/f/mwlpakqj"])
     check(`autre origine non interceptée : ${new URL(u).host}`, !(await b.demande(u, { absolue: true })).intercepte);
+  check("envoi d'un avis (POST vers formspree.io) : non intercepté", !(await b.demande("https://formspree.io/f/mwlpakqj", { absolue: true, methode: "POST" })).intercepte);
   check("autre site d'Ahmed (même origine, autre dossier) non intercepté", !(await b.demande(ORIGINE + "/autre-site/", { absolue: true, mode: "navigate" })).intercepte);
   for (const x of EXCLUS) {
     const rx = await b.demande(x, { mode: "navigate" });

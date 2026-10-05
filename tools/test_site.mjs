@@ -167,7 +167,7 @@ check("français par défaut avec ?lang=fr", w.document.documentElement.lang ===
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : 40 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères)", urls.length === 40);
-const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
+const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
@@ -197,7 +197,7 @@ try {
   const ld = JSON.parse(lire("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   check("accueil : FAQ JSON-LD valide", ld["@type"] === "FAQPage" && ld.mainEntity.length >= 3);
 } catch (e) { check("accueil : FAQ JSON-LD valide", false); }
-check("accueil : seulement 4 balises <script> dont GoatCounter (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 4);
+check("accueil : seulement 5 balises <script> dont GoatCounter et avis.js (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 5);
 
 // ---- 4. Pages métier et gouvernorat ------------------------------------------
 let okM = true, okG = true;

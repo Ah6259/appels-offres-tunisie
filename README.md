@@ -36,6 +36,10 @@ marchés publics ne sont pas que la construction : `assets/photos/marches-public
 M. Rais (CC BY-SA 3.0) ; crédit de chaque photo sous le bandeau, dans « À propos » et sur l'image d'aperçu ; preuves hors dépôt.
 Toutes les pages : `translate="no"` + `<meta name="google" content="notranslate">` (Chrome proposait de traduire en anglais).
 Icônes de métier et carte de la Tunisie : SVG faits maison.
+**Votre avis** (accueil `#avis`, lien « Votre avis » dans le pied de page de toutes les pages) : note facultative (😀🙂😐🙁),
+message (obligatoire, ≤ 1000 caractères), e-mail facultatif ; envoyé **seulement au clic** à Formspree (formulaire `mwlpakqj`,
+commun à tous les sites d'Ahmed) avec les champs cachés `site` = « Alertes appels d'offres Tunisie » et `page`.
+Code : `assets/avis.js` ; section : constante `AVIS` dans construire_site.py ; test : `node tools/test_avis.mjs` (envoi simulé).
 
 ## Lancer à la main (PC)
 ```
@@ -47,6 +51,7 @@ python robot/construire_site.py
 npm install --no-save --no-package-lock jsdom     (une fois par PC)
 node tools/test_site.mjs
 node tools/test_sw.mjs
+node tools/test_avis.mjs
 python tools/test_pannes.py
 bash tools/captures.sh                             (captures téléphone 340/390 px, FR + AR, dans captures/)
 ```

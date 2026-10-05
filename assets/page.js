@@ -34,6 +34,7 @@
           <a href="${racine}encheres/">${T("Ventes aux enchères", "البيوعات بالمزاد")}</a>
           <a href="${racine}publier/">${T("Publier un appel d'offres", "نشر طلب عروض")}</a>
           <a href="${racine}a-propos/">${T("À propos et sources", "من نحن والمصادر")}</a>
+          <a href="${racine}#avis">${T("Votre avis", "رأيك")}</a>
         </nav>
         <p>${T(`Source : <a href="https://www.marchespublics.gov.tn/fr/appels-doffres" rel="noopener">HAICOP — Haute Instance de la Commande Publique</a> (marchespublics.gov.tn). Chaque annonce renvoie à sa fiche officielle.`,
                `المصدر: <a href="https://www.marchespublics.gov.tn/ar/appels-doffres" rel="noopener">الهيئة العليا للطلب العمومي</a> (${iso("marchespublics.gov.tn")}). كل إعلان مرفق برابط بطاقته الرسمية.`)}</p>

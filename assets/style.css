@@ -255,3 +255,32 @@ html[lang="ar"] .trad small{font-family:"Noto Kufi Arabic",Figtree,sans-serif}
 .ao,.hero-photo,.carte-tn,img{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 img,svg{-webkit-user-drag:none}
 .ao a,.ao .ao-type,.ao .contact,input,textarea,select{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+
+/* ---- Section « Votre avis » (assets/avis.js, envoi Formspree) ---- */
+.avis .avis-intro{color:var(--doux);margin:0 0 12px}
+.avis form{display:flex;flex-direction:column;gap:10px}
+.avis fieldset{border:0;margin:0;padding:0;min-width:0}
+.avis legend,.avis .avis-etiquette{font-weight:700;font-size:14px;margin:0 0 6px;padding:0}
+.avis-notes{display:flex;gap:8px;flex-wrap:wrap}
+.avis-notes label{cursor:pointer}
+.avis-notes input{position:absolute;opacity:0;width:1px;height:1px}
+.avis-notes .emoji{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;border:1.5px solid var(--ligne);background:var(--carte);font-size:26px;line-height:1;transition:border-color .15s,background .15s,transform .1s}
+.avis-notes input:checked + .emoji{border-color:var(--avis-c);background:var(--avis-c-clair);transform:scale(1.06)}
+.avis-notes input:focus-visible + .emoji{outline:3px solid var(--avis-c-clair);outline-offset:2px}
+.avis-cache{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.avis textarea,.avis input[type=email]{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--ligne);border-radius:12px;background:var(--carte);color:var(--texte)}
+.avis textarea{resize:vertical;min-height:96px}
+.avis input[type=email]{direction:ltr}
+.avis textarea:focus,.avis input[type=email]:focus{outline:0;border-color:var(--avis-c);box-shadow:0 0 0 4px var(--avis-c-clair)}
+.avis textarea,.avis input{-webkit-user-select:text;user-select:text}
+.avis .avis-compte{align-self:flex-end;direction:ltr;unicode-bidi:isolate;font-size:12px;color:var(--doux);margin-top:-6px}
+.avis .avis-piege{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);opacity:0;border:0;padding:0}
+.avis-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.avis-envoyer{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:12px 22px;font:inherit;font-weight:800;font-size:15px;color:#fff;background:var(--avis-c);cursor:pointer}
+.avis-envoyer:hover{filter:brightness(1.08)}
+.avis-envoyer:disabled{opacity:.55;cursor:default;filter:none}
+#avis-status{font-size:14px;color:var(--doux)}
+#avis-status.ok{color:var(--avis-ok);font-weight:700}
+#avis-status.err{color:var(--avis-err);font-weight:700}
+.avis .avis-mention{font-size:12.5px;color:var(--doux);margin:2px 0 0}
+.avis{--avis-c:var(--bleu);--avis-c-clair:var(--bleu-clair);--avis-ok:var(--vert);--avis-err:var(--rouge)}

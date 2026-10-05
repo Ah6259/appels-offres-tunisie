@@ -45,6 +45,14 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   `CACHE_VERSION`. Meta iPhone (`apple-mobile-web-app-capable`, `-title`) dans le gabarit de construire_site.py.
   Test : `node tools/test_sw.mjs` (faux navigateur ; accepte un dossier en argument), lancé aussi par maj.yml.
 
+- **Votre avis** (05/10/2026, règle d'Ahmed : sur chacun de ses sites) : section `#avis` en bas de l'accueil (constante `AVIS`
+  dans construire_site.py : carte FR + AR, note 😀🙂😐🙁 facultative, message obligatoire ≤ 1000 caractères, e-mail facultatif),
+  lien « Votre avis » dans le pied de page (`page.js`). `assets/avis.js` (fichier externe, compté dans l'empreinte `?v=`) envoie par
+  `fetch` à `https://formspree.io/f/mwlpakqj` (Accept JSON) seulement au clic, avec les champs cachés `site` = « Alertes appels
+  d'offres Tunisie », `page`, `_subject` et le piège `_gotcha`. CSP (`FORMSPREE`) : `connect-src` + `form-action`. Champs
+  sélectionnables malgré l'anti-copie ; le service worker laisse passer formspree.io. Formspree gratuit = 50 envois/mois pour
+  TOUS les sites (même formulaire). Test : `node tools/test_avis.mjs` (accepte un dossier en argument), aussi dans tests.yml et maj.yml.
+
 ## Robustesse (voir README « Plan de continuité »)
 - `statut_source` / `derniere_lecture_reussie` dans `donnees/appels-offres.json` ; `donnees/etat-source.json` pour l'alerte.
 - Panne = source injoignable, liste < 30 %, format changé, champs vides — jamais « aucun appel d'offres ».
@@ -53,9 +61,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (112 vérifications), `node tools/test_sw.mjs` (service worker) et `python tools/test_pannes.py` (85 scénarios).
+1. `node tools/test_site.mjs` (112 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) et `python tools/test_pannes.py` (85 scénarios).
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
-2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
+2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
 4. Image d'aperçu `assets/og-image-v5.jpg` : si on la change, **nouveau nom** (-v6). Toujours en **JPEG < 250 Ko**
    (capture PNG de `tools/og-image.html` puis conversion Pillow qualité 88) : au-delà, WhatsApp n'affiche qu'une petite vignette.
