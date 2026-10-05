@@ -20,7 +20,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Couleur principale ardoise #24476B (même famille visuelle qu'« Outils pratiques Tunisie »).
 - Bandeau de l'accueil : **mosaïque de 4 vraies photos prises en Tunisie** (05/10 soir, Ahmed : « pas que la construction ») :
   BTP, informatique, santé, port (`PHOTOS` + `MOSAIQUE` / `MOSAIQUE_MOBILE` dans construire_site.py ; 4 côte à côte sur ordinateur,
-  2 × 2 sur téléphone) + dégradé bleu ; crédit de CHAQUE photo sous le titre, dans « À propos » et sur `og-image-v5.jpg`. Toute nouvelle photo : licence
+  2 × 2 sur téléphone) + dégradé bleu ; crédit de CHAQUE photo sous le titre, dans « À propos » et sur `og-image-v6.jpg`. Toute nouvelle photo : licence
   vérifiée, preuve dans `preuves conditions d'utilisation/<date>/photos/`, pas de visage ni d'emblème, ≤ 150 Ko.
 - SVG maison : icônes métiers (`ICONES_METIER`), carte schématique de la Tunisie (`carte_tunisie()`).
 - **Réglages d'Ahmed : `robot/reglages.py` seul** (canal Telegram, WhatsApp, formulaire Google + CSV). Vide = caché / « Bientôt ».
@@ -65,7 +65,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
-4. Image d'aperçu `assets/og-image-v5.jpg` : si on la change, **nouveau nom** (-v6). Toujours en **JPEG < 250 Ko**
+4. Image d'aperçu `assets/og-image-v6.jpg` : si on la change, **nouveau nom** (-v7). Toujours en **JPEG < 250 Ko**
    (capture PNG de `tools/og-image.html` puis conversion Pillow qualité 88) : au-delà, WhatsApp n'affiche qu'une petite vignette.
    L'ancien `og-image-v4.png` n'est plus utilisé (peut être supprimé).
 5. Toutes les pages ont `translate="no"` + meta google notranslate (Chrome traduisait en anglais) : vérifié par le test.

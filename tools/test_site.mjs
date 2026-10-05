@@ -174,7 +174,7 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v5.jpg"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v6.jpg"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
@@ -228,9 +228,9 @@ check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lir
 // taille d'une image JPEG : lue dans son en-tête SOF (marqueurs FFC0 à FFC2)
 const tailleJpeg = b => { for (let o = 2; o < b.length - 9;) { const m = b[o + 1], n = b.readUInt16BE(o + 2);
   if (m >= 0xC0 && m <= 0xC2) return [b.readUInt16BE(o + 7), b.readUInt16BE(o + 5)]; o += 2 + n; } return [0, 0]; };
-const jpg = readFileSync(join(root, "assets/og-image-v5.jpg"));
+const jpg = readFileSync(join(root, "assets/og-image-v6.jpg"));
 const [lj, hj] = tailleJpeg(jpg);
-check("image d'aperçu v5 (mosaïque) 1200 × 630, source tools/og-image.html à jour", lire("tools/og-image.html").includes("og-image-v5.jpg") &&
+check("image d'aperçu v6 (mosaïque) 1200 × 630, source tools/og-image.html à jour", lire("tools/og-image.html").includes("og-image-v6.jpg") &&
   lire("tools/og-image.html").includes("marches-publics-mosaique") && creditAuteurs.every(a => lire("tools/og-image.html").includes(a)) && lj === 1200 && hj === 630);
 check(`image d'aperçu JPEG < 250 Ko (sinon WhatsApp n'affiche qu'une petite vignette) : ${Math.round(jpg.length / 1024)} Ko`,
   jpg[0] === 0xFF && jpg[1] === 0xD8 && jpg.length < 250000);

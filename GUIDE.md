@@ -40,7 +40,7 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 25. **Photo du bandeau pour TOUS les marchés** (05/10 soir, Ahmed : « pas que la construction ») : mosaïque de 4 vraies
     photos prises en Tunisie (chantier, ordinateur, chambre de clinique, conteneurs au port de Radès), assemblée avec Python
     Pillow (4 côte à côte sur ordinateur, 2 × 2 sur téléphone) ; licence de chaque photo vérifiée + preuve (HTML, PDF, API,
-    SHA-256) ; crédit de chacune affiché. Image d'aperçu `og-image-v5.jpg`.
+    SHA-256) ; crédit de chacune affiché. Image d'aperçu `og-image-v6.jpg`.
 26. **Pas de traduction automatique** : Chrome proposait l'anglais (pages FR + AR) → `translate="no"` sur `<html>` et
     `<meta name="google" content="notranslate">` sur les 40 pages ; vérifié par le test (sabotage détecté).
 
