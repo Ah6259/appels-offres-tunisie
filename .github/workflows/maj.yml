@@ -42,10 +42,12 @@ jobs:
           exit 0     # une panne ne doit pas arrêter le robot : le site garde les anciennes données
 
       - name: Ventes aux enchères (page officielle de la Douane, 1 page)
-        run: python robot/lire_douane.py || echo "échec : ventes aux enchères non lues (anciennes gardées)"
+        run: |
+          python robot/lire_douane.py || echo "échec : ventes aux enchères non lues (anciennes gardées)"
 
       - name: Appels d'offres des entreprises privées (formulaire Google, si configuré)
-        run: python robot/prives.py || echo "échec : publications des entreprises non lues (anciennes gardées)"
+        run: |
+          python robot/prives.py || echo "échec : publications des entreprises non lues (anciennes gardées)"
 
       - name: Construction du site
         run: python robot/construire_site.py
