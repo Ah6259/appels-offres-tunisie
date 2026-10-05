@@ -1248,19 +1248,19 @@
    "gouvernorat": "La Manouba"
   }
  },
- "mis_a_jour": "2026-10-05 02:04",
+ "mis_a_jour": "2026-10-05 02:05",
  "dernier_passage": {
-  "date": "2026-10-05 02:04",
+  "date": "2026-10-05 02:05",
   "liste_ok": true,
   "lus": 0,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-05 02:04",
+ "derniere_lecture_reussie": "2026-10-05 02:05",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-05 02:04",
+  "depuis": "2026-10-05 02:05",
   "raison": ""
  }
 }
