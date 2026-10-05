@@ -438,7 +438,8 @@ def version_assets(sortie):
         p = os.path.join(sortie, "assets", f)
         if os.path.exists(p):
             with open(p, "rb") as fh:
-                h.update(fh.read())
+                # fins de ligne normalisées : même version sous Windows et sur GitHub (Linux)
+                h.update(fh.read().replace(b"\r\n", b"\n"))
     return h.hexdigest()[:8]
 
 

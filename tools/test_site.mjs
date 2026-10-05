@@ -152,7 +152,7 @@ check("français par défaut avec ?lang=fr", w.document.documentElement.lang ===
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : 38 pages (accueil, 10 métiers, 26 gouvernorats, à propos)", urls.length === 38);
-const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js"].map(f => readFileSync(join(root, "assets", f))))).digest("hex").slice(0, 8);
+const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
