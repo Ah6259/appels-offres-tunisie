@@ -34,6 +34,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - `?jour=AAAA-MM-JJ` simule la date du visiteur (tests).
 - Statistiques **GoatCounter** (anonymes, sans cookies, 05/10/2026) sur toutes les pages : compteur partagé
   `https://prix-eaux-tunisie.goatcounter.com` (constante `COMPTEUR` + `CSP` dans construire_site.py ; pages séparées par chemin).
+- Installation sur le téléphone : `manifest.webmanifest` avec `"id": "/appels-offres-tunisie/"` (UNIQUE : tous les sites d'Ahmed
+  partagent l'origine ah6259.github.io ; sans id, Chrome disait « déjà installée »), icônes `assets/icons/` (192, 512, maskable)
+  tirées de `assets/logo.svg`. Lien dans le gabarit ; vérifié par le test.
 
 ## Robustesse (voir README « Plan de continuité »)
 - `statut_source` / `derniere_lecture_reussie` dans `donnees/appels-offres.json` ; `donnees/etat-source.json` pour l'alerte.
@@ -43,7 +46,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (110 vérifications) et `python tools/test_pannes.py` (85 scénarios).
+1. `node tools/test_site.mjs` (112 vérifications) et `python tools/test_pannes.py` (85 scénarios).
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.

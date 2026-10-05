@@ -516,6 +516,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <link rel="icon" href="{racine}assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="{racine}favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="{racine}assets/apple-touch-icon.png">
+<link rel="manifest" href="{racine}manifest.webmanifest">
 <meta name="theme-color" content="#24476B">
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">
 <meta property="og:description" content="{E(description)}">

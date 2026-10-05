@@ -235,6 +235,14 @@ check("image d'aperçu v5 (mosaïque) 1200 × 630, source tools/og-image.html à
 check(`image d'aperçu JPEG < 250 Ko (sinon WhatsApp n'affiche qu'une petite vignette) : ${Math.round(jpg.length / 1024)} Ko`,
   jpg[0] === 0xFF && jpg[1] === 0xD8 && jpg.length < 250000);
 check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets/apple-touch-icon.png"].every(f => existsSync(join(root, f))));
+// manifeste : id UNIQUE = chemin du site (sinon Chrome croit le site « déjà installé » : tous les sites partagent ah6259.github.io)
+let man = {}; try { man = JSON.parse(lire("manifest.webmanifest")); } catch (e) {}
+check("manifeste présent, id unique = chemin du site, start_url/scope ./, icônes 192, 512 et maskable existantes",
+  man.id === "/appels-offres-tunisie/" && man.start_url === "./" && man.scope === "./" && man.display === "standalone" && !!man.name && !!man.short_name
+  && ["192x192", "512x512"].every(t => man.icons?.some(i => i.sizes === t)) && man.icons?.some(i => i.purpose === "maskable")
+  && man.icons.every(i => existsSync(join(root, i.src))));
+check("toutes les pages : lien vers le manifeste, icône iPhone et theme-color", urls.every(u => { const c = u.replace(URL_SITE, ""), r = "../".repeat(c.split("/").length - 1), h = lire(c + "index.html");
+  return h.includes(`<link rel="manifest" href="${r}manifest.webmanifest">`) && h.includes(`<link rel="apple-touch-icon" href="${r}assets/apple-touch-icon.png">`) && h.includes('<meta name="theme-color"'); }));
 check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitignore")) && /captures/.test(lire(".gitignore")));
 
 // ---- 6. Recherche par mots-clés (FR + AR, accents, casse, numéro, résumé) ----------

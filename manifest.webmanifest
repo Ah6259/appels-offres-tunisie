@@ -1,0 +1,31 @@
+{
+  "id": "/appels-offres-tunisie/",
+  "name": "Appels d'offres Tunisie",
+  "short_name": "Appels d'offres",
+  "description": "Les appels d'offres publics tunisiens du jour, par métier et par gouvernorat, et les ventes aux enchères.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "fr",
+  "dir": "auto",
+  "theme_color": "#24476B",
+  "background_color": "#F3F6F9",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
