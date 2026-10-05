@@ -18,7 +18,7 @@ la caution provisoire et le lien vers la **fiche officielle**. Français + arabe
 
 Pages : `index.html`, `metier/<métier>/`, `gouvernorat/<gouvernorat>/`, `a-propos/`.
 Fichiers à la main : `assets/style.css`, `assets/page.js` (langue, en-tête, pied), `assets/app.js` (filtres, tri,
-dates selon le téléphone du visiteur), `assets/logo.svg`, `assets/og-image-v1.png` (source : `tools/og-image.html`).
+dates selon le téléphone du visiteur), `assets/logo.svg`, `assets/og-image-v2.png` (source : `tools/og-image.html`).
 Images faites maison en SVG : illustration du bandeau (`assets/illustration-accueil.svg`, écrite par le constructeur),
 une icône par métier, carte schématique de la Tunisie (une bulle par gouvernorat).
 

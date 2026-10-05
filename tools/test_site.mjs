@@ -159,7 +159,7 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v1.png"`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v2.png"`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
@@ -208,7 +208,7 @@ check("à propos : avertissement « pas officiel » + « vérifiez toujours la f
 check("à propos : source HAICOP, TUNEPS, lecture lente", /HAICOP/.test(ap) && /TUNEPS/.test(ap) && /lentement/.test(ap));
 check("robots.txt avec le sitemap", /Sitemap: https:\/\/ah6259\.github\.io\/appels-offres-tunisie\/sitemap\.xml/.test(lire("robots.txt")));
 check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lire("LICENSE")));
-const png = readFileSync(join(root, "assets/og-image-v1.png"));
+const png = readFileSync(join(root, "assets/og-image-v2.png"));
 check("image d'aperçu 1200 × 630", png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
 check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets/apple-touch-icon.png"].every(f => existsSync(join(root, f))));
 check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitignore")) && /captures/.test(lire(".gitignore")));

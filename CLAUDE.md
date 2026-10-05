@@ -34,4 +34,4 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
-4. Image d'aperçu `assets/og-image-v1.png` : si on la change, **nouveau nom** (-v2).
+4. Image d'aperçu `assets/og-image-v2.png` : si on la change, **nouveau nom** (-v2).
