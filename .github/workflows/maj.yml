@@ -1,4 +1,5 @@
-# Mise à jour quotidienne : lecture HAICOP -> construction du site -> tests -> commit (GitHub Pages republie tout seul).
+# Mise à jour quotidienne : lecture HAICOP + Douane (enchères) + formulaire des entreprises -> construction du site -> tests
+# -> alerte Telegram -> commit (GitHub Pages republie tout seul).
 # En cas de panne de la source : anciennes données gardées, issue GitHub « Source HAICOP en panne depuis le … »
 # ouverte (ou complétée), puis refermée automatiquement quand la lecture remarche.
 name: maj-appels-offres
@@ -40,6 +41,12 @@ jobs:
           echo "code=$?" >> "$GITHUB_OUTPUT"
           exit 0     # une panne ne doit pas arrêter le robot : le site garde les anciennes données
 
+      - name: Ventes aux enchères (page officielle de la Douane, 1 page)
+        run: python robot/lire_douane.py || echo "échec : ventes aux enchères non lues (anciennes gardées)"
+
+      - name: Appels d'offres des entreprises privées (formulaire Google, si configuré)
+        run: python robot/prives.py || echo "échec : publications des entreprises non lues (anciennes gardées)"
+
       - name: Construction du site
         run: python robot/construire_site.py
 
@@ -49,11 +56,17 @@ jobs:
           node tools/test_site.mjs
           python tools/test_pannes.py
 
+      - name: Alerte Telegram du jour (rien si les secrets n'existent pas)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CANAL: ${{ secrets.TELEGRAM_CANAL }}
+        run: python robot/telegram.py || echo "échec : alerte Telegram (le site n'est pas touché)"
+
       - name: Commit des données et des pages
         run: |
           git config user.name "robot-appels-offres"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add donnees index.html sitemap.xml a-propos metier gouvernorat assets/illustration-accueil.svg
+          git add donnees index.html sitemap.xml a-propos metier gouvernorat publier encheres
           if git diff --cached --quiet; then echo "Rien de nouveau."; exit 0; fi
           git commit -m "Appels d'offres du $(date +'%d/%m/%Y %H:%M')"
           git push

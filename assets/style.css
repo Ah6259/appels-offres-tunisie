@@ -192,3 +192,65 @@ html[lang="fr"] [data-l="ar"],html[lang="ar"] [data-l="fr"]{display:none !import
   .ao-infos > div{padding:8px 9px}
   .grille{grid-template-columns:1fr}
 }
+
+/* ---- recherche ---- */
+.filtres .f-q{grid-column:1 / -1}
+.filtres.un{grid-template-columns:1fr}
+input[type="search"]{width:100%;font:inherit;font-size:15px;font-weight:600;padding:10px 12px;border:1.5px solid var(--ligne);border-radius:12px;
+  background:var(--bg);color:var(--texte);-webkit-appearance:none;appearance:none}
+input[type="search"]:focus{outline:0;border-color:var(--bleu);box-shadow:0 0 0 4px var(--bleu-clair)}
+
+/* ---- résumé traduit ---- */
+.trad{margin:0 0 6px;font-size:13.5px;color:var(--texte);background:var(--bleu-tres-clair);border-radius:10px;padding:6px 10px;line-height:1.45;overflow-wrap:anywhere}
+.trad[dir="rtl"]{font-family:"Noto Kufi Arabic",Figtree,sans-serif}
+.trad small{display:block;font-size:11px;font-weight:600;color:var(--doux);font-family:Figtree,"Noto Kufi Arabic",system-ui,sans-serif}
+html[lang="ar"] .trad small{font-family:"Noto Kufi Arabic",Figtree,sans-serif}
+
+/* ---- rappels avant la date limite ---- */
+.rappel{font-size:11px;font-weight:800;letter-spacing:.03em;background:var(--or-clair);color:var(--or);border-radius:999px;padding:3px 8px;white-space:nowrap}
+.rappel.fort{background:var(--rouge);color:#fff}
+.rappel[hidden]{display:none}
+.bientot{padding:14px 16px}
+.bientot[hidden]{display:none}
+.bientot h2{font-size:16.5px;margin:0 0 8px}
+.bientot-liste{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.bientot-liste li{min-width:0}
+.bientot-liste a{overflow:hidden;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--texte);background:var(--bg);border-radius:10px;padding:7px 10px;min-width:0}
+.bientot-liste .b-objet{flex:1 1 0;min-width:0;unicode-bidi:plaintext;text-align:start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;font-weight:600}
+.bientot-liste small{flex:none;color:var(--doux);font-size:12px;font-weight:700}
+.ao.visee{box-shadow:0 0 0 3px var(--accent),var(--ombre)}
+
+/* ---- alertes Telegram ---- */
+.alertes-btn{display:grid;gap:8px;margin:0 0 14px}
+.btn-alerte{display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;font-weight:800;font-size:15px;border-radius:14px;padding:12px 14px;color:#fff;background:#229ED9}
+.btn-alerte svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn-whatsapp{background:#1F9D55}
+
+/* ---- entreprises privées ---- */
+.bloc-prives[hidden]{display:none}
+.sous-titre{margin:-4px 2px 10px;font-size:13.5px;color:var(--doux)}
+.ao.prive{border-inline-start-color:var(--or)}
+.badge-prive{font-size:11px;font-weight:800;background:var(--or-clair);color:var(--or);border-radius:999px;padding:3px 8px}
+.ao .desc{margin:0 0 10px;font-size:14px;color:var(--texte);overflow-wrap:anywhere}
+.ao .contact{white-space:normal;overflow-wrap:anywhere;font-size:14px}
+.non-verifie{margin:0;font-size:12.5px;font-weight:700;color:var(--or);background:var(--or-clair);border-radius:10px;padding:6px 10px}
+.btn-publier{display:block;text-align:center;text-decoration:none;font-weight:800;color:#fff;background:var(--bleu);border-radius:12px;padding:12px 14px;margin:12px 0 0}
+.bientot-pub{text-align:center;font-weight:800;color:var(--or);background:var(--or-clair);border-radius:12px;padding:12px 14px;margin:12px 0 0}
+
+/* ---- ventes aux enchères ---- */
+.ao.enchere{border-inline-start-color:#8A6A2F}
+.ic-enchere{--c:#8A6A2F}
+.ic-enchere svg{width:18px;height:18px}
+.ao .cahier{display:block;text-align:center;margin:8px 0 0;font-size:13.5px;font-weight:700}
+
+/* ---- photo du bandeau (vraie photo libre de droits, crédit en petit) ---- */
+.hero.hero-photo{background:linear-gradient(160deg,rgba(43,85,128,.72) 0%,rgba(22,48,74,.45) 55%,rgba(22,48,74,.85) 100%),url(photos/chantier-monastir.jpg) center 40%/cover no-repeat;padding-bottom:70px}
+.hero .credit-photo{margin:0 0 8px;font-size:10.5px;opacity:.8;color:#fff;text-align:end}
+.hero-photo h1,.hero-photo .intro{text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.hero .credit-photo a{color:#fff}
+
+/* ---- protection légère contre la copie : cartes et images non sélectionnables,
+        mais numéros (Tender-…), liens, contacts et champs restent copiables ---- */
+.ao,.hero-photo,.carte-tn,img{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img,svg{-webkit-user-drag:none}
+.ao a,.ao .ao-type,.ao .contact,input,textarea,select{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}

@@ -31,6 +31,8 @@
           <a href="${racine || "./"}">${T("Tous les appels d'offres", "كل طلبات العروض")}</a>
           <a href="${racine}#metiers">${T("Par métier", "حسب الاختصاص")}</a>
           <a href="${racine}#gouvernorats">${T("Par gouvernorat", "حسب الولاية")}</a>
+          <a href="${racine}encheres/">${T("Ventes aux enchères", "البيوعات بالمزاد")}</a>
+          <a href="${racine}publier/">${T("Publier un appel d'offres", "نشر طلب عروض")}</a>
           <a href="${racine}a-propos/">${T("À propos et sources", "من نحن والمصادر")}</a>
         </nav>
         <p>${T(`Source : <a href="https://www.marchespublics.gov.tn/fr/appels-doffres" rel="noopener">HAICOP — Haute Instance de la Commande Publique</a> (marchespublics.gov.tn). Chaque annonce renvoie à sa fiche officielle.`,
@@ -51,4 +53,24 @@
     document.dispatchEvent(new Event("langue"));
   }
   document.addEventListener("DOMContentLoaded", () => appliquer(langue));
+
+  // ---- Protection légère contre la copie (sans gêner les visiteurs) -------------------------
+  // 1) Pas d'affichage dans le cadre (iframe) d'un autre site.
+  try {
+    if (window.top !== window.self && window.top.location.hostname !== location.hostname) window.top.location = location.href;
+  } catch (e) { try { window.top.location = location.href; } catch (e2) {} }
+  // 2) Images et photos : ni clic droit ni glisser-déposer.
+  const estImage = t => t && t.closest && t.closest("img, svg, .hero-photo, .carte-tn");
+  document.addEventListener("contextmenu", e => { if (estImage(e.target) && !e.target.closest("a, input, textarea")) e.preventDefault(); });
+  document.addEventListener("dragstart", e => { if (estImage(e.target)) e.preventDefault(); });
+  // 3) Texte copié depuis une carte : on ajoute la source et la mention « tous droits réservés ».
+  document.addEventListener("copy", e => {
+    const sel = window.getSelection ? String(window.getSelection()) : "";
+    const n = window.getSelection && window.getSelection().anchorNode;
+    const el = n && (n.nodeType === 1 ? n : n.parentElement);
+    if (!sel || !el || !el.closest || !el.closest(".ao, .liste, main") || el.closest("input, textarea")) return;
+    if (!e.clipboardData) return;
+    e.clipboardData.setData("text/plain", sel + "\n\nSource : " + location.href.split("#")[0] + " — © Alertes appels d'offres Tunisie, tous droits réservés.");
+    e.preventDefault();
+  });
 })();

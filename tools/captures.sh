@@ -6,7 +6,7 @@ CH="/c/Program Files/Google/Chrome/Application/chrome.exe"
 SITE=$(cygpath -m "$PWD")
 PROFIL=$(cygpath -m "${TEMP:-/tmp}/chrome-captures-ao")
 # chemin:nom:hauteur (accueil-complet = toute la page, pour voir la carte de la Tunisie en bas)
-for page in "index.html:accueil:2400" "index.html:accueil-complet:7600" "metier/btp-genie-civil/index.html:metier:2400"             "gouvernorat/sfax/index.html:gouvernorat:2400" "a-propos/index.html:a-propos:2400"; do
+for page in "index.html:accueil:2400" "index.html:accueil-complet:7600" "metier/btp-genie-civil/index.html:metier:2400"             "gouvernorat/sfax/index.html:gouvernorat:2400" "a-propos/index.html:a-propos:2400" "encheres/index.html:encheres:2400" "publier/index.html:publier:1800"; do
   IFS=: read -r chemin nom H <<< "$page"
   for lang in fr ar; do
     cat > captures/cadre.html <<HTML

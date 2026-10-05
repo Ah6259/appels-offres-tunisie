@@ -36,6 +36,10 @@ import shutil
 import sys
 
 ICI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, ICI)
+import glossaire   # noqa: E402  résumé traduit des objets (glossaire maison)
+import reglages    # noqa: E402  adresses à remplir par Ahmed (canal Telegram, formulaire…)
+
 RACINE_SITE = os.path.dirname(ICI)          # le dossier site/ (= racine du dépôt GitHub)
 URL_SITE = "https://ah6259.github.io/appels-offres-tunisie/"
 URL_HAICOP = "https://www.marchespublics.gov.tn/fr/appels-doffres"
@@ -79,6 +83,35 @@ E = lambda t: html.escape(str(t or ""), quote=True)
 ISO = lambda t: "⁦" + str(t) + "⁩"     # isole un nombre dans un texte arabe
 ARABE = re.compile(r"[؀-ۿ]")
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def reglage(nom, motif):
+    """Adresse lue dans robot/reglages.py ; "" si vide ou mal écrite (le site cache alors le bouton)."""
+    v = str(getattr(reglages, nom, "") or "").strip()
+    if v and not re.fullmatch(motif, v):
+        print(f"  ! échec : réglage {nom} mal écrit ({v[:60]}) -> ignoré")
+        return ""
+    return v
+
+
+def adresses():
+    return {
+        "telegram": reglage("TELEGRAM_CANAL_URL", r"https://t\.me/[A-Za-z0-9_]{4,64}"),
+        "whatsapp": reglage("WHATSAPP_CANAL_URL", r"https://(www\.)?whatsapp\.com/channel/[A-Za-z0-9_-]{8,64}"),
+        "formulaire": reglage("FORMULAIRE_PRIVES_URL", r"https://(forms\.gle/[A-Za-z0-9_-]{4,64}|docs\.google\.com/forms/[A-Za-z0-9_/=?&.-]{8,200})"),
+    }
+
+
+def resume_trad(objet):
+    """Paragraphe « ≈ résumé dans l'autre langue — traduction automatique approximative » (ou "")."""
+    r = glossaire.resumer(objet)
+    if not r:
+        return ""
+    if r["langue"] == "fr":
+        return (f'<p class="trad" lang="fr" dir="ltr"><span class="trad-t">≈ {E(r["texte"])}</span> '
+                f'<small>{L("traduction automatique approximative", "ترجمة آلية تقريبية")}</small></p>')
+    return (f'<p class="trad" lang="ar" dir="rtl"><span class="trad-t">≈ {E(r["texte"])}</span> '
+            f'<small>{L("traduction automatique approximative", "ترجمة آلية تقريبية")}</small></p>')
 
 
 def dfr(d):
@@ -283,6 +316,24 @@ ILLUSTRATION = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" 
 """
 
 
+# Vraies photos libres de droits (Wikimedia Commons). Pour CHAQUE photo : crédit + licence affichés sous la photo
+# et dans « À propos », preuve de la licence dans « preuves conditions d'utilisation/<date>/photos/ » (hors dépôt).
+PHOTOS = [{
+    "fichier": "assets/photos/chantier-monastir.jpg",
+    "sujet_fr": "Chantier de construction à Monastir (Tunisie)", "sujet_ar": "حضيرة بناء في المنستير (تونس)",
+    "auteur": "Habib M'henni", "licence": "CC BY 4.0", "licence_url": "https://creativecommons.org/licenses/by/4.0/deed.fr",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Chantier_de_construction,_Monastir,_Tunisie_-_25.jpg",
+    "preuve": "2026-10-05/photos",
+}]
+
+
+def credit_photo(ph, racine):
+    """Petit crédit sous la photo du bandeau (auteur, licence, source)."""
+    return (f'    <p class="credit-photo" data-photo="{E(ph["fichier"])}">{L("Photo", "صورة")} : {E(ph["auteur"])}, '
+            f'<a href="{E(ph["licence_url"])}" target="_blank" rel="noopener license">{E(ph["licence"])}</a>, '
+            f'<a href="{E(ph["source_url"])}" target="_blank" rel="noopener">Wikimedia Commons</a></p>')
+
+
 def ecrire_illustration(sortie):
     ecrire(sortie, "assets/illustration-accueil.svg", ILLUSTRATION.replace("{contour}", _contour()))
 
@@ -328,8 +379,9 @@ def carte(a, racine, jour):
     infos_fr = " · ".join(x for x in infos_fr if x)
     infos_ar = " · ".join(x for x in infos_ar if x)
     return f"""<article class="ao{' urgent' if urgent else ''}" id="{E(a['numero'])}" data-num="{numero(a['numero'])}" data-metier="{m[1]}" data-gouv="{g[1]}" data-limite="{lim}" data-pub="{a['date_publication']}">
- <div class="ao-haut">{icone(m[1])}<a class="pastille" href="{racine}metier/{m[1]}/">{L(E(m[2]), m[3])}</a><a class="pastille gouv" href="{racine}gouvernorat/{g[1]}/">{ICONE_LIEU}{L(E(g[0]), g[2])}</a><span class="nouveau" hidden>{L("Nouveau", "جديد")}</span></div>
+ <div class="ao-haut">{icone(m[1])}<a class="pastille" href="{racine}metier/{m[1]}/">{L(E(m[2]), m[3])}</a><a class="pastille gouv" href="{racine}gouvernorat/{g[1]}/">{ICONE_LIEU}{L(E(g[0]), g[2])}</a><span class="nouveau" hidden>{L("Nouveau", "جديد")}</span><span class="rappel" hidden></span></div>
  <h3 {sens}>{E(objet)}</h3>
+ {resume_trad(objet)}
  <p class="acheteur">{E(a.get("acheteur") or "")}</p>
  <div class="ao-infos">
   <div class="limite"><span>{L("Date limite", "آخر أجل")}</span><b>{L(lim_fr, lim_ar)}</b><small class="reste">{reste_fr}</small></div>
@@ -347,12 +399,22 @@ def options(liste, cle_slug, cle_fr, cle_ar, tous_fr, tous_ar, compte):
     return "\n".join(o)
 
 
+def recherche_seule():
+    """Champ de recherche seul (pages sans filtres métier/gouvernorat, ex. ventes aux enchères)."""
+    return (f'<section class="carte filtres un"><div class="f-q"><label for="f-q">{L("Rechercher", "بحث")}</label>'
+            '<input id="f-q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Mot-clé, bureau des douanes, ville…" '
+            'data-fr="Mot-clé, bureau des douanes, ville…" data-ar="كلمة، مكتب الديوانة، مدينة…"></div></section>')
+
+
 def filtres(aos, avec_metier=True, avec_gouv=True):
     cm, cg = {}, {}
     for a in aos:
         cm[M_PAR_NOM[a["metier"]][1]] = cm.get(M_PAR_NOM[a["metier"]][1], 0) + 1
         cg[G_PAR_NOM[a["gouvernorat"]][1]] = cg.get(G_PAR_NOM[a["gouvernorat"]][1], 0) + 1
-    blocs = []
+    blocs = [f'<div class="f-q"><label for="f-q">{L("Rechercher", "بحث")}</label>'
+             '<input id="f-q" type="search" enterkeyhint="search" autocomplete="off" '
+             'placeholder="Mot-clé, acheteur, n° Tender-…" data-fr="Mot-clé, acheteur, n° Tender-…" '
+             'data-ar="كلمة، مشترٍ، رقم ⁦Tender-…⁩"></div>']
     if avec_metier:
         blocs.append(f'<div><label for="f-metier">{L("Métier", "الاختصاص")}</label><select id="f-metier">'
                      f'{options(METIERS, 1, 2, 3, "Tous les métiers", "كل الاختصاصات", cm)}</select></div>')
@@ -367,9 +429,18 @@ def filtres(aos, avec_metier=True, avec_gouv=True):
     return f'<section class="carte filtres">{"".join(blocs)}</section>'
 
 
-def liste_html(aos, racine, jour, vide_fr, vide_ar):
-    cartes = "\n".join(carte(a, racine, jour) for a in aos)
+def liste_html(aos, racine, jour, vide_fr, vide_ar, unite=None, cartes_html=None):
+    """Liste filtrable. unite = (singulier FR, pluriel FR, arabe) pour le compteur (défaut : appels d'offres)."""
+    cartes = cartes_html if cartes_html is not None else "\n".join(carte(a, racine, jour) for a in aos)
     n = len(aos)
+    if unite:
+        u1, un, uar = unite
+        return f"""<p class="compte" id="compte" aria-live="polite" data-un="{E(u1)}" data-pl="{E(un)}" data-ar="{E(uar)}"><span>{n} {E(u1 if n <= 1 else un)}</span></p>
+<div class="liste" id="liste">
+{cartes}
+</div>
+<button type="button" class="plus" id="plus" hidden>Afficher plus</button>
+<p class="carte vide" id="vide"{' hidden' if aos else ''}>{L(vide_fr, vide_ar)}</p>"""
     return f"""<p class="compte" id="compte" aria-live="polite"><span>{n} appel{'s' if n > 1 else ''} d'offres ouvert{'s' if n > 1 else ''}</span></p>
 <div class="liste" id="liste">
 {cartes}
@@ -394,13 +465,23 @@ BADGES = f"""<div class="confiance">
 </div>"""
 
 
-def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld=""):
+# Sécurité (balises meta, GitHub Pages ne permet pas d'en-têtes) : scripts du site seulement, polices Google,
+# formulaires envoyés seulement au site ou à Google Forms ; aucun cadre, aucun plugin.
+CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+       "font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; "
+       "form-action 'self' https://docs.google.com; frame-src 'none'; object-src 'none'; base-uri 'self'")
+
+
+def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero=""):
     canon = URL_SITE + chemin
     return f"""<!doctype html>
 <html lang="fr" dir="ltr" data-racine="{racine}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noai, noimageai">
 <title>{E(titre)}</title>
 <meta name="description" content="{E(description)}">
 <link rel="canonical" href="{canon}">
@@ -411,7 +492,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld=""):
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">
 <meta property="og:description" content="{E(description)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{URL_SITE}assets/og-image-v2.png">
+<meta property="og:image" content="{URL_SITE}assets/og-image-v3.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
@@ -426,7 +507,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld=""):
 <body data-maj="{etat['maj']}" data-maj-texte="{etat['maj_texte']}" data-panne="{'1' if etat['panne'] else '0'}">
 {SPRITE}
 <header class="entete" id="entete"></header>
-<section class="hero">
+<section class="hero{classe_hero}">
   <div class="wrap">
 {hero}
     <span class="maj">{L("Mis à jour le", "تحيين")}&nbsp;{ISO(etat['maj_texte']) if etat['maj_texte'] else '—'}</span>
@@ -444,6 +525,160 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld=""):
 
 def fil(racine, fr, ar):
     return f'    <p class="fil"><a href="{racine}">{L("Accueil", "الرئيسية")}</a> › {L(fr, ar)}</p>'
+
+
+# ------------------------------------------------------------ alertes, entreprises privées, enchères
+ICONE_TELEGRAM = '<svg viewBox="0 0 24 24"><path d="M21 4.5 2.8 11.4c-.9.4-.9 1.6.1 1.9l4.5 1.4 1.7 5.3c.3.8 1.3 1 1.9.4l2.5-2.4 4.6 3.4c.7.5 1.7.1 1.9-.7L23 5.8c.2-1-.9-1.8-2-1.3z"/><path d="m8 14.6 9.5-6.6"/></svg>'
+ICONE_MARTEAU = '<svg viewBox="0 0 24 24"><path d="m14 4 6 6M11.5 6.5l6 6M13 5l-6 6 3 3 6-6"/><path d="m8.5 12.5-6 6 2 2 6-6"/><path d="M13 21h8"/></svg>'
+
+
+def bouton_alertes(adr):
+    """Boutons « Recevoir les alertes » : rien du tout tant que l'adresse du canal n'est pas réglée."""
+    b = []
+    if adr["telegram"]:
+        b.append(f'<a class="btn-alerte btn-telegram" href="{E(adr["telegram"])}" target="_blank" rel="noopener">{ICONE_TELEGRAM}'
+                 f'{L("Recevoir les alertes sur Telegram", "تلقَّ التنبيهات على تيليغرام")}</a>')
+    if adr["whatsapp"]:
+        b.append(f'<a class="btn-alerte btn-whatsapp" href="{E(adr["whatsapp"])}" target="_blank" rel="noopener">'
+                 f'{L("Recevoir les alertes sur WhatsApp", "تلقَّ التنبيهات على واتساب")}</a>')
+    return f'<div class="alertes-btn">{"".join(b)}</div>' if b else ""
+
+
+M_PAR_SLUG = {m[1]: m for m in METIERS}
+G_PAR_SLUG = {g[1]: g for g in GOUVERNORATS}
+
+
+def charger_prives(chemin, jour):
+    """Appels d'offres publiés par les entreprises (donnees/prives.json, écrit par prives.py), encore ouverts."""
+    try:
+        with open(chemin, encoding="utf-8") as f:
+            pub = json.load(f).get("publies") or []
+    except (OSError, ValueError, AttributeError):
+        return []
+    res = []
+    for p in pub if isinstance(pub, list) else []:
+        if not isinstance(p, dict):
+            continue
+        pid = str(p.get("id") or "")
+        lim = str(p.get("date_limite") or "")
+        if not re.fullmatch(r"Prive-[0-9a-f]{10}", pid) or not DATE.match(lim) or lim < jour:
+            continue
+        if p.get("metier") not in M_PAR_SLUG or p.get("gouvernorat") not in G_PAR_SLUG:
+            continue
+        if not str(p.get("objet") or "").strip() or not str(p.get("entreprise") or "").strip():
+            continue
+        res.append(p)
+    res.sort(key=lambda p: (p["date_limite"], p["id"]))
+    return res
+
+
+def carte_prive(p, racine):
+    m, g = M_PAR_SLUG[p["metier"]], G_PAR_SLUG[p["gouvernorat"]]
+    objet = str(p["objet"])
+    sens = 'dir="rtl" lang="ar"' if ARABE.search(objet) else 'dir="ltr" lang="fr"'
+    desc = str(p.get("description") or "")
+    if len(desc) > 300:
+        desc = desc[:297].rsplit(" ", 1)[0] + "…"
+    pub = str(p.get("recu_le") or "")[:10]
+    return f"""<article class="ao prive" id="{E(p['id'])}" data-num="0" data-metier="{m[1]}" data-gouv="{g[1]}" data-limite="{p['date_limite']}" data-pub="{pub if DATE.match(pub) else ''}">
+ <div class="ao-haut">{icone(m[1])}<a class="pastille" href="{racine}metier/{m[1]}/">{L(E(m[2]), m[3])}</a><a class="pastille gouv" href="{racine}gouvernorat/{g[1]}/">{ICONE_LIEU}{L(E(g[0]), g[2])}</a><span class="badge-prive">{L("Entreprise privée", "مؤسسة خاصة")}</span><span class="rappel" hidden></span></div>
+ <h3 {sens}>{E(objet)}</h3>
+ {resume_trad(objet)}
+ <p class="acheteur">{E(p['entreprise'])}</p>
+ {f'<p class="desc">{E(desc)}</p>' if desc else ''}
+ <div class="ao-infos">
+  <div class="limite"><span>{L("Date limite", "آخر أجل")}</span><b>{L(dfr(p['date_limite']), ISO(dfr(p['date_limite'])))}</b><small class="reste"></small></div>
+  <div><span>{L("Contact", "الاتصال")}</span><b class="contact">{E(p.get('contact'))}</b></div>
+ </div>
+ <p class="non-verifie">{L("Publié par l'entreprise — non vérifié par HAICOP", "نشرته المؤسسة — لم تتحقق منه الهيئة العليا للطلب العمومي")}</p>
+</article>"""
+
+
+def section_prives(prives, racine):
+    cartes = "\n".join(carte_prive(p, racine) for p in prives)
+    return f"""<section class="bloc-prives" id="prives"{'' if prives else ' hidden'}>
+<h2 class="titre-section">{L("Appels d'offres d'entreprises privées", "طلبات عروض المؤسسات الخاصة")}</h2>
+<p class="sous-titre">{L("Publiés gratuitement par les entreprises elles-mêmes, contrôlés automatiquement mais <b>non vérifiés par HAICOP</b>.", "نشرتها المؤسسات نفسها مجانًا، مع مراقبة آلية، لكن <b>لم تتحقق منها الهيئة العليا للطلب العمومي</b>.")}
+ <a href="{racine}publier/">{L("Publier le vôtre", "انشر طلبك")}</a></p>
+<div class="liste" id="liste-prives">
+{cartes}
+</div>
+</section>"""
+
+
+def charger_encheres(chemin, jour):
+    """Ventes aux enchères de la Douane (donnees/encheres.json, écrit par lire_douane.py) -> (ventes ouvertes, état)."""
+    try:
+        with open(chemin, encoding="utf-8") as f:
+            brut = json.load(f)
+        ventes = brut.get("ventes") or {}
+    except (OSError, ValueError, AttributeError):
+        brut, ventes = {}, {}
+    if isinstance(ventes, dict):
+        ventes = list(ventes.values())
+    res = []
+    for v in ventes if isinstance(ventes, list) else []:
+        if not isinstance(v, dict):
+            continue
+        lim = str(v.get("date_limite") or "")
+        if not re.fullmatch(r"Vente-[0-9a-f]{10}", str(v.get("id") or "")) or not DATE.match(lim) or lim < jour:
+            continue
+        if not str(v.get("objet") or "").strip():
+            continue
+        lien = str(v.get("lien_avis") or "")
+        if not lien.startswith(lire_douane_prefixe()) or any(x in lien for x in "\"'<> "):
+            lien = URL_DOUANE
+        cahier = str(v.get("lien_cahier") or "")
+        if not cahier.startswith(lire_douane_prefixe()) or any(x in cahier for x in "\"'<> "):
+            cahier = ""
+        res.append(dict(v, lien_avis=lien, lien_cahier=cahier,
+                        gouvernorat=v.get("gouvernorat") if v.get("gouvernorat") in G_PAR_NOM else "National / non précisé"))
+    res.sort(key=lambda v: (v["date_limite"], str(v.get("heure") or ""), v["id"]))
+    statut = (brut.get("statut_source") or {}) if isinstance(brut, dict) else {}
+    maj = str(brut.get("derniere_lecture_reussie") or "") if isinstance(brut, dict) else ""
+    if not re.match(r"^\d{4}-\d{2}-\d{2}", maj):
+        maj = ""
+    age = (dt.date.fromisoformat(jour) - dt.date.fromisoformat(maj[:10])).days if maj else None
+    panne = age is None or age >= AGE_AVERTISSEMENT
+    if statut.get("etat") == "panne" or panne:
+        print(f"  ! échec : ventes aux enchères (Douane) — {statut.get('raison') or 'lecture ancienne ou absente'}"
+              f" (dernière lecture réussie : {maj or 'jamais'})")
+    maj_texte = (dfr(maj[:10]) + (" " + maj[11:16] if len(maj) >= 16 else "")) if maj else ""
+    message = (f"⚠️ La page officielle de la Douane n'a pas pu être lue depuis le {dfr(maj[:10])} : la liste peut être incomplète."
+               if maj else "⚠️ Ventes aux enchères pas encore lues : consultez le portail de la Douane.") if panne else ""
+    return res, {"maj": maj, "maj_texte": maj_texte, "panne": panne, "message": message}
+
+
+URL_DOUANE = "https://www.douane.gov.tn/ventes-aux-encheres-publiques/"
+
+
+def lire_douane_prefixe():
+    return "https://www.douane.gov.tn/"
+
+
+def carte_enchere(v, racine):
+    g = G_PAR_NOM[v["gouvernorat"]]
+    objet = str(v["objet"])
+    sens = 'dir="rtl" lang="ar"' if ARABE.search(objet) else 'dir="ltr" lang="fr"'
+    heure = str(v.get("heure") or "")
+    heure = heure if re.fullmatch(r"\d{1,2}[:h]\d{2}", heure) else ""
+    lim = dfr(v["date_limite"]) + (f" · {heure}" if heure else "")
+    pub = str(v.get("date_publication") or "")
+    pub = pub if DATE.match(pub) else ""
+    cahier = (f'<a class="cahier" href="{E(v["lien_cahier"])}" target="_blank" rel="noopener">{L("Cahier des charges (PDF)", "كراس الشروط")}</a>'
+              if v.get("lien_cahier") else "")
+    return f"""<article class="ao enchere" id="{E(v['id'])}" data-num="0" data-metier="" data-gouv="{g[1]}" data-limite="{v['date_limite']}" data-pub="{pub}">
+ <div class="ao-haut"><span class="ic-m ic-enchere" aria-hidden="true">{ICONE_MARTEAU}</span><a class="pastille gouv" href="{racine}gouvernorat/{g[1]}/">{ICONE_LIEU}{L(E(g[0]), g[2])}</a><span class="nouveau" hidden>{L("Nouveau", "جديد")}</span><span class="rappel" hidden></span></div>
+ <h3 {sens}>{E(objet)}</h3>
+ {resume_trad(objet)}
+ <p class="acheteur">{E(v.get('bureau') or '')}</p>
+ <div class="ao-infos">
+  <div class="limite"><span>{L("Échéance", "آخر أجل")}</span><b>{L(lim, ISO(lim))}</b><small class="reste"></small></div>
+  <div><span>{L("Publié le", "تاريخ النشر")}</span><b>{L(dfr(pub) or "—", ISO(dfr(pub)) if pub else "—")}</b></div>
+ </div>
+ <a class="officiel" href="{E(v['lien_avis'])}" target="_blank" rel="noopener">{L("Avis officiel <small>(PDF, Douane)</small>", "الإعلان الرسمي <small>(الديوانة)</small>")}{ICONE_LIEN}</a>
+ {cahier}
+</article>"""
 
 
 # ------------------------------------------------------------ construction
@@ -519,6 +754,10 @@ def construire(donnees, sortie, jour):
 
     vis = ouvertes(aos, jour)
     v = version_assets(sortie)
+    adr = adresses()
+    dossier_donnees = os.path.dirname(os.path.abspath(donnees))
+    prives = charger_prives(os.path.join(dossier_donnees, "prives.json"), jour)
+    encheres, etat_encheres = charger_encheres(os.path.join(dossier_donnees, "encheres.json"), jour)
     cm, cg = {}, {}
     for a in vis:
         cm[M_PAR_NOM[a["metier"]][1]] = cm.get(M_PAR_NOM[a["metier"]][1], 0) + 1
@@ -535,7 +774,7 @@ def construire(donnees, sortie, jour):
     lib_nouv = "nouveaux aujourd'hui" if n_auj else (f"nouveaux le {dfr(dernier)[:5]}" if dernier else "nouveaux")
     n_urg = sum(1 for a in vis if a["date_limite"] and
                 0 <= (dt.date.fromisoformat(a["date_limite"]) - dt.date.fromisoformat(jour)).days < 7)
-    hero = f"""    <img class="hero-illu" src="assets/illustration-accueil.svg" alt="" width="240" height="200">
+    hero = f"""{credit_photo(PHOTOS[0], "")}
     <h1>{L("Appels d'offres publics en Tunisie", "طلبات العروض العمومية في تونس")}</h1>
     <p class="intro">{L("Chaque jour, les nouveaux appels d'offres de l'État, des communes et des entreprises publiques, triés par métier et par gouvernorat. Résumé court, lien vers la fiche officielle.",
                         "كل يوم، طلبات العروض الجديدة للدولة والبلديات والمنشآت العمومية، مرتبة حسب الاختصاص والولاية، مع ملخص قصير ورابط البطاقة الرسمية.")}</p>"""
@@ -555,9 +794,15 @@ def construire(donnees, sortie, jour):
   <div class="r-ouverts" id="r-ouverts"><b>{len(vis)}</b><span>{L("appels d'offres ouverts", "طلبات عروض مفتوحة")}</span></div>
   <div class="r-urgent" id="r-urgent"><b>{n_urg}</b><span>{L("clôturent sous 7 jours", "تنتهي خلال 7 أيام")}</span></div>
 </section>
+<section class="carte bientot" id="bientot" hidden aria-labelledby="bientot-titre">
+  <h2 id="bientot-titre">{L("⏰ Clôturent bientôt", "⏰ تنتهي قريبًا")}</h2>
+  <ol class="bientot-liste" id="bientot-liste"></ol>
+</section>
+{bouton_alertes(adr)}
 {BADGES}
 {filtres(vis)}
 {liste_html(vis, "", jour, "Aucun appel d'offres ouvert pour ce choix. Essayez un autre métier ou toute la Tunisie.", "لا يوجد طلب عروض مفتوح لهذا الاختيار. جرّب اختصاصًا آخر أو كل الولايات.")}
+{section_prives(prives, "")}
 <h2 class="titre-section" id="metiers">{L("Par métier", "حسب الاختصاص")}</h2>
 {grille(items_m, None, "", "metier", cm, "grille-metiers", True)}
 <h2 class="titre-section" id="gouvernorats">{L("Par gouvernorat", "حسب الولاية")}</h2>
@@ -583,7 +828,7 @@ def construire(donnees, sortie, jour):
     titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, par métier et gouvernorat | Alertes appels d'offres"
     desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
             "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")
-    pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld)))
+    pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld, " hero-photo")))
 
     # ---- une page par métier
     for nom, slug, fr, ar in METIERS:
@@ -627,8 +872,8 @@ def construire(donnees, sortie, jour):
     <p class="intro">{L("D'où viennent les annonces, comment elles sont classées, et leurs limites.", "من أين تأتي الإعلانات، كيف تُرتَّب، وحدودها.")}</p>"""
     contenu = f"""<section class="carte">
   <h2>{L("Ce que fait ce site", "ماذا يقدّم هذا الموقع")}</h2>
-  <p data-l="fr">Un service <b>gratuit, sans inscription</b>, qui rassemble chaque jour les nouveaux appels d'offres publics tunisiens, les range par <b>métier</b> et par <b>gouvernorat</b>, et met en avant la <b>date limite</b> et la <b>caution provisoire</b>. Bientôt : alertes Telegram et WhatsApp.</p>
-  <p data-l="ar">خدمة <b>مجانية ودون تسجيل</b> تجمع كل يوم طلبات العروض العمومية الجديدة في تونس، وترتّبها حسب <b>الاختصاص</b> و<b>الولاية</b>، وتُبرز <b>آخر أجل</b> و<b>الضمان الوقتي</b>. قريبًا: تنبيهات عبر تيليغرام وواتساب.</p>
+  <p data-l="fr">Un service <b>gratuit, sans inscription</b>, qui rassemble chaque jour les nouveaux appels d'offres publics tunisiens, les range par <b>métier</b> et par <b>gouvernorat</b>, et met en avant la <b>date limite</b> et la <b>caution provisoire</b>. Aussi : recherche par mots-clés (français et arabe), résumé traduit des objets, rappels avant la date limite, ventes aux enchères de la Douane, publication gratuite pour les entreprises privées, alertes Telegram (puis WhatsApp).</p>
+  <p data-l="ar">خدمة <b>مجانية ودون تسجيل</b> تجمع كل يوم طلبات العروض العمومية الجديدة في تونس، وترتّبها حسب <b>الاختصاص</b> و<b>الولاية</b>، وتُبرز <b>آخر أجل</b> و<b>الضمان الوقتي</b>. وأيضًا: بحث بالكلمات (بالعربية والفرنسية)، ملخص مترجم للمواضيع، تذكير قبل آخر أجل، بيوعات الديوانة بالمزاد، نشر مجاني للمؤسسات الخاصة، وتنبيهات تيليغرام (ثم واتساب).</p>
 </section>
 <section class="carte">
   <h2>{L("Source officielle", "المصدر الرسمي")}</h2>
@@ -636,11 +881,15 @@ def construire(donnees, sortie, jour):
     <li><b>HAICOP — Haute Instance de la Commande Publique</b> : portail <a href="{URL_HAICOP}" rel="noopener">marchespublics.gov.tn</a>. Chaque annonce du site renvoie à sa fiche officielle (« Voir la fiche officielle »).</li>
     <li>Le fichier robots.txt du portail autorise la lecture par les robots. Notre robot lit <b>lentement</b> (une page toutes les 2,5 secondes), une ou deux fois par jour, en se présentant honnêtement.</li>
     <li>Le <b>cahier des charges</b> n'est pas recopié : il se retire sur <a href="https://www.tuneps.tn" rel="noopener">TUNEPS</a>, selon la fiche officielle.</li>
+    <li><b>Ventes aux enchères</b> : page officielle de la <b>Douane tunisienne</b> (<a href="{URL_DOUANE}" rel="noopener">douane.gov.tn</a>), robots autorisés, lue une fois par jour ; lien vers chaque avis officiel.</li>
+    <li><b>Appels d'offres d'entreprises privées</b> : envoyés par les entreprises elles-mêmes, contrôlés automatiquement, <b>non vérifiés par HAICOP</b>.</li>
   </ul>
   <ul class="sources" data-l="ar">
     <li><b>الهيئة العليا للطلب العمومي</b>: البوابة <a href="https://www.marchespublics.gov.tn/ar/appels-doffres" rel="noopener">{ISO("marchespublics.gov.tn")}</a>. كل إعلان في الموقع مرفق برابط بطاقته الرسمية.</li>
     <li>ملف {ISO("robots.txt")} للبوابة يسمح بالقراءة الآلية. برنامجنا يقرأ <b>ببطء</b> (صفحة كل {ISO("2,5")} ثانية)، مرة أو مرتين في اليوم.</li>
     <li>لا يُنسخ <b>كراس الشروط</b>: يُسحب من منظومة <a href="https://www.tuneps.tn" rel="noopener">{ISO("TUNEPS")}</a> حسب البطاقة الرسمية.</li>
+    <li><b>البيوعات بالمزاد</b>: الصفحة الرسمية <b>للديوانة التونسية</b>، تُقرأ مرة في اليوم، مع رابط كل إعلان رسمي.</li>
+    <li><b>طلبات عروض المؤسسات الخاصة</b>: ترسلها المؤسسات نفسها، مع مراقبة آلية، <b>دون تحقق من الهيئة العليا للطلب العمومي</b>.</li>
   </ul>
 </section>
 <section class="carte">
@@ -649,7 +898,7 @@ def construire(donnees, sortie, jour):
     <li>Lecture des nouvelles fiches publiées sur le portail de la HAICOP (objet, acheteur, région, date limite, caution, procédure).</li>
     <li>Classement par <b>métier</b> à partir du type de commande officiel et de mots-clés (français et arabe) : quelques erreurs sont possibles.</li>
     <li>Classement par <b>gouvernorat</b> d'après la région d'exécution, sinon le nom de l'acheteur.</li>
-    <li>Les objets sont recopiés <b>dans leur langue d'origine</b> (souvent en arabe).</li>
+    <li>Les objets sont recopiés <b>dans leur langue d'origine</b> (souvent en arabe), avec un <b>résumé court dans l'autre langue</b> fait par un glossaire maison (traduction automatique approximative, affichée seulement si la plupart des mots sont reconnus).</li>
     <li>Les appels d'offres dont la date limite est passée sont <b>retirés automatiquement</b>.</li>
     <li>Si la source ne répond pas, les annonces déjà connues restent affichées avec un <b>avertissement daté</b>.</li>
   </ol>
@@ -657,20 +906,73 @@ def construire(donnees, sortie, jour):
     <li>قراءة البطاقات الجديدة المنشورة في بوابة الهيئة العليا للطلب العمومي (الموضوع، المشتري العمومي، الجهة، آخر أجل، الضمان، الإجراء).</li>
     <li>ترتيب حسب <b>الاختصاص</b> انطلاقًا من نوع الطلب الرسمي وكلمات مفتاحية (بالعربية والفرنسية): أخطاء قليلة ممكنة.</li>
     <li>ترتيب حسب <b>الولاية</b> وفق جهة التنفيذ، وإلا فحسب اسم المشتري.</li>
-    <li>تُنقل المواضيع <b>بلغتها الأصلية</b>.</li>
+    <li>تُنقل المواضيع <b>بلغتها الأصلية</b>، مع <b>ملخص قصير باللغة الأخرى</b> عبر معجم خاص (ترجمة آلية تقريبية، لا تظهر إلا إذا عُرفت أغلب الكلمات).</li>
     <li>طلبات العروض التي انتهى أجلها <b>تُحذف آليًا</b>.</li>
     <li>إذا لم يستجب المصدر، تبقى الإعلانات المعروفة ظاهرة مع <b>تنبيه مؤرَّخ</b>.</li>
   </ol>
   <p class="avert">{L("<b>Avertissement :</b> ce site n'est pas officiel et n'est pas lié à la HAICOP ni à TUNEPS. Les résumés sont indicatifs : <b>vérifiez toujours la fiche officielle</b> (dates, montants, conditions) avant de répondre à un appel d'offres. Seule la fiche officielle fait foi.",
                         "<b>تنبيه:</b> هذا الموقع ليس رسميًا ولا علاقة له بالهيئة العليا للطلب العمومي ولا بمنظومة " + ISO("TUNEPS") + ". الملخصات للإرشاد فقط: <b>تثبّت دائمًا من البطاقة الرسمية</b> (الآجال، المبالغ، الشروط) قبل المشاركة. البطاقة الرسمية هي المرجع الوحيد.")}</p>
 </section>
+<section class="carte" id="credits-photos">
+  <h2>{L("Crédits des photos", "حقوق الصور")}</h2>
+  <ul class="sources">{"".join(f'<li data-photo="{E(ph["fichier"])}">{L(E(ph["sujet_fr"]), ph["sujet_ar"])} — {L("photo", "صورة")} : <b>{E(ph["auteur"])}</b>, {L("licence", "رخصة")} <a href="{E(ph["licence_url"])}" rel="noopener license">{E(ph["licence"])}</a>, <a href="{E(ph["source_url"])}" rel="noopener">Wikimedia Commons</a>.</li>' for ph in PHOTOS)}</ul>
+</section>
 {BADGES}"""
     titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"
     desc = "D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
     pages.append(("a-propos/", page("a-propos/", "../", titre, desc, hero, contenu, v, etat)))
 
+    # ---- publier un appel d'offres (entreprises privées, gratuit)
+    hero = f"""{fil("../", "Publier un appel d'offres", "نشر طلب عروض")}
+    <h1>{L("Publier un appel d'offres", "نشر طلب عروض")}</h1>
+    <p class="intro">{L("Entreprise privée ? Publiez gratuitement votre appel d'offres : il apparaît sur le site après un contrôle automatique.", "مؤسسة خاصة؟ انشر طلب العروض مجانًا: يظهر في الموقع بعد مراقبة آلية.")}</p>"""
+    if adr["formulaire"]:
+        action = (f'<a class="btn-publier" id="btn-publier" href="{E(adr["formulaire"])}" target="_blank" rel="noopener">'
+                  f'{L("Remplir le formulaire de publication", "املأ استمارة النشر")}</a>')
+    else:
+        action = (f'<p class="bientot-pub" id="btn-publier">{L("Bientôt : le formulaire de publication sera ouvert ici.", "قريبًا: ستُفتح استمارة النشر هنا.")}</p>')
+    contenu = f"""<section class="carte">
+  <h2>{L("Comment ça marche ?", "كيف يعمل؟")}</h2>
+  <ol class="etapes" data-l="fr">
+    <li>Vous remplissez le formulaire : entreprise, objet, métier, gouvernorat, <b>date limite</b>, contact.</li>
+    <li>Un robot contrôle la demande (champs obligatoires, date limite à venir, pas de lien ni de publicité, pas de doublon).</li>
+    <li>L'appel d'offres apparaît sur le site (accueil) dans les heures qui suivent, avec la mention <b>« Publié par l'entreprise — non vérifié par HAICOP »</b>, et disparaît après la date limite.</li>
+  </ol>
+  <ol class="etapes" data-l="ar">
+    <li>تملأ الاستمارة: المؤسسة، الموضوع، الاختصاص، الولاية، <b>آخر أجل</b>، وسيلة الاتصال.</li>
+    <li>يراقب برنامج آلي الطلب (الخانات الإجبارية، أجل لم يحن بعد، دون روابط أو إشهار، دون تكرار).</li>
+    <li>يظهر طلب العروض في الموقع خلال ساعات مع عبارة <b>«نشرته المؤسسة — لم تتحقق منه الهيئة العليا للطلب العمومي»</b>، ويُحذف بعد آخر أجل.</li>
+  </ol>
+  {action}
+  <p class="avert">{L("C'est gratuit. Les informations envoyées (dont le contact de l'entreprise) sont <b>publiées telles quelles</b> : n'indiquez que des coordonnées professionnelles. Les liens Internet ne sont pas acceptés.", "النشر مجاني. المعلومات المرسلة (ومنها وسيلة اتصال المؤسسة) <b>تُنشر كما هي</b>: لا تذكر إلا معطيات مهنية. الروابط غير مقبولة.")}</p>
+</section>
+{section_prives(prives, "../")}"""
+    titre = "Publier gratuitement un appel d'offres privé en Tunisie | Alertes appels d'offres"
+    desc = ("Entreprises privées : publiez gratuitement votre appel d'offres en Tunisie. Contrôle automatique, publication rapide, "
+            "mention « non vérifié par HAICOP ». نشر طلب عروض مجانًا.")
+    pages.append(("publier/", page("publier/", "../", titre, desc, hero, contenu, v, etat)))
+
+    # ---- ventes aux enchères publiques (Douane tunisienne)
+    hero = f"""{fil("../", "Ventes aux enchères", "البيوعات بالمزاد")}
+    <h1>{L("Ventes aux enchères publiques", "البيوعات بالمزاد العلني")}</h1>
+    <p class="intro">{L(f"{len(encheres)} vente{'s' if len(encheres) > 1 else ''} aux enchères de la Douane tunisienne encore ouverte{'s' if len(encheres) > 1 else ''} (marchandises, véhicules, bétail…), triées par échéance. Source officielle : Douane tunisienne.",
+                        f"{ISO(len(encheres))} بيع بالمزاد العلني للديوانة التونسية مفتوح (بضائع، عربات، مواشٍ…)، مرتبة حسب آخر أجل. المصدر الرسمي: الديوانة التونسية.")}</p>"""
+    cartes_e = "\n".join(carte_enchere(x, "../") for x in encheres)
+    contenu = f"""{recherche_seule()}
+{liste_html(encheres, "../", jour, "Aucune vente aux enchères ouverte en ce moment. Revenez demain : la liste est mise à jour chaque jour.", "لا يوجد حاليًا بيع بالمزاد مفتوح. عُد غدًا: القائمة تُحيَّن يوميًا.",
+            unite=("vente aux enchères ouverte", "ventes aux enchères ouvertes", "بيع بالمزاد مفتوح"), cartes_html=cartes_e)}
+<section class="carte" style="margin-top:18px">
+  <h2>{L("Source", "المصدر")}</h2>
+  <p data-l="fr">Avis publiés par la <b>Douane tunisienne</b> sur sa page officielle <a href="{URL_DOUANE}" rel="noopener">« Ventes aux enchères publiques »</a>, lue une fois par jour. Chaque carte renvoie à l'avis officiel (PDF), seul à faire foi : conditions, lieu, caution et visite des lots y sont indiqués.</p>
+  <p data-l="ar">إعلانات نشرتها <b>الديوانة التونسية</b> في صفحتها الرسمية <a href="https://www.douane.gov.tn/ar/ventes-aux-encheres-publiques_ar/" rel="noopener">«البيع بالمزاد العلني»</a>، تُقرأ مرة في اليوم. كل بطاقة مرفقة برابط الإعلان الرسمي، وهو المرجع الوحيد.</p>
+  <p class="avert">{L("Ce site n'est pas officiel et n'est pas lié à la Douane. Vérifiez toujours l'avis officiel avant de participer.", "هذا الموقع ليس رسميًا ولا علاقة له بالديوانة. تثبّت دائمًا من الإعلان الرسمي قبل المشاركة.")}</p>
+</section>"""
+    titre = f"Ventes aux enchères publiques Tunisie (Douane) — {len(encheres)} ouvertes | Alertes appels d'offres"
+    desc = ("Ventes aux enchères publiques de la Douane tunisienne encore ouvertes : marchandises, véhicules, bétail, avec échéance et lien "
+            "vers l'avis officiel. البيوعات بالمزاد العلني للديوانة التونسية.")
+    pages.append(("encheres/", page("encheres/", "../", titre, desc, hero, contenu, v, etat_encheres)))
+
     # ---- écriture
-    ecrire_illustration(sortie)
     for chemin, contenu in pages:
         ecrire(sortie, chemin + "index.html", contenu)
     lastmod = jour

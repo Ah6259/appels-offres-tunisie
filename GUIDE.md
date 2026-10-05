@@ -25,8 +25,21 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
     menu de tri en français, bouton arabe sur 2 lignes, page trop longue → « Afficher plus »).
 15. **Workflows préparés** : quotidien (+ issue d'alerte automatique), battement de cœur mensuel, tests à chaque envoi.
 
+## 05/10/2026 — Cinq améliorations (« fais les 5 ») + photo réelle + sécurité
+16. **Recherche par mots-clés** FR + AR (accents, voyelles arabes et formes de l'alif ignorés), combinable avec les filtres.
+17. **Résumé traduit** sans service payant : glossaire maison (≈ 360 entrées, arabe ↔ français) ; rien n'est affiché si moins
+    de la moitié des mots sont reconnus ; mention « traduction automatique approximative ».
+18. **Rappels** : étiquettes J-7 … J-1 / Dernier jour et « Clôturent bientôt » (date du téléphone) ; rubrique J-2 dans Telegram.
+19. **Telegram** : un message groupé par jour, découpé si > 4096 caractères, mémoire anti-doublon ; rien si pas de secrets.
+20. **Ventes aux enchères** : source officielle trouvée (Douane tunisienne, robots autorisés, preuves datées + Internet Archive) ;
+    robot 1 page par jour + page `encheres/`.
+21. **Publication gratuite** pour les entreprises privées : Google Forms → CSV publié → contrôles automatiques → page `publier/`.
+22. **Vraie photo** libre de droits (Wikimedia Commons, CC BY 4.0) dans le bandeau et l'image d'aperçu v3, crédit + preuve.
+23. **Sécurité** : robots.txt anti-IA, meta noai, CSP, anti-iframe, anti-copie légère, test « aucun secret ».
+24. Tests : +42 vérifications du site, +43 scénarios ; **sabotages** : 6 sur le site, 5 sur les robots → tous détectés.
+
 ## À faire avant publication (Ahmed)
 - Créer le dépôt public `Ah6259/appels-offres-tunisie` avec le contenu de `site/`, activer GitHub Pages (branche main, racine).
 - Vérifier sur le téléphone, puis Search Console (sitemap) et GoatCounter.
-- Plus tard : canal Telegram (secret `TELEGRAM_BOT_TOKEN`), puis WhatsApp.
+- Canal Telegram, formulaire Google, WhatsApp : suivre README, « Ce qu'Ahmed doit faire ».
 - Option prudente : courte lettre à la HAICOP pour présenter le service gratuit.

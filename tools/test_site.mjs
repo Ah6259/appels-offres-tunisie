@@ -3,7 +3,7 @@
 //   node tools/test_site.mjs --racine X      (teste une copie, ex. pour le sabotage volontaire)
 // jsdom s'installe une fois par PC (dans ce dossier) :  npm install --no-save --no-package-lock jsdom
 import { JSDOM } from "jsdom";
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { createHash } from "crypto";
@@ -57,7 +57,15 @@ if (ouverts.length > 15) {
 check("images : icône du métier sur chaque carte (symbole existant)", cartes.every(c => {
   const u = c.querySelector(".ic-m use"); return u && d.getElementById(u.getAttribute("href").slice(1)) && u.getAttribute("href") === "#i-" + c.dataset.metier; }));
 check("images : 10 icônes de métier dans la page", d.querySelectorAll("symbol[id^='i-']").length === 10);
-check("images : illustration du bandeau", !!d.querySelector(".hero-illu") && existsSync(join(root, "assets/illustration-accueil.svg")));
+// Vraies photos : chaque fichier de assets/photos a un crédit (auteur + licence) sous la photo ET dans « À propos »
+const photos = existsSync(join(root, "assets/photos")) ? readdirSync(join(root, "assets/photos")).filter(f => /\.(jpe?g|webp|png)$/i.test(f)) : [];
+check("photo du bandeau : vraie photo (assets/photos), dégradé bleu, ≤ 150 Ko", photos.length >= 1 && !!d.querySelector(".hero.hero-photo") &&
+  /hero-photo\{background:linear-gradient\([^)]*rgba[^;]*url\(photos\//.test(lire("assets/style.css").replace(/\s+/g, "")) &&
+  photos.every(f => statSync(join(root, "assets/photos", f)).size <= 150000));
+const credit = d.querySelector(".hero .credit-photo");
+check("photo du bandeau : crédit affiché (auteur, licence CC, lien source Wikimedia)", !!credit && /Habib M'henni/.test(texte(credit)) &&
+  /CC BY/.test(texte(credit)) && [...credit.querySelectorAll("a")].some(a => /commons\.wikimedia\.org/.test(a.href)) &&
+  photos.every(f => credit.dataset.photo === "assets/photos/" + f || lire("index.html").includes(`data-photo="assets/photos/${f}"`)));
 const bulles = [...d.querySelectorAll(".carte-tn .tn-b")];
 check("carte de la Tunisie : 24 gouvernorats, chacun lien vers sa page", bulles.length === 24 &&
   bulles.every(b => b.getAttribute("href") === `gouvernorat/${b.dataset.gouv}/`));
@@ -151,7 +159,7 @@ check("français par défaut avec ?lang=fr", w.document.documentElement.lang ===
 // ---- 3. Toutes les pages : SEO, sources, ©, cache ----------------------------
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-check("sitemap : 38 pages (accueil, 10 métiers, 26 gouvernorats, à propos)", urls.length === 38);
+check("sitemap : 40 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères)", urls.length === 40);
 const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true;
 for (const u of urls) {
@@ -159,7 +167,7 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v2.png"`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v3.png"`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
@@ -208,10 +216,169 @@ check("à propos : avertissement « pas officiel » + « vérifiez toujours la f
 check("à propos : source HAICOP, TUNEPS, lecture lente", /HAICOP/.test(ap) && /TUNEPS/.test(ap) && /lentement/.test(ap));
 check("robots.txt avec le sitemap", /Sitemap: https:\/\/ah6259\.github\.io\/appels-offres-tunisie\/sitemap\.xml/.test(lire("robots.txt")));
 check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lire("LICENSE")));
-const png = readFileSync(join(root, "assets/og-image-v2.png"));
-check("image d'aperçu 1200 × 630", png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
+const png = readFileSync(join(root, "assets/og-image-v3.png"));
+check("image d'aperçu v3 (photo) 1200 × 630", png.readUInt32BE(16) === 1200 && png.readUInt32BE(20) === 630);
 check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets/apple-touch-icon.png"].every(f => existsSync(join(root, f))));
 check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitignore")) && /captures/.test(lire(".gitignore")));
+
+// ---- 6. Recherche par mots-clés (FR + AR, accents, casse, numéro, résumé) ----------
+const tape = (w, v) => { const q = w.document.getElementById("f-q"); q.value = v; q.dispatchEvent(new w.Event("input")); };
+const norm = t => t.toLowerCase().normalize("NFKD").replace(/[\p{M}ـ]/gu, "")
+  .replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+d = w.document;
+check("recherche : champ présent sur l'accueil, les pages métier, gouvernorat et enchères",
+  !!d.getElementById("f-q") && ["metier/btp-genie-civil/index.html", "gouvernorat/sfax/index.html", "encheres/index.html"].every(c => /id="f-q"/.test(lire(c))));
+tape(w, "Tender-104049");
+check("recherche : par numéro « Tender-104049 » -> 1 carte", visibles(d).length === 1 && visibles(d)[0].id === "Tender-104049");
+tape(w, "ETUDE");
+check(`recherche : insensible aux accents et à la casse (« ETUDE » trouve « Étude », ${visibles(d).length} cartes)`,
+  visibles(d).length >= 1 && visibles(d).some(c => /Étude/.test(c.querySelector("h3").textContent)));
+tape(w, "AMENAGEMENT SALLE");
+check("recherche : « AMENAGEMENT SALLE » (sans accent) trouve « Aménagement d'une salle de sport » (Tender-103999)",
+  visibles(d).some(c => c.id === "Tender-103999"));
+tape(w, "تهيئه");
+const nAm = visibles(d).length;
+check(`recherche : en arabe, « تهيئه » trouve « تهيئة » (${nAm} cartes, toutes contiennent le mot)`,
+  nAm >= 3 && visibles(d).every(c => norm(c.textContent).includes(norm("تهيئه"))));
+tape(w, "Grombalia");
+check("recherche : trouve aussi dans le résumé traduit (« Grombalia » -> objet en arabe Tender-104049)",
+  visibles(d).some(c => c.id === "Tender-104049") && !/Grombalia/.test(d.getElementById("Tender-104049").querySelector("h3").textContent));
+tape(w, "travaux bizerte");
+check("recherche : plusieurs mots = tous présents", visibles(d).length >= 1 && visibles(d).every(c => /travaux/.test(norm(c.textContent)) && /bizerte|بنزرت/.test(norm(c.textContent))));
+tape(w, "nabeul");
+changer(w, "f-metier", "btp-genie-civil");
+check("recherche + filtre métier combinés", visibles(d).length >= 1 && visibles(d).every(c => c.dataset.metier === "btp-genie-civil" && /nabeul|نابل/.test(norm(c.textContent))));
+tape(w, "zzzqqq");
+check("recherche sans résultat : message « aucun » + compteur 0", visibles(d).length === 0 && !d.getElementById("vide").hidden && texte(d.getElementById("compte")).startsWith("0"));
+d.getElementById("effacer").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+check("« Tout afficher » vide aussi la recherche", d.getElementById("f-q").value === "" && visibles(d).length === ouverts.length);
+w = await page("index.html", `lang=fr&jour=${JOUR}&q=Tender-104049`);
+check("recherche dans l'adresse (?q=…)", visibles(w.document).length === 1);
+
+// ---- 7. Résumé traduit (glossaire maison) --------------------------------------
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+d = w.document;
+const tr = d.querySelector("#Tender-104049 .trad");
+check("résumé traduit : objet arabe -> « Aménagement — centre pour personnes âgées — Grombalia »",
+  !!tr && tr.lang === "fr" && texte(tr.querySelector(".trad-t")) === "≈ Aménagement — centre pour personnes âgées — Grombalia");
+check("résumé traduit : mention « traduction automatique approximative » sur chaque résumé",
+  d.querySelectorAll(".trad").length >= 10 && [...d.querySelectorAll(".trad")].every(t => /traduction automatique approximative/.test(texte(t))));
+check("résumé traduit : objet français -> résumé arabe (rtl)", (() => { const t = d.querySelector("#Tender-104006 .trad"); return !!t && t.dir === "rtl" && /قرطاج/.test(t.textContent); })());
+check("résumé traduit : rien d'affiché quand l'objet est trop peu reconnu (Tender-104043)", !d.querySelector("#Tender-104043 .trad"));
+
+// ---- 8. Rappels avant la date limite (date du téléphone) -------------------------
+const ref = ouverts.filter(a => a.date_limite).sort((a, b) => a.date_limite.localeCompare(b.date_limite)).pop();
+const etiquette = async (n, lang = "fr") => { const pw = await page("index.html", `lang=${lang}&jour=${plus(ref.date_limite, -n)}`);
+  return [pw, pw.document.getElementById(ref.numero).querySelector(".rappel")]; };
+let [pw, r] = await etiquette(7);
+check("étiquette « J-7 » 7 jours avant", !r.hidden && texte(r) === "J-7" && !r.classList.contains("fort"));
+[pw, r] = await etiquette(2);
+check("étiquette « J-2 » (rouge) 2 jours avant", !r.hidden && texte(r) === "J-2" && r.classList.contains("fort"));
+[pw, r] = await etiquette(0);
+check("étiquette « Dernier jour » le jour même", !r.hidden && texte(r) === "Dernier jour");
+[pw, r] = await etiquette(2, "ar");
+check("étiquette en arabe « بقي يومان »", texte(r) === "بقي يومان");
+[pw, r] = await etiquette(8);
+check("pas d'étiquette 8 jours avant", r.hidden);
+[pw, r] = await etiquette(1);
+const bt = pw.document.getElementById("bientot");
+const items = [...pw.document.querySelectorAll("#bientot-liste li a")];
+check("« Clôturent bientôt » : visible, au plus 5, la plus proche d'abord, lien vers la carte",
+  !bt.hidden && items.length >= 1 && items.length <= 5 &&
+  items.every(a => /^#Tender-\d+$/.test(a.getAttribute("href")) && !!pw.document.querySelector(a.getAttribute("href"))) &&
+  ["Dernier jour", "J-1"].includes(texte(items[0].querySelector(".rappel"))));
+w = await page("index.html", `lang=fr&jour=${plus(JOUR, -60)}`);
+check("« Clôturent bientôt » caché quand rien ne clôture dans les 7 jours", w.document.getElementById("bientot").hidden);
+// lien direct #Tender-… : carte montrée même au-delà des 15 premières
+const loin = ouverts.slice().sort((a, b) => (b.date_limite || "9").localeCompare(a.date_limite || "9"))[0];
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+w.location.hash = "#" + loin.numero;
+w.dispatchEvent(new w.HashChangeEvent("hashchange"));
+check("lien direct #Tender-… (Telegram) : la carte est montrée et mise en avant",
+  !w.document.getElementById(loin.numero).hidden && w.document.getElementById(loin.numero).classList.contains("visee"));
+
+// ---- 9. Telegram, entreprises privées, ventes aux enchères --------------------------
+const reglagesPy = lire("robot/reglages.py");
+const canalVide = /^TELEGRAM_CANAL_URL = ""/m.test(reglagesPy);
+check("bouton Telegram : caché tant que l'adresse du canal est vide (réglage unique robot/reglages.py)",
+  canalVide ? urls.every(u => !/btn-telegram/.test(lire(u.replace(URL_SITE, "") + "index.html"))) : /btn-telegram/.test(lire("index.html")));
+w = await page("publier/index.html", "lang=fr");
+d = w.document;
+const formVide = /^FORMULAIRE_PRIVES_URL = ""/m.test(reglagesPy);
+check("page « Publier » : « Bientôt » tant que le formulaire n'est pas réglé, sinon bouton vers Google Forms",
+  formVide ? /Bientôt/.test(texte(d.getElementById("btn-publier"))) : /^https:\/\/(forms\.gle|docs\.google\.com\/forms)\//.test(d.getElementById("btn-publier").href));
+check("page « Publier » : mention « non vérifié par HAICOP » + liens refusés expliqués",
+  /non vérifié par HAICOP/.test(texte(d.querySelector("main"))) && /liens Internet ne sont pas acceptés/.test(texte(d.querySelector("main"))));
+const prives = (existsSync(join(root, "donnees/prives.json")) ? JSON.parse(lire("donnees/prives.json")).publies : []).filter(p => p.date_limite >= JOUR);
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+d = w.document;
+check(`entreprises privées : ${prives.length} carte(s) sur l'accueil, chacune « non vérifié par HAICOP », section cachée si aucune`,
+  d.querySelectorAll("#liste-prives .ao.prive").length === prives.length && [...d.querySelectorAll("#liste-prives .ao")].every(c => /non vérifié par HAICOP/.test(texte(c))) &&
+  d.getElementById("prives").hidden === (prives.length === 0));
+const ench = Object.values(JSON.parse(lire("donnees/encheres.json")).ventes).filter(x => x.date_limite >= JOUR);
+w = await page("encheres/index.html", `lang=fr&jour=${JOUR}`);
+d = w.document;
+check(`ventes aux enchères : ${ench.length} cartes ouvertes, chacune avec l'avis officiel de la Douane`,
+  ench.length > 0 && visibles(d).length === ench.length &&
+  visibles(d).every(c => /^https:\/\/www\.douane\.gov\.tn\//.test(c.querySelector("a.officiel").href) && c.querySelector("a.officiel").rel.includes("noopener")));
+check("ventes aux enchères : source « Douane tunisienne » + « pas officiel »", /Douane tunisienne/.test(texte(d.querySelector("main"))) && /n'est pas officiel/.test(texte(d.querySelector("main"))));
+check("ventes aux enchères : compteur « ventes aux enchères ouvertes »", /ventes? aux enchères ouvertes?/.test(texte(d.getElementById("compte"))));
+const premiereE = ench.slice().sort((a, b) => a.date_limite.localeCompare(b.date_limite))[0];
+w = await page("encheres/index.html", `lang=fr&jour=${plus(premiereE.date_limite, 1)}`);
+check("ventes aux enchères : une vente expirée (date du visiteur) est masquée", w.document.getElementById(premiereE.id).hidden);
+check("pied de page : liens « Ventes aux enchères » et « Publier un appel d'offres »",
+  !!w.document.querySelector('#pied a[href="../encheres/"]') && !!w.document.querySelector('#pied a[href="../publier/"]'));
+w = await page("a-propos/index.html", "lang=fr");
+check("à propos : crédit de chaque photo (auteur, licence, source)", photos.every(f => {
+  const li = w.document.querySelector(`#credits-photos [data-photo="assets/photos/${f}"]`);
+  return li && /CC BY/.test(texte(li)) && /Habib M'henni/.test(texte(li)) && li.querySelector('a[href*="commons.wikimedia.org"]'); }));
+
+// ---- 10. Sécurité, anti-robots d'IA, anti-copie --------------------------------
+const robots = lire("robots.txt");
+const blocs = robots.split(/\n\s*\n/).map(b => b.trim());
+const interdit = ua => blocs.some(b => b.split("\n").some(l => l.trim().toLowerCase() === "user-agent: " + ua.toLowerCase()) && /^Disallow: \/\s*$/m.test(b));
+const IA = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-Web", "anthropic-ai", "CCBot", "Google-Extended", "Applebot-Extended",
+  "PerplexityBot", "Bytespider", "Amazonbot", "Meta-ExternalAgent", "FacebookBot", "Diffbot", "Omgilibot", "cohere-ai", "ImagesiftBot",
+  "HTTrack", "WebCopier", "WebZIP", "Offline Explorer", "wget", "SiteSnagger"];
+check(`robots.txt : les ${IA.length} robots d'IA et aspirateurs sont interdits`, IA.every(interdit));
+check("robots.txt : Googlebot, Bingbot et les autres robots restent autorisés", ["Googlebot", "Bingbot", "*"].every(u => !interdit(u)));
+let okMeta = true;
+for (const u of urls) {
+  const h = lire(u.replace(URL_SITE, "") + "index.html");
+  if (!/<meta name="robots" content="noai, noimageai">/.test(h) || !/<meta name="referrer" content="strict-origin-when-cross-origin">/.test(h)) okMeta = false;
+  const csp = (h.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/) || [])[1] || "";
+  if (!/script-src 'self';/.test(csp) || !/object-src 'none'/.test(csp) || !/form-action 'self' https:\/\/docs\.google\.com/.test(csp) ||
+      /unsafe-eval/.test(csp) || /script-src[^;]*unsafe-inline/.test(csp)) { okMeta = false; console.log("   CSP : " + u); }
+  if ([...h.matchAll(/<a [^>]*href="https?:\/\/[^"]+"[^>]*>/g)].some(m => !/rel="[^"]*noopener/.test(m[0]))) { okMeta = false; console.log("   lien externe sans noopener : " + u); }
+}
+check("toutes les pages : meta noai, referrer, CSP stricte (scripts du site seulement, formulaires Google permis), liens externes noopener", okMeta);
+const pj = lire("assets/page.js"), css = lire("assets/style.css").replace(/\s+/g, "");
+check("anti-copie : script commun chargé (clic droit/glisser sur images, source ajoutée au texte copié, anti-iframe)",
+  /contextmenu/.test(pj) && /dragstart/.test(pj) && /clipboardData\.setData/.test(pj) && /Source : /.test(pj) && /window\.top !== window\.self/.test(pj));
+check("anti-copie : cartes non sélectionnables, mais numéros, liens, contacts et champs le restent",
+  /\.ao,[^{]*\{-webkit-user-select:none;user-select:none/.test(css) && /\.aoa,\.ao\.ao-type,\.ao\.contact,input,textarea,select\{-webkit-user-select:text;user-select:text/.test(css));
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+let copie = "";
+const h3 = w.document.querySelector("#liste .ao h3");
+const sel = w.getSelection(); const rg = w.document.createRange(); rg.selectNodeContents(h3); sel.removeAllRanges(); sel.addRange(rg);
+const ev = new w.Event("copy", { bubbles: true, cancelable: true }); ev.clipboardData = { setData: (t, v) => { copie = v; } };
+h3.dispatchEvent(ev);
+check("anti-copie : le texte copié d'une carte reçoit « Source : … — © … tous droits réservés »",
+  /Source : https:\/\/ah6259\.github\.io\/appels-offres-tunisie\//.test(copie) && /tous droits réservés/.test(copie));
+check("formulaires toujours utilisables : recherche et filtres actifs", !w.document.getElementById("f-q").disabled && !w.document.getElementById("f-metier").disabled);
+// Aucun secret dans le dépôt (jetons Telegram, clés Google, clés privées, jetons GitHub, e-mails privés)
+const fichiers = [];
+const parcourir = dossier => { for (const f of readdirSync(join(root, dossier))) {
+  if (["node_modules", ".git", "captures", "__pycache__"].includes(f)) continue;
+  const c = join(dossier, f);
+  if (statSync(join(root, c)).isDirectory()) parcourir(c); else if (/\.(py|js|mjs|json|md|yml|yaml|txt|html|css|xml|csv)$/.test(f)) fichiers.push(c); } };
+parcourir(".");
+const secrets = fichiers.filter(f => { const t = lire(f);
+  return /\b\d{8,10}:AA[A-Za-z0-9_-]{30,}/.test(t) || /AIza[0-9A-Za-z_-]{35}/.test(t) || /-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(t) ||
+    /gh[pousr]_[A-Za-z0-9]{30,}/.test(t) || /[A-Za-z0-9._%+-]+@(yahoo|gmail|hotmail|outlook)\.[a-z]{2,}/i.test(t); });
+check(`aucun secret dans le dépôt (${fichiers.length} fichiers vérifiés : jetons, clés, e-mails privés)`, secrets.length === 0);
+if (secrets.length) console.log("   à vérifier : " + secrets.join(", "));
 
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

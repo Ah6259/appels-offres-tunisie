@@ -15,10 +15,20 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Source : portail officiel **HAICOP** (marchespublics.gov.tn), robots autorisés par son robots.txt. Lire **lentement**.
   Toujours « source : HAICOP » + lien vers la fiche officielle de chaque annonce. TUNEPS n'est pas lu (échanges chiffrés).
 - Les preuves (robots.txt, charte) sont dans le dossier parent `preuves conditions d'utilisation/` : **jamais publiées**.
-- 38 pages générées par `robot/construire_site.py` : accueil, 10 métiers, 26 gouvernorats (24 + « Plusieurs » + « National »), à propos.
+- 40 pages générées par `robot/construire_site.py` : accueil, 10 métiers, 26 gouvernorats (24 + « Plusieurs » + « National »), à propos,
+  `publier/` (entreprises privées), `encheres/` (ventes aux enchères de la Douane).
 - Couleur principale ardoise #24476B (même famille visuelle qu'« Outils pratiques Tunisie »).
-- Images SVG maison : `assets/illustration-accueil.svg` (écrite par le constructeur), icônes métiers (sprite dans chaque page,
-  `ICONES_METIER`), carte schématique de la Tunisie (`carte_tunisie()`, bulles par gouvernorat).
+- Bandeau de l'accueil : **vraie photo** libre de droits (`PHOTOS` dans construire_site.py : Habib M'henni, CC BY 4.0, Wikimedia
+  Commons) + dégradé bleu ; crédit sous la photo, dans « À propos » et sur `og-image-v3.png`. Toute nouvelle photo : licence
+  vérifiée, preuve dans `preuves conditions d'utilisation/<date>/photos/`, pas de visage ni d'emblème, ≤ 150 Ko.
+- SVG maison : icônes métiers (`ICONES_METIER`), carte schématique de la Tunisie (`carte_tunisie()`).
+- **Réglages d'Ahmed : `robot/reglages.py` seul** (canal Telegram, WhatsApp, formulaire Google + CSV). Vide = caché / « Bientôt ».
+- Recherche `#f-q` (FR + AR, sans accents, `?q=`), résumé traduit `robot/glossaire.py` (≥ 50 % de mots reconnus sinon rien,
+  jamais inventer), étiquettes J-7…J-1 / Dernier jour + « Clôturent bientôt » (date du visiteur), liens `#Tender-…`.
+- Sources : HAICOP (appels d'offres), **Douane tunisienne** (ventes aux enchères, `robot/lire_douane.py`, 1 page/jour,
+  preuves du 05/10/2026), entreprises privées (Google Forms → `robot/prives.py`, mention « non vérifié par HAICOP »).
+- Telegram : `robot/telegram.py` (secrets `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CANAL`), mémoire `donnees/telegram-envoyes.json`.
+- Sécurité (consigne commune du 05/10) : robots.txt anti-IA, meta noai + CSP + referrer, anti-copie légère dans page.js/style.css.
 - Accueil : 15 cartes d'abord, bouton « Afficher plus ». Filtres métier + gouvernorat, tri date limite / plus récents, `?metier=` `?gouv=`.
 - `?jour=AAAA-MM-JJ` simule la date du visiteur (tests).
 
@@ -30,8 +40,8 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (64 vérifications) et `python tools/test_pannes.py` (36 scénarios).
+1. `node tools/test_site.mjs` (106 vérifications) et `python tools/test_pannes.py` (79 scénarios).
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
-4. Image d'aperçu `assets/og-image-v2.png` : si on la change, **nouveau nom** (-v2).
+4. Image d'aperçu `assets/og-image-v3.png` : si on la change, **nouveau nom** (-v4).
