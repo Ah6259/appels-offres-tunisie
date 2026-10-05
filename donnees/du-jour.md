@@ -1,10 +1,14 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 01/10/2026 et le 03/10/2026 · 40 appels d'offres encore ouverts · mis à jour le 05/10/2026 à 00:39
+Publiés entre le 01/10/2026 et le 03/10/2026 · 40 appels d'offres encore ouverts · mis à jour le 05/10/2026 à 01:09
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
 
-## Alimentation (3)
+## Alimentation (5)
+
+### La Manouba
+
+- **fourniture de nourriture pour prison borj el amri** — Prison Borj El Amri · Biens/ Autres Fournitures · date limite **02/11/2026 10:00** · caution 30 600 DT · [Tender-103997](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-103997) (source : HAICOP)
 
 ### Monastir
 
@@ -17,6 +21,10 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### Tataouine
 
 - **Acquisition des fournitures de restaurant de l’hôpital durant l'année 2027.** — Hôpital Régional de Tataouine · Biens/ Nourriture · date limite **09/11/2026 10:00** · caution 2 800 DT · [Tender-104042](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104042) (source : HAICOP)
+
+### Tunis
+
+- **Conditionnement de 6 000 T de Riz au titre de l’année 2026** — Office du Commerce de Tunisie · Services/ Autres services · date limite **09/10/2026 10:00** · caution 6 000 DT · [Tender-104025](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104025) (source : HAICOP)
 
 ## BTP / génie civil (21)
 
@@ -111,11 +119,15 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Acquisition et mise en marche de matériel informatique** — Centre de Traumatologie et des Grands Brûlés de Ben Arous · Biens/ Matériels informatiques · date limite **02/11/2026 10:00** · caution 1 550 DT · [Tender-104039](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104039) (source : HAICOP)
 
-## Nettoyage / gardiennage (1)
+## Nettoyage / gardiennage (2)
 
 ### Gafsa
 
 - **إقتناء مواد تنظيف** — Commissariat Régional au Développement Agricole de Gafsa · Biens/ Produits d’entretien · date limite **16/10/2026 09:00** · [Tender-104012](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104012) (source : HAICOP)
+
+### Mahdia
+
+- **service de collecte des dechets de la zone de zaouila et roudha** — Municipalité de Mahdia · Services/ Autres services · date limite **03/11/2026 10:00** · caution 9 000 DT · [Tender-104003](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104003) (source : HAICOP)
 
 ## Transport / véhicules (2)
 
@@ -127,27 +139,15 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Mission d’inventaire physique certifié des stocks** — Société Régionale de Transport Gouvernorat de Kasserine · Etudes/ Etudes · date limite **26/10/2026 10:00** · [Tender-104009](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104009) (source : HAICOP)
 
-## Autres (5)
+## Autres (2)
 
 ### Bizerte
 
 - **désignation d'un avoact auprès des tribunaux et autre instance judiciaire** — Municipalité de Metline · Services/ Autres services · date limite **31/10/2026 10:00** · [Tender-104011](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104011) (source : HAICOP)
 
-### La Manouba
-
-- **fourniture de nourriture pour prison borj el amri** — Prison Borj El Amri · Biens/ Autres Fournitures · date limite **02/11/2026 10:00** · caution 30 600 DT · [Tender-103997](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-103997) (source : HAICOP)
-
-### Mahdia
-
-- **service de collecte des dechets de la zone de zaouila et roudha** — Municipalité de Mahdia · Services/ Autres services · date limite **03/11/2026 10:00** · caution 9 000 DT · [Tender-104003](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104003) (source : HAICOP)
-
 ### Sfax
 
 - **Carénage et réparation à sec de la pilotine de La TRAPSA.** — Compagnie des Tranports par Pipe Lines au Sahara · Services/ Autres services · date limite **03/11/2026 10:00** · caution 4 000 DT · [Tender-104044](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104044) (source : HAICOP)
-
-### Tunis
-
-- **Conditionnement de 6 000 T de Riz au titre de l’année 2026** — Office du Commerce de Tunisie · Services/ Autres services · date limite **09/10/2026 10:00** · caution 6 000 DT · [Tender-104025](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104025) (source : HAICOP)
 
 ---
 Source : HAICOP — Haute Instance de la Commande Publique (www.marchespublics.gov.tn).
