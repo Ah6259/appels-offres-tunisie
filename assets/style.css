@@ -1,0 +1,194 @@
+/* Alertes appels d'offres Tunisie — feuille de style (même famille qu'« Outils pratiques Tunisie », couleur ardoise) */
+:root{
+  --bg:#F3F6F9; --carte:#FFFFFF; --texte:#0F1E2E; --doux:#5A6878; --ligne:#E0E6ED;
+  --bleu:#24476B; --bleu-fonce:#16304A; --bleu-clair:#E6EDF5; --bleu-tres-clair:#F2F6FA;
+  --accent:#2F6FB3; --rouge:#C2412F; --rouge-clair:#FBEAE7; --or:#B7791F; --or-clair:#FBF1DF; --vert:#0B7A53; --vert-clair:#E3F3EC;
+  --hero1:#2B5580; --hero2:#16304A;
+  --ombre:0 1px 2px rgba(15,30,46,.06),0 8px 24px rgba(15,30,46,.06);
+  --rayon:18px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D141D; --carte:#142030; --texte:#E5ECF4; --doux:#9AABBE; --ligne:#243447;
+    --bleu:#8DB4DE; --bleu-fonce:#6E9CCB; --bleu-clair:#1B2D42; --bleu-tres-clair:#16263A;
+    --accent:#8DB4DE; --rouge:#F07A66; --rouge-clair:#3A1E1A; --or:#E4B25A; --or-clair:#33281A; --vert:#4CC795; --vert-clair:#15302A;
+    --hero1:#1E3B5A; --hero2:#0F2236;
+    --ombre:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--texte);font:16px/1.55 Figtree,"Noto Kufi Arabic",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+html[lang="ar"] body{font-family:"Noto Kufi Arabic",Figtree,system-ui,sans-serif}
+a{color:var(--accent)}
+img,svg{display:block}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+
+/* ---- en-tête ---- */
+.entete{background:var(--carte);border-bottom:1px solid var(--ligne);position:sticky;top:0;z-index:10}
+.entete .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--texte);font-weight:800;font-size:17px;letter-spacing:-.01em;min-width:0}
+.logo-mark{width:34px;height:34px;flex:none}
+.logo-nom{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo-nom small{display:block;font-size:11px;font-weight:600;color:var(--doux);letter-spacing:.02em}
+.langue{flex:none;border:1px solid var(--ligne);background:var(--bg);color:var(--texte);border-radius:999px;
+  padding:7px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.langue:hover{border-color:var(--bleu)}
+
+/* ---- bandeau du haut ---- */
+.hero{background:linear-gradient(160deg,var(--hero1) 0%,var(--hero2) 100%);color:#fff;padding:26px 0 64px}
+.fil{font-size:13px;opacity:.85;margin:0 0 10px}
+.fil a{color:#fff}
+h1{font-size:clamp(23px,6.2vw,34px);line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+.hero p.intro{margin:0;opacity:.92;max-width:620px}
+.maj{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;font-weight:600;
+  background:rgba(255,255,255,.14);border-radius:999px;padding:5px 12px}
+.maj::before{content:"";width:7px;height:7px;border-radius:50%;background:#7CF0BE;flex:none}
+.chevauche{margin-top:-44px}
+
+/* ---- cartes ---- */
+.carte{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:18px;margin:0 0 14px;box-shadow:var(--ombre)}
+.carte h2{font-size:18px;margin:0 0 10px;letter-spacing:-.01em}
+h2.titre-section{font-size:19px;margin:22px 0 10px;letter-spacing:-.01em}
+
+/* ---- résumé du jour ---- */
+.resume{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0;overflow:hidden}
+.resume > div{padding:14px 10px;text-align:center;border-inline-end:1px solid var(--ligne)}
+.resume > div:last-child{border-inline-end:0}
+.resume b{display:block;font-size:clamp(24px,7vw,32px);font-weight:800;color:var(--bleu);letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.resume span{font-size:12.5px;font-weight:700;color:var(--doux);line-height:1.25;display:block;margin-top:3px}
+.resume .r-nouveaux b{color:var(--vert)}
+.resume .r-urgent b{color:var(--rouge)}
+
+/* ---- avertissement ---- */
+.alerte-panne{display:none;background:var(--or-clair);border:1px solid var(--or);color:var(--texte);border-radius:14px;padding:11px 14px;margin:0 0 14px;font-size:14px;font-weight:600}
+.alerte-panne.on{display:block}
+
+/* ---- filtres ---- */
+.filtres{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px}
+.filtres label{display:block;font-size:12px;font-weight:700;color:var(--doux);margin:0 0 4px;text-transform:uppercase;letter-spacing:.03em}
+select{width:100%;font:inherit;font-size:15px;font-weight:700;padding:10px 30px 10px 10px;border:1.5px solid var(--ligne);border-radius:12px;
+  background:var(--bg);color:var(--texte);appearance:none;-webkit-appearance:none;text-overflow:ellipsis;
+  background-image:linear-gradient(45deg,transparent 50%,var(--doux) 50%),linear-gradient(135deg,var(--doux) 50%,transparent 50%);
+  background-position:calc(100% - 15px) 50%,calc(100% - 10px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+html[dir="rtl"] select{padding:10px 10px 10px 30px;background-position:15px 50%,20px 50%}
+select:focus{outline:0;border-color:var(--bleu);box-shadow:0 0 0 4px var(--bleu-clair)}
+.compte{font-size:14px;color:var(--doux);font-weight:600;margin:4px 2px 10px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.compte button{border:0;background:none;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;padding:0}
+
+/* ---- appel d'offres ---- */
+.liste{display:grid;gap:12px}
+.ao{background:var(--carte);border:1px solid var(--ligne);border-radius:16px;padding:14px 16px;box-shadow:var(--ombre);border-inline-start:4px solid var(--bleu)}
+.ao.urgent{border-inline-start-color:var(--rouge)}
+.ao[hidden]{display:none}
+.ao-haut{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}
+.pastille{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--bleu-clair);color:var(--bleu);text-decoration:none;white-space:nowrap}
+.pastille.gouv{background:var(--bg);color:var(--doux);border:1px solid var(--ligne)}
+.pastille svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nouveau{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:var(--vert-clair);color:var(--vert);border-radius:999px;padding:3px 8px}
+.nouveau[hidden]{display:none}
+.ao h3{font-size:16.5px;line-height:1.45;margin:0 0 4px;font-weight:700;overflow-wrap:anywhere}
+.ao h3[dir="rtl"]{font-family:"Noto Kufi Arabic",Figtree,sans-serif;font-size:16px}
+.acheteur{margin:0 0 10px;color:var(--doux);font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.ao-infos{display:grid;grid-template-columns:1.45fr 1fr;gap:8px;margin:0 0 10px}
+.ao-infos > div{background:var(--bleu-tres-clair);border-radius:12px;padding:8px 10px;min-width:0}
+.ao-infos > div > span{display:block;font-size:11.5px;font-weight:700;color:var(--doux);text-transform:uppercase;letter-spacing:.03em}
+.ao-infos b{display:block;font-size:15.5px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ao-infos small{display:block;font-size:12.5px;font-weight:700;color:var(--doux)}
+.ao.urgent .limite{background:var(--rouge-clair)}
+.ao.urgent .limite b,.ao.urgent .limite small{color:var(--rouge)}
+.ao-type{margin:0 0 10px;font-size:13px;color:var(--doux)}
+.officiel{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;font-size:14.5px;
+  color:#fff;background:var(--bleu);border-radius:12px;padding:10px 14px}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .officiel{color:#0D141D} }
+.officiel svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.officiel small{font-weight:600;opacity:.85}
+.vide{text-align:center;color:var(--doux);padding:26px 16px}
+.vide[hidden]{display:none}
+
+/* ---- confiance ---- */
+.confiance{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 14px}
+.badge-c{background:var(--carte);border:1px solid var(--ligne);border-radius:14px;padding:12px 10px;text-align:center;font-size:12.5px;font-weight:700;color:var(--doux);line-height:1.3}
+.badge-c svg{width:24px;height:24px;margin:0 auto 6px;stroke:var(--bleu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sources{font-size:14px;color:var(--doux);padding-inline-start:20px;margin:0}
+.sources li{margin:4px 0}
+ol.etapes{padding-inline-start:20px;margin:0}
+ol.etapes li{margin:0 0 8px}
+.avert{font-size:13.5px;color:var(--texte);background:var(--or-clair);border-radius:12px;padding:10px 12px;margin:12px 0 0}
+
+/* ---- index métiers / gouvernorats ---- */
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.grille a{display:flex;justify-content:space-between;align-items:center;gap:8px;text-decoration:none;color:var(--texte);background:var(--carte);
+  border:1px solid var(--ligne);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:700;min-width:0}
+.grille a > span:not(.n):not(.ic-p){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.plus{display:block;width:100%;margin:12px 0 0;border:1.5px solid var(--bleu);background:var(--carte);color:var(--bleu);border-radius:12px;
+  padding:12px;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.plus[hidden]{display:none}
+@media (max-width:480px){ #grille-metiers{grid-template-columns:1fr} }
+.grille a:hover{border-color:var(--bleu)}
+.grille a .n{flex:none;font-size:12px;background:var(--bleu-clair);color:var(--bleu);border-radius:999px;padding:1px 8px}
+.grille a.zero{opacity:.6}
+.grille a.ici{border-color:var(--bleu);background:var(--bleu-clair)}
+
+/* ---- images : icônes des métiers, illustration, carte de la Tunisie ---- */
+.ic-m,.ic-p,.hero-ic{flex:none;display:inline-grid;place-items:center;color:var(--c,var(--bleu));background:color-mix(in srgb,var(--c,var(--bleu)) 14%,transparent)}
+.ic-m svg,.ic-p svg,.hero-ic svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic-m{width:30px;height:30px;border-radius:10px}
+.ic-m svg{width:18px;height:18px}
+.ic-p{width:26px;height:26px;border-radius:8px}
+.ic-p svg{width:16px;height:16px}
+.grille a .ic-p + span{margin-inline-end:auto}
+.hero-ic{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.95);margin:0 0 12px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.hero-ic svg{width:30px;height:30px}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ic-m,:root:not([data-theme="light"]) .ic-p{color:color-mix(in srgb,var(--c) 55%,#fff);background:color-mix(in srgb,var(--c) 26%,transparent)}
+}
+.hero-illu{float:right;width:112px;height:auto;margin:-6px -4px 2px 8px}
+html[dir="rtl"] .hero-illu{float:left;margin:-6px 8px 2px -4px}
+.hero .wrap::after{content:"";display:block;clear:both}
+@media (min-width:600px){ .hero-illu{width:210px;margin-top:-10px} }
+.bloc-carte{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start}
+.bloc-carte figure{margin:0}
+.bloc-carte figcaption{font-size:12.5px;color:var(--doux);text-align:center;margin-top:6px;font-weight:600}
+.carte-tn{width:100%;height:auto;overflow:visible}
+.tn-terre{fill:var(--bleu-clair);stroke:var(--bleu);stroke-width:1.3;stroke-linejoin:round}
+.tn-b circle{fill:var(--bleu);fill-opacity:.9;stroke:var(--carte);stroke-width:1.6;transition:fill-opacity .15s}
+.tn-b:hover circle{fill-opacity:1}
+.tn-b.vide circle{fill:var(--doux);fill-opacity:.35}
+.tn-b text{fill:#fff;font:800 10.5px Figtree,system-ui,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tn-b text{fill:#0D141D} }
+@media (max-width:560px){
+  .bloc-carte{grid-template-columns:1fr}
+  .bloc-carte figure{max-width:230px;margin:0 auto}
+}
+
+/* ---- pied de page ---- */
+footer{background:var(--carte);border-top:1px solid var(--ligne);margin-top:24px;padding:22px 0 30px;color:var(--doux);font-size:13.5px}
+footer .pied-logo{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--texte);margin-bottom:8px}
+footer .pied-logo img{width:24px;height:24px}
+footer nav{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0}
+footer nav a{color:var(--texte);text-decoration:none;font-weight:600}
+footer p{margin:6px 0}
+
+/* ---- langues ---- */
+[data-l]{display:none}
+html[lang="fr"] [data-l="fr"],html[lang="ar"] [data-l="ar"]{display:revert}
+html[lang="fr"] [data-l="ar"],html[lang="ar"] [data-l="fr"]{display:none !important}
+
+.filtres.deux{grid-template-columns:1fr 1fr}
+@media (max-width:560px){
+  .filtres{grid-template-columns:1fr 1fr}
+  .filtres.deux{grid-template-columns:1fr}
+  .filtres .f-tri{grid-column:1 / -1}
+}
+@media (max-width:380px){
+  .confiance{gap:6px}
+  .badge-c{font-size:11.5px;padding:10px 6px}
+  .logo-nom small{display:none}
+  .logo{font-size:15.5px}
+  .ao{padding:12px 13px}
+  .ao-infos b{font-size:13.5px}
+  .ao-infos > div{padding:8px 9px}
+  .grille{grid-template-columns:1fr}
+}

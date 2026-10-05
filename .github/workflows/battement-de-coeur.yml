@@ -1,0 +1,23 @@
+# Battement de cœur mensuel : GitHub met en pause les robots planifiés après 60 jours sans activité dans le dépôt.
+# Ce petit commit mensuel garde le robot quotidien en vie, même si la source est en panne longtemps.
+name: battement-de-coeur
+on:
+  schedule:
+    - cron: "17 7 1 * *"       # le 1er de chaque mois
+  workflow_dispatch:
+concurrency:
+  group: maj-site              # même groupe que le robot quotidien (jamais deux commits en même temps)
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  battement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          date -u +"%Y-%m-%d %H:%M UTC" > donnees/battement.txt
+          git config user.name "robot-appels-offres"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees/battement.txt
+          git commit -m "Battement de cœur mensuel" && git push

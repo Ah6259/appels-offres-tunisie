@@ -1,0 +1,26 @@
+# Tests à chaque modification envoyée (push) : on ne garde pas un site qui ne passe pas les tests.
+name: tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONIOENCODING: utf-8
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-save --no-package-lock jsdom
+      - name: Test du site (pages, filtres, liens HAICOP, FR/AR, SEO)
+        run: node tools/test_site.mjs
+      - name: Scénarios de panne des robots
+        run: python tools/test_pannes.py

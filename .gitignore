@@ -1,0 +1,6 @@
+node_modules/
+captures/
+*.tmp
+__pycache__/
+# Les preuves (conditions d'utilisation) restent sur le PC, jamais publiées
+preuves*/

@@ -1,0 +1,686 @@
+# -*- coding: utf-8 -*-
+"""
+Construit le site statique « Alertes appels d'offres Tunisie » à partir de
+donnees/appels-offres.json (rempli par lire_haicop.py).
+
+Pages produites dans site/ (racine du dépôt) :
+  index.html                      accueil (tous les appels d'offres ouverts, filtres)
+  metier/<métier>/index.html      une page par métier
+  gouvernorat/<gouv>/index.html   une page par gouvernorat
+  a-propos/index.html             à propos, méthode et sources
+  sitemap.xml
+
+Robustesse (règles communes à tous les sites) :
+  - fichier de données illisible ou vide  -> on reprend la dernière sauvegarde
+    (donnees/appels-offres.sauvegarde.json) et on affiche un avertissement daté ;
+  - sans sauvegarde et site déjà construit -> on NE touche PAS au site (code 1) ;
+  - beaucoup moins de fiches qu'avant (< 50 %) -> données suspectes : sauvegarde ;
+  - source marquée « en panne » par lire_haicop.py (statut_source) -> état gardé dans
+    donnees/etat-source.json (lu par le robot GitHub qui ouvre/ferme l'issue d'alerte) ;
+  - dernière lecture réussie vieille de 2 jours ou plus -> bandeau d'avertissement daté
+    (le JavaScript refait ce calcul avec la date du téléphone du visiteur) ;
+  - appels d'offres expirés masqués, doublons fusionnés, textes échappés.
+
+Utilisation :
+    python construire_site.py
+    python construire_site.py --donnees X.json --sortie dossier --aujourdhui 2026-10-05   (tests)
+"""
+import argparse
+import datetime as dt
+import hashlib
+import html
+import json
+import os
+import re
+import shutil
+import sys
+
+ICI = os.path.dirname(os.path.abspath(__file__))
+RACINE_SITE = os.path.dirname(ICI)          # le dossier site/ (= racine du dépôt GitHub)
+URL_SITE = "https://ah6259.github.io/appels-offres-tunisie/"
+URL_HAICOP = "https://www.marchespublics.gov.tn/fr/appels-doffres"
+PREFIXE_FICHE = "https://www.marchespublics.gov.tn/"
+SEUIL_CHUTE = 0.5          # moins de 50 % des fiches de la sauvegarde -> suspect
+JOURS_SANS_DATE = 30       # fiche sans date limite : montrée 30 jours après publication
+AGE_AVERTISSEMENT = 2      # jours sans lecture réussie avant l'avertissement
+
+# (nom donné par le robot, adresse, français, arabe)
+METIERS = [
+    ("BTP / génie civil", "btp-genie-civil", "BTP / génie civil", "البناء والأشغال العامة"),
+    ("Électricité", "electricite", "Électricité", "الكهرباء"),
+    ("Informatique", "informatique", "Informatique", "الإعلامية"),
+    ("Fournitures de bureau", "fournitures-bureau", "Fournitures et mobilier", "اللوازم والأثاث"),
+    ("Nettoyage / gardiennage", "nettoyage-gardiennage", "Nettoyage / gardiennage", "التنظيف والحراسة"),
+    ("Alimentation", "alimentation", "Alimentation", "المواد الغذائية"),
+    ("Médical", "medical", "Médical / pharmacie", "الطبي والصيدلي"),
+    ("Transport / véhicules", "transport-vehicules", "Transport / véhicules", "النقل والعربات"),
+    ("Études / conseil", "etudes-conseil", "Études / conseil", "الدراسات والاستشارات"),
+    ("Autres", "autres", "Autres", "أخرى"),
+]
+GOUVERNORATS = [
+    ("Ariana", "ariana", "أريانة"), ("Béja", "beja", "باجة"), ("Ben Arous", "ben-arous", "بن عروس"),
+    ("Bizerte", "bizerte", "بنزرت"), ("Gabès", "gabes", "قابس"), ("Gafsa", "gafsa", "قفصة"),
+    ("Jendouba", "jendouba", "جندوبة"), ("Kairouan", "kairouan", "القيروان"), ("Kasserine", "kasserine", "القصرين"),
+    ("Kébili", "kebili", "قبلي"), ("Le Kef", "le-kef", "الكاف"), ("Mahdia", "mahdia", "المهدية"),
+    ("La Manouba", "la-manouba", "منوبة"), ("Médenine", "medenine", "مدنين"), ("Monastir", "monastir", "المنستير"),
+    ("Nabeul", "nabeul", "نابل"), ("Sfax", "sfax", "صفاقس"), ("Sidi Bouzid", "sidi-bouzid", "سيدي بوزيد"),
+    ("Siliana", "siliana", "سليانة"), ("Sousse", "sousse", "سوسة"), ("Tataouine", "tataouine", "تطاوين"),
+    ("Tozeur", "tozeur", "توزر"), ("Tunis", "tunis", "تونس"), ("Zaghouan", "zaghouan", "زغوان"),
+    ("Plusieurs gouvernorats", "plusieurs", "عدة ولايات"),
+    ("National / non précisé", "national", "وطني / غير محدد"),
+]
+M_PAR_NOM = {m[0]: m for m in METIERS}
+G_PAR_NOM = {g[0]: g for g in GOUVERNORATS}
+TYPES_AR = {"travaux": "أشغال", "biens": "اقتناء مواد", "services": "خدمات", "etudes": "دراسات", "études": "دراسات"}
+PROCEDURES_AR = [("ouvert", "طلب عروض مفتوح"), ("restreint", "طلب عروض مضيّق"), ("concours", "طلب عروض مع مناظرة"),
+                 ("consultation", "استشارة"), ("négocié", "تفاوض مباشر"), ("negocie", "تفاوض مباشر")]
+
+E = lambda t: html.escape(str(t or ""), quote=True)
+ISO = lambda t: "⁦" + str(t) + "⁩"     # isole un nombre dans un texte arabe
+ARABE = re.compile(r"[؀-ۿ]")
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def dfr(d):
+    return f"{d[8:10]}/{d[5:7]}/{d[0:4]}" if d else ""
+
+
+def montant(n):
+    return f"{n:,}".replace(",", " ") + " DT"
+
+
+def numero(tid):
+    m = re.search(r"(\d+)$", tid or "")
+    return int(m.group(1)) if m else 0
+
+
+def L(fr, ar):
+    """Texte bilingue (le bon s'affiche selon la langue de la page)."""
+    return f'<span data-l="fr">{fr}</span><span data-l="ar">{ar}</span>'
+
+
+# ------------------------------------------------------------ données
+def charger(chemin):
+    """Renvoie (dictionnaire, liste propre) ou (None, []) si le fichier est absent ou illisible."""
+    try:
+        with open(chemin, encoding="utf-8") as f:
+            brut = json.load(f)
+        aos = brut["appels_offres"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None, []
+    if isinstance(aos, dict):
+        aos = list(aos.values())
+    if not isinstance(aos, list):
+        return None, []
+    return brut, nettoyer(aos)
+
+
+def nettoyer(aos):
+    """Garde les fiches valides, fusionne les doublons (même numéro), sécurise les champs."""
+    propres = {}
+    for a in aos:
+        if not isinstance(a, dict):
+            continue
+        tid = str(a.get("numero") or "").strip()
+        m = re.fullmatch(r"(?i)tender-(\d+)", tid)
+        objet = str(a.get("objet") or "").strip()
+        if not m or not objet:
+            continue
+        tid = "Tender-" + m.group(1)
+        f = dict(a)
+        f["numero"] = tid
+        f["objet"] = re.sub(r"\s+", " ", objet)
+        for k in ("date_publication", "date_limite"):
+            v = str(f.get(k) or "")
+            f[k] = v if DATE.match(v) else ""
+        h = str(f.get("heure_limite") or "")
+        f["heure_limite"] = h if re.fullmatch(r"\d{1,2}[:h]\d{2}", h) else ""
+        c = f.get("cautionnement_total_dt")
+        f["cautionnement_total_dt"] = c if isinstance(c, int) and 0 < c < 10**9 else None
+        lien = str(f.get("lien") or "")
+        if not lien.startswith(PREFIXE_FICHE) or any(x in lien for x in "\"'<> "):
+            lien = f"{URL_HAICOP}/{tid}"     # lien officiel reconstruit, jamais un lien douteux
+        f["lien"] = lien
+        if f.get("metier") not in M_PAR_NOM:
+            f["metier"] = "Autres"
+        if f.get("gouvernorat") not in G_PAR_NOM:
+            f["gouvernorat"] = "National / non précisé"
+        ancien = propres.get(tid)
+        if ancien is None or str(f.get("lu_le", "")) >= str(ancien.get("lu_le", "")):
+            propres[tid] = f
+    return list(propres.values())
+
+
+def ouvertes(aos, jour):
+    """Appels d'offres encore ouverts le jour donné (les expirés sont masqués)."""
+    limite_sans_date = (dt.date.fromisoformat(jour) - dt.timedelta(days=JOURS_SANS_DATE)).isoformat()
+    res = []
+    for a in aos:
+        if a["date_limite"]:
+            if a["date_limite"] >= jour:
+                res.append(a)
+        elif a["date_publication"] and a["date_publication"] >= limite_sans_date:
+            res.append(a)
+    res.sort(key=lambda a: (a["date_limite"] or "9999", -numero(a["numero"])))
+    return res
+
+
+# ------------------------------------------------------------ morceaux de page
+ICONE_LIEU = '<svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'
+ICONE_LIEN = '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
+
+
+
+# ------------------------------------------------------------ images (SVG faits maison)
+# Icône de chaque métier (trait 24 × 24, même style que les badges) et sa couleur
+ICONES_METIER = {
+    "btp-genie-civil": ('<path d="M3 19h18"/><path d="M5 19v-2.5a7 7 0 0 1 14 0V19"/><path d="M10 10V6.5h4V10"/><path d="M12 10v3"/>', "#B7791F"),
+    "electricite": ('<path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z"/>', "#C98A1B"),
+    "informatique": ('<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19.5h20"/><path d="M9 9.5l-2 1.5 2 1.5M15 9.5l2 1.5-2 1.5"/>', "#2F6FB3"),
+    "fournitures-bureau": ('<path d="M5 20l1.2-4.4L16.5 5.3a2 2 0 0 1 2.9 2.9L9.1 18.6z"/><path d="M14.5 7.3l2.9 2.9"/><path d="M13 20h7"/>', "#6B5BB5"),
+    "nettoyage-gardiennage": ('<path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M12 8.5l.9 2 2.1.3-1.5 1.5.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.5 2.1-.3z"/>', "#0E8A8A"),
+    "alimentation": ('<path d="M7 3v7a2 2 0 0 0 4 0V3"/><path d="M9 3v18"/><path d="M17 21V3c-2.2 1.6-3 4.5-3 7.5 0 1.4.9 2.5 3 2.5"/>', "#2E8B57"),
+    "medical": ('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>', "#C2412F"),
+    "transport-vehicules": ('<path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 10h4l3 3.2V16h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', "#3D6A99"),
+    "etudes-conseil": ('<path d="M9 3.5h6v3H9z"/><path d="M7 5H5v15.5h14V5h-2"/><path d="M9 16.5v-3M12 16.5v-6M15 16.5v-4"/>', "#8A6A2F"),
+    "autres": ('<rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/>', "#5A6878"),
+}
+SPRITE = ('<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>'
+          + "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v[0]}</symbol>' for k, v in ICONES_METIER.items())
+          + "</defs></svg>")
+STYLE_ICONES = "<style>" + "".join(f".ic-{k}{{--c:{v[1]}}}" for k, v in ICONES_METIER.items()) + "</style>"
+
+
+def icone(slug, cls="ic-m"):
+    return f'<span class="{cls} ic-{slug}" aria-hidden="true"><svg><use href="#i-{slug}"/></svg></span>'
+
+
+# Contour simplifié de la Tunisie (longitude, latitude) et chef-lieu de chaque gouvernorat.
+# Les gouvernorats du Grand Tunis sont un peu écartés pour rester lisibles (carte schématique).
+CONTOUR_TN = [(8.62, 36.94), (9.0, 37.12), (9.2, 37.23), (9.6, 37.33), (9.87, 37.34), (10.05, 37.27), (10.25, 37.18),
+              (10.17, 37.0), (10.25, 36.83), (10.33, 36.78), (10.5, 36.7), (10.8, 36.9), (11.0, 37.06), (11.1, 36.87),
+              (10.95, 36.65), (10.75, 36.45), (10.58, 36.38), (10.5, 36.08), (10.64, 35.83), (10.83, 35.78), (10.88, 35.66),
+              (11.07, 35.5), (11.12, 35.23), (10.95, 34.95), (10.77, 34.73), (10.5, 34.52), (10.07, 34.3), (10.1, 33.88),
+              (10.45, 33.6), (10.75, 33.62), (11.12, 33.5), (11.25, 33.3), (11.56, 33.17), (11.48, 32.62), (11.0, 32.35),
+              (10.7, 31.98), (10.3, 31.6), (10.15, 31.0), (9.55, 30.23), (9.3, 30.9), (9.05, 31.9), (8.35, 32.5),
+              (7.85, 33.2), (7.5, 33.8), (7.75, 34.2), (8.25, 34.65), (8.4, 35.2), (8.3, 35.7), (8.4, 36.0), (8.42, 36.45),
+              (8.2, 36.55)]
+POSITIONS_TN = {
+    "bizerte": (9.62, 37.1), "ariana": (10.08, 37.08), "tunis": (10.55, 36.98), "la-manouba": (9.72, 36.72),
+    "ben-arous": (10.2, 36.6), "nabeul": (10.9, 36.62), "zaghouan": (10.0, 36.2), "beja": (9.08, 36.72),
+    "jendouba": (8.72, 36.55), "le-kef": (8.75, 36.1), "siliana": (9.37, 35.95), "kairouan": (9.95, 35.62),
+    "sousse": (10.42, 35.9), "monastir": (10.88, 35.62), "mahdia": (10.9, 35.22), "kasserine": (8.85, 35.2),
+    "sidi-bouzid": (9.5, 35.0), "sfax": (10.45, 34.8), "gafsa": (8.75, 34.42), "tozeur": (8.13, 33.95),
+    "kebili": (8.95, 33.55), "gabes": (9.85, 33.85), "medenine": (10.75, 33.3), "tataouine": (10.15, 32.55),
+}
+
+
+def _proj(lon, lat):
+    import math
+    return round((lon - 7.3) * 62 * math.cos(math.radians(34)), 1), round((37.5 - lat) * 62, 1)
+
+
+def _contour():
+    return "M" + " L".join(f"{x},{y}" for x, y in (_proj(*p) for p in CONTOUR_TN)) + "Z"
+
+
+def carte_tunisie(comptes, racine):
+    """Carte schématique : une bulle par gouvernorat, taille selon le nombre d'appels d'offres ouverts."""
+    dj = _proj(10.9, 33.8)
+    bulles = []
+    for nom, slug, ar in GOUVERNORATS:
+        if slug not in POSITIONS_TN:
+            continue
+        x, y = _proj(*POSITIONS_TN[slug])
+        n = comptes.get(slug, 0)
+        r = round(min(18, 7.5 + 2.2 * n ** 0.5), 1) if n else 4.5
+        bulles.append(
+            f'<a href="{racine}gouvernorat/{slug}/" class="tn-b{" vide" if not n else ""}" data-gouv="{slug}">'
+            f'<title>{E(nom)} · {ar} : {n}</title><circle cx="{x}" cy="{y}" r="{r}"/>'
+            + (f'<text x="{x}" y="{y}">{n}</text>' if n else "") + "</a>")
+    return (f'<svg class="carte-tn" viewBox="0 0 232 462" role="img" aria-label="Carte de la Tunisie : appels d\'offres ouverts par gouvernorat">'
+            f'<path class="tn-terre" d="{_contour()}"/><ellipse class="tn-terre" cx="{dj[0]}" cy="{dj[1]}" rx="9" ry="6.5"/>'
+            + "".join(bulles) + "</svg>")
+
+
+ILLUSTRATION = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" role="img" aria-label="Avis d'appel d'offres officiel, cloche d'alerte et carte de la Tunisie">
+<path d="{contour}" transform="translate(132 4) scale(.42)" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-opacity=".4" stroke-width="2.5"/>
+<g transform="translate(176 30)"><circle r="4.5" fill="#7CF0BE"/><circle r="10" fill="none" stroke="#7CF0BE" stroke-opacity=".55" stroke-width="2"/></g>
+<g transform="translate(206 70)"><circle r="3.5" fill="#7CF0BE" fill-opacity=".8"/></g>
+<g transform="rotate(-6 92 108)">
+ <rect x="38" y="36" width="104" height="134" rx="10" fill="#0F2236" fill-opacity=".35"/>
+ <path d="M42 30h70l24 24v104a8 8 0 0 1-8 8H42a8 8 0 0 1-8-8V38a8 8 0 0 1 8-8z" fill="#fff"/>
+ <path d="M112 30v18a6 6 0 0 0 6 6h18z" fill="#C9D8EA"/>
+ <rect x="46" y="46" width="44" height="7" rx="3.5" fill="#24476B"/>
+ <rect x="46" y="64" width="76" height="5" rx="2.5" fill="#C9D8EA"/><rect x="46" y="76" width="68" height="5" rx="2.5" fill="#C9D8EA"/>
+ <rect x="46" y="88" width="72" height="5" rx="2.5" fill="#C9D8EA"/><rect x="46" y="100" width="50" height="5" rx="2.5" fill="#C9D8EA"/>
+ <rect x="46" y="118" width="40" height="22" rx="5" fill="#FBEAE7"/><rect x="51" y="124" width="22" height="4" rx="2" fill="#C2412F"/><rect x="51" y="131" width="30" height="4" rx="2" fill="#C2412F" fill-opacity=".6"/>
+ <circle cx="112" cy="140" r="16" fill="none" stroke="#2F6FB3" stroke-width="3"/><circle cx="112" cy="140" r="10" fill="none" stroke="#2F6FB3" stroke-width="1.5" stroke-dasharray="3 2.5"/>
+ <path d="M106 140l4 4 8-8" fill="none" stroke="#2F6FB3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g transform="translate(166 120)">
+ <circle r="34" fill="#E8A33D"/><circle r="34" fill="none" stroke="#fff" stroke-width="4"/>
+ <path d="M-14 9h28l-4-5.5V-5a10 10 0 0 0-20 0V3.5z" fill="#fff"/><circle cy="14" r="4.2" fill="#fff"/><rect x="-2" y="-19" width="4" height="5" rx="2" fill="#fff"/>
+ <circle cx="22" cy="-24" r="10" fill="#C2412F" stroke="#fff" stroke-width="3"/><path d="M22 -29v6M22 -20v.5" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+ <path d="M42 -12a40 40 0 0 1 0 24M50 -18a50 50 0 0 1 0 36" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>
+"""
+
+
+def ecrire_illustration(sortie):
+    ecrire(sortie, "assets/illustration-accueil.svg", ILLUSTRATION.replace("{contour}", _contour()))
+
+
+def type_ar(a):
+    t = (a.get("type_commande") or "").split("/")[0].strip().lower()
+    return TYPES_AR.get(t, "")
+
+
+def procedure_ar(p):
+    pl = (p or "").lower()
+    for mot, ar in PROCEDURES_AR:
+        if mot in pl:
+            return ar
+    return ""
+
+
+def carte(a, racine, jour):
+    m = M_PAR_NOM[a["metier"]]
+    g = G_PAR_NOM[a["gouvernorat"]]
+    lim = a["date_limite"]
+    reste = (dt.date.fromisoformat(lim) - dt.date.fromisoformat(jour)).days if lim else None
+    urgent = reste is not None and 0 <= reste < 7
+    heure = a["heure_limite"]
+    if lim:
+        lim_fr = dfr(lim) + (f" · {heure}" if heure else "")
+        lim_ar = ISO(dfr(lim) + (f" · {heure}" if heure else ""))
+        reste_fr = "aujourd'hui !" if reste == 0 else "demain !" if reste == 1 else f"dans {reste} jours"
+    else:
+        lim_fr, lim_ar, reste_fr = "non indiquée", "غير مذكور", "voir la fiche"
+    c = a["cautionnement_total_dt"]
+    caution = L(montant(c), ISO(montant(c))) if c else L("non indiquée", "غير مذكور")
+    objet = a["objet"]
+    sens = 'dir="rtl" lang="ar"' if ARABE.search(objet) else 'dir="ltr" lang="fr"'
+    infos_fr = [E(a.get("type_commande")), E(a.get("procedure"))]
+    infos_ar = [type_ar(a) or E(a.get("type_commande")), procedure_ar(a.get("procedure")) or E(a.get("procedure"))]
+    lots = str(a.get("nombre_lots") or "").strip()
+    if lots.isdigit() and int(lots) > 1:
+        infos_fr.append(f"{lots} lots")
+        infos_ar.append(f"{ISO(lots)} أقساط")
+    infos_fr.append(f"N° {E(a['numero'])}")
+    infos_ar.append(f"عدد {ISO(E(a['numero']))}")
+    infos_fr = " · ".join(x for x in infos_fr if x)
+    infos_ar = " · ".join(x for x in infos_ar if x)
+    return f"""<article class="ao{' urgent' if urgent else ''}" id="{E(a['numero'])}" data-num="{numero(a['numero'])}" data-metier="{m[1]}" data-gouv="{g[1]}" data-limite="{lim}" data-pub="{a['date_publication']}">
+ <div class="ao-haut">{icone(m[1])}<a class="pastille" href="{racine}metier/{m[1]}/">{L(E(m[2]), m[3])}</a><a class="pastille gouv" href="{racine}gouvernorat/{g[1]}/">{ICONE_LIEU}{L(E(g[0]), g[2])}</a><span class="nouveau" hidden>{L("Nouveau", "جديد")}</span></div>
+ <h3 {sens}>{E(objet)}</h3>
+ <p class="acheteur">{E(a.get("acheteur") or "")}</p>
+ <div class="ao-infos">
+  <div class="limite"><span>{L("Date limite", "آخر أجل")}</span><b>{L(lim_fr, lim_ar)}</b><small class="reste">{reste_fr}</small></div>
+  <div><span>{L("Caution provisoire", "الضمان الوقتي")}</span><b>{caution}</b></div>
+ </div>
+ <p class="ao-type">{L(infos_fr, infos_ar)}</p>
+ <a class="officiel" href="{E(a['lien'])}" target="_blank" rel="noopener">{L("Voir la fiche officielle <small>(HAICOP)</small>", "البطاقة الرسمية <small>(الهيئة العليا)</small>")}{ICONE_LIEN}</a>
+</article>"""
+
+
+def options(liste, cle_slug, cle_fr, cle_ar, tous_fr, tous_ar, compte):
+    o = [f'<option value="" data-fr="{tous_fr}" data-ar="{tous_ar}">{tous_fr} ({sum(compte.values())})</option>']
+    for x in liste:
+        o.append(f'<option value="{x[cle_slug]}" data-fr="{E(x[cle_fr])}" data-ar="{x[cle_ar]}">{E(x[cle_fr])} ({compte.get(x[cle_slug], 0)})</option>')
+    return "\n".join(o)
+
+
+def filtres(aos, avec_metier=True, avec_gouv=True):
+    cm, cg = {}, {}
+    for a in aos:
+        cm[M_PAR_NOM[a["metier"]][1]] = cm.get(M_PAR_NOM[a["metier"]][1], 0) + 1
+        cg[G_PAR_NOM[a["gouvernorat"]][1]] = cg.get(G_PAR_NOM[a["gouvernorat"]][1], 0) + 1
+    blocs = []
+    if avec_metier:
+        blocs.append(f'<div><label for="f-metier">{L("Métier", "الاختصاص")}</label><select id="f-metier">'
+                     f'{options(METIERS, 1, 2, 3, "Tous les métiers", "كل الاختصاصات", cm)}</select></div>')
+    if avec_gouv:
+        blocs.append(f'<div><label for="f-gouv">{L("Gouvernorat", "الولاية")}</label><select id="f-gouv">'
+                     f'{options(GOUVERNORATS, 1, 0, 2, "Toute la Tunisie", "كل الولايات", cg)}</select></div>')
+    blocs.append(f'<div class="f-tri"><label for="f-tri">{L("Trier par", "الترتيب حسب")}</label><select id="f-tri">'
+                 '<option value="limite" data-fr="Date limite la plus proche" data-ar="أقرب آخر أجل">Date limite la plus proche</option>'
+                 '<option value="recent" data-fr="Plus récents d\'abord" data-ar="الأحدث أولاً">Plus récents d\'abord</option></select></div>')
+    if not (avec_metier and avec_gouv):
+        return f'<section class="carte filtres deux">{"".join(blocs)}</section>'
+    return f'<section class="carte filtres">{"".join(blocs)}</section>'
+
+
+def liste_html(aos, racine, jour, vide_fr, vide_ar):
+    cartes = "\n".join(carte(a, racine, jour) for a in aos)
+    n = len(aos)
+    return f"""<p class="compte" id="compte" aria-live="polite"><span>{n} appel{'s' if n > 1 else ''} d'offres ouvert{'s' if n > 1 else ''}</span></p>
+<div class="liste" id="liste">
+{cartes}
+</div>
+<button type="button" class="plus" id="plus" hidden>Afficher plus</button>
+<p class="carte vide" id="vide"{' hidden' if aos else ''}>{L(vide_fr, vide_ar)}</p>"""
+
+
+def grille(items, actuel, racine, dossier, comptes, ident, icones=False):
+    liens = []
+    for slug, fr, ar in items:
+        n = comptes.get(slug, 0)
+        cl = " ".join(x for x in ("zero" if not n else "", "ici" if slug == actuel else "") if x)
+        liens.append(f'<a href="{racine}{dossier}/{slug}/"{f" class={chr(34)}{cl}{chr(34)}" if cl else ""}>{icone(slug, "ic-p") if icones else ""}<span>{L(E(fr), ar)}</span><span class="n">{n}</span></a>')
+    return f'<div class="grille" id="{ident}">{"".join(liens)}</div>'
+
+
+BADGES = f"""<div class="confiance">
+  <div class="badge-c"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>{L("Source officielle HAICOP", "مصدر رسمي: الهيئة العليا")}</div>
+  <div class="badge-c"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>{L("Gratuit, sans inscription", "مجاني، دون تسجيل")}</div>
+  <div class="badge-c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{L("Mis à jour chaque jour", "تحيين يومي")}</div>
+</div>"""
+
+
+def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld=""):
+    canon = URL_SITE + chemin
+    return f"""<!doctype html>
+<html lang="fr" dir="ltr" data-racine="{racine}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{E(titre)}</title>
+<meta name="description" content="{E(description)}">
+<link rel="canonical" href="{canon}">
+<link rel="icon" href="{racine}assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="{racine}favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="{racine}assets/apple-touch-icon.png">
+<meta name="theme-color" content="#24476B">
+<meta property="og:title" content="{E(titre.split(' | ')[0])}">
+<meta property="og:description" content="{E(description)}">
+<meta property="og:url" content="{canon}">
+<meta property="og:image" content="{URL_SITE}assets/og-image-v1.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Noto+Kufi+Arabic:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{racine}assets/style.css?v={v}">
+{STYLE_ICONES}
+{jsonld}<script src="{racine}assets/page.js?v={v}"></script>
+<script src="{racine}assets/app.js?v={v}"></script>
+</head>
+<body data-maj="{etat['maj']}" data-maj-texte="{etat['maj_texte']}" data-panne="{'1' if etat['panne'] else '0'}">
+{SPRITE}
+<header class="entete" id="entete"></header>
+<section class="hero">
+  <div class="wrap">
+{hero}
+    <span class="maj">{L("Mis à jour le", "تحيين")}&nbsp;{ISO(etat['maj_texte']) if etat['maj_texte'] else '—'}</span>
+  </div>
+</section>
+<main class="wrap chevauche">
+<div class="alerte-panne{' on' if etat['panne'] else ''}" id="alerte-panne" role="status">{E(etat['message'])}</div>
+{contenu}
+</main>
+<footer id="pied"><div class="wrap"><p>Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.</p></div></footer>
+</body>
+</html>
+"""
+
+
+def fil(racine, fr, ar):
+    return f'    <p class="fil"><a href="{racine}">{L("Accueil", "الرئيسية")}</a> › {L(fr, ar)}</p>'
+
+
+# ------------------------------------------------------------ construction
+def version_assets(sortie):
+    h = hashlib.sha1()
+    for f in ("style.css", "page.js", "app.js"):
+        p = os.path.join(sortie, "assets", f)
+        if os.path.exists(p):
+            with open(p, "rb") as fh:
+                h.update(fh.read())
+    return h.hexdigest()[:8]
+
+
+def ecrire(sortie, chemin, contenu):
+    p = os.path.join(sortie, chemin)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    tmp = p + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write(contenu)
+    os.replace(tmp, p)
+
+
+def construire(donnees, sortie, jour):
+    sauvegarde = donnees.replace(".json", ".sauvegarde.json")
+    brut, aos = charger(donnees)
+    brut_s, aos_s = charger(sauvegarde)
+    panne, raison = False, ""
+    repli = False   # True si on a dû reprendre la sauvegarde (données illisibles ou suspectes)
+    if not aos:
+        if aos_s:
+            print(f"  ! échec : {os.path.basename(donnees)} illisible ou vide -> dernière sauvegarde utilisée")
+            brut, aos, panne, raison, repli = brut_s, aos_s, True, "données illisibles", True
+        elif os.path.exists(os.path.join(sortie, "index.html")):
+            print("  ! échec : données illisibles et aucune sauvegarde -> le site existant est gardé tel quel")
+            return 1
+        else:
+            print("  ! échec : aucune donnée -> site construit vide, avec avertissement")
+            brut, panne, raison, repli = {}, True, "aucune donnée", True
+    elif aos_s and len(aos) < SEUIL_CHUTE * len(aos_s):
+        print(f"  ! échec : seulement {len(aos)} fiches contre {len(aos_s)} avant -> données suspectes, sauvegarde utilisée")
+        brut, aos, panne, raison, repli = brut_s, aos_s, True, "données suspectes", True
+    else:
+        tmp = sauvegarde + ".tmp"
+        shutil.copyfile(donnees, tmp)
+        os.replace(tmp, sauvegarde)
+
+    statut = (brut or {}).get("statut_source") or {}
+    passage = (brut or {}).get("dernier_passage") or {}
+    source_en_panne = statut.get("etat") == "panne" or passage.get("reussi") is False
+    if source_en_panne:
+        print(f"  ! échec : source HAICOP en panne depuis {statut.get('depuis') or passage.get('date')} "
+              f"({statut.get('raison') or 'lecture ratée'}) — anciennes données gardées")
+    maj = str((brut or {}).get("derniere_lecture_reussie") or (brut or {}).get("mis_a_jour") or "")
+    if not re.match(r"^\d{4}-\d{2}-\d{2}", maj):
+        maj = ""
+    age = (dt.date.fromisoformat(jour) - dt.date.fromisoformat(maj[:10])).days if maj else None
+    # Bandeau : données vieilles de 2 jours ou plus (même règle que le JavaScript du visiteur), ou aucune donnée
+    panne = panne or age is None or age >= AGE_AVERTISSEMENT
+    if panne and not raison:
+        raison = "lecture ancienne"
+    maj_texte = (dfr(maj[:10]) + (" " + maj[11:16] if len(maj) >= 16 else "")) if maj else ""
+    message = (f"⚠️ La source officielle n'a pas pu être lue depuis le {dfr(maj[:10])} : la liste peut être incomplète. "
+               "Vérifiez toujours sur le portail de la HAICOP." if maj else
+               "⚠️ Données indisponibles : consultez le portail de la HAICOP.") if panne else ""
+    ecrire(sortie, "donnees/etat-source.json", json.dumps({
+        "source_en_panne": bool(source_en_panne or repli),
+        "depuis": statut.get("depuis") or passage.get("date") or "",
+        "raison": statut.get("raison") or raison or "",
+        "derniere_lecture_reussie": maj, "jours_sans_lecture": age,
+        "bandeau_visible": panne, "construit_le": jour}, ensure_ascii=False, indent=1) + "\n")
+    etat = {"maj": maj, "maj_texte": maj_texte, "panne": panne, "message": message}
+
+    vis = ouvertes(aos, jour)
+    v = version_assets(sortie)
+    cm, cg = {}, {}
+    for a in vis:
+        cm[M_PAR_NOM[a["metier"]][1]] = cm.get(M_PAR_NOM[a["metier"]][1], 0) + 1
+        cg[G_PAR_NOM[a["gouvernorat"]][1]] = cg.get(G_PAR_NOM[a["gouvernorat"]][1], 0) + 1
+    items_m = [(m[1], m[2], m[3]) for m in METIERS]
+    items_g = [(g[1], g[0], g[2]) for g in GOUVERNORATS]
+    pages = []
+
+    # ---- accueil
+    pubs = sorted({a["date_publication"] for a in vis if a["date_publication"]})
+    dernier = pubs[-1] if pubs else ""
+    n_auj = sum(1 for a in vis if a["date_publication"] == jour)
+    n_nouv = n_auj or sum(1 for a in vis if a["date_publication"] == dernier)
+    lib_nouv = "nouveaux aujourd'hui" if n_auj else (f"nouveaux le {dfr(dernier)[:5]}" if dernier else "nouveaux")
+    n_urg = sum(1 for a in vis if a["date_limite"] and
+                0 <= (dt.date.fromisoformat(a["date_limite"]) - dt.date.fromisoformat(jour)).days < 7)
+    hero = f"""    <img class="hero-illu" src="assets/illustration-accueil.svg" alt="" width="240" height="200">
+    <h1>{L("Appels d'offres publics en Tunisie", "طلبات العروض العمومية في تونس")}</h1>
+    <p class="intro">{L("Chaque jour, les nouveaux appels d'offres de l'État, des communes et des entreprises publiques, triés par métier et par gouvernorat. Résumé court, lien vers la fiche officielle.",
+                        "كل يوم، طلبات العروض الجديدة للدولة والبلديات والمنشآت العمومية، مرتبة حسب الاختصاص والولاية، مع ملخص قصير ورابط البطاقة الرسمية.")}</p>"""
+    faq = [
+        ("Où trouver les appels d'offres publics en Tunisie ?",
+         "Ils sont publiés sur le portail officiel de la HAICOP (marchespublics.gov.tn) et sur TUNEPS. Ce site reprend chaque jour les nouvelles annonces de la HAICOP, triées par métier et par gouvernorat, avec le lien vers chaque fiche officielle."),
+        ("Ce service est-il gratuit ?", "Oui, entièrement gratuit et sans inscription."),
+        ("Où retirer le cahier des charges ?",
+         "Le cahier des charges se retire sur TUNEPS (www.tuneps.tn), selon les indications de la fiche officielle. Seule la fiche officielle fait foi."),
+    ]
+    jsonld = ('<script type="application/ld+json">\n' + json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": r}} for q, r in faq]},
+        ensure_ascii=False) + "\n</script>\n")
+    contenu = f"""<section class="carte resume" aria-label="Résumé">
+  <div class="r-nouveaux" id="r-nouveaux"><b>{n_nouv}</b><span>{lib_nouv}</span></div>
+  <div class="r-ouverts" id="r-ouverts"><b>{len(vis)}</b><span>{L("appels d'offres ouverts", "طلبات عروض مفتوحة")}</span></div>
+  <div class="r-urgent" id="r-urgent"><b>{n_urg}</b><span>{L("clôturent sous 7 jours", "تنتهي خلال 7 أيام")}</span></div>
+</section>
+{BADGES}
+{filtres(vis)}
+{liste_html(vis, "", jour, "Aucun appel d'offres ouvert pour ce choix. Essayez un autre métier ou toute la Tunisie.", "لا يوجد طلب عروض مفتوح لهذا الاختيار. جرّب اختصاصًا آخر أو كل الولايات.")}
+<h2 class="titre-section" id="metiers">{L("Par métier", "حسب الاختصاص")}</h2>
+{grille(items_m, None, "", "metier", cm, "grille-metiers", True)}
+<h2 class="titre-section" id="gouvernorats">{L("Par gouvernorat", "حسب الولاية")}</h2>
+<section class="carte bloc-carte">
+  <figure>{carte_tunisie(cg, "")}
+  <figcaption>{L("Appels d'offres ouverts par gouvernorat. Touchez une bulle pour voir la liste.", "طلبات العروض المفتوحة حسب الولاية. المس دائرة لعرض القائمة.")}</figcaption></figure>
+  {grille(items_g, None, "", "gouvernorat", cg, "grille-gouv")}
+</section>
+<section class="carte" style="margin-top:18px">
+  <h2>{L("Comment ça marche ?", "كيف يعمل الموقع؟")}</h2>
+  <ol class="etapes" data-l="fr">
+    <li>Chaque jour, un robot lit <b>lentement</b> les nouvelles annonces sur le portail officiel de la <b>HAICOP</b>.</li>
+    <li>Chaque appel d'offres est rangé par <b>métier</b> et par <b>gouvernorat</b>.</li>
+    <li>Vous ouvrez la <b>fiche officielle</b> pour les détails ; le cahier des charges se retire sur <b>TUNEPS</b>.</li>
+  </ol>
+  <ol class="etapes" data-l="ar">
+    <li>كل يوم، يقرأ برنامج آلي <b>ببطء</b> الإعلانات الجديدة في البوابة الرسمية <b>للهيئة العليا للطلب العمومي</b>.</li>
+    <li>يُرتَّب كل طلب عروض حسب <b>الاختصاص</b> و<b>الولاية</b>.</li>
+    <li>تفتح <b>البطاقة الرسمية</b> للتفاصيل، ويُسحب كراس الشروط من منظومة <b>{ISO("TUNEPS")}</b>.</li>
+  </ol>
+  <p class="avert">{L("Ce site n'est pas officiel. Vérifiez toujours la fiche officielle avant de répondre : seule elle fait foi.", "هذا الموقع ليس رسميًا. تثبّت دائمًا من البطاقة الرسمية قبل المشاركة: هي وحدها المرجع.")} <a href="a-propos/">{L("Méthode et sources", "المنهجية والمصادر")}</a></p>
+</section>"""
+    titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, par métier et gouvernorat | Alertes appels d'offres"
+    desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
+            "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")
+    pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld)))
+
+    # ---- une page par métier
+    for nom, slug, fr, ar in METIERS:
+        sel = [a for a in vis if a["metier"] == nom]
+        hero = f"""{fil("../../", "Métiers", "الاختصاصات")}
+    {icone(slug, "hero-ic")}
+    <h1>{L(f"Appels d'offres {E(fr)}", f"طلبات العروض: {ar}")}</h1>
+    <p class="intro">{L(f"{len(sel)} appel{'s' if len(sel) > 1 else ''} d'offres ouvert{'s' if len(sel) > 1 else ''} en Tunisie, triés par date limite. Source officielle : HAICOP.",
+                        f"{ISO(len(sel))} طلب عروض مفتوح في تونس، مرتبة حسب آخر أجل. المصدر الرسمي: الهيئة العليا للطلب العمومي.")}</p>"""
+        contenu = f"""{filtres(sel, avec_metier=False)}
+{liste_html(sel, "../../", jour, f"Aucun appel d'offres « {E(fr)} » ouvert en ce moment. Revenez demain : la liste est mise à jour chaque jour.", f"لا يوجد حاليًا طلب عروض مفتوح في «{ar}». عُد غدًا: القائمة تُحيَّن يوميًا.")}
+<h2 class="titre-section">{L("Autres métiers", "اختصاصات أخرى")}</h2>
+{grille(items_m, slug, "../../", "metier", cm, "grille-metiers", True)}"""
+        titre = f"Appels d'offres {fr} Tunisie — {len(sel)} ouverts | Alertes appels d'offres"
+        desc = (f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche officielle HAICOP. "
+                f"طلبات العروض: {ar}.")
+        pages.append((f"metier/{slug}/", page(f"metier/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
+
+    # ---- une page par gouvernorat
+    for nom, slug, ar in GOUVERNORATS:
+        sel = [a for a in vis if a["gouvernorat"] == nom]
+        special = slug in ("plusieurs", "national")
+        h_fr = f"Appels d'offres : {nom.lower()}" if special else f"Appels d'offres à {nom}"
+        h_ar = f"طلبات العروض: {ar}" if special else f"طلبات العروض في ولاية {ar}"
+        hero = f"""{fil("../../", "Gouvernorats", "الولايات")}
+    <h1>{L(E(h_fr), h_ar)}</h1>
+    <p class="intro">{L(f"{len(sel)} appel{'s' if len(sel) > 1 else ''} d'offres ouvert{'s' if len(sel) > 1 else ''}, triés par date limite. Source officielle : HAICOP.",
+                        f"{ISO(len(sel))} طلب عروض مفتوح، مرتبة حسب آخر أجل. المصدر الرسمي: الهيئة العليا للطلب العمومي.")}</p>"""
+        contenu = f"""{filtres(sel, avec_gouv=False)}
+{liste_html(sel, "../../", jour, "Aucun appel d'offres ouvert en ce moment pour ce gouvernorat. Revenez demain : la liste est mise à jour chaque jour.", "لا يوجد حاليًا طلب عروض مفتوح في هذه الولاية. عُد غدًا: القائمة تُحيَّن يوميًا.")}
+<h2 class="titre-section">{L("Autres gouvernorats", "ولايات أخرى")}</h2>
+{grille(items_g, slug, "../../", "gouvernorat", cg, "grille-gouv")}"""
+        titre = f"{h_fr} (Tunisie) — {len(sel)} ouverts | Alertes appels d'offres"
+        desc = (f"Appels d'offres publics {'— ' + nom.lower() if special else 'dans le gouvernorat de ' + nom}, encore ouverts, triés par date limite, "
+                f"avec caution et lien vers la fiche officielle HAICOP. {h_ar}.")
+        pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
+
+    # ---- à propos et sources
+    hero = f"""{fil("../", "À propos", "من نحن")}
+    <h1>{L("À propos et sources", "من نحن والمصادر")}</h1>
+    <p class="intro">{L("D'où viennent les annonces, comment elles sont classées, et leurs limites.", "من أين تأتي الإعلانات، كيف تُرتَّب، وحدودها.")}</p>"""
+    contenu = f"""<section class="carte">
+  <h2>{L("Ce que fait ce site", "ماذا يقدّم هذا الموقع")}</h2>
+  <p data-l="fr">Un service <b>gratuit, sans inscription</b>, qui rassemble chaque jour les nouveaux appels d'offres publics tunisiens, les range par <b>métier</b> et par <b>gouvernorat</b>, et met en avant la <b>date limite</b> et la <b>caution provisoire</b>. Bientôt : alertes Telegram et WhatsApp.</p>
+  <p data-l="ar">خدمة <b>مجانية ودون تسجيل</b> تجمع كل يوم طلبات العروض العمومية الجديدة في تونس، وترتّبها حسب <b>الاختصاص</b> و<b>الولاية</b>، وتُبرز <b>آخر أجل</b> و<b>الضمان الوقتي</b>. قريبًا: تنبيهات عبر تيليغرام وواتساب.</p>
+</section>
+<section class="carte">
+  <h2>{L("Source officielle", "المصدر الرسمي")}</h2>
+  <ul class="sources" data-l="fr">
+    <li><b>HAICOP — Haute Instance de la Commande Publique</b> : portail <a href="{URL_HAICOP}" rel="noopener">marchespublics.gov.tn</a>. Chaque annonce du site renvoie à sa fiche officielle (« Voir la fiche officielle »).</li>
+    <li>Le fichier robots.txt du portail autorise la lecture par les robots. Notre robot lit <b>lentement</b> (une page toutes les 2,5 secondes), une ou deux fois par jour, en se présentant honnêtement.</li>
+    <li>Le <b>cahier des charges</b> n'est pas recopié : il se retire sur <a href="https://www.tuneps.tn" rel="noopener">TUNEPS</a>, selon la fiche officielle.</li>
+  </ul>
+  <ul class="sources" data-l="ar">
+    <li><b>الهيئة العليا للطلب العمومي</b>: البوابة <a href="https://www.marchespublics.gov.tn/ar/appels-doffres" rel="noopener">{ISO("marchespublics.gov.tn")}</a>. كل إعلان في الموقع مرفق برابط بطاقته الرسمية.</li>
+    <li>ملف {ISO("robots.txt")} للبوابة يسمح بالقراءة الآلية. برنامجنا يقرأ <b>ببطء</b> (صفحة كل {ISO("2,5")} ثانية)، مرة أو مرتين في اليوم.</li>
+    <li>لا يُنسخ <b>كراس الشروط</b>: يُسحب من منظومة <a href="https://www.tuneps.tn" rel="noopener">{ISO("TUNEPS")}</a> حسب البطاقة الرسمية.</li>
+  </ul>
+</section>
+<section class="carte">
+  <h2>{L("Méthode", "المنهجية")}</h2>
+  <ol class="etapes" data-l="fr">
+    <li>Lecture des nouvelles fiches publiées sur le portail de la HAICOP (objet, acheteur, région, date limite, caution, procédure).</li>
+    <li>Classement par <b>métier</b> à partir du type de commande officiel et de mots-clés (français et arabe) : quelques erreurs sont possibles.</li>
+    <li>Classement par <b>gouvernorat</b> d'après la région d'exécution, sinon le nom de l'acheteur.</li>
+    <li>Les objets sont recopiés <b>dans leur langue d'origine</b> (souvent en arabe).</li>
+    <li>Les appels d'offres dont la date limite est passée sont <b>retirés automatiquement</b>.</li>
+    <li>Si la source ne répond pas, les annonces déjà connues restent affichées avec un <b>avertissement daté</b>.</li>
+  </ol>
+  <ol class="etapes" data-l="ar">
+    <li>قراءة البطاقات الجديدة المنشورة في بوابة الهيئة العليا للطلب العمومي (الموضوع، المشتري العمومي، الجهة، آخر أجل، الضمان، الإجراء).</li>
+    <li>ترتيب حسب <b>الاختصاص</b> انطلاقًا من نوع الطلب الرسمي وكلمات مفتاحية (بالعربية والفرنسية): أخطاء قليلة ممكنة.</li>
+    <li>ترتيب حسب <b>الولاية</b> وفق جهة التنفيذ، وإلا فحسب اسم المشتري.</li>
+    <li>تُنقل المواضيع <b>بلغتها الأصلية</b>.</li>
+    <li>طلبات العروض التي انتهى أجلها <b>تُحذف آليًا</b>.</li>
+    <li>إذا لم يستجب المصدر، تبقى الإعلانات المعروفة ظاهرة مع <b>تنبيه مؤرَّخ</b>.</li>
+  </ol>
+  <p class="avert">{L("<b>Avertissement :</b> ce site n'est pas officiel et n'est pas lié à la HAICOP ni à TUNEPS. Les résumés sont indicatifs : <b>vérifiez toujours la fiche officielle</b> (dates, montants, conditions) avant de répondre à un appel d'offres. Seule la fiche officielle fait foi.",
+                        "<b>تنبيه:</b> هذا الموقع ليس رسميًا ولا علاقة له بالهيئة العليا للطلب العمومي ولا بمنظومة " + ISO("TUNEPS") + ". الملخصات للإرشاد فقط: <b>تثبّت دائمًا من البطاقة الرسمية</b> (الآجال، المبالغ، الشروط) قبل المشاركة. البطاقة الرسمية هي المرجع الوحيد.")}</p>
+</section>
+{BADGES}"""
+    titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"
+    desc = "D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
+    pages.append(("a-propos/", page("a-propos/", "../", titre, desc, hero, contenu, v, etat)))
+
+    # ---- écriture
+    ecrire_illustration(sortie)
+    for chemin, contenu in pages:
+        ecrire(sortie, chemin + "index.html", contenu)
+    lastmod = jour
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for chemin, _ in pages:
+        sitemap.append(f"  <url><loc>{URL_SITE}{chemin}</loc><lastmod>{lastmod}</lastmod></url>")
+    sitemap.append("</urlset>")
+    ecrire(sortie, "sitemap.xml", "\n".join(sitemap) + "\n")
+    print(f"  {len(pages)} pages, {len(vis)} appels d'offres ouverts (sur {len(aos)} en mémoire), "
+          f"version {v}{', AVERTISSEMENT : ' + raison if panne else ''}")
+    return 0
+
+
+def main():
+    p = argparse.ArgumentParser(description="Construit le site statique des appels d'offres.")
+    p.add_argument("--donnees", default=os.path.join(RACINE_SITE, "donnees", "appels-offres.json"))
+    p.add_argument("--sortie", default=RACINE_SITE)
+    p.add_argument("--aujourdhui", default=dt.date.today().isoformat(), help="date du jour AAAA-MM-JJ (tests)")
+    a = p.parse_args()
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if not DATE.match(a.aujourdhui):
+        print("date invalide"); return 2
+    print("Construction du site…")
+    return construire(a.donnees, a.sortie, a.aujourdhui)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
