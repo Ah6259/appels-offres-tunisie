@@ -46,6 +46,7 @@ python robot/telegram.py --essai                   (affiche le message Telegram 
 python robot/construire_site.py
 npm install --no-save --no-package-lock jsdom     (une fois par PC)
 node tools/test_site.mjs
+node tools/test_sw.mjs
 python tools/test_pannes.py
 bash tools/captures.sh                             (captures téléphone 340/390 px, FR + AR, dans captures/)
 ```
@@ -101,7 +102,7 @@ Objectif : le site reste **en vie et honnête** même si la source tombe en pann
   calculé automatiquement (empreinte des fichiers) : les téléphones ne gardent jamais un ancien style.
 - `battement-de-coeur.yml` le 1er du mois : petit commit pour que GitHub ne mette pas les robots en pause
   (pause automatique après 60 jours sans activité).
-- `tests.yml` à chaque envoi (push) : les deux tests.
+- `tests.yml` à chaque envoi (push) : les tests (site, service worker, pannes).
 - Les trois robots partagent le **groupe de concurrence** `maj-site` (jamais deux commits en même temps).
 
 **Ce qui protège le site**
@@ -126,6 +127,10 @@ Objectif : le site reste **en vie et honnête** même si la source tombe en pann
   dépôt (vérifié par le test). Limite : un site GitHub Pages en sous-dossier n'a pas son propre robots.txt pour les robots
   (seul `ah6259.github.io/robots.txt` compte) → le copier dans un dépôt `Ah6259.github.io`, ou plus tard avec un nom de domaine.
   Ce qu'un visiteur voit peut toujours être recopié : la vraie protection = © + preuves datées.
+
+- **Installation sur le téléphone** : `sw.js` (service worker) = **réseau d'abord** pour les pages et les données (le cache
+  ne sert que hors connexion : jamais une vieille liste quand Internet marche) ; CSS/JS versionnés (?v=) = cache puis mise à jour.
+  Si un téléphone garde une vieille version : changer `CACHE_VERSION` dans `sw.js`.
 
 **Ce qui alerte**
 - Une **issue GitHub** « Source HAICOP en panne depuis le … » s'ouvre au premier échec (GitHub envoie un e-mail),

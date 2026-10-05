@@ -49,3 +49,11 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 - Vérifier sur le téléphone, puis Search Console (sitemap) et GoatCounter.
 - Canal Telegram, formulaire Google, WhatsApp : suivre README, « Ce qu'Ahmed doit faire ».
 - Option prudente : courte lettre à la HAICOP pour présenter le service gratuit.
+
+## 05/10/2026 — Installation complète sur le téléphone (service worker)
+- `sw.js` à la racine (portée `/appels-offres-tunisie/`), enregistré par `assets/page.js` (https seulement, jamais en `file:`).
+- **Réseau d'abord** pour les pages et les données (la liste du jour est toujours servie ; cache seulement hors connexion,
+  sinon page « Hors connexion » FR + AR) ; fichiers `?v=` : cache puis mise à jour.
+- Meta iPhone dans le gabarit `robot/construire_site.py` : `apple-mobile-web-app-capable`, `apple-mobile-web-app-title`.
+- Test `node tools/test_sw.mjs` (faux navigateur), aussi dans maj.yml ; sabotage vérifié (HTML en cache d'abord, POST, portée).
+- Vieille version bloquée sur un téléphone : changer `CACHE_VERSION` dans `sw.js`.

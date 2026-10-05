@@ -516,6 +516,9 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <link rel="icon" href="{racine}assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="{racine}favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="{racine}assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Appels d'offres">
 <link rel="manifest" href="{racine}manifest.webmanifest">
 <meta name="theme-color" content="#24476B">
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">

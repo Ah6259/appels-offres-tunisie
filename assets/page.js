@@ -74,3 +74,11 @@
     e.preventDefault();
   });
 })();
+
+/* Installation sur le téléphone : service worker PRUDENT (sw.js : réseau d'abord pour les pages et les données).
+   Seulement en https (jamais en file: pendant les tests locaux). */
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => {
+    try { navigator.serviceWorker.register("/appels-offres-tunisie/sw.js", { scope: "/appels-offres-tunisie/" }).catch(() => {}); } catch (e) { /* rien : le site marche sans */ }
+  });
+}

@@ -37,6 +37,13 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Installation sur le téléphone : `manifest.webmanifest` avec `"id": "/appels-offres-tunisie/"` (UNIQUE : tous les sites d'Ahmed
   partagent l'origine ah6259.github.io ; sans id, Chrome disait « déjà installée »), icônes `assets/icons/` (192, 512, maskable)
   tirées de `assets/logo.svg`. Lien dans le gabarit ; vérifié par le test.
+- **Service worker** (05/10/2026, installation complète Chrome/Android + iPhone) : `sw.js` à la racine, portée `/appels-offres-tunisie/`,
+  enregistré à la fin de `assets/page.js` (https seulement, try/catch). **Réseau d'abord** pour les pages HTML et les données
+  (`donnees/`, JSON : le visiteur voit toujours la dernière liste ; le cache ne sert que hors connexion, sinon page « Hors connexion » FR+AR) ;
+  CSS/JS/images avec `?v=` : cache puis mise à jour. Jamais en cache : non-GET, autres origines (Google Forms, GoatCounter…), autres
+  sites d'Ahmed. Caches `appels-offres-tunisie-<CACHE_VERSION>` (on ne supprime QUE les nôtres). Vieille version bloquée → changer
+  `CACHE_VERSION`. Meta iPhone (`apple-mobile-web-app-capable`, `-title`) dans le gabarit de construire_site.py.
+  Test : `node tools/test_sw.mjs` (faux navigateur ; accepte un dossier en argument), lancé aussi par maj.yml.
 
 ## Robustesse (voir README « Plan de continuité »)
 - `statut_source` / `derniere_lecture_reussie` dans `donnees/appels-offres.json` ; `donnees/etat-source.json` pour l'alerte.
@@ -46,7 +53,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (112 vérifications) et `python tools/test_pannes.py` (85 scénarios).
+1. `node tools/test_site.mjs` (112 vérifications), `node tools/test_sw.mjs` (service worker) et `python tools/test_pannes.py` (85 scénarios).
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
