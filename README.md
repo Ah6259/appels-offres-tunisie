@@ -158,3 +158,6 @@ Objectif : le site reste **en vie et honnête** même si la source tombe en pann
 ## Droits
 LICENSE « tous droits réservés ». Les annonces viennent du portail officiel de la HAICOP ; chaque carte renvoie
 à la fiche officielle, seule à faire foi.
+
+## Nouveautés
+- 05/10/2026 : nouvelle icône (mégaphone) et « consultation gratuite » dans les titres Google.
