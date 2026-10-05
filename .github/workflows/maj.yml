@@ -62,7 +62,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CANAL: ${{ secrets.TELEGRAM_CANAL }}
-        run: python robot/telegram.py || echo "échec : alerte Telegram (le site n'est pas touché)"
+        run: |
+          python robot/telegram.py || echo "échec : alerte Telegram (le site n'est pas touché)"
 
       - name: Commit des données et des pages
         run: |
