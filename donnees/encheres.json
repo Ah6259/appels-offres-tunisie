@@ -1131,13 +1131,26 @@
    "gouvernorat": "Tunis",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
+  },
+  "Vente-bbb342c586": {
+   "id": "Vente-bbb342c586",
+   "date_publication": "2026-10-05",
+   "bureau": "Bureau régional des douanes de Tataouine",
+   "objet": "Avis de vente aux enchères sous plis fermés N°07/2026 de diverses marchandises.",
+   "date_limite": "2026-10-19",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-05_AV_OP_Tataouine_N°07-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Tataouine",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-05 13:12"
   }
  },
- "lignes_lues": 335,
- "derniere_lecture_reussie": "2026-10-05 02:06",
+ "lignes_lues": 336,
+ "derniere_lecture_reussie": "2026-10-05 13:12",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-05 02:06",
+  "depuis": "2026-10-05 13:12",
   "raison": ""
  }
 }

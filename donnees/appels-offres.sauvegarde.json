@@ -1246,21 +1246,243 @@
    "lu_le": "2026-10-05 00:39",
    "metier": "Alimentation",
    "gouvernorat": "La Manouba"
+  },
+  "Tender-104054": {
+   "numero": "Tender-104054",
+   "objet": "Etude d'élaboration d'une cartographie de risques",
+   "descriptif": "Appel d'offre n 06/2026 (marché à procédures simplifiées) \"désignation d'un cabinet de consultant pour l'élaboration d'une cartographie des risques de la SOTUMAG et du marché d'intérêt national de Bir- Kassaa",
+   "acheteur": "Société Tunisienne des Marchés de Gros",
+   "type_commande": "Etudes/ Autres études",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEN AROUS",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-16",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-16",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104054",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:11",
+   "metier": "Études / conseil",
+   "gouvernorat": "Ben Arous"
+  },
+  "Tender-104055": {
+   "numero": "Tender-104055",
+   "objet": "Raccorder l’atelier de maintenance au réseau d’assainissement",
+   "descriptif": "TRAVAUX D’ASSAINISSEMENT EN EAUX USEES DU PARC DE LA SORETRAK FOURNITURE, TRANSPORT ET POSE DES CONDUITES, GENIE CIVIL ET EQUIPEMENTS ELECTRIQUES ET ELECTROMECANIQUES DE LA STATION DE POMPAGE",
+   "acheteur": "Société Régionale de Transport Gouvernorat de Kairouan",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KAIROUAN",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-11",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-11",
+   "cautionnement_provisoire_dt": [
+    7000
+   ],
+   "cautionnement_total_dt": 7000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104055",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:11",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104053": {
+   "numero": "Tender-104053",
+   "objet": "AMOA projet ERP",
+   "descriptif": "",
+   "acheteur": "Société Tunisienne d’Electricité et de Gaz",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-10",
+   "heure_limite": "14:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104053",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:11",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104052": {
+   "numero": "Tender-104052",
+   "objet": "Travaux d'aménagement de la zone industrielle RAS ELMARJ",
+   "descriptif": "",
+   "acheteur": "Agence Foncière Industrielle",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MONASTIR",
+   "regions_lots": [
+    "MONASTIR"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-11",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-11",
+   "cautionnement_provisoire_dt": [
+    70000
+   ],
+   "cautionnement_total_dt": 70000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104052",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:11",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Monastir"
+  },
+  "Tender-104051": {
+   "numero": "Tender-104051",
+   "objet": "Matériel de connexion",
+   "descriptif": "",
+   "acheteur": "Société Tunisienne d’Electricité et de Gaz",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-24",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-24",
+   "cautionnement_provisoire_dt": [
+    900,
+    1000,
+    800,
+    3500,
+    500,
+    500,
+    800,
+    400,
+    400,
+    3500,
+    3000,
+    900,
+    2500
+   ],
+   "cautionnement_total_dt": 18700,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "13",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104051",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:12",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104021": {
+   "numero": "Tender-104021",
+   "objet": "Travaux de l'ouvrage hydraulique sur l'oued Fkirina.",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole du Kef",
+   "type_commande": "Travaux/ Ouvrages hydrauliques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "EL KEF",
+   "regions_lots": [
+    "EL KEF"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-10-16",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-10-16",
+   "cautionnement_provisoire_dt": [
+    5000
+   ],
+   "cautionnement_total_dt": 5000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104021",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:12",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Le Kef"
+  },
+  "Tender-104050": {
+   "numero": "Tender-104050",
+   "objet": "Acquisition d’une solution de reprise après sinistre pour les serveurs Windows du parc informatique de l’ANGed",
+   "descriptif": "",
+   "acheteur": "Agence Nationale de Gestion de Déchets",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-05",
+   "date_limite": "2026-11-02",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-02",
+   "cautionnement_provisoire_dt": [
+    500
+   ],
+   "cautionnement_total_dt": 500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104050",
+   "source": "HAICOP",
+   "lu_le": "2026-10-05 13:12",
+   "metier": "Informatique",
+   "gouvernorat": "Tunis"
   }
  },
- "mis_a_jour": "2026-10-05 02:06",
+ "mis_a_jour": "2026-10-05 13:12",
  "dernier_passage": {
-  "date": "2026-10-05 02:06",
+  "date": "2026-10-05 13:12",
   "liste_ok": true,
-  "lus": 0,
+  "lus": 7,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-05 02:06",
+ "derniere_lecture_reussie": "2026-10-05 13:12",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-05 02:06",
+  "depuis": "2026-10-05 13:12",
   "raison": ""
  }
 }
