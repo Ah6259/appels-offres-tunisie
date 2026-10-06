@@ -1,0 +1,35 @@
+{
+ "site": "https://ah6259.github.io/appels-offres-tunisie/",
+ "logo": "assets/logo.svg",
+ "defaut": "fr",
+ "modele": "a-propos/index.html",
+ "nom": {
+  "fr": "Alertes appels d'offres Tunisie",
+  "ar": "تنبيهات طلبات العروض تونس"
+ },
+ "partager": {
+  "fr": "Partager la vidéo",
+  "ar": "شارك الفيديو"
+ },
+ "pages": [
+  {
+   "chemin": "video/",
+   "video": "presentation",
+   "couverture": "couverture.jpg",
+   "apercu": "apercu-video.jpg",
+   "site": "",
+   "titre": {
+    "fr": "Vidéo de présentation",
+    "ar": "الفيديو التقديمي"
+   },
+   "description": {
+    "fr": "Vidéo de présentation : les nouveaux appels d'offres publics tunisiens chaque jour, par métier et gouvernorat, gratuit, et les Alertes Pro sur Telegram.",
+    "ar": "فيديو تقديمي: طلبات العروض العمومية الجديدة في تونس كل يوم، حسب الاختصاص والولاية، مجانًا."
+   },
+   "bouton": {
+    "fr": "Ouvrir le site",
+    "ar": "افتح الموقع"
+   }
+  }
+ ]
+}

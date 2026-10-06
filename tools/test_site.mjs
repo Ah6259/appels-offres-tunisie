@@ -175,7 +175,7 @@ const tuilesSansLien = doc => [...doc.body.querySelectorAll("*")].filter(el => {
 }).map(el => el.textContent.replace(/\s+/g, " ").trim().slice(0, 40));
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-check("sitemap : 42 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions)", urls.length === 42);
+check("sitemap : au moins 43 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions, page vidéo)", urls.length >= 43 && urls.includes(URL_SITE + "video/"));
 const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true, okTuiles = true;
 for (const u of urls) {
@@ -183,11 +183,11 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}assets/og-image-v6.jpg"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}${chemin === "video/index.html" ? "assets/video/apercu-video.jpg" : "assets/og-image-v6.jpg"}"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
-  if (!/<h1><span data-l="fr">[^<]+<\/span><span data-l="ar">[^<]+<\/span><\/h1>/.test(h)) { okH1 = false; console.log("   h1 FR+AR : " + chemin); }
+  if (!/<h1><span data-l="fr">[^<]+<\/span><span data-l="ar">[^<]+<\/span><\/h1>/.test(h) && !(chemin === "video/index.html" && /<h1 data-vfr="[^"]+" data-var="[^"]+">/.test(h))) { okH1 = false; console.log("   h1 FR+AR : " + chemin); }
   if (!/HAICOP/.test(h) || !/marchespublics\.gov\.tn/.test(h)) okSrc = false;
   if (!/©/.test(h)) okCopy = false;
   const morts = tuilesSansLien(new JSDOM(h).window.document);
@@ -544,9 +544,11 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     wx.goatcounter = { count: o => comptes.push(o) };
     wx.document.querySelector("#entete button.partager").click();
     await new Promise(ok => setTimeout(ok, 0));
-    const adresse = URL_SITE + p.replace("index.html", "");
-    check(`${p} : sans navigator.share, « Partager » ouvre wa.me avec l'adresse de la page (sans ?lang ni #) et compte le clic`, !wx.navigator.share && ouverts.length === 1
-      && ouverts[0][0].startsWith("https://wa.me/?text=") && decodeURIComponent(ouverts[0][0].slice(20)).endsWith(" " + adresse) && ouverts[0][1] === "_blank"
+    // partage par lien (demande d'Ahmed) : la page vidéo du site + l'adresse du site, dans la langue de la page
+    const adresse = URL_SITE + "video/?lang=ar";
+    check(`${p} : sans navigator.share, « Partager » ouvre wa.me avec la page vidéo + l'adresse du site et compte le clic`, !wx.navigator.share && ouverts.length === 1
+      && ouverts[0][0].startsWith("https://wa.me/?text=") && decodeURIComponent(ouverts[0][0].slice(20)).endsWith(" " + adresse)
+      && decodeURIComponent(ouverts[0][0]).includes(URL_SITE + "?lang=ar") && ouverts[0][1] === "_blank"
       && comptes.length === 1 && comptes[0].path.startsWith("partage/") && comptes[0].event === true);
   }
 }
