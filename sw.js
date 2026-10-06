@@ -33,6 +33,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;                                  // formulaires, envois : jamais
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;                   // autres sites : on laisse passer
+  if (/\.mp4$/i.test(url.pathname)) return;                          // vidéos de présentation : jamais en cache (trop lourdes)
   if (!url.pathname.startsWith(PORTEE)) return;                      // autres sites d'Ahmed (même origine)
   const chemin = url.pathname.slice(PORTEE.length);
   if (EXCLUS.some(x => chemin.startsWith(x))) return;               // pages exclues : jamais en cache

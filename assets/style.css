@@ -355,3 +355,8 @@ html[dir="rtl"] .abo input[type=email],html[dir="rtl"] .abo input[name=telephone
 .conditions h2:first-child{margin-top:0}
 .conditions p{margin:0 0 8px}
 @media (max-width:380px){ .btn-pro-grand{font-size:15px;padding:11px 13px} }
+
+/* vidéo de présentation : message « Préparation de la vidéo… » et lien discret (outil vidéos) */
+.partage-msg{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;background:#14202e;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.95rem;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center}
+.partage-msg[hidden]{display:none}
+.lien-video{text-align:center;font-size:.9rem;margin:18px 0 6px}.lien-video a{color:inherit;text-decoration:underline}

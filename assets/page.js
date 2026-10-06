@@ -54,8 +54,7 @@
     document.querySelectorAll(".partager").forEach(b => b.addEventListener("click", async () => {
       const url = location.href.split("#")[0].replace(/[?&]lang=(fr|ar)/, ""), titre = document.title.split(" | ")[0];
       try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "partage" + location.pathname.replace("/appels-offres-tunisie/", "/"), title: "Partage", event: true }); } catch (e) {}
-      if (navigator.share) { try { await navigator.share({ title: titre, text: titre, url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
-      window.open("https://wa.me/?text=" + encodeURIComponent(titre + " " + url), "_blank", "noopener");
+      { const v = window.VIDEO_PRESENTATION(); return window.partagerVideo(v.url, v.nom, titre, url); }
     }));
   }
 
@@ -95,3 +94,80 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
     try { navigator.serviceWorker.register("/appels-offres-tunisie/sw.js", { scope: "/appels-offres-tunisie/" }).catch(() => {}); } catch (e) { /* rien : le site marche sans */ }
   });
 }
+
+/* >>> vidéo de présentation (fabriquée par l'outil vidéos d'Ahmed) */
+// Vidéo à partager : anglais par défaut sur le site des conférences (version française si la page est en français).
+window.VIDEO_PRESENTATION = function () {
+  var fr = false && document.documentElement.lang === "fr";
+  return { url: "/appels-offres-tunisie/assets/video/presentation" + (fr ? "-fr" : "") + ".mp4", nom: "appels-offres-tunisie" + (fr ? "-fr" : "") + ".mp4" };
+};
+/* Partage de la vidéo de présentation (demande d'Ahmed, octobre 2026) : le bouton « Partager » envoie la VIDÉO + le lien
+   (dans le texte) quand le téléphone sait partager un fichier (Instagram, Facebook, TikTok, WhatsApp…) ; sinon le lien
+   seul (menu de partage du téléphone, sinon WhatsApp). « Préparation de la vidéo… » pendant le téléchargement ; si le
+   téléphone refuse le partage après l'attente (geste trop ancien), la vidéo reste prête : un second toucher la partage. */
+window.partagerVideo = (function () {
+  var pret = null;                                   // { cle, fichier } : vidéo déjà téléchargée
+  function langue() { return document.documentElement.lang || "fr"; }
+  function M(fr, en, ar) { var l = langue(); return l === "ar" ? ar : l === "en" ? en : fr; }
+  function message(texte) {
+    var m = document.getElementById("partage-msg");
+    if (!texte) { if (m) m.hidden = true; return; }
+    if (!m) { m = document.createElement("div"); m.id = "partage-msg"; m.className = "partage-msg"; m.setAttribute("role", "status"); document.body.appendChild(m); }
+    m.textContent = texte; m.hidden = false;
+  }
+  function lienSeul(titre, url) {
+    if (navigator.share) {
+      return navigator.share({ title: titre, text: titre, url: url }).then(function () { return "lien"; }, function (e) {
+        if (e && e.name === "AbortError") return "annule";
+        window.open("https://wa.me/?text=" + encodeURIComponent(titre + " " + url), "_blank", "noopener"); return "whatsapp";
+      });
+    }
+    window.open("https://wa.me/?text=" + encodeURIComponent(titre + " " + url), "_blank", "noopener");
+    return Promise.resolve("whatsapp");
+  }
+  return function (video, nomFichier, titre, url) {
+    var possible = false;
+    try { possible = !!(navigator.share && navigator.canShare && window.File && window.fetch && navigator.canShare({ files: [new File([""], nomFichier, { type: "video/mp4" })] })); } catch (e) {}
+    if (!possible) return lienSeul(titre, url);
+    var etape = (pret && pret.cle === video) ? Promise.resolve() : (function () {
+      message(M("Préparation de la vidéo…", "Preparing the video…", "جارٍ تحضير الفيديو…"));
+      return fetch(video).then(function (r) {
+        if (!r.ok) throw new Error("vidéo absente");
+        return r.blob();
+      }).then(function (b) {
+        var f = new File([b], nomFichier, { type: "video/mp4" });
+        if (!navigator.canShare({ files: [f] })) throw new Error("fichier refusé");
+        pret = { cle: video, fichier: f };
+      });
+    })();
+    return etape.then(function () {
+      return navigator.share({ files: [pret.fichier], title: titre, text: titre + " " + url });
+    }).then(function () { message(""); return "video"; }, function (e) {
+      if (e && e.name === "AbortError") { message(""); return "annule"; }
+      if (e && e.name === "NotAllowedError" && pret && pret.cle === video) {
+        message(M("Vidéo prête : touchez encore « Partager »", "Video ready: tap “Share” again", "الفيديو جاهز: المس « شارك » مرة أخرى"));
+        setTimeout(function () { message(""); }, 6000); return "pret";
+      }
+      message(""); return lienSeul(titre, url);
+    });
+  };
+})();
+// Lien discret « Vidéo de présentation » en bas de l'accueil et de À propos (pour la regarder, la télécharger, la publier).
+(function () {
+  function poser() {
+    var p = location.pathname.replace(/index\.html$/, "");
+    if (p !== "/appels-offres-tunisie/" && p !== "/appels-offres-tunisie/a-propos/") return;
+    var el = document.getElementById("lien-video");
+    if (!el) {
+      el = document.createElement("p"); el.id = "lien-video"; el.className = "lien-video";
+      var a = document.createElement("a"); el.appendChild(a);
+      var m = document.querySelector("main"); if (m) m.insertAdjacentElement("afterend", el); else document.body.appendChild(el);
+    }
+    var l = document.documentElement.lang, lien = el.firstChild;
+    lien.href = window.VIDEO_PRESENTATION().url;
+    lien.textContent = l === "ar" ? "الفيديو التقديمي" : l === "en" ? "Presentation video" : "Vidéo de présentation";
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(poser, 0); }); else setTimeout(poser, 0);
+  document.addEventListener("langue", function () { setTimeout(poser, 0); });
+})();
+/* <<< vidéo de présentation */
