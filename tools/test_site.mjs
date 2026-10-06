@@ -94,8 +94,8 @@ check("accueil : date limite en rouge si moins de 7 jours (et seulement alors)",
 check("accueil : « dans N jours » calculé", cartes.every(c => /jours|aujourd|demain|fiche/.test(texte(c.querySelector(".reste")))));
 check("accueil : compteur « nouveaux » présent", /^\d+$/.test(texte(d.querySelector("#r-nouveaux b"))) && /nouveaux/.test(texte(d.querySelector("#r-nouveaux span"))));
 check("accueil : compteur des ouverts = cartes", +texte(d.querySelector("#r-ouverts b")) === ouverts.length);
-check("accueil : badges de confiance (HAICOP, gratuit, chaque jour)",
-  /Source officielle HAICOP/.test(texte(d.querySelector(".confiance"))) && /Gratuit, sans inscription/.test(texte(d.querySelector(".confiance"))) && /chaque jour/.test(texte(d.querySelector(".confiance"))));
+check("accueil : plus de rangée de badges sans lien ; « Gratuit, sans inscription » dans le texte d'intro (FR + AR)",
+  !d.querySelector(".confiance, .badge-c") && /Gratuit, sans inscription/.test(texte(d.querySelector(".intro"))) && /مجاني، دون تسجيل/.test(texte(d.querySelector(".intro"))));
 check("accueil : pastille « Mis à jour le … » avec la date de la dernière lecture",
   texte(d.querySelector('.maj [data-l="fr"]')) === "Mis à jour le" && /\d\d\/\d\d\/\d{4}/.test(texte(d.querySelector(".maj"))));
 check("accueil : pas d'avertissement quand les données sont du jour", !d.getElementById("alerte-panne").classList.contains("on"));
@@ -164,11 +164,20 @@ w = await page("index.html", `lang=fr&jour=${JOUR}`);
 check("français par défaut avec ?lang=fr", w.document.documentElement.lang === "fr" && w.document.documentElement.dir === "ltr");
 
 // ---- 3. Toutes les pages : SEO, sources, ©, cache ----------------------------
+// Tuiles « icône + petit texte » qui ont l'air de boutons mais ne mènent nulle part (supprimées le 06/10/2026, demande d'Ahmed)
+const tuilesSansLien = doc => [...doc.body.querySelectorAll("*")].filter(el => {
+  if (/^(a|button|label|summary|svg|h[1-6]|option|select|input|textarea|form|header|footer|nav|main|figure|img|section|article)$/i.test(el.tagName)) return false;
+  if (el.closest("a,button,label,summary,header,footer,nav,form,svg,[hidden],template")) return false;
+  const f = el.firstElementChild;
+  if (!f || f.tagName.toLowerCase() !== "svg" || el.querySelector("a,button,input,select,textarea")) return false;
+  const t = el.textContent.replace(/\s+/g, " ").trim();
+  return t.length > 0 && t.length < 90;
+}).map(el => el.textContent.replace(/\s+/g, " ").trim().slice(0, 40));
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : 42 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions)", urls.length === 42);
 const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
-let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true;
+let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true, okTuiles = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
@@ -181,6 +190,8 @@ for (const u of urls) {
   if (!/<h1><span data-l="fr">[^<]+<\/span><span data-l="ar">[^<]+<\/span><\/h1>/.test(h)) { okH1 = false; console.log("   h1 FR+AR : " + chemin); }
   if (!/HAICOP/.test(h) || !/marchespublics\.gov\.tn/.test(h)) okSrc = false;
   if (!/©/.test(h)) okCopy = false;
+  const morts = tuilesSansLien(new JSDOM(h).window.document);
+  if (morts.length) { okTuiles = false; console.log("   tuile avec icône sans lien : " + chemin + " → " + morts.join(" | ")); }
   if (!/<html [^>]*translate="no"/.test(h) || !h.includes('<meta name="google" content="notranslate">')) { okTrad = false; console.log("   traduction automatique non bloquée : " + chemin); }
 }
 check("toutes les pages du sitemap existent", okFichiers);
@@ -189,6 +200,7 @@ check(`toutes les pages : ?v=${v} (empreinte des fichiers assets, change à chaq
 check("toutes les pages : titre h1 en français ET en arabe", okH1);
 check("toutes les pages : mention de la source HAICOP + lien officiel", okSrc);
 check("toutes les pages : mention © (même sans JavaScript)", okCopy);
+check("toutes les pages : aucune carte avec une icône sans lien (pas de faux bouton)", okTuiles);
 check("toutes les pages : pas de traduction automatique par Chrome (translate=\"no\" + meta google notranslate)", okTrad);
 w = await page("index.html", `jour=${JOUR}`);
 check("pied de page : source HAICOP, « pas officiel », ©", /Source : HAICOP/.test(texte(w.document.getElementById("pied"))) &&

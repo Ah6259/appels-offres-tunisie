@@ -12,7 +12,7 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 
 ## 05/10/2026 — Construction du site (local, pas encore publié)
 5. **Constructeur** `robot/construire_site.py` : pages statiques (accueil, 10 métiers, 26 gouvernorats, à propos), sitemap.
-6. **Style** repris d'Outils pratiques Tunisie (cartes, bandeau dégradé, badges de confiance), couleur ardoise.
+6. **Style** repris d'Outils pratiques Tunisie (cartes, bandeau dégradé ; plus de badges sans lien depuis le 06/10/2026), couleur ardoise.
 7. **Français + arabe** dans la même page ; nombres et dates isolés (U+2066…U+2069) ; objets laissés dans leur langue.
 8. **Dates selon le téléphone du visiteur** : annonces expirées masquées, rouge à moins de 7 jours, « dans N jours ».
 9. **Robustesse** : sauvegarde des données, panne = jamais « vide », bandeau daté, état `etat-source.json`.

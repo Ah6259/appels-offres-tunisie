@@ -485,11 +485,8 @@ def grille(items, actuel, racine, dossier, comptes, ident, icones=False):
     return f'<div class="grille" id="{ident}">{"".join(liens)}</div>'
 
 
-BADGES = f"""<div class="confiance">
-  <div class="badge-c"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>{L("Source officielle HAICOP", "مصدر رسمي: الهيئة العليا")}</div>
-  <div class="badge-c"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>{L("Gratuit, sans inscription", "مجاني، دون تسجيل")}</div>
-  <div class="badge-c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{L("Mis à jour chaque jour", "تحيين يومي")}</div>
-</div>"""
+# (05-06/10/2026) Rangée de badges « Source officielle / Gratuit / Mis à jour » supprimée à la demande d'Ahmed :
+# des cartes avec icône qui ressemblaient à des boutons mais ne faisaient rien. L'info est dans le texte d'intro.
 
 
 # Sécurité (balises meta, GitHub Pages ne permet pas d'en-têtes) : scripts du site seulement, polices Google,
@@ -1060,8 +1057,8 @@ def construire(donnees, sortie, jour):
                 0 <= (dt.date.fromisoformat(a["date_limite"]) - dt.date.fromisoformat(jour)).days < 7)
     hero = f"""{credit_photos(PHOTOS)}
     <h1>{L("Appels d'offres publics en Tunisie", "طلبات العروض العمومية في تونس")}</h1>
-    <p class="intro">{L("Chaque jour, les nouveaux appels d'offres de l'État, des communes et des entreprises publiques, triés par métier et par gouvernorat. Résumé court, lien vers la fiche officielle.",
-                        "كل يوم، طلبات العروض الجديدة للدولة والبلديات والمنشآت العمومية، مرتبة حسب الاختصاص والولاية، مع ملخص قصير ورابط البطاقة الرسمية.")}</p>
+    <p class="intro">{L("Chaque jour, les nouveaux appels d'offres de l'État, des communes et des entreprises publiques, triés par métier et par gouvernorat. Résumé court, lien vers la fiche officielle. Gratuit, sans inscription.",
+                        "كل يوم، طلبات العروض الجديدة للدولة والبلديات والمنشآت العمومية، مرتبة حسب الاختصاص والولاية، مع ملخص قصير ورابط البطاقة الرسمية. مجاني، دون تسجيل.")}</p>
 {bouton_pro_accueil()}"""
     faq = [
         ("Où trouver les appels d'offres publics en Tunisie ?",
@@ -1086,7 +1083,6 @@ def construire(donnees, sortie, jour):
   <ol class="bientot-liste" id="bientot-liste"></ol>
 </section>
 {bouton_alertes(adr)}
-{BADGES}
 {filtres(vis)}
 {liste_html(vis, "", jour, "Aucun appel d'offres ouvert pour ce choix. Essayez un autre métier ou toute la Tunisie.", "لا يوجد طلب عروض مفتوح لهذا الاختيار. جرّب اختصاصًا آخر أو كل الولايات.")}
 {section_prives(prives, "")}
@@ -1204,8 +1200,7 @@ def construire(donnees, sortie, jour):
 <section class="carte" id="credits-photos">
   <h2>{L("Crédits des photos", "حقوق الصور")}</h2>
   <ul class="sources">{"".join(f'<li data-photo="{E(MOSAIQUE)} {E(MOSAIQUE_MOBILE)}">{L(E(ph["sujet_fr"]) + " (mosaïque, " + ph["tuile"] + ", recadrée)", ph["sujet_ar"])} — {L("photo", "صورة")} : <b>{E(ph["auteur"])}</b>, {L("licence", "رخصة")} <a href="{E(ph["licence_url"])}" rel="noopener license">{E(ph["licence"])}</a>, <a href="{E(ph["source_url"])}" rel="noopener">Wikimedia Commons</a>.</li>' for ph in PHOTOS)}</ul>
-</section>
-{BADGES}"""
+</section>"""
     titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"
     desc = "Service gratuit. D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
     pages.append(("a-propos/", page("a-propos/", "../", titre, desc, hero, contenu, v, etat)))

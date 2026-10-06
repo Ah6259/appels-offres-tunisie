@@ -81,7 +81,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 ## Alertes Pro — partie payante (06/10/2026, accord écrit d'Ahmed : « commencer par Appels d'offres »)
 - Offre : alertes PERSONNALISÉES (métiers + gouvernorats) chaque matin sur Telegram. **25 DT/mois ou 199 DT/an**, **14 jours d'essai
   gratuit**, « Sans engagement au-delà d'un an », **pas de renouvellement automatique** (rappel 3 jours avant, puis l'alerte s'arrête).
-  La consultation du site reste GRATUITE (titres « consultation gratuite », badge « Gratuit, sans inscription », FAQ honnête).
+  La consultation du site reste GRATUITE (titres « consultation gratuite », « Gratuit, sans inscription » dans le texte d'intro, FAQ honnête).
 - Constantes `ABO` + `pages_abonnement()` dans `robot/construire_site.py`. Bouton doré « Alertes Pro » dans l'en-tête de CHAQUE page
   (`assets/page.js`, classe `entete-pro`) + gros bouton `#btn-pro-accueil` dans le bandeau de l'accueil + lien dans le pied.
 - Page `abonnement/` : prix + avantages tout de suite, `<details id="paiement">` « Paiement » (D17, IZI, Wafacash au 24 321 390, montant,
@@ -97,3 +97,4 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   (essai / paye / modifier / arret / liste ; le résumé donne le CODE + lien WhatsApp vers le client), secret `TELEGRAM_BOT_TOKEN`.
   Ses listes de métiers/gouvernorats (`tools/classement.py`) = copie de celles de ce fichier : à garder identiques.
 - CSS : `[hidden]{display:none !important}`, `fieldset` avec `min-width:0` (sinon débordement en arabe), piège anti-robot 1 px.
+- **Pas de faux boutons** (Ahmed, 06/10/2026) : rangée de badges « Source officielle / Gratuit / Mis à jour » supprimée (cartes avec icône qui ne menaient nulle part) ; le test vérifie sur toutes les pages qu'aucune carte avec icône n'est sans lien.
