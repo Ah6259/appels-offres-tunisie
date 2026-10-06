@@ -1,9 +1,11 @@
 /* Langue (français / arabe), en-tête et pied de page communs, petites fonctions */
+// La mémoire du navigateur est PARTAGÉE par tous les sites d'ah6259.github.io : n'accepter que « fr » ou « ar »
+// (le site des conférences gardait « en » → textes tous cachés)
 (function () {
   const html = document.documentElement;
   const racine = html.dataset.racine || "";
   let langue = "fr";
-  try { langue = localStorage.getItem("langue") || (navigator.language || "").startsWith("ar") && "ar" || "fr"; } catch (e) {}
+  try { langue = (/^(fr|ar)$/.test(localStorage.getItem("langue") || "") ? localStorage.getItem("langue") : "") || (navigator.language || "").startsWith("ar") && "ar" || "fr"; } catch (e) {}
   const demande = new URLSearchParams(location.search).get("lang");
   if (demande === "ar" || demande === "fr") langue = demande;
 
