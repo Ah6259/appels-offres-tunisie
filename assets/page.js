@@ -22,6 +22,7 @@
         </a>
         <div class="entete-boutons">
           <a class="entete-pro" href="${racine}abonnement/">${T("Alertes Pro", "تنبيهات Pro")}</a>
+          <button class="partager" type="button" aria-label="${T("Partager cette page", "شارك هذه الصفحة")}" title="${T("Partager", "شارك")}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
           <button class="langue" type="button">${T("العربية", "Français")}</button>
         </div>
       </div>`;
@@ -49,6 +50,13 @@
       </div>`;
     document.querySelectorAll(".langue").forEach(b =>
       b.addEventListener("click", () => appliquer(html.lang === "ar" ? "fr" : "ar")));
+    // bouton Partager (demande d'Ahmed) : menu de partage du téléphone, sinon WhatsApp avec le lien de la page
+    document.querySelectorAll(".partager").forEach(b => b.addEventListener("click", async () => {
+      const url = location.href.split("#")[0].replace(/[?&]lang=(fr|ar)/, ""), titre = document.title.split(" | ")[0];
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "partage" + location.pathname.replace("/appels-offres-tunisie/", "/"), title: "Partage", event: true }); } catch (e) {}
+      if (navigator.share) { try { await navigator.share({ title: titre, text: titre, url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+      window.open("https://wa.me/?text=" + encodeURIComponent(titre + " " + url), "_blank", "noopener");
+    }));
   }
 
   function appliquer(l) {

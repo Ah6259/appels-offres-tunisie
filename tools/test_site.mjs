@@ -529,5 +529,27 @@ const avecChat = fichiers.filter(f => /"chat_?id"\s*:\s*-?\d/.test(lire(f)) || /
 check("aucune donnée d'abonné dans le dépôt public (pas de abonnes.json, aucun chat_id ni fin d'essai)", !fichiersAbo.length && !avecChat.length);
 if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...fichiersAbo, ...avecChat].join(", "));
 
+// ---- 12. Bouton « Partager » (demande d'Ahmed, 06/10/2026 : plus de partages entre visiteurs) ----
+{
+  const pagesHtml = fichiers.map(f => f.replace(/\\/g, "/").replace(/^\.\//, "")).filter(f => /(^|\/)index\.html$/.test(f));
+  const ko = [];
+  for (const p of pagesHtml) for (const lang of ["fr", "ar"]) {
+    const wx = await page(p, "lang=" + lang), b = wx.document.querySelector("#entete button.partager");
+    if (!b || b.getAttribute("aria-label") !== (lang === "fr" ? "Partager cette page" : "شارك هذه الصفحة") || !b.querySelector("svg")) ko.push(p + " " + lang);
+  }
+  check(`en-tête : bouton « Partager » (« Partager cette page » / « شارك هذه الصفحة ») sur les ${pagesHtml.length} pages ${ko.join(", ")}`, pagesHtml.length >= 40 && ko.length === 0);
+  for (const p of ["index.html", "abonnement/index.html"]) {
+    const wx = await page(p, "lang=ar"), ouverts = [], comptes = [];
+    wx.open = (...a) => { ouverts.push(a); return null; };
+    wx.goatcounter = { count: o => comptes.push(o) };
+    wx.document.querySelector("#entete button.partager").click();
+    await new Promise(ok => setTimeout(ok, 0));
+    const adresse = URL_SITE + p.replace("index.html", "");
+    check(`${p} : sans navigator.share, « Partager » ouvre wa.me avec l'adresse de la page (sans ?lang ni #) et compte le clic`, !wx.navigator.share && ouverts.length === 1
+      && ouverts[0][0].startsWith("https://wa.me/?text=") && decodeURIComponent(ouverts[0][0].slice(20)).endsWith(" " + adresse) && ouverts[0][1] === "_blank"
+      && comptes.length === 1 && comptes[0].path.startsWith("partage/") && comptes[0].event === true);
+  }
+}
+
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

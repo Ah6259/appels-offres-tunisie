@@ -98,3 +98,4 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   Ses listes de métiers/gouvernorats (`tools/classement.py`) = copie de celles de ce fichier : à garder identiques.
 - CSS : `[hidden]{display:none !important}`, `fieldset` avec `min-width:0` (sinon débordement en arabe), piège anti-robot 1 px.
 - **Pas de faux boutons** (Ahmed, 06/10/2026) : rangée de badges « Source officielle / Gratuit / Mis à jour » supprimée (cartes avec icône qui ne menaient nulle part) ; le test vérifie sur toutes les pages qu'aucune carte avec icône n'est sans lien.
+- **Bouton « Partager »** (06/10/2026, demande d'Ahmed) : icône ronde `.partager` dans `.entete-boutons` des 42 pages (page.js, FR+AR) ; menu de partage du téléphone (`navigator.share`), sinon WhatsApp (`wa.me`) avec l'adresse sans `#` ni `?lang` ; clic compté `partage/<page>` dans GoatCounter. Test : partie 12 de test_site.mjs.
