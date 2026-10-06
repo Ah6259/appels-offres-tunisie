@@ -71,7 +71,7 @@ jobs:
         run: |
           git config user.name "robot-appels-offres"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add donnees index.html sitemap.xml a-propos metier gouvernorat publier encheres
+          git add donnees index.html sitemap.xml a-propos metier gouvernorat publier encheres abonnement
           if git diff --cached --quiet; then echo "Rien de nouveau."; exit 0; fi
           git commit -m "Appels d'offres du $(date +'%d/%m/%Y %H:%M')"
           git push

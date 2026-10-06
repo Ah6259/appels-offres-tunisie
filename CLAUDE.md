@@ -15,8 +15,8 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Source : portail officiel **HAICOP** (marchespublics.gov.tn), robots autorisés par son robots.txt. Lire **lentement**.
   Toujours « source : HAICOP » + lien vers la fiche officielle de chaque annonce. TUNEPS n'est pas lu (échanges chiffrés).
 - Les preuves (robots.txt, charte) sont dans le dossier parent `preuves conditions d'utilisation/` : **jamais publiées**.
-- 40 pages générées par `robot/construire_site.py` : accueil, 10 métiers, 26 gouvernorats (24 + « Plusieurs » + « National »), à propos,
-  `publier/` (entreprises privées), `encheres/` (ventes aux enchères de la Douane).
+- 42 pages générées par `robot/construire_site.py` : accueil, 10 métiers, 26 gouvernorats (24 + « Plusieurs » + « National »), à propos,
+  `publier/` (entreprises privées), `encheres/` (ventes aux enchères de la Douane), `abonnement/` + `abonnement/conditions/` (Alertes Pro).
 - Couleur principale ardoise #24476B (même famille visuelle qu'« Outils pratiques Tunisie »).
 - Bandeau de l'accueil : **mosaïque de 4 vraies photos prises en Tunisie** (05/10 soir, Ahmed : « pas que la construction ») :
   BTP, informatique, santé, port (`PHOTOS` + `MOSAIQUE` / `MOSAIQUE_MOBILE` dans construire_site.py ; 4 côte à côte sur ordinateur,
@@ -61,9 +61,10 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (112 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) et `python tools/test_pannes.py` (85 scénarios).
+1. `node tools/test_site.mjs` (142 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) et `python tools/test_pannes.py` (87 scénarios).
+   Construire avec la date des données (`--aujourdhui AAAA-MM-JJ` = jour de la dernière lecture) sinon le test « données d'hier » échoue.
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
-2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js) : **reconstruire** après toute modification de ces fichiers.
+2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
 4. Image d'aperçu `assets/og-image-v6.jpg` : si on la change, **nouveau nom** (-v7). Toujours en **JPEG < 250 Ko**
    (capture PNG de `tools/og-image.html` puis conversion Pillow qualité 88) : au-delà, WhatsApp n'affiche qu'une petite vignette.
@@ -72,7 +73,27 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 
 ## Mise à jour du 05/10/2026 (soir)
 - **Icône (famille commune des 5 sites)** : un seul symbole en aplats 2-3 tons, accent doré `#F2B33D`, sans texte ni brillance (règle d'Ahmed : jamais d'effet « image IA » ni de clip-art). Ce site : **mégaphone (un « appel » d'offres annoncé)**. Source = `assets/logo.svg` ; PNG 192/512 = dessin arrondi, maskable 512 et iPhone 180 = même dessin sur carré plein, symbole à 78 %. Générateur (hors dépôt) : `_claude code project/icones des sites - generateur.py`. Changer l'icône → renouveler `CACHE_VERSION` de `sw.js`.
-- **« Gratuit » mis en avant** (titres Google, descriptions, aperçus de partage, manifeste), seulement là où c'est vrai. La future partie payante n'est jamais annoncée à l'avance (décision d'Ahmed).
+- **« Gratuit » mis en avant** (titres Google, descriptions, aperçus de partage, manifeste), seulement là où c'est vrai : la CONSULTATION reste gratuite. Depuis le 06/10/2026, la partie payante (Alertes Pro) est annoncée par un bouton doré (accord écrit d'Ahmed).
 - **Aperçus WhatsApp** : tous les sites sont réglés pareil (1200 × 630, JPEG léger). WhatsApp sur PC fait de petites vignettes : envoyer les liens depuis le téléphone (ou transférer un message préparé sur le téléphone).
 - **Règle d'Ahmed : tout tourne sur internet (GitHub), sans son PC ni son intervention, « même s'il meurt ».**
 - Titres : « consultation gratuite » (pas « alertes gratuites » : les alertes personnalisées deviendront payantes) ; descriptions « Gratuit, sans inscription » (`robot/construire_site.py`).
+
+## Alertes Pro — partie payante (06/10/2026, accord écrit d'Ahmed : « commencer par Appels d'offres »)
+- Offre : alertes PERSONNALISÉES (métiers + gouvernorats) chaque matin sur Telegram. **25 DT/mois ou 199 DT/an**, **14 jours d'essai
+  gratuit**, « Sans engagement au-delà d'un an », **pas de renouvellement automatique** (rappel 3 jours avant, puis l'alerte s'arrête).
+  La consultation du site reste GRATUITE (titres « consultation gratuite », badge « Gratuit, sans inscription », FAQ honnête).
+- Constantes `ABO` + `pages_abonnement()` dans `robot/construire_site.py`. Bouton doré « Alertes Pro » dans l'en-tête de CHAQUE page
+  (`assets/page.js`, classe `entete-pro`) + gros bouton `#btn-pro-accueil` dans le bandeau de l'accueil + lien dans le pied.
+- Page `abonnement/` : prix + avantages tout de suite, `<details id="paiement">` « Paiement » (D17, IZI, Wafacash au 24 321 390, montant,
+  motif = nom de l'entreprise), bouton vert « Envoyer la preuve de paiement par WhatsApp » (wa.me/21624321390, texte prérempli),
+  formulaire Formspree `mwlpakqj` (nom, entreprise, téléphone 8 chiffres, e-mail, cases métiers, cases gouvernorats + « Toute la
+  Tunisie », essai ou paiement direct, case conditions). `assets/abonnement.js` (externe, chargé seulement sur cette page) envoie
+  métiers / gouvernorats en une ligne + `pour_activer` (à recopier dans le bouton du dépôt privé), puis montre `#apres-abo`
+  (confirmation, paiement, WhatsApp avec le nom de l'entreprise, instructions Telegram). `abonnement/conditions/` : page sobre.
+- Réglage `TELEGRAM_ROBOT_ALERTES` (robot/reglages.py) : nom du robot sans @ ; vide -> « le lien Telegram vous est envoyé à l'activation ».
+- **Abonnés = données personnelles : JAMAIS dans ce dépôt** (le test le vérifie : pas de abonnes.json, aucun chat_id).
+  Ils sont dans le dépôt **PRIVÉ** `Ah6259/appels-offres-abonnes` (dossier PC `alertes appels d'offres Tunisie/abonnes (prive)/`) :
+  robot `alertes.yml` chaque jour 07h00 UTC (lit la liste publique `donnees/appels-offres.json`), bouton `activer-abonne.yml`
+  (essai / paye / modifier / arret / liste ; le résumé donne le CODE + lien WhatsApp vers le client), secret `TELEGRAM_BOT_TOKEN`.
+  Ses listes de métiers/gouvernorats (`tools/classement.py`) = copie de celles de ce fichier : à garder identiques.
+- CSS : `[hidden]{display:none !important}`, `fieldset` avec `min-width:0` (sinon débordement en arabe), piège anti-robot 1 px.

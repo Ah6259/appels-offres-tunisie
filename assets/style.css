@@ -284,3 +284,77 @@ img,svg{-webkit-user-drag:none}
 #avis-status.err{color:var(--avis-err);font-weight:700}
 .avis .avis-mention{font-size:12.5px;color:var(--doux);margin:2px 0 0}
 .avis{--avis-c:var(--bleu);--avis-c-clair:var(--bleu-clair);--avis-ok:var(--vert);--avis-err:var(--rouge)}
+
+/* ---- Alertes Pro (abonnement payant, 06/10/2026) : bouton doré toujours visible, offre, paiement, inscription ---- */
+[hidden]{display:none !important}
+.logo-nom{min-width:0}
+.entete-boutons{display:flex;align-items:center;gap:8px;flex:none}
+.entete-pro{background:#F2B33D;color:#3A2A00;border-radius:999px;padding:7px 12px;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap}
+.entete-pro:hover{filter:brightness(1.05)}
+@media (max-width:420px){
+  .entete-boutons{gap:5px}
+  .entete-pro{padding:6px 9px;font-size:12.5px}
+  .langue{padding:6px 10px;font-size:12.5px}
+  .logo-nom small{display:none}
+  .logo{font-size:15px;gap:7px}
+  .logo-mark{width:28px;height:28px}
+}
+.btn-pro-grand{display:flex;align-items:center;gap:12px;margin:16px 0 0;max-width:560px;background:#F2B33D;color:#3A2A00;text-decoration:none;
+  border-radius:16px;padding:12px 16px;font-weight:800;font-size:16px;line-height:1.3;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.btn-pro-grand svg{width:28px;height:28px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-pro-grand span{min-width:0}
+.btn-pro-grand small{display:block;font-size:12.5px;font-weight:700;opacity:.85;margin-top:2px}
+.btn-pro-grand:hover{filter:brightness(1.05)}
+.btn-pro{display:block;text-align:center;border:0;width:100%;text-decoration:none;font:inherit;font-weight:800;font-size:15.5px;color:#3A2A00;background:#F2B33D;
+  border-radius:12px;padding:12px 14px;margin:12px 0 0;cursor:pointer}
+.btn-pro:disabled{opacity:.55;cursor:default}
+.btn-clair{display:block;text-align:center;font-weight:800;font-size:15px;color:var(--bleu);background:var(--carte);border:1.5px solid var(--bleu);
+  border-radius:12px;padding:11px 14px;cursor:pointer}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:800;font-size:15px;color:#fff;background:#1F9D55;
+  border-radius:12px;padding:12px 14px;margin:10px 0}
+.btn-wa svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.offre-pro{position:relative;background:var(--carte);border:2px solid #F2B33D;border-radius:var(--rayon);padding:22px 18px 18px;margin:12px 0 14px;box-shadow:var(--ombre)}
+.offre-pro h2{font-size:19px;margin:0 0 4px}
+.offre-pro .ruban{position:absolute;top:-13px;inset-inline-end:14px;margin:0;background:#F2B33D;color:#3A2A00;font-weight:800;font-size:13px;border-radius:999px;padding:3px 12px}
+.offre-pro .prix{font-size:24px;font-weight:800;color:var(--bleu);margin:0 0 10px}
+.offre-pro .prix small{font-size:15px;color:var(--doux);font-weight:700}
+.avantages{margin:0 0 10px;padding-inline-start:20px}
+.avantages li{margin:5px 0}
+.petit{font-size:13px;color:var(--doux);margin:6px 0 0}
+.paiement{margin:12px 0 0}
+.paiement summary{list-style:none}
+.paiement summary::-webkit-details-marker{display:none}
+.paiement[open] summary{margin-bottom:10px}
+dl.paie{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:8px 0;background:var(--bleu-tres-clair);border-radius:12px;padding:12px 14px}
+dl.paie dt{font-weight:800}
+dl.paie dd{margin:0;font-weight:700;min-width:0}
+dl.paie dd small{font-size:13px;color:var(--doux)}
+.abo form{display:flex;flex-direction:column;gap:8px}
+.abo .abo-etiquette{font-weight:700;font-size:14px;margin:4px 0 0}
+.abo input[type=text],.abo input:not([type]),.abo input[type=email]{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--ligne);
+  border-radius:12px;background:var(--carte);color:var(--texte)}
+.abo input[type=email],.abo input[name=telephone]{direction:ltr}
+html[dir="rtl"] .abo input[type=email],html[dir="rtl"] .abo input[name=telephone]{text-align:right}
+.abo input:focus{outline:0;border-color:var(--bleu);box-shadow:0 0 0 4px var(--bleu-clair)}
+.abo fieldset{border:0;margin:8px 0 0;padding:0;min-width:0}
+.abo legend{font-weight:800;font-size:14.5px;padding:0;margin:0 0 6px}
+.abo .cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:6px}
+#abo-metiers .cases{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.abo .case{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;min-width:0;cursor:pointer}
+.abo .cases .case{background:var(--bg);border:1px solid var(--ligne);border-radius:10px;padding:7px 10px}
+.abo .cases .case.tous{grid-column:1 / -1;background:var(--bleu-clair)}
+.abo .case input{flex:none;width:18px;height:18px;margin:0;accent-color:var(--bleu)}
+.abo .case span{min-width:0;overflow-wrap:anywhere}
+.abo input.abo-piege{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);opacity:0;border:0;padding:0}
+#abo-status{margin:0;font-size:14px;color:var(--doux)}
+#abo-status.ok{color:var(--vert);font-weight:700}
+#abo-status.err{color:var(--rouge);font-weight:700}
+.apres-abo{background:var(--vert-clair);border:1px solid var(--vert);border-radius:14px;padding:16px}
+.apres-abo h3{margin:12px 0 6px;font-size:16.5px}
+.apres-abo h3:first-child{margin-top:0}
+.apres-abo p{margin:0 0 8px}
+.apres-abo code,.conditions code{direction:ltr;unicode-bidi:isolate;background:var(--carte);border-radius:6px;padding:1px 6px}
+.conditions h2{font-size:16.5px;margin:16px 0 6px}
+.conditions h2:first-child{margin-top:0}
+.conditions p{margin:0 0 8px}
+@media (max-width:380px){ .btn-pro-grand{font-size:15px;padding:11px 13px} }

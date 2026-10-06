@@ -13,6 +13,9 @@ Aussi : **recherche par mots-clés** (français et arabe, sans souci d'accents),
 Dernier jour » et section « Clôturent bientôt », **ventes aux enchères** de la Douane tunisienne (`encheres/`),
 **publication gratuite** d'appels d'offres par les entreprises privées (`publier/`), **alerte Telegram** quotidienne.
 
+**Partie payante « Alertes Pro »** (`abonnement/`) : alertes personnalisées (métiers + gouvernorats) chaque matin sur Telegram,
+25 DT/mois ou 199 DT/an, 14 jours d'essai gratuit, sans renouvellement automatique. La consultation reste gratuite.
+
 ## Comment ça marche
 | Étape | Fichier | Rôle |
 |---|---|---|
@@ -27,7 +30,7 @@ Dernier jour » et section « Clôturent bientôt », **ventes aux enchères** d
 **Réglages d'Ahmed : un seul fichier, `robot/reglages.py`** (adresse publique du canal Telegram, du canal WhatsApp,
 du formulaire Google et de son CSV). Vide = bouton caché / « Bientôt ». Les jetons secrets ne vont JAMAIS dans ce fichier.
 
-Pages : `index.html`, `metier/<métier>/`, `gouvernorat/<gouvernorat>/`, `a-propos/`, `publier/`, `encheres/`.
+Pages : `index.html`, `metier/<métier>/`, `gouvernorat/<gouvernorat>/`, `a-propos/`, `publier/`, `encheres/`, `abonnement/`, `abonnement/conditions/`.
 Fichiers à la main : `assets/style.css`, `assets/page.js` (langue, en-tête, pied), `assets/app.js` (filtres, tri,
 recherche, étiquettes J-N, dates selon le téléphone du visiteur), `assets/logo.svg`, `assets/og-image-v6.jpg` (source : `tools/og-image.html`).
 Photo du bandeau : **mosaïque de 4 vraies photos prises en Tunisie** (BTP, informatique, santé, port de Radès), car les
@@ -69,6 +72,16 @@ bash tools/captures.sh                             (captures téléphone 340/390
    sur Telegram » apparaît sur le site au prochain passage du robot.
 
 Sans ces secrets, le robot ne fait rien (et ne sonne pas en échec). Un appel d'offres n'est **jamais** annoncé deux fois.
+
+### 1 b. Alertes Pro (abonnement payant)
+Les abonnés ne sont **jamais** dans ce dépôt public : ils sont dans le dépôt **privé** `Ah6259/appels-offres-abonnes`
+(voir son README : activer un abonné depuis l'application GitHub du téléphone, bouton `activer-abonne`).
+1. Créer le robot Telegram avec @BotFather (ou réutiliser celui du canal) et mettre son jeton dans les Secrets du dépôt
+   **privé** : `TELEGRAM_BOT_TOKEN`.
+2. Mettre son nom (sans @) dans `robot/reglages.py` : `TELEGRAM_ROBOT_ALERTES = "AlertesAOTunisieBot"`.
+3. Chaque inscription arrive par e-mail (Formspree, ligne `pour_activer`) → bouton `activer-abonne` (action `essai`) →
+   le résumé donne le CODE et un lien WhatsApp pour l'envoyer au client → le client envoie `/start CODE` au robot.
+4. Preuve de paiement reçue sur WhatsApp → bouton `activer-abonne`, action `paye`, code + mois (1 ou 12) → facture.
 
 ### 2. WhatsApp (plus tard, rien à coder pour l'instant)
 WhatsApp ne permet pas à un robot gratuit de publier dans un canal. Il faudra : créer un **canal WhatsApp**
@@ -161,3 +174,4 @@ LICENSE « tous droits réservés ». Les annonces viennent du portail officiel 
 
 ## Nouveautés
 - 05/10/2026 : nouvelle icône (mégaphone) et « consultation gratuite » dans les titres Google.
+- 06/10/2026 : partie payante « Alertes Pro » (page abonnement, conditions, bouton doré, dépôt privé des abonnés).

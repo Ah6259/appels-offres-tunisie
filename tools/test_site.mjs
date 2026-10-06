@@ -166,8 +166,8 @@ check("français par défaut avec ?lang=fr", w.document.documentElement.lang ===
 // ---- 3. Toutes les pages : SEO, sources, ©, cache ----------------------------
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-check("sitemap : 40 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères)", urls.length === 40);
-const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
+check("sitemap : 42 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions)", urls.length === 42);
+const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
@@ -409,6 +409,113 @@ const secrets = fichiers.filter(f => { const t = lire(f);
     /gh[pousr]_[A-Za-z0-9]{30,}/.test(t) || /[A-Za-z0-9._%+-]+@(yahoo|gmail|hotmail|outlook)\.[a-z]{2,}/i.test(t); });
 check(`aucun secret dans le dépôt (${fichiers.length} fichiers vérifiés : jetons, clés, e-mails privés)`, secrets.length === 0);
 if (secrets.length) console.log("   à vérifier : " + secrets.join(", "));
+
+// ---- 11. Alertes Pro (abonnement payant, 06/10/2026) -----------------------------
+// Bouton doré « Alertes Pro » dans l'en-tête de chaque page (fait par page.js, lien selon la profondeur de la page)
+for (const [chemin, lien] of [["index.html", "abonnement/"], ["metier/informatique/index.html", "../../abonnement/"],
+  ["a-propos/index.html", "../abonnement/"], ["abonnement/index.html", "../abonnement/"], ["abonnement/conditions/index.html", "../../abonnement/"]]) {
+  const fw = await page(chemin, `lang=fr&jour=${JOUR}`), aw = await page(chemin, `lang=ar&jour=${JOUR}`);
+  const b = fw.document.querySelector("#entete .entete-pro"), ba = aw.document.querySelector("#entete .entete-pro");
+  check(`en-tête de ${chemin} : bouton doré « Alertes Pro » vers abonnement/ (FR + AR)`, !!b && b.getAttribute("href") === lien &&
+    texte(b) === "Alertes Pro" && !!ba && texte(ba) === "تنبيهات Pro" && b.href === URL_SITE + "abonnement/");
+}
+check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(lire("assets/page.js")) && /\$\{racine\}abonnement\/">\$\{T\("Alertes Pro \(abonnement\)"/.test(lire("assets/page.js")));
+w = await page("index.html", `lang=fr&jour=${JOUR}`);
+d = w.document;
+const gros = d.querySelector(".hero #btn-pro-accueil");
+check("accueil : gros bouton doré « Alertes Pro » en haut (dans le bandeau) vers abonnement/, 14 jours d'essai gratuit",
+  !!gros && gros.getAttribute("href") === "abonnement/" && /Alertes Pro/.test(texte(gros)) && /14 jours d'essai gratuit/.test(texte(gros)));
+const hAcc = lire("index.html");
+check("accueil : titre « consultation gratuite » et description « Gratuit, sans inscription » gardés",
+  /<title>[^<]*consultation gratuite[^<]*<\/title>/.test(hAcc) && /<meta name="description" content="[^"]*Gratuit, sans inscription/.test(hAcc));
+check("accueil : la FAQ dit vrai (consultation gratuite, Alertes Pro payantes avec essai)", (() => {
+  const q = JSON.parse(hAcc.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]).mainEntity.find(x => /gratuit/.test(x.name));
+  return q && /consultation des appels d'offres est gratuite/.test(q.acceptedAnswer.text) && /25 DT/.test(q.acceptedAnswer.text) && /14 jours d'essai gratuit/.test(q.acceptedAnswer.text); })());
+
+w = await page("abonnement/index.html", "lang=fr");
+d = w.document;
+const mainA = texte(d.querySelector("main"));
+check("abonnement : prix 25 DT / mois ou 199 DT / an affiché tout de suite", /25 DT \/ mois/.test(texte(d.getElementById("abo-prix"))) && /199 DT \/ an/.test(texte(d.getElementById("abo-prix"))));
+check("abonnement : 14 jours d'essai gratuit, sans engagement au-delà d'un an, pas de renouvellement automatique, rappel 3 jours avant",
+  /14 jours d'essai gratuit/.test(mainA) && /Sans engagement au-delà d'un an/.test(mainA) && /Pas de renouvellement automatique/.test(mainA) && /rappel 3 jours avant la fin/.test(mainA));
+check("abonnement : « la consultation du site reste gratuite »", /consultation du site reste gratuite/.test(mainA));
+const det = d.getElementById("paiement");
+const paie = texte(det);
+check("abonnement : bouton « Paiement » (fermé) qui déplie D17, IZI, Wafacash au 24 321 390, montant et motif",
+  det && det.tagName === "DETAILS" && !det.open && texte(det.querySelector('summary [data-l="fr"]')) === "Paiement" &&
+  ["D17", "IZI", "Wafacash", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)));
+const wa = d.getElementById("abo-preuve");
+check("abonnement : bouton vert « Envoyer la preuve de paiement par WhatsApp » vers wa.me/21624321390 avec texte prérempli",
+  !!wa && texte(wa.querySelector('[data-l="fr"]')) === "Envoyer la preuve de paiement par WhatsApp" && wa.href.startsWith("https://wa.me/21624321390?text=") &&
+  /preuve de paiement/.test(decodeURIComponent(wa.href.split("text=")[1])) && wa.rel.includes("noopener") && wa.classList.contains("btn-wa"));
+check("abonnement : « une facture vous est adressée »", /facture vous est adressée/.test(paie));
+const fa = d.getElementById("abo-form");
+const nomsM = [...d.querySelectorAll('#abo-metiers input[name="metiers"]')].map(x => x.value);
+const nomsG = [...d.querySelectorAll('#abo-gouv input[name="gouvernorats"]')].map(x => x.value);
+const metiersSite = urls.filter(u => /\/metier\//.test(u)).map(u => u.match(/metier\/([^/]+)\//)[1]);
+check("abonnement : formulaire Formspree (mwlpakqj) nom, entreprise, téléphone 8 chiffres, e-mail obligatoires",
+  fa && fa.getAttribute("action") === "https://formspree.io/f/mwlpakqj" && fa.method.toLowerCase() === "post" &&
+  ["nom", "entreprise", "telephone", "email"].every(n => fa.querySelector(`[name="${n}"]`)?.required) && fa.querySelector('[name="telephone"]').getAttribute("pattern") === "[0-9 ]{8,11}" &&
+  fa.querySelector('[name="email"]').type === "email" && fa.querySelector('[name="site"]').value === "Alertes appels d'offres Tunisie" && !!fa.querySelector('[name="_gotcha"]'));
+check(`abonnement : cases des 10 métiers du site + 24 gouvernorats + « Toute la Tunisie »`,
+  nomsM.length === 10 && metiersSite.every(m => nomsM.includes(m)) && nomsG.length === 25 && nomsG[0] === "tous" && nomsG.includes("sfax") && !nomsG.includes("national"));
+const radios = [...fa.querySelectorAll('[name="formule"]')];
+check("abonnement : choix « 14 jours d'essai » (par défaut) ou « je paie directement »", radios.length === 2 && radios[0].checked && /essai/.test(radios[0].value) && radios[1].value === "je paie directement");
+const cond = fa.querySelector('[name="conditions"]');
+check("abonnement : case obligatoire « J'accepte les conditions » avec lien vers abonnement/conditions/",
+  cond?.type === "checkbox" && cond.required && cond.closest("label").querySelector("a")?.href === URL_SITE + "abonnement/conditions/" && existsSync(join(root, "abonnement/conditions/index.html")));
+check("abonnement : confirmation cachée avant l'envoi + style : [hidden] reste caché, fieldset min-width:0 (pas de débordement en arabe)",
+  d.getElementById("apres-abo").hidden && /\[hidden\]\{display:none!important\}/.test(css) && /\.abofieldset\{[^}]*min-width:0/.test(css));
+check("abonnement : script externe abonnement.js (seulement sur cette page), aucun script en ligne",
+  /<script src="\.\.\/assets\/abonnement\.js\?v=/.test(lire("abonnement/index.html")) && !/abonnement\.js/.test(lire("index.html")));
+// « Toute la Tunisie » et les gouvernorats s'excluent
+const caseG = v => fa.querySelector(`[name="gouvernorats"][value="${v}"]`);
+const cocher = (el, val = true) => { el.checked = val; el.dispatchEvent(new w.Event("change", { bubbles: true })); };
+cocher(caseG("sfax")); cocher(caseG("tous"));
+check("abonnement : cocher « Toute la Tunisie » décoche les gouvernorats", caseG("tous").checked && !caseG("sfax").checked);
+cocher(caseG("sfax"));
+check("abonnement : cocher un gouvernorat décoche « Toute la Tunisie »", caseG("sfax").checked && !caseG("tous").checked);
+// envoi simulé (aucun vrai message)
+const envois = [];
+w.fetch = (url, o) => { envois.push([url, o]); return Promise.resolve({ ok: true, status: 200 }); };
+fa.querySelector('[name="nom"]').value = "Test Essai";
+fa.querySelector('[name="entreprise"]').value = "Société Essai SARL";
+fa.querySelector('[name="telephone"]').value = "24 321 390";
+fa.querySelector('[name="email"]').value = "essai@example.com";
+const envoyerAbo = async () => { fa.dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); await new Promise(ok => setTimeout(ok, 30)); };
+await envoyerAbo();
+check("abonnement : sans métier coché -> message d'erreur, rien n'est envoyé", envois.length === 0 && d.getElementById("abo-status").className === "err" && /métier/.test(texte(d.getElementById("abo-status"))));
+cocher(fa.querySelector('[name="metiers"][value="informatique"]')); cocher(fa.querySelector('[name="metiers"][value="btp-genie-civil"]'));
+await envoyerAbo();
+check("abonnement : conditions non acceptées -> rien n'est envoyé", envois.length === 0 && /conditions/.test(texte(d.getElementById("abo-status"))));
+cond.checked = true;
+await envoyerAbo();
+const corps = envois[0] && envois[0][1].body;
+check("abonnement : envoi à Formspree avec métiers et gouvernorats sur une ligne, téléphone 8 chiffres, ligne « pour_activer »",
+  envois.length === 1 && envois[0][0] === "https://formspree.io/f/mwlpakqj" && envois[0][1].headers.Accept === "application/json" &&
+  corps.get("metiers") === "btp-genie-civil, informatique" && corps.get("gouvernorats") === "sfax" && corps.get("telephone") === "24321390" &&
+  corps.getAll("metiers").length === 1 && /telephone: 24321390 ; metiers: btp-genie-civil,informatique ; gouvernorats: sfax/.test(corps.get("pour_activer")) &&
+  corps.get("conditions") === "oui" && /essai/.test(corps.get("formule")));
+const apresA = d.getElementById("apres-abo");
+const robotVide = /^TELEGRAM_ROBOT_ALERTES = ""/m.test(reglagesPy);
+check("abonnement : après l'envoi -> confirmation + modes de paiement + bouton WhatsApp (avec le nom de l'entreprise) + instructions Telegram",
+  fa.hidden && !apresA.hidden && /Merci, votre inscription est bien reçue/.test(texte(apresA)) &&
+  ["D17", "IZI", "Wafacash", "24 321 390"].every(x => texte(apresA).includes(x)) &&
+  decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("Société Essai SARL") &&
+  (robotVide ? /lien Telegram vous est envoyé à l'activation/.test(texte(apresA)) : /\/start/.test(texte(apresA)) && !!apresA.querySelector('a[href^="https://t.me/"]')));
+w = await page("abonnement/index.html", "lang=ar");
+check("abonnement en arabe : titre, prix en دينار, bouton الدفع", /تنبيهات Pro/.test(texte(w.document.querySelector("h1"))) &&
+  /دينار/.test(texte(w.document.getElementById("abo-prix"))) && texte(w.document.querySelector('#paiement summary [data-l="ar"]')) === "الدفع");
+w = await page("abonnement/conditions/index.html", "lang=fr");
+const tc = texte(w.document.querySelector("main"));
+check("conditions : prix, essai 14 jours, paiement D17/IZI/Wafacash, pas de renouvellement automatique, données personnelles, résiliation",
+  /25 DT par mois ou 199 DT par an/.test(tc) && /14 premiers jours sont gratuits/.test(tc) && /D17, IZI ou Wafacash/.test(tc) &&
+  /aucun renouvellement automatique/.test(tc) && /Sans engagement au-delà d'un an/.test(tc) && /Données personnelles/.test(tc) && /résiliation/.test(tc) && /facture/.test(tc));
+// Aucune donnée d'abonné dans le dépôt PUBLIC (elles vivent dans le dépôt privé Ah6259/appels-offres-abonnes)
+const fichiersAbo = fichiers.filter(f => /abonn[ée]s?[^/\\]*\.json$/i.test(f) || /memoire[^/\\]*\.json$/i.test(f));
+const avecChat = fichiers.filter(f => /"chat_?id"\s*:\s*-?\d/.test(lire(f)) || /"fin_essai"\s*:\s*"\d{4}/.test(lire(f)));
+check("aucune donnée d'abonné dans le dépôt public (pas de abonnes.json, aucun chat_id ni fin d'essai)", !fichiersAbo.length && !avecChat.length);
+if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...fichiersAbo, ...avecChat].join(", "));
 
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

@@ -20,7 +20,10 @@
           <span class="logo-nom">${T("Alertes appels d'offres", "تنبيهات طلبات العروض")}
             <small>${T("Tunisie · source officielle HAICOP", "تونس · المصدر الرسمي: الهيئة العليا للطلب العمومي")}</small></span>
         </a>
-        <button class="langue" type="button">${T("العربية", "Français")}</button>
+        <div class="entete-boutons">
+          <a class="entete-pro" href="${racine}abonnement/">${T("Alertes Pro", "تنبيهات Pro")}</a>
+          <button class="langue" type="button">${T("العربية", "Français")}</button>
+        </div>
       </div>`;
     const p = document.getElementById("pied");
     const maj = document.body.dataset.majTexte || "";
@@ -33,6 +36,7 @@
           <a href="${racine}#gouvernorats">${T("Par gouvernorat", "حسب الولاية")}</a>
           <a href="${racine}encheres/">${T("Ventes aux enchères", "البيوعات بالمزاد")}</a>
           <a href="${racine}publier/">${T("Publier un appel d'offres", "نشر طلب عروض")}</a>
+          <a href="${racine}abonnement/">${T("Alertes Pro (abonnement)", "تنبيهات Pro (اشتراك)")}</a>
           <a href="${racine}a-propos/">${T("À propos et sources", "من نحن والمصادر")}</a>
           <a href="${racine}#avis">${T("Votre avis", "رأيك")}</a>
         </nav>

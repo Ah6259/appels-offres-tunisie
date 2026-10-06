@@ -60,3 +60,14 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 
 ## 05/10/2026 (soir) — icône et « gratuit »
 - Icône mégaphone (famille commune des sites) ; titres « consultation gratuite » fabriqués par `robot/construire_site.py`.
+
+## 06/10/2026 — Partie payante « Alertes Pro » (accord écrit d'Ahmed)
+- Offre : alertes personnalisées sur Telegram, 25 DT/mois ou 199 DT/an, 14 jours d'essai, sans renouvellement automatique ;
+  la consultation reste gratuite (titres et FAQ honnêtes).
+- Bouton doré « Alertes Pro » dans l'en-tête de toutes les pages + gros bouton sur l'accueil → page `abonnement/` : prix et
+  avantages tout de suite, bouton « Paiement » (D17, IZI, Wafacash, preuve WhatsApp), formulaire Formspree, conditions.
+- Modèle de paiement repris des annuaires (offre Pro, preuve WhatsApp, bouton GitHub d'activation depuis le téléphone).
+- Abonnés (données personnelles) dans un dépôt GitHub **privé** séparé, avec son robot quotidien (Telegram getUpdates +
+  sendMessage, mémoire par abonné, rappel J-3, message de fin) et ses tests avec un faux Telegram.
+- Tests : +30 vérifications du site (dont « aucune donnée d'abonné dans le dépôt public »), +2 scénarios de réglage,
+  45 tests du robot privé ; sabotages volontaires détectés des deux côtés. Captures Edge 500 et 360 px FR + AR.

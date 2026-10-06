@@ -629,6 +629,17 @@ with copie_site() as s:
     code, log = construire(s)
     check("réglage mal écrit (javascript:, adresse non Google) : ignoré, bouton caché, « échec » au journal",
           "btn-telegram" not in lire(s) and "javascript:" not in lire(s) and "pirate.example" not in lire(s, "publier/index.html") and "échec" in log)
+    # Alertes Pro : nom du robot Telegram des abonnés (TELEGRAM_ROBOT_ALERTES)
+    avec_reglages(s, TELEGRAM_ROBOT_ALERTES="AlertesAOEssaiBot")
+    code, log = construire(s)
+    ab = lire(s, "abonnement/index.html")
+    check("Alertes Pro : robot réglé -> lien t.me/AlertesAOEssaiBot + « /start » sur la page abonnement (pas sur l'accueil)",
+          'href="https://t.me/AlertesAOEssaiBot"' in ab and "/start" in ab and "t.me/" not in lire(s))
+    avec_reglages(s, TELEGRAM_ROBOT_ALERTES="javascript:alert(1)")
+    code, log = construire(s)
+    ab = lire(s, "abonnement/index.html")
+    check("Alertes Pro : nom de robot mal écrit -> ignoré, « le lien Telegram vous est envoyé à l'activation », « échec » au journal",
+          "javascript:" not in ab and "t.me/" not in ab and "envoyé à l'activation" in ab and "échec" in log)
 
 import construire_site as CS  # noqa: E402
 PREUVES = os.path.join(os.path.dirname(SITE), "preuves conditions d'utilisation")

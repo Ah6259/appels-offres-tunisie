@@ -24,3 +24,9 @@ FORMULAIRE_PRIVES_URL = ""
 # ex. "https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv".
 # Vide -> robot/prives.py ne fait rien.
 CSV_PRIVES_URL = ""
+
+# Alertes Pro (abonnement payant) : NOM D'UTILISATEUR du robot Telegram qui envoie les alertes personnalisées,
+# sans @ et sans lien, ex. "AlertesAOTunisieBot" (donné par @BotFather, finit toujours par « bot »).
+# Vide -> la page abonnement/ dit « le lien Telegram vous est envoyé à l'activation ».
+# Le JETON de ce robot va dans les Secrets du dépôt PRIVÉ des abonnés (TELEGRAM_BOT_TOKEN), jamais ici.
+TELEGRAM_ROBOT_ALERTES = ""
