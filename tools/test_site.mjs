@@ -166,7 +166,7 @@ check("français par défaut avec ?lang=fr", w.document.documentElement.lang ===
 // ---- 3. Toutes les pages : SEO, sources, ©, cache ----------------------------
 // Tuiles « icône + petit texte » qui ont l'air de boutons mais ne mènent nulle part (supprimées le 06/10/2026, demande d'Ahmed)
 const tuilesSansLien = doc => [...doc.body.querySelectorAll("*")].filter(el => {
-  if (/^(a|button|label|summary|svg|h[1-6]|option|select|input|textarea|form|header|footer|nav|main|figure|img|section|article)$/i.test(el.tagName)) return false;
+  if (/^(a|button|label|summary|svg|h[1-6]|b|strong|em|small|i|option|select|input|textarea|form|header|footer|nav|main|figure|img|section|article)$/i.test(el.tagName)) return false;
   if (el.closest("a,button,label,summary,header,footer,nav,form,svg,[hidden],template")) return false;
   const f = el.firstElementChild;
   if (!f || f.tagName.toLowerCase() !== "svg" || el.querySelector("a,button,input,select,textarea")) return false;
