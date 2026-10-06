@@ -1144,13 +1144,78 @@
    "gouvernorat": "Tataouine",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 13:12"
+  },
+  "Vente-46056133d3": {
+   "id": "Vente-46056133d3",
+   "date_publication": "2026-10-06",
+   "bureau": "Bureau frontalier des douanes de Sousse Port",
+   "objet": "Avis de vente aux enchères sous plis fermés N°12/2026 Divers produits, moteurs et pièces détachées d'occasion sont disponibles au port commercial de Sousse et à l'entrepôt de dédouanement SMA de Sousse. .",
+   "date_limite": "2026-10-20",
+   "heure": "17:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_sousse-port_12-2026.pdf",
+   "lien_cahier": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_sousse-port_12-2026_cahier.pdf",
+   "gouvernorat": "Sousse",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-06 12:57"
+  },
+  "Vente-947c08f745": {
+   "id": "Vente-947c08f745",
+   "date_publication": "2026-10-05",
+   "bureau": "Bureau frontalier des douanes de Sfax Port",
+   "objet": "Avis de vente aux enchères sous plis fermés N°17/2026 Proposé à la vente localement ou à l'exportation par appel d'offres sous pli cacheté au plus offrant, en un seul versement.",
+   "date_limite": "2026-10-20",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_sfax-port_17-2026.pdf",
+   "lien_cahier": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_sfax-port_17-2026_cahier.pdf",
+   "gouvernorat": "Sfax",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-06 12:57"
+  },
+  "Vente-e2f19ffca3": {
+   "id": "Vente-e2f19ffca3",
+   "date_publication": "2026-10-05",
+   "bureau": "Bureau frontalier des douanes de Tabarka",
+   "objet": "Avis de vente aux enchères sous plis fermés N°20/2026 d'une quantité de viande.",
+   "date_limite": "2026-10-09",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-05_AV_OP_Tabarka_N°20-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Jendouba",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-06 12:57"
+  },
+  "Vente-6570f666e2": {
+   "id": "Vente-6570f666e2",
+   "date_publication": "2026-10-05",
+   "bureau": "Bureau frontalier des douanes de Tabarka",
+   "objet": "Avis de vente aux enchères sous plis fermés N°19/2026 de 02 têtes bovines.",
+   "date_limite": "2026-10-09",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-05_AV_OP_Tabarka_N°19-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Jendouba",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-06 12:57"
+  },
+  "Vente-0b0d5564d3": {
+   "id": "Vente-0b0d5564d3",
+   "date_publication": "2026-10-05",
+   "bureau": "Bureau régional des douanes de Jendouba",
+   "objet": "Avis de vente aux enchères sous plis fermés N°04/2026 de diverses marchandises.",
+   "date_limite": "2026-10-21",
+   "heure": "17:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-05_AV_OP_Jendouba_N°04-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Jendouba",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-06 12:57"
   }
  },
- "lignes_lues": 336,
- "derniere_lecture_reussie": "2026-10-05 13:12",
+ "lignes_lues": 331,
+ "derniere_lecture_reussie": "2026-10-06 12:57",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-05 13:12",
+  "depuis": "2026-10-06 12:57",
   "raison": ""
  }
 }
