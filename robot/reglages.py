@@ -29,4 +29,4 @@ CSV_PRIVES_URL = ""
 # sans @ et sans lien, ex. "AlertesAOTunisieBot" (donné par @BotFather, finit toujours par « bot »).
 # Vide -> la page abonnement/ dit « le lien Telegram vous est envoyé à l'activation ».
 # Le JETON de ce robot va dans les Secrets du dépôt PRIVÉ des abonnés (TELEGRAM_BOT_TOKEN), jamais ici.
-TELEGRAM_ROBOT_ALERTES = ""
+TELEGRAM_ROBOT_ALERTES = "AlerteAppelOffreTunisieBot"
