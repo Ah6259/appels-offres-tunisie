@@ -2311,21 +2311,652 @@
    "lu_le": "2026-10-06 12:57",
    "metier": "Études / conseil",
    "gouvernorat": "Nabeul"
+  },
+  "Tender-104105": {
+   "numero": "Tender-104105",
+   "objet": "Cartes à jouer",
+   "descriptif": "",
+   "acheteur": "Régie Nationale des Tabacs et des Allumettes",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-11-17",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-17",
+   "cautionnement_provisoire_dt": [
+    30000
+   ],
+   "cautionnement_total_dt": 30000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104105",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104102": {
+   "numero": "Tender-104102",
+   "objet": "Acquisition véhicule à plateau 4x2 à double cabine",
+   "descriptif": "Acquisition d'un véhicule de service (véhicule à plateau 4x2 à double cabine).",
+   "acheteur": "Municipalité de Fernana",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "JENDOUBA",
+   "regions_lots": [
+    "JENDOUBA"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-10-29",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-10-29",
+   "cautionnement_provisoire_dt": [
+    1000
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104102",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Jendouba"
+  },
+  "Tender-104103": {
+   "numero": "Tender-104103",
+   "objet": "Travaux de réaménagement du local de l'arrondissement de l'office de la topographie et du cadastre à Siliana",
+   "descriptif": "Travaux de réaménagement du local de l'arrondissement de l'office de la topographie et du cadastre à Siliana",
+   "acheteur": "Office de la Topographie et du Cadastre",
+   "type_commande": "Travaux/ Ascenseur",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SILIANA",
+   "regions_lots": [
+    "SILIANA"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-10-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-10-27",
+   "cautionnement_provisoire_dt": [
+    1700
+   ],
+   "cautionnement_total_dt": 1700,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104103",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Siliana"
+  },
+  "Tender-104104": {
+   "numero": "Tender-104104",
+   "objet": "ACQUISITION DES ACCESSOIRES PHARMACEUTIQUES",
+   "descriptif": "",
+   "acheteur": "Institut National Mongi ben Hmida de Neurologie - Tunis",
+   "type_commande": "Biens/ Produits pharmaceutiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-11-05",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-05",
+   "cautionnement_provisoire_dt": [
+    3900
+   ],
+   "cautionnement_total_dt": 3900,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104104",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "Médical",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104101": {
+   "numero": "Tender-104101",
+   "objet": "تهيئة قسم النهوض الاجتماعي والوحدات التابعة لها (وحدتي قبلاط و نفزة)",
+   "descriptif": "تهيئة الجدران والكهرباء وطشم",
+   "acheteur": "Gouvernorat de Béja",
+   "type_commande": "Travaux/ Travaux de Rehabilitation",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEJA",
+   "regions_lots": [
+    "BEJA"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-11-05",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-05",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104101",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Béja"
+  },
+  "Tender-104099": {
+   "numero": "Tender-104099",
+   "objet": "Acquisition de matériel d'embolisation",
+   "descriptif": "",
+   "acheteur": "Institut National Mongi ben Hmida de Neurologie - Tunis",
+   "type_commande": "Biens/ Produits pharmaceutiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-10-16",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-10-16",
+   "cautionnement_provisoire_dt": [
+    3600,
+    580
+   ],
+   "cautionnement_total_dt": 4180,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104099",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "Médical",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104100": {
+   "numero": "Tender-104100",
+   "objet": "تحديث صيانة السكة",
+   "descriptif": "Mission d'assistance à maitrise d'ouvrage relative au programme de modernisation de l'entretien des lignes ferroviaires SNCFT",
+   "acheteur": "Société Nationale des Chemins de Fer Tunisiens",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-11-17",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-17",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104100",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104032": {
+   "numero": "Tender-104032",
+   "objet": "travaux de conception et d'aménagement d'un stand d'exposition en location pour la participation au salon \"thermalies\" France 2027",
+   "descriptif": "TRAVAUX DE CONCEPTION ET D’AMENAGEMENT D’UN STAND D’EXPOSITION EN LOCATIONPOUR LA PARTICIPATION DE L’ONTH AU SALON THERMALIES PARIS -FRANCEDU 21 AU 24 JANVIER 2027",
+   "acheteur": "Office du Thermalisme",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-07",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    1200
+   ],
+   "cautionnement_total_dt": 1200,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104032",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104098": {
+   "numero": "Tender-104098",
+   "objet": "Programme d'extension et d'entretien des établissements d'enseignement au gouvernorat de Zaghouan pour l'année 2025 et 2026",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation de Zaghouan",
+   "type_commande": "Travaux/ Ascenseur",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ZAGOUANE",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-06",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-06",
+   "cautionnement_provisoire_dt": [
+    5800
+   ],
+   "cautionnement_total_dt": 5800,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104098",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:40",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104097": {
+   "numero": "Tender-104097",
+   "objet": "assainissement et aménagement devoiries",
+   "descriptif": "Réhabilitation des voiries et assainissement",
+   "acheteur": "Municipalité Rafraf",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BIZERTE",
+   "regions_lots": [
+    "BIZERTE"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104097",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104096": {
+   "numero": "Tender-104096",
+   "objet": "Marché de location de camion pour le nettoiement de la ville de Sousse",
+   "descriptif": "",
+   "acheteur": "Municipalite de Sousse",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-10-22",
+   "heure_limite": "14:00",
+   "date_ouverture": "2026-10-22",
+   "cautionnement_provisoire_dt": [
+    700,
+    700
+   ],
+   "cautionnement_total_dt": 1400,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104096",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-103979": {
+   "numero": "Tender-103979",
+   "objet": "Audit énergétique thermique et électrique",
+   "descriptif": "Audit énergétique thermique et électrique",
+   "acheteur": "Société Tunisinne de Sidérurgie El Fouladh",
+   "type_commande": "Etudes/ Etudes",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BIZERTE",
+   "regions_lots": [
+    "BIZERTE"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-12",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-103979",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Études / conseil",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104095": {
+   "numero": "Tender-104095",
+   "objet": "بناء مركز الفنون الركحية والدرامية بقبلي",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Kebili",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-04",
+   "heure_limite": "10:30",
+   "date_ouverture": "2026-11-04",
+   "cautionnement_provisoire_dt": [
+    53000
+   ],
+   "cautionnement_total_dt": 53000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "4",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104095",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104094": {
+   "numero": "Tender-104094",
+   "objet": "إحداث فضاء الرماية بجمنة -قبلي",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Kebili",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-04",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-04",
+   "cautionnement_provisoire_dt": [
+    6000
+   ],
+   "cautionnement_total_dt": 6000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104094",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104093": {
+   "numero": "Tender-104093",
+   "objet": "EQUIPEMENT DU POSTE TRANSFORMATEUR HT/BT DE LA STATION DE POMPAGE DU PERIMETRE IRRIGUE EN EUT EL GUETAR",
+   "descriptif": "EQUIPEMENT DU POSTE TRANSFORMATEUR HT/BT DE LA STATION DE POMPAGE DU PERIMETRE IRRIGUE EN EUT EL GUETAR",
+   "acheteur": "Commissariat Régional au Développement Agricole de Gafsa",
+   "type_commande": "Biens/ Autres types de matériels",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GAFSA",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-10-20",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-10-20",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104093",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Électricité",
+   "gouvernorat": "Gafsa"
+  },
+  "Tender-104091": {
+   "numero": "Tender-104091",
+   "objet": "أشغال إصلاح وتدعيم المنشأتين الفنّيتين بالنقطتين الكيلومتريتين32+100 و 32+200 على الخط الحديدي الرابط بين تونس و الجزائر",
+   "descriptif": "Travaux de réparation et de renforcement de deux ouvrages d'art en béton armé aux PK 32+100 et PK 32+200 de la ligne Tunis-Alger",
+   "acheteur": "Société Nationale des Chemins de Fer Tunisiens",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-12",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    20000
+   ],
+   "cautionnement_total_dt": 20000,
+   "specialite": "Routes (R)",
+   "categorie": "Entretien et réparation des ouvrages d’arts",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104091",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104092": {
+   "numero": "Tender-104092",
+   "objet": "اقتناء و نقل و تركيز معدات هيدروميكانكية لمحطات الضخ.",
+   "descriptif": "اقتناء و نقل و تركيز معدات هيدروميكانكية لمحطات الضخ.",
+   "acheteur": "Commissariat Régional au Développement Agricole de Gafsa",
+   "type_commande": "Biens/ Equipements hydromécaniques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GAFSA",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-10-20",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-10-20",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104092",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Gafsa"
+  },
+  "Tender-104089": {
+   "numero": "Tender-104089",
+   "objet": "Fourniture d'un Chromatographe en phase gazeuse",
+   "descriptif": "",
+   "acheteur": "institut des zones arides",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MEDNINE",
+   "regions_lots": [
+    "MEDNINE"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-06",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-06",
+   "cautionnement_provisoire_dt": [
+    1000
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104089",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Autres",
+   "gouvernorat": "National / non précisé"
+  },
+  "Tender-104087": {
+   "numero": "Tender-104087",
+   "objet": "للتزود بالمواد المكتبية و الإعلامية لسنة 2026 طلب عروض مخصص للمؤسسات الصغرى",
+   "descriptif": "",
+   "acheteur": "Hôpital Aziza Othmana de Tunis",
+   "type_commande": "Biens/ Fournitures de bureau",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-06",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-06",
+   "cautionnement_provisoire_dt": [
+    500,
+    800
+   ],
+   "cautionnement_total_dt": 1300,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104087",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Fournitures de bureau",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104081": {
+   "numero": "Tender-104081",
+   "objet": "اقتناء سيارات إدارية لفائدة الوكالة الوطنية للتحكم في الطاقة",
+   "descriptif": "",
+   "acheteur": "Agence Nationale pour la Maîtrise de l’Energie",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    1300,
+    700,
+    2100
+   ],
+   "cautionnement_total_dt": 4100,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104081",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104088": {
+   "numero": "Tender-104088",
+   "objet": "طبع وثائق خصوصية لفائدة الأقسام و المصالح الاستشفائية بالمستشفى الجامعي بقابس لسنة 2026",
+   "descriptif": "",
+   "acheteur": "Hopital Régional de Gabes",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GABES",
+   "regions_lots": [
+    "GABES"
+   ],
+   "date_publication": "2026-10-06",
+   "date_limite": "2026-10-19",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-10-19",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104088",
+   "source": "HAICOP",
+   "lu_le": "2026-10-07 12:41",
+   "metier": "Autres",
+   "gouvernorat": "Gabès"
   }
  },
- "mis_a_jour": "2026-10-06 12:57",
+ "mis_a_jour": "2026-10-07 12:41",
  "dernier_passage": {
-  "date": "2026-10-06 12:57",
+  "date": "2026-10-07 12:41",
   "liste_ok": true,
-  "lus": 27,
+  "lus": 21,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-06 12:57",
+ "derniere_lecture_reussie": "2026-10-07 12:41",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-06 12:57",
+  "depuis": "2026-10-07 12:41",
   "raison": ""
  }
 }

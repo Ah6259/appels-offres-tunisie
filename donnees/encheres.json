@@ -1067,19 +1067,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-76731eee16": {
-   "id": "Vente-76731eee16",
-   "date_publication": "2026-08-03",
-   "bureau": "Recette des Douanes des Ventes de Tunis",
-   "objet": "Avis de vente aux enchères sous plis fermés N°13/2026 Pour 1 portion d'une quantité de pistaches, d'amandes et de noisettes .",
-   "date_limite": "2026-08-07",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-03_AV_OP_tp_13-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Tunis",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-b194f2c02c": {
    "id": "Vente-b194f2c02c",
    "date_publication": "2026-07-28",
@@ -1209,13 +1196,78 @@
    "gouvernorat": "Jendouba",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-06 12:57"
+  },
+  "Vente-95a22c12ff": {
+   "id": "Vente-95a22c12ff",
+   "date_publication": "2026-10-07",
+   "bureau": "Bureau régional des douanes de Médenine",
+   "objet": "Avis de vente aux enchères sous plis fermés N°13/2026 d'une quantité de produits alimentaires.",
+   "date_limite": "2026-10-16",
+   "heure": "12:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-07_AV_OP_Médenine_N°13-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Médenine",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-07 12:41"
+  },
+  "Vente-e8fee5ab8e": {
+   "id": "Vente-e8fee5ab8e",
+   "date_publication": "2026-10-06",
+   "bureau": "Bureau frontalier des opérations commerciales de Radès Port (16)",
+   "objet": "Avis de vente aux enchères sous plis fermés N°14/2026 Une quantité de boissons alcoolisées et spiritueuses diverses destinées aux propriétaires d'entreprises, de grands espaces et de lieux autorisés à vendre des spiritueux et des boissons alcoolisées, pour le premier versement.",
+   "date_limite": "2026-10-21",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_bfd_14-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Ben Arous",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-07 12:41"
+  },
+  "Vente-53a6827c7a": {
+   "id": "Vente-53a6827c7a",
+   "date_publication": "2026-10-06",
+   "bureau": "Bureau frontalier des opérations commerciales de Radès Port (16)",
+   "objet": "Avis de vente aux enchères sous plis fermés N°13/2026 Pour 2 livraisons de déchets et moules de cuivre",
+   "date_limite": "2026-10-21",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_bfd_13-2026.pdf",
+   "lien_cahier": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_bfd_13-2026_cahier.pdf",
+   "gouvernorat": "Ben Arous",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-07 12:41"
+  },
+  "Vente-c52986815d": {
+   "id": "Vente-c52986815d",
+   "date_publication": "2026-10-06",
+   "bureau": "Bureau frontalier des opérations commerciales de Radès Port (16)",
+   "objet": "Avis de vente aux enchères sous plis fermés N°12/2026 de diverses marchandises.",
+   "date_limite": "2026-10-21",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-06_AV_OP_rades-port_12-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Ben Arous",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-07 12:41"
+  },
+  "Vente-d8e9f30b9d": {
+   "id": "Vente-d8e9f30b9d",
+   "date_publication": "2026-10-02",
+   "bureau": "Bureau régional des douanes de Zaghouan",
+   "objet": "Avis de vente aux enchères sous plis fermés N°05/2026 de diverses marchandises.",
+   "date_limite": "2026-10-17",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-02_AV_OP_zaghouan_05-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Zaghouan",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-07 12:41"
   }
  },
- "lignes_lues": 331,
- "derniere_lecture_reussie": "2026-10-06 12:57",
+ "lignes_lues": 335,
+ "derniere_lecture_reussie": "2026-10-07 12:41",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-06 12:57",
+  "depuis": "2026-10-07 12:41",
   "raison": ""
  }
 }
