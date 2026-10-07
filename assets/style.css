@@ -367,3 +367,13 @@ html[dir="rtl"] .abo input[type=email],html[dir="rtl"] .abo input[name=telephone
 .btn-video-site{display:block;max-width:360px;margin:0 auto 12px;padding:16px;border-radius:14px;background:var(--bleu);color:#fff;font-weight:800;font-size:1.15rem;text-decoration:none}
 .btn-video-partager{display:block;width:100%;max-width:360px;margin:0 auto;padding:13px;border-radius:14px;border:2px solid var(--bleu);background:#fff;color:var(--bleu);font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit}
 .lien-video{text-align:center;font-size:.9rem;margin:18px 0 6px}.lien-video a{color:inherit;text-decoration:underline}
+
+/* === BOUTON DE PAIEMENT — commun à tous les sites d'Ahmed (07/10/2026) : reconnaissable au premier coup d'œil.
+   Or en dégradé (comme une pièce), contour brun foncé, relief qui s'enfonce au clic, reflet toutes les 5 s. === */
+.btn-pro-grand,.btn-pro{background:linear-gradient(180deg,#FFD978 0%,#F2B33D 52%,#DC9416 100%)!important;color:#2B1D00!important;
+  border:2px solid #8A5A00!important;box-shadow:0 3px 0 #8A5A00,0 6px 14px rgba(138,90,0,.28)!important;position:relative;overflow:hidden}
+.btn-pro-grand::after,.btn-pro::after{content:"";position:absolute;top:-2px;bottom:-2px;left:-60%;width:38%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:paie-reflet 5s ease-in-out 1.2s infinite}
+.btn-pro-grand:active,.btn-pro:active{transform:translateY(2px);box-shadow:0 1px 0 #8A5A00!important}
+@keyframes paie-reflet{0%{left:-60%}30%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.btn-pro-grand::after,.btn-pro::after{animation:none;display:none}}
