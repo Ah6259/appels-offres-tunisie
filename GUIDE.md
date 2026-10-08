@@ -65,7 +65,7 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 - Offre : alertes personnalisées sur Telegram, 25 DT/mois ou 199 DT/an, 14 jours d'essai, sans renouvellement automatique ;
   la consultation reste gratuite (titres et FAQ honnêtes).
 - Bouton doré « Alertes Pro » dans l'en-tête de toutes les pages + gros bouton sur l'accueil → page `abonnement/` : prix et
-  avantages tout de suite, bouton « Paiement » (D17, IZI, Wafacash, preuve WhatsApp), formulaire Formspree, conditions.
+  avantages tout de suite, bouton « Paiement » (D17, IZI, preuve WhatsApp), formulaire Formspree, conditions.
 - Modèle de paiement repris des annuaires (offre Pro, preuve WhatsApp, bouton GitHub d'activation depuis le téléphone).
 - Abonnés (données personnelles) dans un dépôt GitHub **privé** séparé, avec son robot quotidien (Telegram getUpdates +
   sendMessage, mémoire par abonné, rappel J-3, message de fin) et ses tests avec un faux Telegram.

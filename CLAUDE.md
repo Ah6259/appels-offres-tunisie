@@ -84,7 +84,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   La consultation du site reste GRATUITE (titres « consultation gratuite », « Gratuit, sans inscription » dans le texte d'intro, FAQ honnête).
 - Constantes `ABO` + `pages_abonnement()` dans `robot/construire_site.py`. Bouton doré « Alertes Pro » dans l'en-tête de CHAQUE page
   (`assets/page.js`, classe `entete-pro`) + gros bouton `#btn-pro-accueil` dans le bandeau de l'accueil + lien dans le pied.
-- Page `abonnement/` : prix + avantages tout de suite, `<details id="paiement">` « Paiement » (D17, IZI, Wafacash au 24 321 390, montant,
+- Page `abonnement/` : prix + avantages tout de suite, `<details id="paiement">` « Paiement » (D17, IZI au 24 321 390, montant,
   motif = nom de l'entreprise), bouton vert « Envoyer la preuve de paiement par WhatsApp » (wa.me/21624321390, texte prérempli),
   formulaire Formspree `mwlpakqj` (nom, entreprise, téléphone 8 chiffres, e-mail, cases métiers, cases gouvernorats + « Toute la
   Tunisie », essai ou paiement direct, case conditions). `assets/abonnement.js` (externe, chargé seulement sur cette page) envoie
