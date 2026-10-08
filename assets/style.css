@@ -406,3 +406,15 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .aide-images img{width:100%;height:auto;border-radius:12px;border:1px solid #E1E7EE}
 .aide-images figcaption{font-weight:800;font-size:13px;margin-top:2px}
 .paie-etapes bdi{white-space:nowrap}
+
+/* carte de la Tunisie EN HAUT du bandeau (08/10/2026, règle d'Ahmed : même place sur tous les sites, comme les annuaires) */
+.hero-grille{display:grid;grid-template-columns:1fr 230px;gap:22px;align-items:center}
+.hero-carte{margin:0;background:rgba(255,255,255,.95);border-radius:18px;padding:10px 10px 6px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.hero-carte figcaption{font-size:12px;color:#5A6878;text-align:center;font-weight:700;margin-top:2px}
+.hero-carte.petite{max-width:190px;justify-self:end}
+.hero-carte .tn-terre{fill:#E4ECF4;stroke:#24476B}
+.hero-carte .tn-b circle{fill:#24476B;stroke:#fff}
+.hero-carte .tn-b.vide circle{fill:#5A6878;fill-opacity:.35}
+.hero-carte .tn-b text{fill:#fff}
+.tn-b.actif circle{fill:#F2B33D!important;fill-opacity:1;stroke:#16304A!important;stroke-width:2.5}
+@media (max-width:640px){ .hero-grille{grid-template-columns:1fr} .hero-carte,.hero-carte.petite{max-width:240px;width:100%;margin:6px auto 0;justify-self:center} }

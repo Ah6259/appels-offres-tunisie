@@ -74,6 +74,12 @@ check("photo du bandeau : crédit de CHAQUE photo affiché (4 auteurs, licences 
   [...credit.querySelectorAll("a")].filter(a => /commons\.wikimedia\.org\/wiki\/File:/.test(a.href)).length === 4 &&
   photos.every(f => (credit.dataset.photo || "").split(" ").includes("assets/photos/" + f)));
 const bulles = [...d.querySelectorAll(".carte-tn .tn-b")];
+{ const acc = lire("index.html"), G24 = bulles.map(b => b.dataset.gouv);
+  check("carte de la Tunisie EN HAUT (bandeau) de l'accueil et de chaque page de gouvernorat, avant la liste (règle d'Ahmed du 08/10/2026, comme les annuaires)",
+    /class="hero-carte"/.test(acc) && acc.indexOf('class="hero-carte"') < acc.indexOf('id="liste"')
+    && G24.every(g => (h => h.indexOf('class="hero-carte petite"') > 0 && h.indexOf('class="hero-carte petite"') < h.indexOf('id="liste"')
+      && new RegExp(`class="tn-b[^"]*actif" data-gouv="${g}"`).test(h))(lire(`gouvernorat/${g}/index.html`))));
+  check("carte : nombres recalculés par le navigateur seulement sur l'accueil", /if \(document\.getElementById\("f-gouv"\)\) document\.querySelectorAll\("\.tn-b\[data-gouv\] text"\)/.test(lire("assets/app.js"))); }
 check("carte de la Tunisie : 24 gouvernorats, chacun lien vers sa page", bulles.length === 24 &&
   bulles.every(b => b.getAttribute("href") === `gouvernorat/${b.dataset.gouv}/`));
 check("carte de la Tunisie : nombre de chaque bulle = appels d'offres ouverts du gouvernorat", bulles.every(b => {

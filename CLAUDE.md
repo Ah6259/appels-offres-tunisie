@@ -23,6 +23,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   2 × 2 sur téléphone) + dégradé bleu ; crédit de CHAQUE photo sous le titre, dans « À propos » et sur `og-image-v6.jpg`. Toute nouvelle photo : licence
   vérifiée, preuve dans `preuves conditions d'utilisation/<date>/photos/`, pas de visage ni d'emblème, ≤ 150 Ko.
 - SVG maison : icônes métiers (`ICONES_METIER`), carte schématique de la Tunisie (`carte_tunisie()`).
+- **Carte de la Tunisie EN HAUT du bandeau** (08/10/2026, règle d'Ahmed : même place sur TOUS les sites, comme les annuaires) :
+  `hero_carte()` sur l'accueil (à droite du titre ; sous le texte sur téléphone) et sur chaque page de gouvernorat (le sien en doré,
+  `actif`) ; app.js ne recompte les bulles que sur l'accueil (sinon 0 partout). Plus de carte en bas dans « Par gouvernorat ».
 - **Réglages d'Ahmed : `robot/reglages.py` seul** (canal Telegram, WhatsApp, formulaire Google + CSV). Vide = caché / « Bientôt ».
 - Recherche `#f-q` (FR + AR, sans accents, `?q=`), résumé traduit `robot/glossaire.py` (≥ 50 % de mots reconnus sinon rien,
   jamais inventer), étiquettes J-7…J-1 / Dernier jour + « Clôturent bientôt » (date du visiteur), liens `#Tender-…`.

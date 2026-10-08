@@ -259,8 +259,9 @@ def _contour():
     return "M" + " L".join(f"{x},{y}" for x, y in (_proj(*p) for p in CONTOUR_TN)) + "Z"
 
 
-def carte_tunisie(comptes, racine):
-    """Carte schématique : une bulle par gouvernorat, taille selon le nombre d'appels d'offres ouverts."""
+def carte_tunisie(comptes, racine, actif=""):
+    """Carte schématique : une bulle par gouvernorat, taille selon le nombre d'appels d'offres ouverts ;
+    `actif` = gouvernorat de la page (bulle dorée)."""
     dj = _proj(10.9, 33.8)
     bulles = []
     for nom, slug, ar in GOUVERNORATS:
@@ -269,13 +270,24 @@ def carte_tunisie(comptes, racine):
         x, y = _proj(*POSITIONS_TN[slug])
         n = comptes.get(slug, 0)
         r = round(min(18, 7.5 + 2.2 * n ** 0.5), 1) if n else 4.5
+        if slug == actif:
+            r = max(r, 11)
         bulles.append(
-            f'<a href="{racine}gouvernorat/{slug}/" class="tn-b{" vide" if not n else ""}" data-gouv="{slug}">'
+            f'<a href="{racine}gouvernorat/{slug}/" class="tn-b{" vide" if not n else ""}{" actif" if slug == actif else ""}" data-gouv="{slug}">'
             f'<title>{E(nom)} · {ar} : {n}</title><circle cx="{x}" cy="{y}" r="{r}"/>'
             + (f'<text x="{x}" y="{y}">{n}</text>' if n else "") + "</a>")
     return (f'<svg class="carte-tn" viewBox="0 0 232 462" role="img" aria-label="Carte de la Tunisie : appels d\'offres ouverts par gouvernorat">'
             f'<path class="tn-terre" d="{_contour()}"/><ellipse class="tn-terre" cx="{dj[0]}" cy="{dj[1]}" rx="9" ry="6.5"/>'
             + "".join(bulles) + "</svg>")
+
+
+def hero_carte(texte, comptes, racine, actif=""):
+    """Bandeau : texte à gauche, carte de la Tunisie EN HAUT à droite (règle d'Ahmed du 08/10/2026 : même place sur tous
+    les sites, comme les annuaires) ; sur téléphone, la carte passe sous le texte, avant la liste."""
+    leg = (L("Appels d'offres ouverts par gouvernorat. Touchez une bulle.", "طلبات العروض المفتوحة حسب الولاية. المس دائرة.") if not actif
+           else L("Autres gouvernorats : touchez la carte", "ولايات أخرى: المس الخريطة"))
+    return (f'    <div class="hero-grille"><div class="hero-texte">\n{texte}\n    </div>'
+            f'<figure class="hero-carte{" petite" if actif else ""}">{carte_tunisie(comptes, racine, actif)}<figcaption>{leg}</figcaption></figure></div>')
 
 
 ILLUSTRATION = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" role="img" aria-label="Avis d’appel d’offres avec cachet des marchés publics et carte de la Tunisie">
@@ -1116,11 +1128,7 @@ def construire(donnees, sortie, jour):
 <h2 class="titre-section" id="metiers">{L("Par métier", "حسب الاختصاص")}</h2>
 {grille(items_m, None, "", "metier", cm, "grille-metiers", True)}
 <h2 class="titre-section" id="gouvernorats">{L("Par gouvernorat", "حسب الولاية")}</h2>
-<section class="carte bloc-carte">
-  <figure>{carte_tunisie(cg, "")}
-  <figcaption>{L("Appels d'offres ouverts par gouvernorat. Touchez une bulle pour voir la liste.", "طلبات العروض المفتوحة حسب الولاية. المس دائرة لعرض القائمة.")}</figcaption></figure>
-  {grille(items_g, None, "", "gouvernorat", cg, "grille-gouv")}
-</section>
+{grille(items_g, None, "", "gouvernorat", cg, "grille-gouv")}
 <section class="carte" style="margin-top:18px">
   <h2>{L("Comment ça marche ?", "كيف يعمل الموقع؟")}</h2>
   <ol class="etapes" data-l="fr">
@@ -1139,6 +1147,7 @@ def construire(donnees, sortie, jour):
     titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, consultation gratuite | Alertes appels d'offres"
     desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
             "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")
+    hero = hero_carte(hero, cg, "")
     pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld, " hero-photo")))
 
     # ---- une page par métier
@@ -1175,6 +1184,8 @@ def construire(donnees, sortie, jour):
         titre = f"{h_fr} (Tunisie) — {len(sel)} ouverts, consultation gratuite | Alertes appels d'offres"
         desc = (f"Appels d'offres publics {'— ' + nom.lower() if special else 'dans le gouvernorat de ' + nom}, encore ouverts, triés par date limite, "
                 f"avec caution et lien vers la fiche officielle HAICOP. Gratuit, sans inscription. {h_ar}.")
+        if not special:
+            hero = hero_carte(hero, cg, "../../", slug)
         pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
     # ---- à propos et sources

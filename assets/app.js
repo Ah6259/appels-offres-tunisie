@@ -148,8 +148,9 @@
     }
     const rO = document.getElementById("r-ouverts");
     if (rO) rO.querySelector("b").textContent = ouvertes.length;
-    // Carte de la Tunisie : nombres recalculés avec la date du visiteur
-    document.querySelectorAll(".tn-b[data-gouv] text").forEach(t => {
+    // Carte de la Tunisie : nombres recalculés avec la date du visiteur, seulement sur l'accueil (qui a TOUS les appels d'offres) ;
+    // sur une page de gouvernorat la liste ne contient que ce gouvernorat : on garde les nombres du robot
+    if (document.getElementById("f-gouv")) document.querySelectorAll(".tn-b[data-gouv] text").forEach(t => {
       t.textContent = ouvertes.filter(c => c.dataset.gouv === t.parentNode.dataset.gouv).length;
     });
     const rU = document.getElementById("r-urgent");
