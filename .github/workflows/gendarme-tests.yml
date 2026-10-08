@@ -8,11 +8,14 @@ on:
   workflow_run:
     workflows: [Tests, tests]   # le nom varie selon les sites
     types: [completed]
+  schedule:
+    - cron: "30 8 * * *"        # ménage, après le gendarme IA (8h à Tunis = 7h UTC)
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
   gendarme:
-    if: startsWith(github.event.workflow_run.head_branch, 'entretien-tests/')
+    if: github.event_name == 'workflow_run' && startsWith(github.event.workflow_run.head_branch, 'entretien-tests/')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -57,3 +60,30 @@ jobs:
         run: |
           b="${{ github.event.workflow_run.head_branch }}"
           git push -f origin "HEAD:refs/heads/gendarme-ok/${b#entretien-tests/}"
+  # MÉNAGE (les robots du cloud ne peuvent pas supprimer de branche, essai du 08/10/2026) : réparation fusionnée →
+  # ses deux branches sont effacées ; marque non fusionnée → le gendarme IA l'a refusée : la marque est retirée et la
+  # branche entretien-tests reste (le gendarme IA la signale chaque jour à Ahmed tant qu'elle existe).
+  menage:
+    if: github.event_name != 'workflow_run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ménage des branches d'entretien
+        run: |
+          for ref in $(git for-each-ref --format='%(refname:strip=3)' refs/remotes/origin/gendarme-ok/); do
+            if git show-ref -q "refs/remotes/origin/entretien-tests/$ref" && git merge-base --is-ancestor "origin/entretien-tests/$ref" origin/main; then
+              echo "fusionnée : $ref"; git push origin --delete "entretien-tests/$ref" "gendarme-ok/$ref"
+            elif [ "$(git log -1 --format=%ct "origin/gendarme-ok/$ref")" -lt "$(date -u -d 'today 07:00' +%s)" ]; then
+              echo "refusée par le gendarme IA : $ref"; git push origin --delete "gendarme-ok/$ref"
+            else
+              echo "posée après le passage du gendarme IA : $ref (relue demain)"
+            fi
+          done
+          for ref in $(git for-each-ref --format='%(refname:strip=3)' refs/remotes/origin/entretien-tests/); do
+            if git merge-base --is-ancestor "origin/entretien-tests/$ref" origin/main; then
+              echo "déjà fusionnée : $ref"; git push origin --delete "entretien-tests/$ref"
+            fi
+          done
