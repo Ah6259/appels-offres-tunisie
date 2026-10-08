@@ -1261,13 +1261,26 @@
    "gouvernorat": "Zaghouan",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-07 12:41"
+  },
+  "Vente-6afa3039cb": {
+   "id": "Vente-6afa3039cb",
+   "date_publication": "2026-10-08",
+   "bureau": "Bureau frontalier des douanes de Tabarka",
+   "objet": "Avis de vente aux enchères sous plis fermés N°21/2026 Pour la première fois, 12 boucs ont été abattus à l'abattoir municipal de Tabarka.",
+   "date_limite": "2026-10-13",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-08_AV_OP_bfd_21-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Jendouba",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-08 12:56"
   }
  },
- "lignes_lues": 335,
- "derniere_lecture_reussie": "2026-10-07 12:41",
+ "lignes_lues": 336,
+ "derniere_lecture_reussie": "2026-10-08 12:56",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-07 12:41",
+  "depuis": "2026-10-08 12:56",
   "raison": ""
  }
 }
