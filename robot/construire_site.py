@@ -788,18 +788,26 @@ def lien_appli(m, t):
     return f'<a class="appli" href="{APPLIS[m][t == "iPhone"]}" target="_blank" rel="noopener noreferrer">{t}</a>'
 
 
+# logos D17 / IZI et bouton « ? » avec les écrans d'exemple dessinés par nous (demande d'Ahmed, 08/10/2026)
+def logo_appli(m):
+    return f'<img src="../assets/paiement/{m.lower()}.png" alt="{m}" width="44" height="44">'
+
+
+AIDE_TRANSFERT = '<details class="aide-transfert"><summary title="Voir comment faire" aria-label="Voir comment faire">?</summary><div class="aide-images"><figure><img src="../assets/paiement/transfert-d17.svg" alt="Exemple D17 : Transfert rapide, numéro 24 321 390, montant, Envoyer" width="240" height="300" loading="lazy"><figcaption>D17</figcaption></figure><figure><img src="../assets/paiement/transfert-izi.svg" alt="Exemple IZI : Transfert, montant, numéro 24 321 390, Suivant" width="240" height="300" loading="lazy"><figcaption>IZI</figcaption></figure></div></details>'
+
+
 def liste_paiements():
     # paiement en 3 étapes numérotées + phrase de confiance (demande d'Ahmed, 08/10/2026 : simple, rassurant)
-    applis = "".join(f'<a class="appli-btn" href="{APPLIS[m][0]}" target="_blank" rel="noopener noreferrer">{m}</a>' for m in ABO["paiements"])
+    applis = "".join(f'<a class="appli-btn" href="{APPLIS[m][0]}" target="_blank" rel="noopener noreferrer">{logo_appli(m)}</a>' for m in ABO["paiements"])
     ios = " · ".join(f'<a class="appli" href="{APPLIS[m][1]}" target="_blank" rel="noopener noreferrer">{m}</a>' for m in ABO["paiements"])
     e1, e1b = L("Ouvrez l'application :", 'افتح التطبيق:'), L('Sur iPhone :', 'على آيفون:')
-    e2 = L('Choisissez « Transfert rapide » (dans IZI : « Transfert ») et tapez le numéro', 'اختر « التحويل السريع » (في IZI: « تحويل ») وأدخل الرقم')
+    e2 = L('Dans D17 : « Transfert d’argent » puis « Transfert rapide ». Dans IZI : « Transfert ». Tapez le numéro', 'في D17: « تحويل الأموال » ثم « التحويل السريع ». في IZI: « تحويل ». أدخل الرقم')
     e2b, e3 = L('Montant :', 'المبلغ:'), L('Motif :', 'سبب الدفع:')
     e3b = L('Puis envoyez la capture du paiement par WhatsApp (bouton vert).', 'ثم أرسل لقطة الدفع عبر واتساب (الزر الأخضر).')
     conf = L("Vous payez directement dans l'application officielle de La Poste Tunisienne (D17) ou de Zitouna Paiement (IZI) : nous ne voyons jamais vos codes.", 'تدفع مباشرة في التطبيق الرسمي للبريد التونسي (D17) أو لزيتونة للدفع (IZI): لا نطّلع أبدًا على رموزك.')
     motif = L('le nom de votre entreprise', 'اسم مؤسستك')
     paie = (f'<div class="paie"><ol class="paie-etapes"><li>{e1} <span class="applis">{applis}</span><br><span class="petit">{e1b} {ios}</span></li>'
-            f'<li>{e2} <strong><bdi dir="ltr">{ABO["numero"]}</bdi></strong>.<br>{e2b} <strong>{prix_abo()}</strong></li>'
+            f'<li>{e2} <strong><bdi dir="ltr">{ABO["numero"]}</bdi></strong>.<br>{e2b} <strong>{prix_abo()}</strong>{AIDE_TRANSFERT}</li>'
             f'<li>{e3} <strong>{motif}</strong>. {e3b}</li></ol><p class="paie-confiance">{conf}</p></div>')
     return paie
 

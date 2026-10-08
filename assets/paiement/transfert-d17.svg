@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" font-family="Arial, Helvetica, sans-serif">
+  <title>D17 : Transfert d'argent, Transfert rapide, numéro 24 321 390, montant, Envoyer</title>
+  <rect width="240" height="300" rx="18" fill="#F4F7FA"/>
+  <text x="120" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#14202E">Transfert d'argent</text>
+  <rect x="16" y="44" width="208" height="236" rx="16" fill="#2A8FD8"/>
+  <rect x="28" y="58" width="34" height="34" rx="9" fill="#5FB1EC"/>
+  <path d="M47 63l-9 14h7l-3 11 10-15h-7z" fill="#fff"/>
+  <text x="72" y="74" font-size="15" font-weight="700" fill="#fff">Transfert rapide</text>
+  <text x="72" y="90" font-size="10" fill="#DDEFFC">Avec juste un numéro</text>
+  <rect x="28" y="110" width="184" height="40" rx="20" fill="#fff"/>
+  <rect x="36" y="118" width="40" height="24" rx="8" fill="#EAF3FB"/>
+  <text x="56" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#1F5FA8">+216</text>
+  <text x="88" y="136" font-size="15" font-weight="700" fill="#14202E">24 321 390</text>
+  <rect x="28" y="160" width="184" height="40" rx="20" fill="#fff"/>
+  <rect x="36" y="168" width="40" height="24" rx="8" fill="#EAF3FB"/>
+  <text x="56" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#1F5FA8">TND</text>
+  <text x="88" y="186" font-size="14" fill="#5B6878">montant</text>
+  <rect x="28" y="216" width="184" height="42" rx="21" fill="#fff"/>
+  <text x="120" y="243" text-anchor="middle" font-size="16" font-weight="700" fill="#1F7BC8">Envoyer ➤</text>
+  <circle cx="214" cy="112" r="11" fill="#F2B33D"/><text x="214" y="117" text-anchor="middle" font-size="13" font-weight="700" fill="#14202E">1</text>
+  <circle cx="214" cy="162" r="11" fill="#F2B33D"/><text x="214" y="167" text-anchor="middle" font-size="13" font-weight="700" fill="#14202E">2</text>
+  <circle cx="214" cy="218" r="11" fill="#F2B33D"/><text x="214" y="223" text-anchor="middle" font-size="13" font-weight="700" fill="#14202E">3</text>
+</svg>

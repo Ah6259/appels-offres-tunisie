@@ -392,3 +392,17 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .appli-btn{display:inline-block;padding:3px 16px;border-radius:999px;background:#fff;border:2px solid var(--p);color:var(--p);font-weight:800;text-decoration:none}
 .paie a.appli{color:var(--p);font-weight:800;text-decoration:underline;text-underline-offset:2px}
 .paie-confiance{font-size:13px;color:var(--doux,#5B6878);margin:6px 0 10px}
+
+/* logos D17 / IZI dans les boutons et bouton « ? » avec les écrans d'exemple (08/10/2026, règle commune) */
+.appli-btn{display:inline-flex;align-items:center;gap:6px}
+.appli-btn:has(img){padding:3px;border-radius:14px;line-height:0}
+.appli-btn img{width:44px;height:44px;border-radius:10px;flex:none;display:block}
+.aide-transfert{display:inline-block;vertical-align:middle;margin-inline-start:6px}
+.aide-transfert>summary{list-style:none;cursor:pointer;width:26px;height:26px;border-radius:50%;background:#F2B33D;color:#14202E;font-weight:800;display:inline-grid;place-items:center}
+.aide-transfert>summary::-webkit-details-marker{display:none}
+.aide-transfert[open]{display:block;margin:8px 0 0}
+.aide-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.aide-images figure{margin:0;text-align:center}
+.aide-images img{width:100%;height:auto;border-radius:12px;border:1px solid #E1E7EE}
+.aide-images figcaption{font-weight:800;font-size:13px;margin-top:2px}
+.paie-etapes bdi{white-space:nowrap}
