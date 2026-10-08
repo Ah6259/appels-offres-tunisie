@@ -380,3 +380,15 @@ html[dir="rtl"] .abo input[type=email],html[dir="rtl"] .abo input[name=telephone
 
 /* liens vers les applications de paiement (D17, IZI), 08/10/2026 */
 .paie a.appli{color:var(--p);font-weight:800;text-decoration:underline;text-underline-offset:2px}
+
+/* paiement en 3 étapes (08/10/2026) ; quand « Paiement » est ouvert, la description au-dessus se cache (règle commune à tous les sites) */
+:has(> details.paiement[open]) > .masque-si-paiement{display:none}
+.paie-etapes{list-style:none;counter-reset:etape;margin:10px 0;padding:0;display:grid;gap:8px}
+.paie-etapes>li{counter-increment:etape;position:relative;padding:10px 12px 10px 46px;background:var(--p-tres-clair,var(--p-clair,#EEF3F8));border-radius:12px;line-height:1.55;font-weight:600}
+.paie-etapes>li::before{content:counter(etape);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--p);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+html[dir="rtl"] .paie-etapes>li{padding:10px 46px 10px 12px}
+html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
+.applis{display:inline-flex;flex-wrap:wrap;gap:8px;vertical-align:middle}
+.appli-btn{display:inline-block;padding:3px 16px;border-radius:999px;background:#fff;border:2px solid var(--p);color:var(--p);font-weight:800;text-decoration:none}
+.paie a.appli{color:var(--p);font-weight:800;text-decoration:underline;text-underline-offset:2px}
+.paie-confiance{font-size:13px;color:var(--doux,#5B6878);margin:6px 0 10px}

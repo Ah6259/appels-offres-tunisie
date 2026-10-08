@@ -455,7 +455,8 @@ const det = d.getElementById("paiement");
 const paie = texte(det);
 check("abonnement : bouton « Paiement » (fermé) qui déplie D17 et IZI (liens vers les applications officielles, mode d'emploi, plus de Wafacash) au 24 321 390, montant et motif",
   det && det.tagName === "DETAILS" && !det.open && texte(det.querySelector('summary [data-l="fr"]')) === "Paiement" &&
-  ["D17", "IZI", "Transfert rapide", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)) && !/Wafacash/i.test(det.outerHTML) && ["tn.mobipost", "tn.izi.consumer", "id1475640303", "id1603653941"].every(u => det.querySelector(`a.appli[href*="${u}"]`)));
+  ["D17", "IZI", "Transfert rapide", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)) && !/Wafacash/i.test(det.outerHTML) && ["tn.mobipost", "tn.izi.consumer", "id1475640303", "id1603653941"].every(u => det.querySelector(`a[href*="${u}"]`)));
+check("paiement simple et rassurant (règle commune du 08/10/2026) : 3 étapes numérotées, phrase de confiance, description de l'offre cachée quand « Paiement » est ouvert", /<ol class="paie-etapes">/.test(lire("abonnement/index.html")) && /class="paie-confiance"/.test(lire("abonnement/index.html")) && /class="avantages[^"]*masque-si-paiement/.test(lire("abonnement/index.html")) && lire("assets/style.css").includes(":has(> details.paiement[open]) > .masque-si-paiement{display:none}"));
 const wa = d.getElementById("abo-preuve");
 check("abonnement : bouton vert « Envoyer la preuve de paiement par WhatsApp » vers wa.me/21624321390 avec texte prérempli",
   !!wa && texte(wa.querySelector('[data-l="fr"]')) === "Envoyer la preuve de paiement par WhatsApp" && wa.href.startsWith("https://wa.me/21624321390?text=") &&

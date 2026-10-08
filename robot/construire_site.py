@@ -789,12 +789,19 @@ def lien_appli(m, t):
 
 
 def liste_paiements():
-    modes = "".join(f'<dt>{lien_appli(m, m)}</dt><dd><bdi dir="ltr">{ABO["numero"]}</bdi> · {lien_appli(m, "iPhone")}</dd>' for m in ABO["paiements"])
-    comment, mode = L("Comment payer", "طريقة الدفع"), L("Touchez D17 ou IZI pour ouvrir l'application (sur iPhone : le lien « iPhone »). Dans D17 : « Transfert d'argent » puis « Transfert rapide » ; dans IZI : « Transfert ». Tapez le numéro 24 321 390 et le montant, puis « Envoyer ».", 'اضغط على D17 أو IZI لفتح التطبيق (على آيفون: رابط « iPhone »). في D17: « تحويل الأموال » ثم « التحويل السريع »؛ في IZI: « تحويل ». أدخل الرقم \u206824 321 390\u2069 والمبلغ ثم « إرسال ».')
-    modes += f'<dt>{comment}</dt><dd>{mode}</dd>'
-    return (f'<dl class="paie">{modes}'
-            f'<dt>{L("Montant", "المبلغ")}</dt><dd>{prix_abo()}</dd>'
-            f'<dt>{L("Motif", "سبب الدفع")}</dt><dd>{L("le nom de votre entreprise", "اسم مؤسستك")}</dd></dl>')
+    # paiement en 3 étapes numérotées + phrase de confiance (demande d'Ahmed, 08/10/2026 : simple, rassurant)
+    applis = "".join(f'<a class="appli-btn" href="{APPLIS[m][0]}" target="_blank" rel="noopener noreferrer">{m}</a>' for m in ABO["paiements"])
+    ios = " · ".join(f'<a class="appli" href="{APPLIS[m][1]}" target="_blank" rel="noopener noreferrer">{m}</a>' for m in ABO["paiements"])
+    e1, e1b = L("Ouvrez l'application :", 'افتح التطبيق:'), L('Sur iPhone :', 'على آيفون:')
+    e2 = L('Choisissez « Transfert rapide » (dans IZI : « Transfert ») et tapez le numéro', 'اختر « التحويل السريع » (في IZI: « تحويل ») وأدخل الرقم')
+    e2b, e3 = L('Montant :', 'المبلغ:'), L('Motif :', 'سبب الدفع:')
+    e3b = L('Puis envoyez la capture du paiement par WhatsApp (bouton vert).', 'ثم أرسل لقطة الدفع عبر واتساب (الزر الأخضر).')
+    conf = L("Vous payez directement dans l'application officielle de La Poste Tunisienne (D17) ou de Zitouna Paiement (IZI) : nous ne voyons jamais vos codes.", 'تدفع مباشرة في التطبيق الرسمي للبريد التونسي (D17) أو لزيتونة للدفع (IZI): لا نطّلع أبدًا على رموزك.')
+    motif = L('le nom de votre entreprise', 'اسم مؤسستك')
+    paie = (f'<div class="paie"><ol class="paie-etapes"><li>{e1} <span class="applis">{applis}</span><br><span class="petit">{e1b} {ios}</span></li>'
+            f'<li>{e2} <strong><bdi dir="ltr">{ABO["numero"]}</bdi></strong>.<br>{e2b} <strong>{prix_abo()}</strong></li>'
+            f'<li>{e3} <strong>{motif}</strong>. {e3b}</li></ol><p class="paie-confiance">{conf}</p></div>')
+    return paie
 
 
 def texte_telegram(robot):
@@ -839,7 +846,7 @@ def pages_abonnement(adr, v, etat):
   <p class="ruban">{L(f"{essai} jours d'essai gratuit", f"تجربة مجانية {ISO(essai)} يومًا")}</p>
   <h2>{L("Abonnement Alertes Pro", "اشتراك تنبيهات Pro")}</h2>
   <p class="prix" id="abo-prix">{prix_abo()}</p>
-  <ul class="avantages">
+  <ul class="avantages masque-si-paiement">
     <li>{L("Un message chaque matin sur <b>Telegram</b> : seulement les nouveaux appels d'offres de vos métiers et de vos gouvernorats", "رسالة كل صباح على <b>تيليغرام</b>: طلبات العروض الجديدة في اختصاصاتك وولاياتك فقط")}</li>
     <li>{L("Plusieurs métiers et gouvernorats au choix, ou toute la Tunisie", "عدة اختصاصات وولايات حسب اختيارك، أو كل الولايات")}</li>
     <li>{L("Pour chaque annonce : date limite et lien vers la fiche officielle HAICOP", "لكل إعلان: آخر أجل ورابط البطاقة الرسمية")}</li>
@@ -847,7 +854,7 @@ def pages_abonnement(adr, v, etat):
     <li>{L(f"Pas de renouvellement automatique : rappel {rj} jours avant la fin, puis l'alerte s'arrête simplement", f"لا تجديد آلي: تذكير قبل النهاية بـ{ISO(rj)} أيام، ثم يتوقف التنبيه ببساطة")}</li>
     <li><strong>{L("Sans engagement au-delà d'un an", "دون التزام بعد السنة")}</strong></li>
   </ul>
-  <p class="petit">{L(f"{essai} jours d'essai gratuit, sans paiement. Ensuite, paiement par D17 ou IZI (bouton « Paiement »). Une facture vous est adressée.",
+  <p class="petit masque-si-paiement">{L(f"{essai} jours d'essai gratuit, sans paiement. Ensuite, paiement par D17 ou IZI (bouton « Paiement »). Une facture vous est adressée.",
                       f"تجربة مجانية لمدة {ISO(essai)} يومًا دون دفع. بعدها، الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ (زر «الدفع»). تُرسل إليك فاتورة.")}</p>
   <details class="paiement" id="paiement"><summary class="btn-clair">{L("Paiement", "الدفع")}</summary>
     {liste_paiements()}

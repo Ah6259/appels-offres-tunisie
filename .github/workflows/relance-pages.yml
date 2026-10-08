@@ -1,0 +1,32 @@
+# RELANCE DE LA PUBLICATION (kit commun, 08/10/2026) — copié tel quel dans chaque site (ne pas modifier ici).
+# Quand plusieurs sites sont envoyés en même temps, la publication GitHub Pages peut rester bloquée « en file d'attente »
+# puis échouer sans aucune faute du site (cas d'avocats-notaires et de mariage le 08/10). Ce robot la relance tout seul,
+# 3 fois au plus pour la même version ; Ahmed n'est prévenu que si la 3e relance échoue aussi.
+name: Relance de la publication
+on:
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+permissions:
+  pages: write
+  actions: read
+jobs:
+  relancer:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Relancer la publication (3 fois au plus pour la même version)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          echecs=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=50" \
+                   -q '[.workflow_runs[] | select(.name == "pages build and deployment" and .conclusion == "failure")] | length' 2>/dev/null || echo 1)
+          echo "Échecs de publication pour cette version : $echecs"
+          if [ "$echecs" -gt 3 ]; then
+            echo "::error::La publication échoue encore après 3 relances : à regarder."
+            exit 1
+          fi
+          sleep $((60 * echecs))
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" -q .status
