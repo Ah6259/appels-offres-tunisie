@@ -754,9 +754,9 @@ def carte_enchere(v, racine):
 # Les abonnés (données personnelles) sont dans le dépôt PRIVÉ Ah6259/appels-offres-abonnes, jamais ici.
 ABO = {
     "prix_mois": 25, "prix_an": 199, "essai_jours": 14, "rappel_jours": 3,
-    "numero": "24 321 390",                         # D17, IZI, Wafacash
+    "numero": "24 321 390",                         # D17, IZI
     "whatsapp": "21624321390",                      # preuve de paiement
-    "paiements": ["D17", "IZI", "Wafacash"],
+    "paiements": ["D17", "IZI"],
     "formspree": "https://formspree.io/f/mwlpakqj",
 }
 TEXTE_PREUVE = ("Bonjour, voici la preuve de paiement de mon abonnement Alertes Pro "
@@ -778,8 +778,20 @@ def lien_preuve(ident="abo-preuve"):
             + L("Envoyer la preuve de paiement par WhatsApp", "أرسل إثبات الدفع عبر واتساب") + "</a>")
 
 
+APPLIS = {  # liens officiels (Google Play, App Store), demande d'Ahmed du 08/10/2026 ; Wafacash retiré (pas de compte)
+    "D17": ("https://play.google.com/store/apps/details?id=tn.mobipost", "https://apps.apple.com/tn/app/digipostbank-d17/id1475640303"),
+    "IZI": ("https://play.google.com/store/apps/details?id=tn.izi.consumer", "https://apps.apple.com/tn/app/izi/id1603653941"),
+}
+
+
+def lien_appli(m, t):
+    return f'<a class="appli" href="{APPLIS[m][t == "iPhone"]}" target="_blank" rel="noopener noreferrer">{t}</a>'
+
+
 def liste_paiements():
-    modes = "".join(f'<dt>{m}</dt><dd><bdi dir="ltr">{ABO["numero"]}</bdi></dd>' for m in ABO["paiements"])
+    modes = "".join(f'<dt>{lien_appli(m, m)}</dt><dd><bdi dir="ltr">{ABO["numero"]}</bdi> · {lien_appli(m, "iPhone")}</dd>' for m in ABO["paiements"])
+    comment, mode = L("Comment payer", "طريقة الدفع"), L("Touchez D17 ou IZI pour ouvrir l'application (sur iPhone : le lien « iPhone »). Dans D17 : « Transfert d'argent » puis « Transfert rapide » ; dans IZI : « Transfert ». Tapez le numéro 24 321 390 et le montant, puis « Envoyer ».", 'اضغط على D17 أو IZI لفتح التطبيق (على آيفون: رابط « iPhone »). في D17: « تحويل الأموال » ثم « التحويل السريع »؛ في IZI: « تحويل ». أدخل الرقم \u206824 321 390\u2069 والمبلغ ثم « إرسال ».')
+    modes += f'<dt>{comment}</dt><dd>{mode}</dd>'
     return (f'<dl class="paie">{modes}'
             f'<dt>{L("Montant", "المبلغ")}</dt><dd>{prix_abo()}</dd>'
             f'<dt>{L("Motif", "سبب الدفع")}</dt><dd>{L("le nom de votre entreprise", "اسم مؤسستك")}</dd></dl>')
@@ -835,8 +847,8 @@ def pages_abonnement(adr, v, etat):
     <li>{L(f"Pas de renouvellement automatique : rappel {rj} jours avant la fin, puis l'alerte s'arrête simplement", f"لا تجديد آلي: تذكير قبل النهاية بـ{ISO(rj)} أيام، ثم يتوقف التنبيه ببساطة")}</li>
     <li><strong>{L("Sans engagement au-delà d'un an", "دون التزام بعد السنة")}</strong></li>
   </ul>
-  <p class="petit">{L(f"{essai} jours d'essai gratuit, sans paiement. Ensuite, paiement par D17, IZI ou Wafacash (bouton « Paiement »). Une facture vous est adressée.",
-                      f"تجربة مجانية لمدة {ISO(essai)} يومًا دون دفع. بعدها، الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ أو ⁨Wafacash⁩ (زر «الدفع»). تُرسل إليك فاتورة.")}</p>
+  <p class="petit">{L(f"{essai} jours d'essai gratuit, sans paiement. Ensuite, paiement par D17 ou IZI (bouton « Paiement »). Une facture vous est adressée.",
+                      f"تجربة مجانية لمدة {ISO(essai)} يومًا دون دفع. بعدها، الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ (زر «الدفع»). تُرسل إليك فاتورة.")}</p>
   <details class="paiement" id="paiement"><summary class="btn-clair">{L("Paiement", "الدفع")}</summary>
     {liste_paiements()}
     {lien_preuve()}
@@ -901,7 +913,7 @@ def pages_abonnement(adr, v, etat):
     <p id="abo-telegram">{texte_telegram(adr["robot"])}</p>
     <p class="petit">{L("Installez Telegram (gratuit) sur votre téléphone si ce n'est pas déjà fait.", "ثبّت تيليغرام (مجاني) على هاتفك إن لم يكن مثبتًا.")}</p>
     <h3>{L("Paiement", "الدفع")}</h3>
-    <p>{L("Après l'essai (ou tout de suite si vous avez choisi de payer directement), payez par D17, IZI ou Wafacash, avec pour motif le nom de votre entreprise :", "بعد التجربة (أو فورًا إن اخترت الدفع مباشرة)، ادفع عبر ⁨D17⁩ أو ⁨IZI⁩ أو ⁨Wafacash⁩ مع ذكر اسم مؤسستك كسبب للدفع:")}</p>
+    <p>{L("Après l'essai (ou tout de suite si vous avez choisi de payer directement), payez par D17 ou IZI, avec pour motif le nom de votre entreprise :", "بعد التجربة (أو فورًا إن اخترت الدفع مباشرة)، ادفع عبر ⁨D17⁩ أو ⁨IZI⁩ مع ذكر اسم مؤسستك كسبب للدفع:")}</p>
     {liste_paiements()}
     {lien_preuve("abo-preuve-apres")}
     <p class="petit">{L(f"Une facture vous est adressée. Pas de renouvellement automatique : nous vous prévenons {rj} jours avant la fin.", f"تُرسل إليك فاتورة. لا تجديد آلي: نعلمك قبل النهاية بـ{ISO(rj)} أيام.")}</p>
@@ -931,8 +943,8 @@ def pages_abonnement(adr, v, etat):
          f"Les {essai} premiers jours sont gratuits, sans paiement et sans engagement. Sans paiement à la fin de l'essai, l'alerte s'arrête simplement.",
          f"الأيام الـ{ISO(essai)} الأولى مجانية، دون دفع ودون التزام. إذا لم يتم الدفع في نهاية التجربة، يتوقف التنبيه ببساطة."),
         ("4. Paiement et facture", "4. الدفع والفاتورة",
-         f"Paiement par D17, IZI ou Wafacash au {num}, avec pour motif le nom de l'entreprise, puis preuve envoyée par WhatsApp au même numéro. La période payée commence après l'essai gratuit ou après la période déjà payée. Une facture est adressée à l'abonné.",
-         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ أو ⁨Wafacash⁩ على الرقم {ISO(num)} مع ذكر اسم المؤسسة، ثم إرسال الإثبات عبر واتساب على نفس الرقم. تبدأ المدة المدفوعة بعد التجربة المجانية أو بعد المدة المدفوعة سابقًا. تُرسل فاتورة إلى المشترك."),
+         f"Paiement par D17 ou IZI au {num}, avec pour motif le nom de l'entreprise, puis preuve envoyée par WhatsApp au même numéro. La période payée commence après l'essai gratuit ou après la période déjà payée. Une facture est adressée à l'abonné.",
+         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ على الرقم {ISO(num)} مع ذكر اسم المؤسسة، ثم إرسال الإثبات عبر واتساب على نفس الرقم. تبدأ المدة المدفوعة بعد التجربة المجانية أو بعد المدة المدفوعة سابقًا. تُرسل فاتورة إلى المشترك."),
         ("5. Pas de renouvellement automatique", "5. لا تجديد آلي",
          f"Sans engagement au-delà d'un an. Il n'y a aucun renouvellement automatique : un rappel est envoyé {rj} jours avant la fin ; sans nouveau paiement, l'alerte s'arrête simplement à la date de fin.",
          f"دون التزام بعد السنة. لا يوجد أي تجديد آلي: يُرسل تذكير قبل النهاية بـ{ISO(rj)} أيام، ودون دفع جديد يتوقف التنبيه ببساطة في تاريخ النهاية."),
@@ -957,7 +969,7 @@ def pages_abonnement(adr, v, etat):
 </section>"""
     titre = "Conditions de l'abonnement Alertes Pro (appels d'offres sur Telegram) | Alertes appels d'offres"
     desc = (f"Conditions d'Alertes Pro : {pm} DT / mois ou {pa} DT / an, {essai} jours d'essai gratuit, "
-            "pas de renouvellement automatique, paiement D17, IZI ou Wafacash, données personnelles et arrêt.")
+            "pas de renouvellement automatique, paiement D17 ou IZI, données personnelles et arrêt.")
     res.append(("abonnement/conditions/", page("abonnement/conditions/", "../../", titre, desc, hero, contenu, v, etat)))
     return res
 

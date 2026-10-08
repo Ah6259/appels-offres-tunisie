@@ -453,9 +453,9 @@ check("abonnement : 14 jours d'essai gratuit, sans engagement au-delà d'un an, 
 check("abonnement : « la consultation du site reste gratuite »", /consultation du site reste gratuite/.test(mainA));
 const det = d.getElementById("paiement");
 const paie = texte(det);
-check("abonnement : bouton « Paiement » (fermé) qui déplie D17, IZI, Wafacash au 24 321 390, montant et motif",
+check("abonnement : bouton « Paiement » (fermé) qui déplie D17 et IZI (liens vers les applications officielles, mode d'emploi, plus de Wafacash) au 24 321 390, montant et motif",
   det && det.tagName === "DETAILS" && !det.open && texte(det.querySelector('summary [data-l="fr"]')) === "Paiement" &&
-  ["D17", "IZI", "Wafacash", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)));
+  ["D17", "IZI", "Transfert rapide", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)) && !/Wafacash/i.test(det.outerHTML) && ["tn.mobipost", "tn.izi.consumer", "id1475640303", "id1603653941"].every(u => det.querySelector(`a.appli[href*="${u}"]`)));
 const wa = d.getElementById("abo-preuve");
 check("abonnement : bouton vert « Envoyer la preuve de paiement par WhatsApp » vers wa.me/21624321390 avec texte prérempli",
   !!wa && texte(wa.querySelector('[data-l="fr"]')) === "Envoyer la preuve de paiement par WhatsApp" && wa.href.startsWith("https://wa.me/21624321390?text=") &&
@@ -512,7 +512,7 @@ const apresA = d.getElementById("apres-abo");
 const robotVide = /^TELEGRAM_ROBOT_ALERTES = ""/m.test(reglagesPy);
 check("abonnement : après l'envoi -> confirmation + modes de paiement + bouton WhatsApp (avec le nom de l'entreprise) + instructions Telegram",
   fa.hidden && !apresA.hidden && /Merci, votre inscription est bien reçue/.test(texte(apresA)) &&
-  ["D17", "IZI", "Wafacash", "24 321 390"].every(x => texte(apresA).includes(x)) &&
+  ["D17", "IZI", "24 321 390"].every(x => texte(apresA).includes(x)) &&
   decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("Société Essai SARL") &&
   (robotVide ? /lien Telegram vous est envoyé à l'activation/.test(texte(apresA)) : /\/start/.test(texte(apresA)) && !!apresA.querySelector('a[href^="https://t.me/"]')));
 w = await page("abonnement/index.html", "lang=ar");
@@ -520,8 +520,8 @@ check("abonnement en arabe : titre, prix en دينار, bouton الدفع", /ت�
   /دينار/.test(texte(w.document.getElementById("abo-prix"))) && texte(w.document.querySelector('#paiement summary [data-l="ar"]')) === "الدفع");
 w = await page("abonnement/conditions/index.html", "lang=fr");
 const tc = texte(w.document.querySelector("main"));
-check("conditions : prix, essai 14 jours, paiement D17/IZI/Wafacash, pas de renouvellement automatique, données personnelles, résiliation",
-  /25 DT par mois ou 199 DT par an/.test(tc) && /14 premiers jours sont gratuits/.test(tc) && /D17, IZI ou Wafacash/.test(tc) &&
+check("conditions : prix, essai 14 jours, paiement D17/IZI, pas de renouvellement automatique, données personnelles, résiliation",
+  /25 DT par mois ou 199 DT par an/.test(tc) && /14 premiers jours sont gratuits/.test(tc) && /D17 ou IZI/.test(tc) &&
   /aucun renouvellement automatique/.test(tc) && /Sans engagement au-delà d'un an/.test(tc) && /Données personnelles/.test(tc) && /résiliation/.test(tc) && /facture/.test(tc));
 // Aucune donnée d'abonné dans le dépôt PUBLIC (elles vivent dans le dépôt privé Ah6259/appels-offres-abonnes)
 const fichiersAbo = fichiers.filter(f => /abonn[ée]s?[^/\\]*\.json$/i.test(f) || /memoire[^/\\]*\.json$/i.test(f));

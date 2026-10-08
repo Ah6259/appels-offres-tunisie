@@ -377,3 +377,6 @@ html[dir="rtl"] .abo input[type=email],html[dir="rtl"] .abo input[name=telephone
 .btn-pro-grand:active,.btn-pro:active{transform:translateY(2px);box-shadow:0 1px 0 #8A5A00!important}
 @keyframes paie-reflet{0%{left:-60%}30%,100%{left:130%}}
 @media (prefers-reduced-motion:reduce){.btn-pro-grand::after,.btn-pro::after{animation:none;display:none}}
+
+/* liens vers les applications de paiement (D17, IZI), 08/10/2026 */
+.paie a.appli{color:var(--p);font-weight:800;text-decoration:underline;text-underline-offset:2px}
