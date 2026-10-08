@@ -1,0 +1,59 @@
+# GENDARME 1 (sans IA) — kit commun « gendarme des tests », copié tel quel dans chaque site (ne pas modifier ici).
+# Un robot ne modifie JAMAIS un test directement sur main : il propose sa réparation sur une branche
+# « entretien-tests/... ». Quand les tests de cette branche passent, ce gendarme vérifie que la réparation
+# n'affaiblit rien. Si tout est bon, il pose la marque « gendarme-ok/... » ; le GENDARME 2 (robot IA séparé,
+# routine « gendarme-ia-tests ») relit ensuite et fusionne. Si l'un des deux refuse : alerte à Ahmed.
+name: Gendarme des tests
+on:
+  workflow_run:
+    workflows: [Tests, tests]   # le nom varie selon les sites
+    types: [completed]
+permissions:
+  contents: write
+jobs:
+  gendarme:
+    if: startsWith(github.event.workflow_run.head_branch, 'entretien-tests/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      - name: Les tests de la branche passent-ils ?
+        if: github.event.workflow_run.conclusion != 'success'
+        run: |
+          echo "::error::Les tests échouent sur ${{ github.event.workflow_run.head_branch }} : réparation refusée."
+          exit 1
+      - name: La réparation n'affaiblit-elle rien ?
+        run: |
+          python3 - <<'PY'
+          import re, subprocess, sys
+          def git(*a): return subprocess.run(["git", *a], capture_output=True, encoding="utf8", check=True).stdout
+          base = git("merge-base", "origin/main", "HEAD").strip()
+          erreurs = []
+          # 1. Seuls les fichiers de test peuvent changer (jamais le site, jamais les robots GitHub), aucun fichier supprimé.
+          TEST = re.compile(r"^tools/(test[^/]*|sabotage[^/]*|[^/]*pannes[^/]*)$")
+          for ligne in git("diff", "--name-status", base, "HEAD").splitlines():
+              etat, *chemins = ligne.split("\t")
+              for c in chemins:
+                  if not TEST.match(c): erreurs.append(f"fichier hors tests modifié : {c}")
+              if etat.startswith("D"): erreurs.append(f"fichier de test supprimé : {chemins[0]}")
+          # 2. Aucune vérification, aucun sabotage, aucun scénario de panne en moins.
+          MOTIF = re.compile(r"\bcheck\(|\bassert\b|\bdef test_|@scenario\(|^\s*\[\s*[\"'`]", re.M)
+          for c in git("diff", "--name-only", base, "HEAD").splitlines():
+              if not TEST.match(c): continue
+              avant = len(MOTIF.findall(subprocess.run(["git", "show", f"{base}:{c}"], capture_output=True, encoding="utf8").stdout))
+              apres = len(MOTIF.findall(open(c, encoding="utf8").read()))
+              print(f"{c} : {avant} vérifications avant, {apres} après")
+              if apres < avant: erreurs.append(f"{c} : {avant - apres} vérification(s) en moins")
+          # 3. Le message doit annoncer un entretien des tests.
+          if not any(m.startswith("Entretien des tests") for m in git("log", "--format=%s", f"{base}..HEAD").splitlines()):
+              erreurs.append("aucun commit « Entretien des tests : … »")
+          for e in erreurs: print("::error::" + e)
+          sys.exit(1 if erreurs else 0)
+          PY
+      - name: Marque « gendarme-ok » pour le gendarme IA
+        run: |
+          b="${{ github.event.workflow_run.head_branch }}"
+          git push -f origin "HEAD:refs/heads/gendarme-ok/${b#entretien-tests/}"
