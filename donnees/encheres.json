@@ -1274,13 +1274,26 @@
    "gouvernorat": "Jendouba",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-08 12:56"
+  },
+  "Vente-ea5ad6db42": {
+   "id": "Vente-ea5ad6db42",
+   "date_publication": "2026-10-08",
+   "bureau": "Bureau frontalier des douanes de Sfax Port",
+   "objet": "Avis de vente aux enchères sous plis fermés N°18/2026 de diverses marchandises.",
+   "date_limite": "2026-10-23",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-08_AV_OP_sfax-port_18-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Sfax",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-09 10:47"
   }
  },
- "lignes_lues": 336,
- "derniere_lecture_reussie": "2026-10-08 12:56",
+ "lignes_lues": 337,
+ "derniere_lecture_reussie": "2026-10-09 10:47",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-08 12:56",
+  "depuis": "2026-10-09 10:47",
   "raison": ""
  }
 }
