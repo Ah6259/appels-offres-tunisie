@@ -74,6 +74,7 @@ jobs:
           git add donnees index.html sitemap.xml a-propos metier gouvernorat publier encheres abonnement
           if git diff --cached --quiet; then echo "Rien de nouveau."; exit 0; fi
           git commit -m "Appels d'offres du $(date +'%d/%m/%Y %H:%M')"
+          git pull -q --rebase --autostash
           git push
 
       - name: Alerte si la source est en panne (issue GitHub)
