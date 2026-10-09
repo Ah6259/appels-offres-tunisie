@@ -1287,13 +1287,26 @@
    "gouvernorat": "Sfax",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-09 10:47"
+  },
+  "Vente-a64b8a33e1": {
+   "id": "Vente-a64b8a33e1",
+   "date_publication": "2026-10-09",
+   "bureau": "Bureau frontalier des douanes de Sakiet Sidi Youssef",
+   "objet": "Avis de vente aux enchères sous plis fermés N°05/2026 de diverses marchandises.",
+   "date_limite": "2026-10-23",
+   "heure": "13:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-09_AV_OP_SSY_N°05-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Le Kef",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-09 12:47"
   }
  },
- "lignes_lues": 337,
- "derniere_lecture_reussie": "2026-10-09 10:47",
+ "lignes_lues": 338,
+ "derniere_lecture_reussie": "2026-10-09 12:47",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-09 10:47",
+  "depuis": "2026-10-09 12:47",
   "raison": ""
  }
 }

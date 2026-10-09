@@ -1,6 +1,6 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 07/10/2026 et le 09/10/2026 · 39 appels d'offres encore ouverts · mis à jour le 09/10/2026 à 10:47
+Publiés entre le 07/10/2026 et le 09/10/2026 · 44 appels d'offres encore ouverts · mis à jour le 09/10/2026 à 12:47
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
 
@@ -10,7 +10,7 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **إسداء خدمات تغذية المرضى المقيمين وأطباء الاستمرار بالمستشفى الجامعي الحسين بوزيان بقفصة خلال سنة 2027** — Hopital Régional Houcine Bouzeiene de Gafsa · Services/ Services · date limite **31/10/2026 10:00** · caution 7 000 DT · [Tender-104114](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104114) (source : HAICOP)
 
-## BTP / génie civil (12)
+## BTP / génie civil (15)
 
 ### Ben Arous
 
@@ -26,6 +26,10 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Entretien des réservoirs d’eau au gouvernorat de Gabès** — Commissariat Régional au Développement Agricole de Gabès · Travaux/ Génie Civil · date limite **28/10/2026 10:00** · caution 2 500 DT · [Tender-104119](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104119) (source : HAICOP)
 
+### Kairouan
+
+- **Travaux de réparation et renforcement de la structure du Bloc administratif.** — Manufacture Tunisienne des Tabacs de Kairouan · Travaux/ Génie Civil · date limite **10/11/2026 10:00** · caution 6 000 DT · [Tender-104152](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104152) (source : HAICOP)
+
 ### Kasserine
 
 - **Construction d'un dépôt de stockage au sein du parc des équipements hydraulique de CRDA Kasserine** — Commissariat Régional au Développement Agricole Kasserine · Travaux/ Autres travaux · date limite **09/11/2026 09:30** · caution 2 000 DT · [Tender-104144](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104144) (source : HAICOP)
@@ -37,6 +41,11 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### National / non précisé
 
 - **réalisation des travaux d'entretien de réhabilitation et d'extension du réseau d'assainissement des uséés de la commune de jbel oust** — Municipalité Jebel Elwost · Travaux/ VRD · date limite **06/11/2026 10:00** · caution 3 000 000 DT · [Tender-104142](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104142) (source : HAICOP)
+
+### Plusieurs gouvernorats
+
+- **Centrales à Moteurs à Gaz (200 MW)- (phase 2 : AOR)** — Société Tunisienne d’Electricité et de Gaz · Travaux/ Autres travaux · date limite **06/11/2026 09:30** · caution 6 000 000 DT · [Tender-104150](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104150) (source : HAICOP)
+- **إتمام أشغال تهيئة وتوسعة مركز التكوين والتدريب المهني بدوز** — Agence Tunisienne de la Formation Professionnelle · Travaux/ Ascenseur · date limite **10/11/2026 10:00** · caution 4 DT · [Tender-104146](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104146) (source : HAICOP)
 
 ### Siliana
 
@@ -128,12 +137,20 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Location de deux (02) bus pour assurer le transport du personnel du Centre international de promotion des personnes handicapées** — Centre international de la promotion des personnes handicapées · Services/ Transport / Déménage · date limite **06/11/2026 10:00** · caution 1 000 DT · [Tender-104058](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104058) (source : HAICOP)
 
-## Autres (8)
+## Autres (10)
 
 ### Ben Arous
 
 - **Marché cadre à procédures simplifiées a pour objet la signature des contrats d'assurance au profil de la commune de Ben Arous pour les années 2027,2028 et 2029** — Municipalité Ben Arous · Services/ Autres services · date limite **10/11/2026 11:00** · caution 970 DT · [Tender-104135](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104135) (source : HAICOP)
 - **Portefeuille assurance 2027-2028-2029** — Société d'Exploitation du Canal et Adduction des Eaux du Nord · Services/ Autres services · date limite **10/11/2026 10:00** · caution 7 000 DT · [Tender-104108](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104108) (source : HAICOP)
+
+### Kairouan
+
+- **Acquisition de Tabac Reconstitué** — Manufacture Tunisienne des Tabacs de Kairouan · Biens/ Autres Fournitures · date limite **12/11/2026 10:00** · caution 200 000 DT · [Tender-104151](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104151) (source : HAICOP)
+
+### Kasserine
+
+- **Acquisition de 130 000 plants d'olivier à huile Chemlali (boutures herbacées) et 30 000 plants de pistachier Mateur (Greffage, PG : Franc) et 30 000 plants de figuier Zidi** — Commissariat Régional au Développement Agricole Kasserine · Biens/ Autres Fournitures · date limite **10/11/2026 09:30** · caution 28 100 DT · [Tender-104147](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104147) (source : HAICOP)
 
 ### Nabeul
 

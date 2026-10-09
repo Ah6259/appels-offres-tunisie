@@ -3932,21 +3932,185 @@
    "lu_le": "2026-10-09 10:47",
    "metier": "Nettoyage / gardiennage",
    "gouvernorat": "La Manouba"
+  },
+  "Tender-104152": {
+   "numero": "Tender-104152",
+   "objet": "Travaux de réparation et renforcement de la structure du Bloc administratif.",
+   "descriptif": "",
+   "acheteur": "Manufacture Tunisienne des Tabacs de Kairouan",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KAIROUAN",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-10-09",
+   "date_limite": "2026-11-10",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    6000
+   ],
+   "cautionnement_total_dt": 6000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104152",
+   "source": "HAICOP",
+   "lu_le": "2026-10-09 12:47",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104151": {
+   "numero": "Tender-104151",
+   "objet": "Acquisition de Tabac Reconstitué",
+   "descriptif": "",
+   "acheteur": "Manufacture Tunisienne des Tabacs de Kairouan",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KAIROUAN",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-10-09",
+   "date_limite": "2026-11-12",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    200000
+   ],
+   "cautionnement_total_dt": 200000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104151",
+   "source": "HAICOP",
+   "lu_le": "2026-10-09 12:47",
+   "metier": "Autres",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104150": {
+   "numero": "Tender-104150",
+   "objet": "Centrales à Moteurs à Gaz (200 MW)- (phase 2 : AOR)",
+   "descriptif": "",
+   "acheteur": "Société Tunisienne d’Electricité et de Gaz",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "BEJA",
+    "BEN AROUS",
+    "GABES",
+    "KASSERINE"
+   ],
+   "date_publication": "2026-10-09",
+   "date_limite": "2026-11-06",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-06",
+   "cautionnement_provisoire_dt": [
+    2400000,
+    1800000,
+    900000,
+    900000
+   ],
+   "cautionnement_total_dt": 6000000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "4",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104150",
+   "source": "HAICOP",
+   "lu_le": "2026-10-09 12:47",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Plusieurs gouvernorats"
+  },
+  "Tender-104147": {
+   "numero": "Tender-104147",
+   "objet": "Acquisition de 130 000 plants d'olivier à huile Chemlali (boutures herbacées) et 30 000 plants de pistachier Mateur (Greffage, PG : Franc) et 30 000 plants de figuier Zidi",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole Kasserine",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "KASSERINE"
+   ],
+   "date_publication": "2026-10-09",
+   "date_limite": "2026-11-10",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    3900,
+    1500,
+    1500,
+    1500,
+    8300,
+    6000,
+    5400
+   ],
+   "cautionnement_total_dt": 28100,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "7",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104147",
+   "source": "HAICOP",
+   "lu_le": "2026-10-09 12:47",
+   "metier": "Autres",
+   "gouvernorat": "Kasserine"
+  },
+  "Tender-104146": {
+   "numero": "Tender-104146",
+   "objet": "إتمام أشغال تهيئة وتوسعة مركز التكوين والتدريب المهني بدوز",
+   "descriptif": "اختيار مقاولة قصد إتمام أشغال تهيئة وتوسعة مركز التكوين والتدريب المهني بطبرقة ب 0 صنف 4 على الأقل أو تحالف شركات تونسية ب 0 صنف 4 على الأقل وشركات سعودية بأفضلية 10بالمائة ومركز التكوين والتدريب المهني بدوز ب 0 صنف 5 على الأقل أو تحالف شركات تونسية ب 0 صنف 5 على الأقل وشركات سعودية بأفضلية 10بالمائة",
+   "acheteur": "Agence Tunisienne de la Formation Professionnelle",
+   "type_commande": "Travaux/ Ascenseur",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "JENDOUBA",
+    "KEBILI"
+   ],
+   "date_publication": "2026-10-09",
+   "date_limite": "2026-11-10",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    2,
+    2
+   ],
+   "cautionnement_total_dt": 4,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104146",
+   "source": "HAICOP",
+   "lu_le": "2026-10-09 12:47",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Plusieurs gouvernorats"
   }
  },
- "mis_a_jour": "2026-10-09 10:47",
+ "mis_a_jour": "2026-10-09 12:47",
  "dernier_passage": {
-  "date": "2026-10-09 10:47",
+  "date": "2026-10-09 12:47",
   "liste_ok": true,
-  "lus": 14,
+  "lus": 5,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-09 10:47",
+ "derniere_lecture_reussie": "2026-10-09 12:47",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-09 10:47",
+  "depuis": "2026-10-09 12:47",
   "raison": ""
  }
 }
