@@ -147,6 +147,9 @@ const premier = ouverts.filter(a => a.date_limite).sort((a, b) => a.date_limite.
 w = await page("index.html", `lang=fr&jour=${plus(premier.date_limite, 1)}`);
 d = w.document;
 check("un appel d'offres expiré (date du visiteur) est masqué", d.getElementById(premier.numero).hidden);
+// date fixe (3 jours après les données) : le 09/10/2026 un appel d'offres fermait le jour même, « 1er délai + 1 » ne faisait qu'1 jour
+w = await page("index.html", `lang=fr&jour=${plus(JOUR, 3)}`);
+d = w.document;
 check("données de plus de 2 jours : avertissement daté visible",
   d.getElementById("alerte-panne").classList.contains("on") && /depuis le \d\d\/\d\d\/\d{4}/.test(texte(d.getElementById("alerte-panne"))));
 const dernier = ouverts.map(a => a.date_limite || "").sort().pop();
