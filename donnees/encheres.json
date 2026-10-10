@@ -1041,19 +1041,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-222e18576b": {
-   "id": "Vente-222e18576b",
-   "date_publication": "2026-08-04",
-   "bureau": "Bureau régional des douanes de Gabes",
-   "objet": "Avis de vente aux enchères sous plis fermés N°14/2026 d'un lot portant sur une quantité de fromage cheddar.",
-   "date_limite": "2026-08-10",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-04_AV_OP_Gabes_N°11-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Gabès",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-b6bc9766b9": {
    "id": "Vente-b6bc9766b9",
    "date_publication": "2026-08-04",
@@ -1300,13 +1287,26 @@
    "gouvernorat": "Le Kef",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-09 12:47"
+  },
+  "Vente-0531e42f78": {
+   "id": "Vente-0531e42f78",
+   "date_publication": "2026-10-09",
+   "bureau": "Bureau frontalier de contrôle des magasins et aires de dédouanement de Rades Port (47)",
+   "objet": "Avis de vente aux enchères sous plis fermés N°23/2026 de diverses marchandises.",
+   "date_limite": "2026-10-26",
+   "heure": "12:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-09_AV_OP_Rades-47_N°23-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Ben Arous",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-10 12:05"
   }
  },
- "lignes_lues": 338,
- "derniere_lecture_reussie": "2026-10-09 12:47",
+ "lignes_lues": 339,
+ "derniere_lecture_reussie": "2026-10-10 12:05",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-09 12:47",
+  "depuis": "2026-10-10 12:05",
   "raison": ""
  }
 }
