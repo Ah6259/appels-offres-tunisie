@@ -1,9 +1,16 @@
 # Tests à chaque modification envoyée (push) : on ne garde pas un site qui ne passe pas les tests.
 name: tests
+# Audit des robots du 10/10/2026 : pas de tests pour un envoi qui ne change que des notes (.md) ; un nouvel envoi annule le précédent.
 on:
   push:
+    branches: [main, "entretien-tests/**"]
+    paths-ignore: ["**.md"]
   pull_request:
+    paths-ignore: ["**.md"]
   workflow_dispatch:
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 env:

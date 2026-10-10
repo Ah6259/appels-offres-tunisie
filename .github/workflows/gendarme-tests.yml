@@ -9,7 +9,7 @@ on:
     workflows: [Tests, tests]   # le nom varie selon les sites
     types: [completed]
   schedule:
-    - cron: "30 8 * * *"        # ménage, après le gendarme IA (8h à Tunis = 7h UTC)
+    - cron: "30 8 * * 1"        # ménage chaque lundi, après le gendarme IA (audit des robots du 10/10/2026 : chaque jour = inutile)
   workflow_dispatch:
 permissions:
   contents: write
