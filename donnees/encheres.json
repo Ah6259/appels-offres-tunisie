@@ -1305,8 +1305,8 @@
  "lignes_lues": 339,
  "derniere_lecture_reussie": "2026-10-10 12:05",
  "statut_source": {
-  "etat": "ok",
-  "depuis": "2026-10-10 12:05",
-  "raison": ""
+  "etat": "panne",
+  "depuis": "2026-10-11 12:21",
+  "raison": "page injoignable (code HTTP 500)"
  }
 }
