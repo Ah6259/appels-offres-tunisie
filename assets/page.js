@@ -55,7 +55,7 @@
     // bouton Partager (demande d'Ahmed) : menu de partage du téléphone, sinon WhatsApp avec le lien de la page
     document.querySelectorAll(".partager").forEach(b => b.addEventListener("click", async () => {
       const url = location.href.split("#")[0].replace(/[?&]lang=(fr|ar)/, ""), titre = document.title.split(" | ")[0];
-      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "partage" + location.pathname.replace("/appels-offres-tunisie/", "/"), title: "Partage", event: true }); } catch (e) {}
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "partage" + location.pathname.replace(/^\/appels-offres-tunisie\//, "/"), title: "Partage", event: true }); } catch (e) {}
       return window.partagerLien();
     }));
   }
@@ -93,18 +93,23 @@
    Seulement en https (jamais en file: pendant les tests locaux). */
 if ("serviceWorker" in navigator && location.protocol === "https:") {
   window.addEventListener("load", () => {
-    try { navigator.serviceWorker.register("/appels-offres-tunisie/sw.js", { scope: "/appels-offres-tunisie/" }).catch(() => {}); } catch (e) { /* rien : le site marche sans */ }
+    try { navigator.serviceWorker.register(BASE_SITE + "sw.js", { scope: BASE_SITE }).catch(() => {}); } catch (e) { /* rien : le site marche sans */ }
   });
 }
 
 /* >>> vidéo de présentation : page video/ partagée par le bouton « Partager » (outil vidéos d'Ahmed) */
-window.VIDEO_SITE = {"base": "/appels-offres-tunisie/", "defaut": "fr", "nom": {"fr": "Alertes appels d'offres Tunisie", "ar": "تنبيهات طلبات العروض تونس"}};
+/* Adresse du site (11 octobre 2026) : appels-offres.clicvia.com (racine « / ») ; l'ancienne adresse ah6259.github.io/appels-offres-tunisie/ redirige
+   vers elle. BASE_SITE = dossier du site selon l'adresse ; GoatCounter garde le préfixe /appels-offres-tunisie (compteur commun). */
+var BASE_SITE = /\.github\.io$/.test(location.hostname) ? "/appels-offres-tunisie/" : "/";
+window.goatcounter = window.goatcounter || {};
+window.goatcounter.path = function (p) { return BASE_SITE === "/" ? "/appels-offres-tunisie" + p : p; };
+window.VIDEO_SITE = {"base": BASE_SITE, "defaut": "fr", "nom": {"fr": "Alertes appels d'offres Tunisie", "ar": "تنبيهات طلبات العروض تونس"}};
 /* Bouton « Partager » (demande d'Ahmed, octobre 2026) : partage un LIEN vers la page vidéo du site (qui montre la vidéo
    de présentation, avec un gros bouton « Ouvrir le site ») + l'adresse du site dans le texte. WhatsApp et Facebook
    affichent l'aperçu de la page vidéo (grande image, vidéo lisible sur Facebook). Menu de partage du téléphone, sinon WhatsApp.
    Espace professionnels des annuaires : page « video-pro/ ». Réglages : window.VIDEO_SITE (juste au-dessus). */
 (function () {
-  var S = window.VIDEO_SITE, ORIGINE = "https://ah6259.github.io";
+  var S = window.VIDEO_SITE, ORIGINE = S.base === "/" ? "https://appels-offres.clicvia.com" : "https://ah6259.github.io";
   function langue() { return document.documentElement.lang || S.defaut; }
   function M(o) { return o[langue()] || o[S.defaut] || o.fr; }
   // page vidéo à partager (et page du site correspondante) selon la page où l'on est

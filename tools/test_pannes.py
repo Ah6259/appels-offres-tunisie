@@ -406,7 +406,7 @@ try:
     msg = "\n".join(envois)
     check("Telegram : UN message groupé par métier (titres en gras), lien vers la page du site ET la fiche officielle",
           code == 0 and len(envois) == 1 and "<b>BTP / génie civil</b> (3)" in msg and "<b>Études / conseil</b> (1)" in msg
-          and "https://ah6259.github.io/appels-offres-tunisie/metier/btp-genie-civil/#Tender-107000" in msg
+          and "https://appels-offres.clicvia.com/metier/btp-genie-civil/#Tender-107000" in msg
           and "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-107000" in msg)
     check("Telegram : résumé traduit des objets arabes dans le message", "≈ Aménagement — centre pour personnes âgées — Grombalia" in msg)
     check("Telegram : rubrique « ⏰ Clôturent dans 2 jours » avec l'appel d'offres J-2",

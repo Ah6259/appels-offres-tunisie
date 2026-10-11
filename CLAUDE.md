@@ -107,3 +107,5 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   Pour la refaire : `python fabriquer.py appels-offres` puis `python brancher_partage.py appels-offres` dans le dossier PRIVÉ du PC `videos (outil)/`.
 
 - **Langue en mémoire (06/10/2026)** : la mémoire du navigateur (localStorage) est PARTAGÉE par tous les sites d'ah6259.github.io : `page.js` n'accepte que « fr » ou « ar » (sinon langue par défaut). Ne jamais écrire une autre valeur sous la clé « langue ».
+
+- **Adresse depuis le 11/10/2026 : https://appels-offres.clicvia.com/** (domaine clicvia.com d'Ahmed, ligne DNS `CNAME appels-offres → ah6259.github.io` nuage gris, fichier `CNAME`). L'ancienne adresse ah6259.github.io/appels-offres-tunisie/ redirige seule. Site à la racine « / » : `BASE_SITE` de assets/page.js (sw.js, vidéo) ; GoatCounter garde le préfixe `/appels-offres-tunisie`. Si l'outil vidéo réécrit le bloc VIDEO_SITE, remettre `"base": BASE_SITE` et l'ORIGINE appels-offres.clicvia.com.

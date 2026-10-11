@@ -4,7 +4,7 @@ Site gratuit, sans inscription : chaque jour, les nouveaux **appels d'offres pub
 triés **par métier** et **par gouvernorat**, avec la date limite (en rouge à moins de 7 jours),
 la caution provisoire et le lien vers la **fiche officielle**. Français + arabe (`?lang=ar`).
 
-- Adresse prévue : https://ah6259.github.io/appels-offres-tunisie/
+- Adresse prévue : https://appels-offres.clicvia.com/
 - Source unique : portail officiel de la **HAICOP** (Haute Instance de la Commande Publique,
   www.marchespublics.gov.tn). Le cahier des charges se retire sur **TUNEPS**. Ce site n'est pas officiel.
 

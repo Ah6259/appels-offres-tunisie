@@ -10,7 +10,7 @@ import { createHash } from "crypto";
 
 const i = process.argv.indexOf("--racine");
 const root = i > 0 ? process.argv[i + 1] : join(dirname(fileURLToPath(import.meta.url)), "..");
-const URL_SITE = "https://ah6259.github.io/appels-offres-tunisie/";
+const URL_SITE = "https://appels-offres.clicvia.com/";
 const lire = f => readFileSync(join(root, f), "utf8");
 let erreurs = 0, total = 0;
 const check = (desc, cond) => { total++; if (!cond) { console.log("FAIL " + desc); erreurs++; } else console.log("OK   " + desc); };
@@ -244,7 +244,7 @@ w = await page("a-propos/index.html", "lang=fr");
 const ap = texte(w.document.querySelector("main"));
 check("à propos : avertissement « pas officiel » + « vérifiez toujours la fiche officielle »", /n'est pas officiel/.test(ap) && /vérifiez toujours la fiche officielle/.test(ap));
 check("à propos : source HAICOP, TUNEPS, lecture lente", /HAICOP/.test(ap) && /TUNEPS/.test(ap) && /lentement/.test(ap));
-check("robots.txt avec le sitemap", /Sitemap: https:\/\/ah6259\.github\.io\/appels-offres-tunisie\/sitemap\.xml/.test(lire("robots.txt")));
+check("robots.txt avec le sitemap", /Sitemap: https:\/\/appels-offres\.clicvia\.com\/sitemap\.xml/.test(lire("robots.txt")));
 check("LICENSE « tous droits réservés »", /Tous droits réservés/i.test(lire("LICENSE")));
 // taille d'une image JPEG : lue dans son en-tête SOF (marqueurs FFC0 à FFC2)
 const tailleJpeg = b => { for (let o = 2; o < b.length - 9;) { const m = b[o + 1], n = b.readUInt16BE(o + 2);
@@ -259,7 +259,7 @@ check("logo, favicon, icône iPhone", ["assets/logo.svg", "favicon.ico", "assets
 // manifeste : id UNIQUE = chemin du site (sinon Chrome croit le site « déjà installé » : tous les sites partagent ah6259.github.io)
 let man = {}; try { man = JSON.parse(lire("manifest.webmanifest")); } catch (e) {}
 check("manifeste présent, id unique = chemin du site, start_url/scope ./, icônes 192, 512 et maskable existantes",
-  man.id === "/appels-offres-tunisie/" && man.start_url === "./" && man.scope === "./" && man.display === "standalone" && !!man.name && !!man.short_name
+  man.id === "/" && man.start_url === "./" && man.scope === "./" && man.display === "standalone" && !!man.name && !!man.short_name
   && ["192x192", "512x512"].every(t => man.icons?.some(i => i.sizes === t)) && man.icons?.some(i => i.purpose === "maskable")
   && man.icons.every(i => existsSync(join(root, i.src))));
 check("toutes les pages : lien vers le manifeste, icône iPhone et theme-color", urls.every(u => { const c = u.replace(URL_SITE, ""), r = "../".repeat(c.split("/").length - 1), h = lire(c + "index.html");
@@ -416,7 +416,7 @@ const sel = w.getSelection(); const rg = w.document.createRange(); rg.selectNode
 const ev = new w.Event("copy", { bubbles: true, cancelable: true }); ev.clipboardData = { setData: (t, v) => { copie = v; } };
 h3.dispatchEvent(ev);
 check("anti-copie : le texte copié d'une carte reçoit « Source : … — © … tous droits réservés »",
-  /Source : https:\/\/ah6259\.github\.io\/appels-offres-tunisie\//.test(copie) && /tous droits réservés/.test(copie));
+  /Source : https:\/\/appels-offres\.clicvia\.com\//.test(copie) && /tous droits réservés/.test(copie));
 check("formulaires toujours utilisables : recherche et filtres actifs", !w.document.getElementById("f-q").disabled && !w.document.getElementById("f-metier").disabled);
 // Aucun secret dans le dépôt (jetons Telegram, clés Google, clés privées, jetons GitHub, e-mails privés)
 const fichiers = [];

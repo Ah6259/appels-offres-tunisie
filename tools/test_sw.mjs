@@ -22,8 +22,12 @@ const check = (desc, cond) => { console.log((cond ? "OK   " : "FAIL ") + desc); 
 check("sw.js existe à la racine du site", existsSync(join(root, "sw.js")));
 const sw = existsSync(join(root, "sw.js")) ? lire("sw.js") : "";
 const js = existsSync(join(root, JS_COMMUN)) ? lire(JS_COMMUN) : "";
-const reg = js.match(/navigator\.serviceWorker\.register\(\s*["']([^"']+)["']\s*,\s*\{\s*scope\s*:\s*["']([^"']+)["']\s*\}\s*\)/);
-check(`${JS_COMMUN} enregistre ${RACINE}sw.js avec la portée ${RACINE}`, !!reg && reg[1] === RACINE + "sw.js" && reg[2] === RACINE);
+// depuis le 11/10/2026 le site est à la racine de appels-offres.clicvia.com : le dossier (BASE_SITE) dépend de l'adresse
+const reg = js.match(/navigator\.serviceWorker\.register\(\s*BASE_SITE\s*\+\s*["']sw\.js["']\s*,\s*\{\s*scope\s*:\s*BASE_SITE\s*\}\s*\)/);
+const defBase = js.match(/var BASE_SITE = (.+?);\n/);
+const base = h => defBase && new Function("location", "return " + defBase[1])({ hostname: h });
+check(`${JS_COMMUN} enregistre sw.js avec la portée du site (/ sur appels-offres.clicvia.com, ${RACINE} sur github.io)`,
+  !!reg && base("appels-offres.clicvia.com") === "/" && base("ah6259.github.io") === RACINE);
 check("enregistrement protégé (\"serviceWorker\" in navigator, try/catch, pas en file:)",
   /["']serviceWorker["']\s+in\s+navigator/.test(js) && /try\s*\{[^]*serviceWorker\.register[^]*\}\s*catch/.test(js) && /https:/.test(js));
 check("sw.js : CACHE_VERSION et nom de cache propre au site", /const CACHE_VERSION\s*=/.test(sw) && /const PREFIXE\s*=\s*"[a-z-]+-"/.test(sw));

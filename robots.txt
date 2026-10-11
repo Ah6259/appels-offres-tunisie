@@ -88,4 +88,4 @@ Disallow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://ah6259.github.io/appels-offres-tunisie/sitemap.xml
+Sitemap: https://appels-offres.clicvia.com/sitemap.xml

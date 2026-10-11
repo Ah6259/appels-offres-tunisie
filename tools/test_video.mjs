@@ -8,7 +8,7 @@ import { createRequire } from "module";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const { JSDOM, VirtualConsole } = createRequire(import.meta.url)("jsdom");
-const SITE = "https://ah6259.github.io/appels-offres-tunisie/", BASE = new URL(SITE).pathname, DEFAUT = "fr";
+const SITE = "https://appels-offres.clicvia.com/", BASE = new URL(SITE).pathname, DEFAUT = "fr";
 const VIDEOS = ["presentation"];                 // vidéos (sans .mp4)
 const MODE = "bouton";                   // « bouton » (.partager) ou « lien-wa » (liens wa.me de partage)
 const APROPOS = "a-propos/index.html";             // page À propos (modèle de la page vidéo), vide s'il n'y en a pas

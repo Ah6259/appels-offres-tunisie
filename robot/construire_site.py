@@ -41,7 +41,7 @@ import glossaire   # noqa: E402  résumé traduit des objets (glossaire maison)
 import reglages    # noqa: E402  adresses à remplir par Ahmed (canal Telegram, formulaire…)
 
 RACINE_SITE = os.path.dirname(ICI)          # le dossier site/ (= racine du dépôt GitHub)
-URL_SITE = "https://ah6259.github.io/appels-offres-tunisie/"
+URL_SITE = "https://appels-offres.clicvia.com/"
 URL_HAICOP = "https://www.marchespublics.gov.tn/fr/appels-doffres"
 PREFIXE_FICHE = "https://www.marchespublics.gov.tn/"
 SEUIL_CHUTE = 0.5          # moins de 50 % des fiches de la sauvegarde -> suspect

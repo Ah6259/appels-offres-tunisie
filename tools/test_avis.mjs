@@ -10,7 +10,7 @@ import { dirname, join } from "path";
 
 // ---- Réglages propres à ce site ------------------------------------------------
 const SITE = "Alertes appels d'offres Tunisie";                                         // valeur du champ caché « site »
-const BASE = "https://ah6259.github.io/appels-offres-tunisie/";            // adresse de l'accueil en ligne
+const BASE = "https://appels-offres.clicvia.com/";            // adresse de l'accueil en ligne
 const IGNORER = ["node_modules", ".git", "tools", "captures", "preuves conditions d'utilisation"];
 // --------------------------------------------------------------------------------
 const FORMSPREE = "https://formspree.io/f/mwlpakqj";
