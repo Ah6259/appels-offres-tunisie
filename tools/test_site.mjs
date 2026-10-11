@@ -168,7 +168,7 @@ check("arabe : en-tête et pied en arabe", /طلبات العروض/.test(texte(
 check("arabe : options des filtres en arabe", /كل الاختصاصات/.test(d.querySelector("#f-metier option").textContent));
 check("arabe : compteur en arabe avec nombre isolé", /⁦\d+⁩ طلب عروض/.test(d.getElementById("compte").textContent));
 check("arabe : « بعد N يومًا » sur les cartes", visibles(d).some(c => /يومًا|اليوم|غدًا/.test(c.querySelector(".reste").textContent)));
-check("arabe : bouton vers le français", texte(d.querySelector(".langue")) === "Français");
+check("arabe : bouton court « Fr » vers le français (titre « Français »)", texte(d.querySelector(".langue")) === "Fr" && d.querySelector(".langue").title === "Français");
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 check("français par défaut avec ?lang=fr", w.document.documentElement.lang === "fr" && w.document.documentElement.dir === "ltr");
 
