@@ -4462,21 +4462,264 @@
    "lu_le": "2026-10-10 12:05",
    "metier": "Études / conseil",
    "gouvernorat": "National / non précisé"
+  },
+  "Tender-104180": {
+   "numero": "Tender-104180",
+   "objet": "acquisition moyen de transport",
+   "descriptif": "",
+   "acheteur": "Ministère de l’Environnement et du Développement Durable",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-10-30",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-10-30",
+   "cautionnement_provisoire_dt": [
+    1000
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104180",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104178": {
+   "numero": "Tender-104178",
+   "objet": "ACQUISITION MATERIELS INFORMATIQUES",
+   "descriptif": "ACQUISITION MATERIELS INFORMATIQUES",
+   "acheteur": "Agence Technique de Communication",
+   "type_commande": "Biens/ Matériels informatiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-10",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    840,
+    225,
+    210
+   ],
+   "cautionnement_total_dt": 1275,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104178",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Informatique",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104176": {
+   "numero": "Tender-104176",
+   "objet": "Nomination d'un avocat inscrit au tableau des avocats en appel ou en cassation depuis plus de 5 ans, ou d'un cabinet d'avocats professionnel, pour représenter la municipalité de Zariba devant les tribunaux et toutes autres instances pour une durée de trois ans : 2026-2027, 2027-2028 et 2028-2029",
+   "descriptif": "",
+   "acheteur": "Municipalité Zriba",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ZAGOUANE",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104176",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Études / conseil",
+   "gouvernorat": "National / non précisé"
+  },
+  "Tender-104175": {
+   "numero": "Tender-104175",
+   "objet": "désignation d'avocat pour prononcer au nom de la Rabta pour les années 2026-2027-2028 auprès des tribunaux, et tout organismes judiciaire, administratif, arbitraux",
+   "descriptif": "Représenter l’Hôpital Universitaire La Rabta, accomplir toutes les procédures légales en son nom et assurer sa défense devant les tribunaux et l’ensemble des instances juridictionnelles, conformément aux dispositions législatives en vigueur.",
+   "acheteur": "Hôpital La Rabta à Tunis",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-13",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-13",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104175",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Études / conseil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104173": {
+   "numero": "Tender-104173",
+   "objet": "اقتناء معدات نظافة لفائدة بلدية سليمان لسنة 2026",
+   "descriptif": "",
+   "acheteur": "Municipalité de Soliman",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-12",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    1500,
+    3000,
+    700,
+    300
+   ],
+   "cautionnement_total_dt": 5500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "4",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104173",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "National / non précisé"
+  },
+  "Tender-104172": {
+   "numero": "Tender-104172",
+   "objet": "استشارة عدد 55-2026 اقتناء مواد التنظيف و التعقيم لفائدة المستشفى الجامعي بقابس لسنة 2026 (فصول غير مثمرة من طلب عروض عدد05/2026)",
+   "descriptif": "",
+   "acheteur": "Hopital Régional de Gabes",
+   "type_commande": "Biens/ Produits d’entretien",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GABES",
+   "regions_lots": [
+    "GABES"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-10-21",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-10-21",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104172",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Gabès"
+  },
+  "Tender-104170": {
+   "numero": "Tender-104170",
+   "objet": "إعــــــلان طلب عروض عــــــدد 25/2026 (إعادة للمرة الثانية) المتعلق بإختيـار محامي أو شركة مهنية للمحاماة لنيابة ديوان تنمية الغابات والمراعي بالشمال الغربي لدى المحاكم وسائر الهيئات القضائية والتحكيميّة والإدارية والتعديليّة لمدة ثلاث سنوات 2027-2028- 2029",
+   "descriptif": "",
+   "acheteur": "Office de Développement Sylvo Pastoral du Nord-Ouest",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEJA",
+   "regions_lots": [
+    "BEJA"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-12",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104170",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "Études / conseil",
+   "gouvernorat": "Béja"
+  },
+  "Tender-104169": {
+   "numero": "Tender-104169",
+   "objet": "Travaux d’entretien à l’Ecole Préparatoire Ibn El Jazzar a Sned – Gafsa",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation de Gafsa",
+   "type_commande": "Travaux/ Travaux de Rehabilitation",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GAFSA",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-10-12",
+   "date_limite": "2026-11-13",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-13",
+   "cautionnement_provisoire_dt": [
+    1200
+   ],
+   "cautionnement_total_dt": 1200,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104169",
+   "source": "HAICOP",
+   "lu_le": "2026-10-12 14:00",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Gafsa"
   }
  },
- "mis_a_jour": "2026-10-11 12:21",
+ "mis_a_jour": "2026-10-12 14:00",
  "dernier_passage": {
-  "date": "2026-10-11 12:21",
+  "date": "2026-10-12 14:00",
   "liste_ok": true,
-  "lus": 0,
+  "lus": 8,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-11 12:21",
+ "derniere_lecture_reussie": "2026-10-12 14:00",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-11 12:21",
+  "depuis": "2026-10-12 14:00",
   "raison": ""
  }
 }

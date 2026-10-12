@@ -1307,6 +1307,6 @@
  "statut_source": {
   "etat": "panne",
   "depuis": "2026-10-11 12:21",
-  "raison": "page injoignable (code HTTP 500)"
+  "raison": "page injoignable (<urlopen error [Errno 104] Connection reset by peer>)"
  }
 }
