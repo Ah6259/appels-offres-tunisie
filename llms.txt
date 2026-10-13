@@ -29,6 +29,12 @@ Langues : français, arabe.
 
 Le site compte 39 pages au total ; la liste complète est dans le plan du site : https://appels-offres.clicvia.com/sitemap.xml
 
+## Données fraîches (JSON, lisibles par une machine)
+
+Ces fichiers sont produits par les robots du site ; un assistant peut les lire pour répondre avec les données du jour, en citant le site.
+- [Appels d'offres publics tunisiens du moment](https://appels-offres.clicvia.com/donnees/appels-offres.json) — mis à jour chaque jour. Champs : appels_offres{} : un objet par avis (objet, acheteur, date limite, gouvernorat, métier, lien officiel) ; mis_a_jour = date du relevé.
+- [Ventes aux enchères publiques (douane, administrations)](https://appels-offres.clicvia.com/donnees/encheres.json) — mis à jour chaque jour. Champs : ventes{} : objet, bureau, date_limite, gouvernorat, lien_avis ; derniere_lecture_reussie = date du relevé.
+
 ## À savoir
 
 - Appels d'offres publics relevés chaque jour sur les sources officielles, avec le lien vers l'avis d'origine.
