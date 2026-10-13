@@ -1054,58 +1054,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-b194f2c02c": {
-   "id": "Vente-b194f2c02c",
-   "date_publication": "2026-07-28",
-   "bureau": "Bureau frontalier des douanes de Sakiet Sidi Youssef",
-   "objet": "Avis de vente aux enchères sous plis fermés N°02/2026 de diverses marchandises.",
-   "date_limite": "2026-08-12",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/07/2026-07-28_AV_OP_Sakiet-Sidi-Youssef_N°02-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Le Kef",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-fb1a211e34": {
-   "id": "Vente-fb1a211e34",
-   "date_publication": "2026-07-27",
-   "bureau": "Bureau frontalier des douanes de Djerba",
-   "objet": "Avis de vente aux enchères sous plis fermés N°08/2026 d'une quantité de téléphone portable.",
-   "date_limite": "2026-08-11",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/07/2026-07-27_AV_OP_Jerba_N°08-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Médenine",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-72508952e8": {
-   "id": "Vente-72508952e8",
-   "date_publication": "2026-07-27",
-   "bureau": "Bureau frontalier de contrôle des magasins et aires de dédouanement de Rades Port (47)",
-   "objet": "Avis de vente aux enchères sous plis fermés N°18/2026 de diverses marchandises.",
-   "date_limite": "2026-08-11",
-   "heure": "12:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/07/2026-07-27_AV_OP_Rades-47_N°18-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Ben Arous",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-eee4ded515": {
-   "id": "Vente-eee4ded515",
-   "date_publication": "2026-07-27",
-   "bureau": "Bureau frontalier des douanes de Tunis-Carthage",
-   "objet": "Avis de vente aux enchères sous plis fermés N°08/2026 de huit (08) lots contenant des quantités de corail marin de différentes variétés ainsi que des fils de perles naturelles, au profit des personnes autorisées à vendre ce type de marchandises et dont la situation fiscale est en règle.",
-   "date_limite": "2026-08-11",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/07/2026-07-27_AV_OP_TC_N°08-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Tunis",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-bbb342c586": {
    "id": "Vente-bbb342c586",
    "date_publication": "2026-10-05",
@@ -1302,11 +1250,11 @@
    "lu_le": "2026-10-10 12:05"
   }
  },
- "lignes_lues": 339,
- "derniere_lecture_reussie": "2026-10-10 12:05",
+ "lignes_lues": 335,
+ "derniere_lecture_reussie": "2026-10-13 13:37",
  "statut_source": {
-  "etat": "panne",
-  "depuis": "2026-10-11 12:21",
-  "raison": "page injoignable (<urlopen error [Errno 104] Connection reset by peer>)"
+  "etat": "ok",
+  "depuis": "2026-10-13 13:37",
+  "raison": ""
  }
 }
