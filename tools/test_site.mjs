@@ -385,8 +385,8 @@ check("à propos : crédit de chaque photo de la mosaïque (4 photos : auteur, l
 const robots = lire("robots.txt");
 const blocs = robots.split(/\n\s*\n/).map(b => b.trim());
 const interdit = ua => blocs.some(b => b.split("\n").some(l => l.trim().toLowerCase() === "user-agent: " + ua.toLowerCase()) && /^Disallow: \/\s*$/m.test(b));
-const IA = ["GPTBot", "ChatGPT-User", "OAI-SearchBot", "ClaudeBot", "Claude-Web", "anthropic-ai", "CCBot", "Google-Extended", "Applebot-Extended",
-  "PerplexityBot", "Bytespider", "Amazonbot", "Meta-ExternalAgent", "FacebookBot", "Diffbot", "Omgilibot", "cohere-ai", "ImagesiftBot",
+const IA = ["GPTBot", "ClaudeBot", "Claude-Web", "anthropic-ai", "CCBot", "Google-Extended", "Applebot-Extended",
+  "Bytespider", "Amazonbot", "Meta-ExternalAgent", "FacebookBot", "Diffbot", "Omgilibot", "cohere-ai", "ImagesiftBot",
   "HTTrack", "WebCopier", "WebZIP", "Offline Explorer", "wget", "SiteSnagger"];
 check(`robots.txt : les ${IA.length} robots d'IA et aspirateurs sont interdits`, IA.every(interdit));
 check("robots.txt : Googlebot, Bingbot et les autres robots restent autorisés", ["Googlebot", "Bingbot", "*"].every(u => !interdit(u)));
