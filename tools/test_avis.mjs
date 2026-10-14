@@ -100,7 +100,7 @@ check("section : titre et textes en français ET en arabe", !!sec && /Votre avis
 check("formulaire : action = " + FORMSPREE + ", méthode POST", form?.getAttribute("action") === FORMSPREE && /post/i.test(form?.getAttribute("method") || ""));
 const msg = form?.querySelector("textarea[name=message]"), mail = form?.querySelector("input[name=email]");
 check("message : obligatoire, 1000 caractères max", !!msg && msg.required && msg.maxLength === 1000);
-check("e-mail : facultatif, type email, « pour vous répondre »", !!mail && mail.type === "email" && !mail.required && /pour vous répondre/.test(sec.textContent));
+check("e-mail : OBLIGATOIRE (15/10/2026), type email, « pour vous répondre »", !!mail && mail.type === "email" && mail.required && /pour vous répondre/.test(sec.textContent));
 check("note facultative : 4 choix (😀🙂😐🙁), aucun obligatoire", form?.querySelectorAll("input[type=radio][name=note]").length === 4 && ![...form.querySelectorAll("input[name=note]")].some(r => r.required));
 check(`champ caché site = « ${SITE} »`, form?.querySelector("input[type=hidden][name=site]")?.value === SITE);
 check("champ caché page présent", !!form?.querySelector("input[type=hidden][name=page]"));
@@ -125,6 +125,10 @@ check("CSS : champs de l'avis sélectionnables (user-select:text)", /\.avis text
 msg.value = "   ";
 envoyer(w, form); await attendre();
 check("message vide : refusé, rien envoyé, message d'erreur", w.appels.length === 0 && d.getElementById("avis-status").className === "err" && /Écrivez votre message/.test(d.getElementById("avis-status").textContent));
+msg.value = "Avis sans e-mail"; mail.value = ""; envoyer(w, form); await attendre();
+check("e-mail vide ou mal écrit : refusé, rien envoyé, message d'erreur (e-mail obligatoire)", w.appels.length === 0 && d.getElementById("avis-status").className === "err" && /e-mail|email/i.test(d.getElementById("avis-status").textContent));
+mail.value = "pas-un-mail"; envoyer(w, form); await attendre();
+check("e-mail mal écrit : refusé", w.appels.length === 0);
 
 // envoi normal (fetch simulé)
 let liberer; w.__reseau = () => new Promise(ok => { liberer = () => ok({ ok: true, status: 200 }); });
@@ -143,12 +147,13 @@ check("envoi vers " + FORMSPREE + " en POST, Accept: application/json", a.url ==
 check(`champs envoyés : site = « ${SITE} », page = adresse de l'accueil, message, note, email`,
   f.site === SITE && f.page === BASE + "?lang=fr" && f.message === "Test du formulaire d'avis" && f.note === "🙂 Bien" && f.email === "lecteur@example.com");
 check("champ piège _gotcha envoyé vide (Formspree rejette les robots)", f._gotcha === "");
-check("après l'envoi : merci, formulaire vidé, bouton réactivé",
-  d.getElementById("avis-status").className === "ok" && /Merci/.test(d.getElementById("avis-status").textContent) && msg.value === "" && !bouton.disabled);
+check("après l'envoi : confirmation « Merci ! Votre avis a bien été envoyé » DANS la carte avec l'adresse de réponse, formulaire vidé et caché, bouton réactivé",
+  (m => !!m && !m.hidden && sec.contains(m) && /Merci ! Votre avis a bien été envoyé/.test(m.textContent) && /lecteur@example\.com/.test(m.textContent))(d.getElementById("avis-merci"))
+  && form.hidden && msg.value === "" && !bouton.disabled);
 
 // échec (Formspree refuse ou pas de connexion)
 w.__reseau = () => Promise.resolve({ ok: false, status: 500 });
-msg.value = "Deuxième essai"; envoyer(w, form); await attendre();
+mail.value = "lecteur@example.com"; msg.value = "Deuxième essai"; envoyer(w, form); await attendre();
 check("échec de Formspree : message d'échec, texte gardé, bouton réactivé",
   d.getElementById("avis-status").className === "err" && /Échec/.test(d.getElementById("avis-status").textContent) && msg.value === "Deuxième essai" && !bouton.disabled);
 w.__reseau = () => Promise.reject(new TypeError("Failed to fetch"));
@@ -166,10 +171,10 @@ w = await ouvrir("index.html", { lang: "ar" }); d = w.document;
 const fa = d.getElementById("avis-form");
 check("arabe : placeholder en arabe", /[؀-ۿ]/.test(fa.querySelector("textarea").getAttribute("placeholder") || ""));
 w.__reseau = () => Promise.resolve({ ok: true, status: 200 });
-fa.querySelector("textarea").value = "رأي"; envoyer(w, fa); await attendre();
-check("arabe : message de succès en arabe", /شكرًا/.test(d.getElementById("avis-status").textContent));
+fa.querySelector("input[name=email]").value = "a@example.com"; fa.querySelector("textarea").value = "رأي"; envoyer(w, fa); await attendre();
+check("arabe : message de succès en arabe", /شكرًا/.test((d.getElementById("avis-merci") || d.getElementById("avis-status")).textContent));
 w.__reseau = () => Promise.resolve({ ok: false, status: 500 });
-fa.querySelector("textarea").value = "رأي"; envoyer(w, fa); await attendre();
+fa.querySelector("input[name=email]").value = "a@example.com"; fa.querySelector("textarea").value = "رأي"; envoyer(w, fa); await attendre();
 check("arabe : message d'échec en arabe", /تعذّر الإرسال/.test(d.getElementById("avis-status").textContent));
 w.close();
 

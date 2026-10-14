@@ -425,3 +425,10 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .btn-tg-essai{display:flex;align-items:center;justify-content:center;gap:8px;max-width:340px;text-decoration:none;font-weight:700;font-size:16.5px;color:#fff;background:#229ED9;border-radius:12px;min-height:50px;padding:12px 16px;box-sizing:border-box}
 .btn-tg-essai:hover{background:#1B8BC0}
 .btn-tg-essai:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+
+/* « Votre avis » : e-mail obligatoire et confirmation bien visible dans la carte après l'envoi (15/10/2026) */
+.avis-merci{background:#E7F4EC;border:2px solid #1F7A47;border-radius:14px;padding:16px 18px;max-width:620px;color:#14301F}
+.avis-merci p{margin:6px 0}
+.avis-merci-titre{font-size:19px;font-weight:800;color:#1F7A47}
+.btn-avis-autre{font:inherit;font-weight:700;margin-top:6px;padding:9px 14px;border-radius:10px;border:1.5px solid #1F7A47;background:#fff;color:#1F7A47;cursor:pointer}
+.avis-merci:focus{outline:none}
