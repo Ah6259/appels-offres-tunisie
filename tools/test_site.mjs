@@ -521,11 +521,17 @@ check("abonnement : envoi à Formspree avec métiers et gouvernorats sur une lig
   corps.get("conditions") === "oui" && /essai/.test(corps.get("formule")));
 const apresA = d.getElementById("apres-abo");
 const robotVide = /^TELEGRAM_ROBOT_ALERTES = ""/m.test(reglagesPy);
-check("abonnement : après l'envoi -> confirmation + modes de paiement + bouton WhatsApp (avec le nom de l'entreprise) + instructions Telegram",
-  fa.hidden && !apresA.hidden && /Merci, votre inscription est bien reçue/.test(texte(apresA)) &&
-  ["D17", "IZI", "24 321 390"].every(x => texte(apresA).includes(x)) &&
-  decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("Société Essai SARL") &&
-  (robotVide ? /lien Telegram vous est envoyé à l'activation/.test(texte(apresA)) : /\/start/.test(texte(apresA)) && !!apresA.querySelector('a[href^="https://t.me/"]')));
+// 14/10/2026 (règle commune § 15 : essai immédiat) : code créé sur place, lien Telegram avec les choix, gestes expliqués avant
+const codeA = d.getElementById("abo-code").textContent, lienA = d.getElementById("abo-ouvrir-tg").getAttribute("href");
+check("abonnement : après l'envoi -> essai IMMÉDIAT : code de 6 caractères, « Ouvrir Telegram » avec les choix, 3 gestes (DÉMARRER, réponse le matin suivant), paiement, WhatsApp avec l'entreprise et le code",
+  fa.hidden && !apresA.hidden && /^[A-HJ-NP-Z2-9]{6}$/.test(codeA) && !robotVide
+  && lienA === `https://t.me/${fa.getAttribute("data-robot")}?start=e${codeA}_${w.ESSAI_ALERTES.encoder(["btp-genie-civil", "informatique"], fa.getAttribute("data-metiers").split(","))}_${w.ESSAI_ALERTES.encoder(["sfax"], fa.getAttribute("data-gouv").split(","))}`
+  && lienA.split("start=")[1].length <= 64 && corps.get("code") === codeA
+  && apresA.querySelectorAll(".etapes-tg li").length === 3 && /DÉMARRER/.test(texte(apresA)) && /le matin suivant, vers 8 h/.test(texte(apresA))
+  && ["D17", "IZI", "24 321 390"].every(x => texte(apresA).includes(x))
+  && decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("Société Essai SARL — code " + codeA));
+check("essai immédiat : plus d'« activation sous 24 heures » ; listes triées du formulaire = cases",
+  !/24 heures/.test(lire("abonnement/index.html")) && JSON.stringify([...fa.querySelectorAll('[name="metiers"]')].map(x => x.value).sort()) === JSON.stringify(fa.getAttribute("data-metiers").split(",")));
 w = await page("abonnement/index.html", "lang=ar");
 check("abonnement en arabe : titre, prix en دينار, bouton الدفع", /تنبيهات Pro/.test(texte(w.document.querySelector("h1"))) &&
   /دينار/.test(texte(w.document.getElementById("abo-prix"))) && texte(w.document.querySelector('#paiement summary [data-l="ar"]')) === "الدفع");

@@ -22,6 +22,27 @@
     return n.length === 8 ? n : "";
   }
 
+  // Essai IMMÉDIAT (14/10/2026, règle commune § 15) : même calcul que decoder_choix() du robot privé :
+  // listes TRIÉES, 5 cases par caractère, « x » = tous
+  var B32 = "0123456789abcdefghijklmnopqrstuv", ALPH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  function encoder(choix, liste) {
+    if (choix.indexOf("tous") >= 0) return "x";
+    var s = "";
+    for (var k = 0; k < Math.ceil(liste.length / 5); k++) {
+      var v = 0;
+      for (var j = 0; j < 5; j++) if (5 * k + j < liste.length && choix.indexOf(liste[5 * k + j]) >= 0) v |= 1 << j;
+      s += B32[v];
+    }
+    return s;
+  }
+  function nouveauCode() {
+    var t = new Uint8Array(6), c = "";
+    try { crypto.getRandomValues(t); } catch (e) { for (var k = 0; k < 6; k++) t[k] = Math.floor(Math.random() * 256); }
+    for (var i = 0; i < 6; i++) c += ALPH[t[i] % ALPH.length];
+    return c;
+  }
+  window.ESSAI_ALERTES = { encoder: encoder };
+
   function brancher() {
     var form = document.getElementById("abo-form");
     if (!form || form.getAttribute("data-branche")) return;
@@ -58,12 +79,18 @@
       if (!gouv.length) { dire("err", "Cochez au moins un gouvernorat (ou « Toute la Tunisie »).", "اختر ولاية واحدة على الأقل (أو «كل الولايات»)."); return; }
       if (!champ("conditions").checked) { dire("err", "Cochez « J'accepte les conditions de l'abonnement ».", "يجب الموافقة على شروط الاشتراك."); return; }
 
+      var code = nouveauCode();
+      var lien = "https://t.me/" + form.getAttribute("data-robot") + "?start=e" + code + "_" +
+        encoder(metiers, (form.getAttribute("data-metiers") || "").split(",")) + "_" + encoder(gouv, (form.getAttribute("data-gouv") || "").split(","));
       var fini = function () {
+        var c = document.getElementById("abo-code"), o = document.getElementById("abo-ouvrir-tg");
+        if (c) c.textContent = code;
+        if (o) o.setAttribute("href", lien);
         // lien WhatsApp de la preuve de paiement : on ajoute le nom de l'entreprise au message prérempli
         var liens = document.querySelectorAll("#abo-preuve, #abo-preuve-apres");
         for (var i = 0; i < liens.length; i++) {
           var base = liens[i].getAttribute("data-texte") || "";
-          liens[i].setAttribute("href", "https://wa.me/21624321390?text=" + encodeURIComponent(base + val("entreprise")));
+          liens[i].setAttribute("href", "https://wa.me/21624321390?text=" + encodeURIComponent(base + val("entreprise") + " — code " + code));
         }
         form.hidden = true;
         if (apres) { apres.hidden = false; if (apres.scrollIntoView) try { apres.scrollIntoView({ block: "start" }); } catch (x) {} }
@@ -80,6 +107,7 @@
       // ligne prête pour le bouton « activer-abonne » (dépôt privé)
       donnees.set("pour_activer", "nom: " + val("nom") + " (" + val("entreprise") + ") ; telephone: " + tel +
         " ; metiers: " + metiers.join(",") + " ; gouvernorats: " + gouv.join(","));
+      donnees.set("code", code);                               // code de l'essai (motif du paiement)
       bouton.disabled = true;
       dire("", "Envoi…", "جارٍ الإرسال…");
       fetch(ADRESSE, { method: "POST", body: donnees, headers: { "Accept": "application/json" } })
@@ -89,8 +117,10 @@
           fini();
         })
         .catch(function () {
-          dire("err", "Échec de l'envoi — vérifiez votre connexion et réessayez, ou écrivez-nous sur WhatsApp au 24 321 390.",
-               "تعذّر الإرسال — تحقّق من الاتصال وأعد المحاولة، أو راسلنا عبر واتساب على ⁦24 321 390⁩.");
+          // l'essai ne dépend pas de cet envoi : le robot Telegram le crée seul ; on continue quand même
+          dire("", "Inscription non envoyée (connexion), mais votre essai fonctionne : ouvrez Telegram ci-dessous.",
+               "لم يُرسل التسجيل (الاتصال)، لكن تجربتك تعمل: افتح تيليغرام أسفله.");
+          fini();
         })
         .then(function () { bouton.disabled = false; });
     });
