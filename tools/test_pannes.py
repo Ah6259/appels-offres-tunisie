@@ -521,6 +521,7 @@ with copie_site() as s:
 # =========================================================== F. Ventes aux enchères (Douane)
 print("\nF. Ventes aux enchères (page de la Douane simulée)")
 import lire_douane as D  # noqa: E402
+MINIMUM_VRAI, D.MINIMUM_LIGNES = D.MINIMUM_LIGNES, 5   # les pages simulées ont 13 lignes
 
 
 def page_douane(lignes, entete=True):
@@ -595,6 +596,19 @@ with copie_site() as s:
     check("enchères : erreur réseau -> panne, pas de plantage", code == 1 and d["statut_source"]["etat"] == "panne")
     code, d, log = lancer_douane(dd, "normal", lignes[:2])
     check("enchères : chute brutale (2 lignes au lieu de 13) -> panne, rien perdu", code == 1 and "lignes" in d["statut_source"]["raison"] and d["ventes"] == avant)
+    D.MINIMUM_LIGNES = MINIMUM_VRAI
+    code, d, log = lancer_douane(dd, "normal", lignes)
+    check("enchères : 13 lignes seulement (moins de 50 attendues) -> panne « presque rien lu », même sans historique (§ 17)",
+          code == 1 and "presque rien" in d["statut_source"]["raison"])
+    D.MINIMUM_LIGNES = 5
+    sys.path.insert(0, ICI)
+    import sources_en_panne as SP  # noqa: E402
+    check("alerte Douane : dernière lecture réussie il y a 3 jours -> ÉCHEC ; il y a 2 jours -> rien ; jamais -> ÉCHEC",
+          SP.en_panne({"derniere_lecture_reussie": "2026-10-12 06:00"}, "2026-10-15") != []
+          and SP.en_panne({"derniere_lecture_reussie": "2026-10-13 06:00"}, "2026-10-15") == [] and SP.en_panne({}, "2026-10-15") != [])
+    ok_d = {"derniere_lecture_reussie": "2026-10-15 06:00"}
+    check("alerte entreprises : feuille non branchée -> rien ; branchée et illisible depuis 3 jours -> ÉCHEC",
+          SP.en_panne(ok_d, "2026-10-15", {}, "") == [] and len(SP.en_panne(ok_d, "2026-10-15", {"derniere_lecture": "2026-10-12 06:00"}, "https://x")) == 1)
     d["derniere_lecture_reussie"] = f"{plus(JOUR, -4)} 06:00"
     ecrire_json(os.path.join(dd, "encheres.json"), d)
     construire(s)

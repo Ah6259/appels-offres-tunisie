@@ -33,6 +33,8 @@ UA = "Mozilla/5.0 (compatible; alertes-ao-tunisie; robot lent, 1 page par jour)"
 FICHIER = os.path.join(os.path.dirname(ICI), "donnees", "encheres.json")
 GARDER_JOURS = 60          # ventes dont l'échéance est passée depuis plus de 60 jours : oubliées
 SEUIL_CHUTE = 0.3
+# Moins de lignes que ça = lecteur cassé, même à la première lecture (352 lignes le 14/10/2026 ; règle commune § 17, 15/10/2026)
+MINIMUM_LIGNES = 50
 
 # Bureaux des douanes -> gouvernorat (quand le nom du gouvernorat n'apparaît pas dans le nom du bureau)
 VILLES = {
@@ -168,6 +170,8 @@ def main():
                 raison = "tableau vide"
             elif precedent and len(ventes) < SEUIL_CHUTE * precedent:
                 raison = f"seulement {len(ventes)} lignes contre {precedent} avant"
+            elif len(ventes) < MINIMUM_LIGNES:
+                raison = f"presque rien lu : {len(ventes)} lignes (au moins {MINIMUM_LIGNES} attendues)"
     if raison:
         ancien = d.get("statut_source") or {}
         depuis = ancien.get("depuis") if ancien.get("etat") == "panne" else maintenant
