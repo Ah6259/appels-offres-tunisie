@@ -85,7 +85,7 @@
       var fini = function () {
         var c = document.getElementById("abo-code"), o = document.getElementById("abo-ouvrir-tg");
         if (c) c.textContent = code;
-        if (o) o.setAttribute("href", lien);
+        if (o && form.getAttribute("data-robot")) o.setAttribute("href", lien);
         // lien WhatsApp de la preuve de paiement : on ajoute le nom de l'entreprise au message prérempli
         var liens = document.querySelectorAll("#abo-preuve, #abo-preuve-apres");
         for (var i = 0; i < liens.length; i++) {

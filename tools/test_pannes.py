@@ -633,8 +633,8 @@ with copie_site() as s:
     avec_reglages(s, TELEGRAM_ROBOT_ALERTES="AlertesAOEssaiBot")
     code, log = construire(s)
     ab = lire(s, "abonnement/index.html")
-    check("Alertes Pro : robot réglé -> lien t.me/AlertesAOEssaiBot + « /start » sur la page abonnement (pas sur l'accueil)",
-          'href="https://t.me/AlertesAOEssaiBot"' in ab and "/start" in ab and "t.me/" not in lire(s))
+    check("Alertes Pro : robot réglé -> bouton « Ouvrir Telegram » vers t.me/AlertesAOEssaiBot + geste « DÉMARRER » sur la page abonnement (pas sur l'accueil)",
+          'href="https://t.me/AlertesAOEssaiBot"' in ab and "DÉMARRER" in ab and 'data-robot="AlertesAOEssaiBot"' in ab and "t.me/" not in lire(s))
     avec_reglages(s, TELEGRAM_ROBOT_ALERTES="javascript:alert(1)")
     code, log = construire(s)
     ab = lire(s, "abonnement/index.html")

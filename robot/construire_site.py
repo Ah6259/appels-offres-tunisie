@@ -824,6 +824,13 @@ def liste_paiements():
     return paie
 
 
+def bouton_essai_tg(robot):
+    """Bouton « Ouvrir Telegram » de l'essai immédiat (règle commune § 15) ; robot non réglé -> ancien texte."""
+    if not robot:
+        return f'<p id="abo-telegram">{texte_telegram("")}</p>'
+    return f'''<a class="btn-tg-essai" id="abo-ouvrir-tg" href="https://t.me/{E(robot)}" target="_blank" rel="noopener">{L("Ouvrir Telegram", "افتح تيليغرام")}</a>'''
+
+
 def texte_telegram(robot):
     """Instructions Telegram après l'inscription (le code est donné par Ahmed à l'activation)."""
     if robot:
@@ -943,7 +950,7 @@ def pages_abonnement(adr, v, etat):
       <li>{L("Touchez <b>DÉMARRER</b> en bas de l'écran. Rien d'autre à écrire : vos choix sont déjà dans le lien.", "المس <b>ابدأ</b> أسفل الشاشة. لا شيء آخر تكتبه: اختياراتك موجودة في الرابط.")}</li>
       <li>{L("Le robot vous répond <b>le matin suivant, vers 8 h</b>, avec vos premiers appels d'offres, puis chaque matin. Vous pouvez fermer Telegram en attendant.", "يجيبك البرنامج <b>في الصباح الموالي، حوالي الساعة ⁦8⁩</b>، بأولى طلبات العروض، ثم كل صباح. يمكنك غلق تيليغرام في الأثناء.")}</li>
     </ol>
-    <a class="btn-tg-essai" id="abo-ouvrir-tg" href="https://t.me/{E(adr['robot'])}" target="_blank" rel="noopener">{L("Ouvrir Telegram", "افتح تيليغرام")}</a>
+    {bouton_essai_tg(adr['robot'])}
     <p class="petit">{L("Pas Telegram ? Il s'installe en une minute (Google Play, App Store), puis revenez toucher le bouton. En attendant, tous les appels d'offres restent consultables gratuitement sur ce site.", "ليس لديك تيليغرام؟ يُثبَّت في دقيقة (Google Play، App Store)، ثم عد والمس الزر. في الأثناء، كل طلبات العروض متاحة مجانًا في هذا الموقع.")}</p>
     <h3>{L("Paiement", "الدفع")}</h3>
     <p>{L("Après l'essai (ou tout de suite si vous avez choisi de payer directement), payez par D17 ou IZI, avec pour motif votre code personnel :", "بعد التجربة (أو فورًا إن اخترت الدفع مباشرة)، ادفع عبر ⁨D17⁩ أو ⁨IZI⁩ مع ذكر رمزك الشخصي كسبب للدفع:")}</p>
