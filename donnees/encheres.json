@@ -924,19 +924,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-8429c4b911": {
-   "id": "Vente-8429c4b911",
-   "date_publication": "2026-08-10",
-   "bureau": "Bureau frontalier des douanes de Hidra",
-   "objet": "Avis de vente aux enchères sous plis fermés N°07/2026 deux lots contenant respectivement : une quantité de 3 325 kg de graines de tournesol, et une quantité de 1 092 kg de pignons d’Alep.",
-   "date_limite": "2026-08-17",
-   "heure": "12:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-10_AV_OP_Hidra_N°07-2026_v2.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Kasserine",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-205a6f002f": {
    "id": "Vente-205a6f002f",
    "date_publication": "2026-08-10",
@@ -947,19 +934,6 @@
    "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-10_AV_OP_Nabeul_N°07-2026.pdf",
    "lien_cahier": "",
    "gouvernorat": "Nabeul",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-dd4745161d": {
-   "id": "Vente-dd4745161d",
-   "date_publication": "2026-08-10",
-   "bureau": "Bureau frontalier des douanes de Tozeur",
-   "objet": "Avis de vente aux enchères sous plis fermés N°08/2026 d'une quantité de viande.",
-   "date_limite": "2026-08-17",
-   "heure": "13:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-10_AV_OP_Tozeur_N°08-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Tozeur",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
@@ -1365,13 +1339,52 @@
    "gouvernorat": "Sfax",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-14 11:04"
+  },
+  "Vente-0d6e143a54": {
+   "id": "Vente-0d6e143a54",
+   "date_publication": "2026-10-16",
+   "bureau": "Bureau frontalier des douanes de Dehiba",
+   "objet": "Avis de vente aux enchères sous plis fermés N°18/2026 au plus offrant, portant sur un lot de bétail.",
+   "date_limite": "2026-10-21",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-16_AV_OP_Dehiba_N°18-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Tataouine",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-17 10:11"
+  },
+  "Vente-46204e94ef": {
+   "id": "Vente-46204e94ef",
+   "date_publication": "2026-10-16",
+   "bureau": "Bureau régional des douanes de Médenine",
+   "objet": "Avis de vente aux enchères sous plis fermés N°15/2026 d'une quantité de produits alimentaires.",
+   "date_limite": "2026-10-24",
+   "heure": "12:00",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-16_AV_OP_Médenine_N°15-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Médenine",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-17 10:11"
+  },
+  "Vente-c9f0e3b33d": {
+   "id": "Vente-c9f0e3b33d",
+   "date_publication": "2026-10-16",
+   "bureau": "Bureau régional des douanes de Médenine",
+   "objet": "Avis de vente aux enchères sous plis fermés N°14/2026 de diverses marchandises.",
+   "date_limite": "2026-10-31",
+   "heure": "",
+   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/10/2026-10-16_AV_OP_Médenine_N°14-2026.pdf",
+   "lien_cahier": "",
+   "gouvernorat": "Médenine",
+   "source": "Douane tunisienne",
+   "lu_le": "2026-10-17 10:11"
   }
  },
- "lignes_lues": 352,
- "derniere_lecture_reussie": "2026-10-16 10:38",
+ "lignes_lues": 355,
+ "derniere_lecture_reussie": "2026-10-17 10:11",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-16 10:38",
+  "depuis": "2026-10-17 10:11",
   "raison": ""
  }
 }
