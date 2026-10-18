@@ -309,6 +309,35 @@ def citer(cs, url, titre_fr, e):
 </section>"""
 
 
+# ------------------------------------------------------------------ partage et signature (demande d'Ahmed, 18/10/2026)
+NOM_SITE_FR = "Alertes appels d'offres Tunisie"
+NOM_SITE_AR = "تنبيهات طلبات العروض تونس"
+DOMAINE = "appels-offres.clicvia.com"
+ICONE_PARTAGE = ('<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/>'
+                 '<circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>')
+
+
+def description_rapport(desc):
+    """La description (aperçu Facebook / WhatsApp / Google) dit d'abord de quel site vient le rapport."""
+    return f"{NOM_SITE_FR} — rapport du mois. {desc}"
+
+
+def signature(cs):
+    return ('    <p class="rp-signature">' + cs.L(f"Un rapport de <b>{cs.E(NOM_SITE_FR)}</b> · {DOMAINE}",
+                                                 f"تقرير من <b>{NOM_SITE_AR}</b> · <bdi>{DOMAINE}</bdi>") + "</p>")
+
+
+def bloc_partage(cs, url, titre_fr, titre_ar, haut):
+    """UN seul bouton « Partager ce rapport » (menu de partage du téléphone : Facebook, WhatsApp, LinkedIn…).
+    Le code est dans assets/page.js (écouteur sur button[data-partage-rapport]) : la CSP interdit les scripts en ligne."""
+    return (f'<div class="rp-partage{" rp-partage-haut" if haut else " rp-partage-bas"}">'
+            f'<button class="rp-partager" type="button" data-partage-rapport data-url="{cs.E(url)}" '
+            f'data-titre-fr="{cs.E(titre_fr)}" data-titre-ar="{cs.E(titre_ar)}">{ICONE_PARTAGE}'
+            f'<span>{cs.L("Partager ce rapport", "شارك هذا التقرير")}</span></button>'
+            f'<p class="rp-aide">{cs.L("Facebook, WhatsApp, LinkedIn… : le menu de votre téléphone s’ouvre.", "فيسبوك، واتساب، لينكدإن…: تُفتح قائمة هاتفك.")}</p>'
+            f'<p class="rp-copie" role="status" hidden></p></div>')
+
+
 # ------------------------------------------------------------------ pages
 def construire_rapports(cs, hist, v, etat):
     """Renvoie [(chemin, html, lastmod)] pour rapports/ et chaque mois de l'historique."""
@@ -322,6 +351,9 @@ def construire_rapports(cs, hist, v, etat):
 
 def page_liste(cs, hist, mois, v, etat):
     racine = "../"
+    url = cs.URL_SITE + "rapports/"
+    titre_fr = "Rapports du mois : appels d'offres publics en Tunisie en chiffres"
+    titre_ar = "تقارير الشهر: طلبات العروض العمومية في تونس بالأرقام"
     if mois:
         lis = "".join(
             f'<li data-mois="{m}"><a href="{m}/">{cs.L(mois_fr(m).capitalize(), mois_ar(m))}</a> — '
@@ -335,17 +367,20 @@ def page_liste(cs, hist, mois, v, etat):
         corps = f'<p>{cs.L("Pas encore de rapport : le premier sera publié dès que des appels d’offres seront relevés.", "لا يوجد تقرير بعد.")}</p>'
     hero = f"""{fil_rapport(cs, racine, [("", "Rapports du mois", "تقارير الشهر")])}
     <h1>{cs.L("Rapports du mois", "تقارير الشهر")}</h1>
+{signature(cs)}
     <p class="intro">{cs.L("Chaque mois, le bilan des appels d'offres publics tunisiens relevés par notre robot : par métier, par gouvernorat, par acheteur public. Uniquement des chiffres tirés des annonces du site.",
-                           "كل شهر، حصيلة طلبات العروض العمومية التونسية التي رصدها برنامجنا: حسب الاختصاص والولاية والمشتري العمومي. أرقام مأخوذة فقط من إعلانات الموقع.")}</p>"""
+                           "كل شهر، حصيلة طلبات العروض العمومية التونسية التي رصدها برنامجنا: حسب الاختصاص والولاية والمشتري العمومي. أرقام مأخوذة فقط من إعلانات الموقع.")}</p>
+    {bloc_partage(cs, url, titre_fr, titre_ar, True)}"""
     contenu = f"""<section class="carte">
   <h2>{cs.L("Tous les mois", "كل الأشهر")}</h2>
   {corps}
 </section>
-{methode(cs)}"""
+{methode(cs)}
+{bloc_partage(cs, url, titre_fr, titre_ar, False)}"""
     titre = "Rapports du mois : appels d'offres publics en Tunisie en chiffres | Alertes appels d'offres"
     desc = ("Bilan mensuel des appels d'offres publics tunisiens relevés sur le portail officiel HAICOP : nombre par métier, par gouvernorat "
             "et par acheteur public. Chiffres vérifiables, gratuit. تقارير شهرية لطلبات العروض.")
-    return cs.page("rapports/", racine, titre, desc, hero, contenu, v, etat)
+    return cs.page("rapports/", racine, titre, description_rapport(desc), hero, contenu, v, etat)
 
 
 def candidats_sous_pages(cs, recs):
@@ -499,7 +534,9 @@ def pages_mois(cs, hist, m, v, etat):
 
     hero = f"""{fil_rapport(cs, racine, [("../", "Rapports du mois", "تقارير الشهر"), ("", mfr.capitalize(), mar)])}
     <h1>{cs.L(cs.E(titre_fr), titre_ar)}</h1>
-    <p class="intro">{statut_html(cs, m, e)}</p>"""
+{signature(cs)}
+    <p class="intro">{statut_html(cs, m, e)}</p>
+    {bloc_partage(cs, url, titre_fr, titre_ar, True)}"""
     contenu = f"""<section class="carte rap-bref-carte" id="en-bref">
   <h2>{cs.L("En bref", "باختصار")}</h2>
   <ul class="rap-bref">{liste_bref(bref, genre_evo)}</ul>
@@ -517,7 +554,8 @@ def pages_mois(cs, hist, m, v, etat):
   <p><a href="{racine}">{cs.L("Les appels d’offres encore ouverts", "طلبات العروض المفتوحة")}</a> · <a href="{racine}#metiers">{cs.L("Par métier", "حسب الاختصاص")}</a> · <a href="{racine}#gouvernorats">{cs.L("Par gouvernorat", "حسب الولاية")}</a> · <a href="../">{cs.L("Tous les rapports", "كل التقارير")}</a></p>
 </section>
 {methode(cs)}
-{citer(cs, url, titre_fr, e)}"""
+{citer(cs, url, titre_fr, e)}
+{bloc_partage(cs, url, titre_fr, titre_ar, False)}"""
     faq = []
     if total:
         faq.append((f"Combien d'appels d'offres publics ont été publiés en Tunisie en {mfr} ?",
@@ -533,7 +571,7 @@ def pages_mois(cs, hist, m, v, etat):
     titre = f"{titre_fr} ({nb(total)} relevés) | Alertes appels d'offres"
     desc = (f"Bilan de {mfr} des appels d'offres publics tunisiens relevés sur le portail officiel HAICOP : {nb(total)} appels d'offres, "
             f"par métier, par gouvernorat et par acheteur public. Chiffres vérifiables, gratuit. {titre_ar}.")
-    html = cs.page(f"rapports/{m}/", racine, titre, desc, hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
+    html = cs.page(f"rapports/{m}/", racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
     pages = [(f"rapports/{m}/", html, e["derniere_date"])]
     for t, nom, slug, n, lfr, lar in sp:
         pages.append(page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat))
@@ -571,7 +609,9 @@ def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat):
     bref.append(phrase_evo)
     hero = f"""{fil_rapport(cs, racine, [("../../../", "Rapports du mois", "تقارير الشهر"), ("../../", mfr.capitalize(), mar), ("", lfr, lar)])}
     <h1>{cs.L(cs.E(titre_fr), titre_ar)}</h1>
-    <p class="intro">{statut_html(cs, m, e)}</p>"""
+{signature(cs)}
+    <p class="intro">{statut_html(cs, m, e)}</p>
+    {bloc_partage(cs, url, titre_fr, titre_ar, True)}"""
     contenu = f"""<section class="carte rap-bref-carte" id="en-bref">
   <h2>{cs.L("En bref", "باختصار")}</h2>
   <ul class="rap-bref">{liste_bref(bref, genre_evo)}</ul>
@@ -589,7 +629,8 @@ def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat):
   <p><a href="{lien_site}">{cs.L(f"Les appels d’offres encore ouverts : {cs.E(lfr)}", f"طلبات العروض المفتوحة: {lar}")}</a> · <a href="../../">{cs.L(f"Bilan national de {mfr}", f"الحصيلة الوطنية لشهر {mar}")}</a> · <a href="../../../">{cs.L("Tous les rapports", "كل التقارير")}</a></p>
 </section>
 {methode(cs)}
-{citer(cs, url, titre_fr, e)}"""
+{citer(cs, url, titre_fr, e)}
+{bloc_partage(cs, url, titre_fr, titre_ar, False)}"""
     faq = [(f"Combien d'appels d'offres {('à ' + lfr) if t == 'gouvernorat' else '« ' + lfr + ' »'} en {mfr} ?",
             f"Notre robot a relevé {nb(n)} appels d'offres publiés en {mfr} sur le portail officiel HAICOP "
             + ("(chiffres définitifs)." if e.get("fige") else f"(chiffres au {cs.dfr(e['derniere_date'])})."))]
@@ -597,7 +638,7 @@ def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat):
     titre = f"{titre_fr} ({nb(n)} relevés) | Alertes appels d'offres"
     desc = (f"{titre_fr} : {nb(n)} appels d'offres publics relevés sur le portail officiel HAICOP, par acheteur, avec la liste et le lien "
             f"vers chaque fiche officielle. Chiffres vérifiables, gratuit. {titre_ar}.")
-    html = cs.page(chemin, racine, titre, desc, hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
+    html = cs.page(chemin, racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
     return (chemin, html, e["derniere_date"])
 
 

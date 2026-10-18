@@ -91,6 +91,52 @@
   });
 })();
 
+/* Bouton « Partager ce rapport » des Rapports du mois (demande d'Ahmed, 18/10/2026) : UN seul bouton, en haut et en bas.
+   Menu de partage du téléphone (Facebook, WhatsApp, LinkedIn…) ; sinon (ordinateur) « texte + lien » copié dans le
+   presse-papiers, sinon fenêtre avec le lien. Le texte dit de quel site vient le rapport. HTML : robot/rapports.py. */
+(function () {
+  var NOM = { fr: "Alertes appels d'offres Tunisie", ar: "تنبيهات طلبات العروض تونس" }, DOMAINE = "appels-offres.clicvia.com";
+  function texteRapport(b) {
+    var ar = document.documentElement.lang === "ar";
+    var titre = (ar ? b.getAttribute("data-titre-ar") : "") || b.getAttribute("data-titre-fr") || document.title.split(" | ")[0];
+    var url = b.getAttribute("data-url") || location.href.split("#")[0];
+    if (ar) url += (url.indexOf("?") < 0 ? "?" : "&") + "lang=ar";
+    var texte = ar ? titre + " — تقرير الشهر من " + NOM.ar + " (" + DOMAINE + "):"
+                   : titre + " — Rapport du mois d’" + NOM.fr + " (" + DOMAINE + ") :";
+    return { titre: titre, texte: texte, url: url };
+  }
+  function message(b, t) {
+    var zone = b.parentNode && b.parentNode.querySelector(".rp-copie");
+    if (!zone) return;
+    zone.textContent = t; zone.hidden = false;
+    clearTimeout(zone._minuteur);
+    zone._minuteur = setTimeout(function () { zone.hidden = true; }, 4000);
+  }
+  function copier(b, p) {
+    var tout = p.texte + " " + p.url, ok = function () {
+      message(b, document.documentElement.lang === "ar" ? "تم نسخ الرابط ✓ — الصقه حيث تريد" : "Lien copié ✓ — collez-le où vous voulez");
+    }, secours = function () { try { window.prompt(document.documentElement.lang === "ar" ? "انسخ هذا الرابط:" : "Copiez ce lien :", p.url); } catch (x) {} };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(tout).then(ok, secours);
+    } catch (x) {}
+    secours();
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest && e.target.closest("button[data-partage-rapport]");
+    if (!b) return;
+    e.preventDefault();
+    try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "partage" + location.pathname, title: "Partage", event: true }); } catch (x) {}
+    var p = texteRapport(b);
+    if (navigator.share) {
+      navigator.share({ title: p.titre, text: p.texte, url: p.url }).catch(function (err) {
+        if (!err || err.name !== "AbortError") copier(b, p);
+      });
+      return;
+    }
+    copier(b, p);
+  });
+})();
+
 /* Installation sur le téléphone : service worker PRUDENT (sw.js : réseau d'abord pour les pages et les données).
    Seulement en https (jamais en file: pendant les tests locaux). */
 if ("serviceWorker" in navigator && location.protocol === "https:") {

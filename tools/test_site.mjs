@@ -570,5 +570,40 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   }
 }
 
+// ---- 13. Rapports du mois : UN bouton « Partager ce rapport » (demande d'Ahmed, 18/10/2026) ----
+{
+  const pr = "rapports/" + readdirSync(join(root, "rapports")).filter(x => /^\d{4}-\d{2}$/.test(x)).sort().pop() + "/index.html";
+  const adresse = URL_SITE + pr.replace("index.html", "");
+  // 1) téléphone : navigator.share avec le titre, un texte qui nomme le site et le lien
+  let wr = await page(pr, "lang=fr"), partages = [], comptes = [];
+  const btns = [...wr.document.querySelectorAll("button[data-partage-rapport]")];
+  check(`${pr} : 2 boutons « Partager ce rapport » (haut et bas), adresse de la page`, btns.length === 2 && btns.every(b => b.dataset.url === adresse)
+    && texte(btns[0]).includes("Partager ce rapport") && wr.document.querySelectorAll('a[href*="wa.me"], a[href*="sharer"]').length === 0);
+  Object.defineProperty(wr.navigator, "share", { value: o => { partages.push(o); return Promise.resolve(); }, configurable: true });
+  wr.goatcounter = { count: o => comptes.push(o) };
+  btns[1].click();
+  await new Promise(ok => setTimeout(ok, 0));
+  check(`${pr} : clic → menu de partage du téléphone (titre, « Rapport du mois d’Alertes appels d’offres Tunisie (appels-offres.clicvia.com) : », lien) + clic compté`,
+    partages.length === 1 && partages[0].url === adresse && partages[0].title === btns[0].dataset.titreFr
+    && partages[0].text === btns[0].dataset.titreFr + " — Rapport du mois d’Alertes appels d'offres Tunisie (appels-offres.clicvia.com) :"
+    && comptes.length === 1 && comptes[0].path === "partage/" + pr.replace("index.html", "") && comptes[0].event === true);
+  // 2) ordinateur : pas de navigator.share → « texte + lien » copié, message « Lien copié ✓ »
+  wr = await page(pr, "lang=fr");
+  let copie = null;
+  Object.defineProperty(wr.navigator, "clipboard", { value: { writeText: t => { copie = t; return Promise.resolve(); } }, configurable: true });
+  wr.document.querySelector(".rp-partage-haut button[data-partage-rapport]").click();
+  await new Promise(ok => setTimeout(ok, 10));
+  const msg = wr.document.querySelector(".rp-partage-haut .rp-copie");
+  check(`${pr} : sans navigator.share, texte + lien copiés et « Lien copié ✓ — collez-le où vous voulez » affiché`, !wr.navigator.share
+    && copie && copie.endsWith(" " + adresse) && copie.includes("(appels-offres.clicvia.com)") && msg && !msg.hidden && texte(msg).startsWith("Lien copié ✓"));
+  // 3) arabe : titre arabe et lien ?lang=ar
+  wr = await page(pr, "lang=ar"); partages = [];
+  Object.defineProperty(wr.navigator, "share", { value: o => { partages.push(o); return Promise.resolve(); }, configurable: true });
+  wr.document.querySelector("button[data-partage-rapport]").click();
+  await new Promise(ok => setTimeout(ok, 0));
+  check(`${pr} (arabe) : titre arabe, nom du site en arabe, lien ?lang=ar`, partages.length === 1 && partages[0].url === adresse + "?lang=ar"
+    && partages[0].text.includes("تنبيهات طلبات العروض تونس") && partages[0].title === wr.document.querySelector("button[data-partage-rapport]").dataset.titreAr);
+}
+
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

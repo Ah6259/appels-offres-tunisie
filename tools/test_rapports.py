@@ -152,6 +152,40 @@ check("rien de la partie payante dans les rapports (pas d'abonnés, pas de chat_
       not any(re.search(r"abonne|chat_?id", lire(SITE, p + "index.html")) for p in pages_r))
 
 
+# bouton « Partager ce rapport » (demande d'Ahmed, 18/10/2026) : UN seul bouton en haut + un en bas, sur TOUTES les pages des rapports
+ok_btn, ok_res, ok_sig, ok_desc, ok_og = True, True, True, True, True
+for p in pages_r:
+    h = lire(SITE, p + "index.html")
+    url_p = URL + p
+    boutons = re.findall(r'<button class="rp-partager" type="button" data-partage-rapport data-url="([^"]*)"', h)
+    haut, bas = h.find("rp-partage-haut"), h.find("rp-partage-bas")
+    if not (boutons == [url_p, url_p] and 0 < h.find("<h1") < haut < h.find('<main') < bas and h.count("rp-aide") == 2
+            and "Facebook, WhatsApp, LinkedIn… : le menu de votre téléphone s’ouvre." in h and 'class="rp-copie" role="status" hidden' in h):
+        ok_btn = False; print("   bouton :", p, boutons)
+    if re.search(r"facebook\.com/sharer|wa\.me/|linkedin\.com/share|twitter\.com/intent|onclick=", h) or "data-reseau=" in h:
+        ok_res = False; print("   lien séparé :", p)
+    if not ('<p class="rp-signature"><span data-l="fr">Un rapport de <b>Alertes appels d&#x27;offres Tunisie</b> · appels-offres.clicvia.com</span>' in h
+            and h.find("<h1") < h.find("rp-signature") < haut):
+        ok_sig = False; print("   signature :", p)
+    desc = re.search(r'<meta name="description" content="([^"]*)"', h)
+    ogd = re.search(r'<meta property="og:description" content="([^"]*)"', h)
+    if not (desc and ogd and desc.group(1).startswith("Alertes appels d&#x27;offres Tunisie — rapport du mois. ") and ogd.group(1) == desc.group(1)):
+        ok_desc = False; print("   description :", p)
+    if not (f'<meta property="og:url" content="{url_p}">' in h and re.search(r'<meta property="og:title" content="[^"|]{10,}">', h)
+            and f'<meta property="og:image" content="{URL}assets/og-image-v6.jpg">' in h and os.path.exists(os.path.join(SITE, "assets", "og-image-v6.jpg"))):
+        ok_og = False; print("   og :", p)
+check(f"partage : les {len(pages_r)} pages des rapports ont UN bouton « Partager ce rapport » en haut (sous le titre) et un en bas, avec leur adresse", ok_btn)
+check("partage : aucun lien Facebook / WhatsApp / LinkedIn séparé dans les rapports (le menu du téléphone propose tout)", ok_res)
+check("partage : signature « Un rapport de Alertes appels d'offres Tunisie · appels-offres.clicvia.com » sous le titre", ok_sig)
+check("partage : la description (et og:description) commence par « Alertes appels d'offres Tunisie — rapport du mois. »", ok_desc)
+check("partage : og:title, og:url (= adresse de la page) et og:image (image avec le nom du site) présents", ok_og)
+js = lire(SITE, "assets/page.js")
+check("partage : code du bouton dans assets/page.js (button[data-partage-rapport], navigator.share, presse-papiers, prompt, GoatCounter)",
+      all(x in js for x in ('closest("button[data-partage-rapport]")', "navigator.share(", "navigator.clipboard.writeText(", "window.prompt(",
+                            '"partage" + location.pathname', "Lien copié ✓ — collez-le où vous voulez", "Rapport du mois d’")))
+css = lire(SITE, "assets/style.css")
+check("partage : bouton tactile (au moins 44 px de haut) dans style.css", re.search(r"\.rp-partager\{[^}]*min-height:(4[4-9]|[5-9]\d)px", css) is not None)
+
 # ============================================================ 2. scénarios (copie temporaire)
 @contextlib.contextmanager
 def copie():
