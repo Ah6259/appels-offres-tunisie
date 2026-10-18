@@ -464,8 +464,15 @@ const det = d.getElementById("paiement");
 const paie = texte(det);
 check("abonnement : bouton « Paiement » (fermé) qui déplie D17 et IZI (liens vers les applications officielles, mode d'emploi, plus de Wafacash) au 24 321 390, montant et motif",
   det && det.tagName === "DETAILS" && !det.open && texte(det.querySelector('summary [data-l="fr"]')) === "Paiement" &&
-  ["D17", "IZI", "Transfert rapide", "24 321 390", "25 DT / mois", "le nom de votre entreprise"].every(x => paie.includes(x)) && !/Wafacash/i.test(det.outerHTML) && ["tn.mobipost", "tn.izi.consumer", "id1475640303", "id1603653941"].every(u => det.querySelector(`a[href*="${u}"]`)));
+  ["D17", "IZI", "Transfert rapide", "24 321 390", "25 DT / mois", "votre code personnel"].every(x => paie.includes(x)) && !/Wafacash/i.test(det.outerHTML) && ["tn.mobipost", "tn.izi.consumer", "id1475640303", "id1603653941"].every(u => det.querySelector(`a[href*="${u}"]`)));
 check("paiement : logos D17 / IZI dans les boutons, étape 2 pour les deux applications, bouton « ? » avec les deux écrans d'exemple", ["d17.png", "izi.png", "transfert-d17.svg", "transfert-izi.svg"].every(f => existsSync(join(root, "assets/paiement", f))) && /class="appli-btn"[^>]*><img src="\.\.\/assets\/paiement\/d17\.png"/.test(lire("abonnement/index.html")) && /class="aide-transfert"/.test(lire("abonnement/index.html")) && /Transfert d’argent/.test(lire("abonnement/index.html")));
+{ // 18/10/2026 : le motif du paiement est le CODE PERSONNEL donné à l'inscription (#abo-code) — jamais « votre nom » / « nom de l'entreprise » ailleurs sur la page ou dans les conditions
+  const sansBalises = f => lire(f).replace(/<[^>]*>/g, " ");
+  const contradictions = [/pour motif (votre nom|le nom)/, /name as reference/, /motif du paiement et facture/];
+  check("paiement : motif = code personnel partout (page d'abonnement + conditions), aucune phrase « motif = nom »",
+    /id="abo-code"/.test(lire("abonnement/index.html")) && /motif[^.]{0,40}code personnel/.test(sansBalises("abonnement/index.html")) && /code personnel/.test(sansBalises("abonnement/conditions/index.html")) &&
+    ["abonnement/index.html", "abonnement/conditions/index.html"].every(f => contradictions.every(r => !r.test(sansBalises(f)))));
+}
 check("paiement simple et rassurant (règle commune du 08/10/2026) : 3 étapes numérotées, phrase de confiance, description de l'offre cachée quand « Paiement » est ouvert", /<ol class="paie-etapes">/.test(lire("abonnement/index.html")) && /class="paie-confiance"/.test(lire("abonnement/index.html")) && /class="avantages[^"]*masque-si-paiement/.test(lire("abonnement/index.html")) && lire("assets/style.css").includes(":has(> details.paiement[open]) > .masque-si-paiement{display:none}"));
 const wa = d.getElementById("abo-preuve");
 check("abonnement : bouton vert « Envoyer la preuve de paiement par WhatsApp » vers wa.me/21624321390 avec texte prérempli",

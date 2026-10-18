@@ -886,8 +886,8 @@ def pages_abonnement(adr, v, etat):
   <details class="paiement" id="paiement"><summary class="btn-clair">{L("Paiement", "الدفع")}</summary>
     {liste_paiements()}
     {lien_preuve()}
-    <p class="petit">{L("Payez après l'essai gratuit (ou tout de suite si vous préférez), avec pour motif le nom de votre entreprise, puis envoyez la preuve par WhatsApp. Une facture vous est adressée.",
-                        "ادفع بعد التجربة المجانية (أو فورًا إن أردت) مع ذكر اسم مؤسستك كسبب للدفع، ثم أرسل الإثبات عبر واتساب. تُرسل إليك فاتورة.")}</p>
+    <p class="petit">{L("Payez après l'essai gratuit (ou tout de suite si vous préférez), avec pour motif votre code personnel (donné à l’inscription), puis envoyez la preuve par WhatsApp. Une facture vous est adressée.",
+                        "ادفع بعد التجربة المجانية (أو فورًا إن أردت) مع ذكر رمزك الشخصي (يُعطى عند التسجيل) كسبب للدفع، ثم أرسل الإثبات عبر واتساب. تُرسل إليك فاتورة.")}</p>
   </details>
   <a class="btn-pro" href="#inscription">{L(f"Je m'inscris : {essai} jours gratuits", f"أسجّل: {ISO(essai)} يومًا مجانًا")}</a>
 </section>
@@ -912,7 +912,7 @@ def pages_abonnement(adr, v, etat):
         data-metiers="{','.join(sorted(slug for _, slug, _, _ in METIERS))}" data-gouv="{','.join(sorted(slug for _, slug, _ in GOUVERNORATS if slug not in ('plusieurs', 'national')))}">
     <label class="abo-etiquette" for="abo-nom">{L("Votre nom", "اسمك")}</label>
     <input id="abo-nom" name="nom" required maxlength="100" autocomplete="name">
-    <label class="abo-etiquette" for="abo-entreprise">{L("Entreprise (motif du paiement et facture)", "المؤسسة (سبب الدفع والفاتورة)")}</label>
+    <label class="abo-etiquette" for="abo-entreprise">{L("Entreprise (pour la facture)", "المؤسسة (للفاتورة)")}</label>
     <input id="abo-entreprise" name="entreprise" required maxlength="120" autocomplete="organization">
     <label class="abo-etiquette" for="abo-tel">{L("Téléphone (8 chiffres)", "الهاتف (⁦8⁩ أرقام)")}</label>
     <input id="abo-tel" name="telephone" required inputmode="tel" pattern="[0-9 ]{{8,11}}" maxlength="11" autocomplete="tel">
@@ -983,8 +983,8 @@ def pages_abonnement(adr, v, etat):
          f"Les {essai} premiers jours sont gratuits, sans paiement et sans engagement. Sans paiement à la fin de l'essai, l'alerte s'arrête simplement.",
          f"الأيام الـ{ISO(essai)} الأولى مجانية، دون دفع ودون التزام. إذا لم يتم الدفع في نهاية التجربة، يتوقف التنبيه ببساطة."),
         ("4. Paiement et facture", "4. الدفع والفاتورة",
-         f"Paiement par D17 ou IZI au {num}, avec pour motif le nom de l'entreprise, puis preuve envoyée par WhatsApp au même numéro. La période payée commence après l'essai gratuit ou après la période déjà payée. Une facture est adressée à l'abonné.",
-         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ على الرقم {ISO(num)} مع ذكر اسم المؤسسة، ثم إرسال الإثبات عبر واتساب على نفس الرقم. تبدأ المدة المدفوعة بعد التجربة المجانية أو بعد المدة المدفوعة سابقًا. تُرسل فاتورة إلى المشترك."),
+         f"Paiement par D17 ou IZI au {num}, avec pour motif le code personnel de l'abonné (donné à l'inscription), puis preuve envoyée par WhatsApp au même numéro. La période payée commence après l'essai gratuit ou après la période déjà payée. Une facture est adressée à l'abonné.",
+         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ على الرقم {ISO(num)} مع ذكر الرمز الشخصي للمشترك (يُعطى عند التسجيل)، ثم إرسال الإثبات عبر واتساب على نفس الرقم. تبدأ المدة المدفوعة بعد التجربة المجانية أو بعد المدة المدفوعة سابقًا. تُرسل فاتورة إلى المشترك."),
         ("5. Pas de renouvellement automatique", "5. لا تجديد آلي",
          f"Sans engagement au-delà d'un an. Il n'y a aucun renouvellement automatique : un rappel est envoyé {rj} jours avant la fin ; sans nouveau paiement, l'alerte s'arrête simplement à la date de fin.",
          f"دون التزام بعد السنة. لا يوجد أي تجديد آلي: يُرسل تذكير قبل النهاية بـ{ISO(rj)} أيام، ودون دفع جديد يتوقف التنبيه ببساطة في تاريخ النهاية."),
