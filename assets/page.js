@@ -101,8 +101,9 @@
     var titre = (ar ? b.getAttribute("data-titre-ar") : "") || b.getAttribute("data-titre-fr") || document.title.split(" | ")[0];
     var url = b.getAttribute("data-url") || location.href.split("#")[0];
     if (ar) url += (url.indexOf("?") < 0 ? "?" : "&") + "lang=ar";
-    var texte = ar ? titre + " — تقرير الشهر من " + NOM.ar + " (" + DOMAINE + "):"
-                   : titre + " — Rapport du mois d’" + NOM.fr + " (" + DOMAINE + ") :";
+    // AUCUNE adresse dans le texte (18/10/2026, vu par Ahmed) : Facebook prendrait la 1re adresse (l'accueil) au lieu du rapport
+    var texte = ar ? titre + " — تقرير الشهر من " + NOM.ar + ":"
+                   : titre + " — Rapport du mois d’" + NOM.fr + " :";
     return { titre: titre, texte: texte, url: url };
   }
   function message(b, t) {

@@ -583,9 +583,9 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   wr.goatcounter = { count: o => comptes.push(o) };
   btns[1].click();
   await new Promise(ok => setTimeout(ok, 0));
-  check(`${pr} : clic → menu de partage du téléphone (titre, « Rapport du mois d’Alertes appels d’offres Tunisie (appels-offres.clicvia.com) : », lien) + clic compté`,
+  check(`${pr} : clic → menu de partage du téléphone (titre, « Rapport du mois d’Alertes appels d’offres Tunisie : » SANS adresse dans le texte, lien à part) + clic compté`,
     partages.length === 1 && partages[0].url === adresse && partages[0].title === btns[0].dataset.titreFr
-    && partages[0].text === btns[0].dataset.titreFr + " — Rapport du mois d’Alertes appels d'offres Tunisie (appels-offres.clicvia.com) :"
+    && partages[0].text === btns[0].dataset.titreFr + " — Rapport du mois d’Alertes appels d'offres Tunisie :" && !/clicvia|https?:/.test(partages[0].text)
     && comptes.length === 1 && comptes[0].path === "partage/" + pr.replace("index.html", "") && comptes[0].event === true);
   // 2) ordinateur : pas de navigator.share → « texte + lien » copié, message « Lien copié ✓ »
   wr = await page(pr, "lang=fr");
@@ -595,7 +595,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   await new Promise(ok => setTimeout(ok, 10));
   const msg = wr.document.querySelector(".rp-partage-haut .rp-copie");
   check(`${pr} : sans navigator.share, texte + lien copiés et « Lien copié ✓ — collez-le où vous voulez » affiché`, !wr.navigator.share
-    && copie && copie.endsWith(" " + adresse) && copie.includes("(appels-offres.clicvia.com)") && msg && !msg.hidden && texte(msg).startsWith("Lien copié ✓"));
+    && copie && copie.endsWith(" " + adresse) && copie.includes("Rapport du mois d’Alertes appels d'offres Tunisie :") && msg && !msg.hidden && texte(msg).startsWith("Lien copié ✓"));
   // 3) arabe : titre arabe et lien ?lang=ar
   wr = await page(pr, "lang=ar"); partages = [];
   Object.defineProperty(wr.navigator, "share", { value: o => { partages.push(o); return Promise.resolve(); }, configurable: true });
