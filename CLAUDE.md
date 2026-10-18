@@ -138,3 +138,6 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   — rapport du mois. … ». Code : écouteur `button[data-partage-rapport]` dans assets/page.js (menu du téléphone, sinon texte + lien copiés
   « Lien copié ✓ », sinon prompt ; clic GoatCounter `partage/…`). Classe `rp-partager` (PAS `partager` : réservé au bouton vidéo de l'en-tête).
 
+
+## Visiteur simulé (18/10/2026, règle générale)
+- `python tools/visiteur_simule.py` (outil COMMUN, copie identique dans chaque site : ne pas le modifier ici) : liens/images morts, puis Chromium à 390 px (page trop large, image cassée, « NaN/undefined », page vide) + scénarios `tools/scenarios-visiteur.json` (recherche, filtres, résultat affiché, groupes « croissant »). Lancé par tests.yml. Nouvelle recherche, nouveau filtre ou nouveau formulaire → ajouter un scénario. Page `video/` : `preload="none"` (la couverture reste affichée ; la page finit de charger sans attendre la vidéo, moins de données sur téléphone ; le visiteur simulé la voyait « non chargée » avec `metadata`).

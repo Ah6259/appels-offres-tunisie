@@ -1,0 +1,14 @@
+[
+ {"page": "", "nom": "accueil : nombre d'appels d'offres ouverts (résumé du jour)", "lire": "#r-ouverts b"},
+ {"page": "", "nom": "accueil : recherche d'un mot absent → 0 appel d'offres", "etapes": [{"sel": "#f-q", "valeur": "zzqxwv"}], "lire": "#compte", "groupe": "entonnoir", "ordre": 0, "croissant": true},
+ {"page": "", "nom": "accueil : filtre Tunis + Informatique", "etapes": [{"sel": "#f-gouv", "valeur": "tunis"}, {"sel": "#f-metier", "valeur": "informatique"}], "lire": "#compte", "groupe": "entonnoir", "ordre": 1, "croissant": true},
+ {"page": "", "nom": "accueil : filtre Tunis seul", "etapes": [{"sel": "#f-gouv", "valeur": "tunis"}], "lire": "#compte", "groupe": "entonnoir", "ordre": 2, "croissant": true},
+ {"page": "", "nom": "accueil : sans filtre (tous les appels d'offres)", "lire": "#compte", "groupe": "entonnoir", "ordre": 3, "croissant": true},
+ {"page": "", "nom": "accueil : recherche « travaux » + tri récents", "etapes": [{"sel": "#f-q", "valeur": "travaux"}, {"sel": "#f-tri", "valeur": "recent"}], "lire": "#compte"},
+ {"page": "", "nom": "accueil : effacer les filtres (bouton « Tout afficher »)", "etapes": [{"sel": "#f-metier", "valeur": "medical"}, {"sel": "#effacer", "clic": true}], "lire": "#compte", "apres": 800},
+ {"page": "gouvernorat/sfax/", "nom": "page Sfax : filtre BTP", "etapes": [{"sel": "#f-metier", "valeur": "btp-genie-civil"}], "lire": "#compte"},
+ {"page": "metier/informatique/", "nom": "page Informatique : nombre d'appels d'offres", "lire": "#compte"},
+ {"page": "encheres/", "nom": "enchères des douanes : recherche « voiture »", "etapes": [{"sel": "#f-q", "valeur": "voiture"}], "lire": "#compte"},
+ {"page": "abonnement/", "nom": "Alertes Pro : prix affiché (lecture seule, rien n'est envoyé)", "lire": "#abo-prix"},
+ {"page": "rapports/2026-10/", "nom": "rapport d'octobre (tableau des chiffres)", "lire": "table"}
+]

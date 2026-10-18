@@ -51,7 +51,7 @@ def pages_video(root, cfg=None):
                  '  <div class="video-tete">' + (f'<img src="{r}{cfg["logo"]}" alt="" width="52" height="52">' if cfg.get("logo") else "")
                  + f'<p class="video-nom"{_txt(cfg["nom"], D)}</p></div>\n'
                  f'  <h1{_txt(p["titre"], D)}</h1>\n'
-                 f'  <video class="video-lecteur" controls playsinline preload="metadata" width="1080" height="1920" poster="{r}assets/video/{p["couverture"]}" src="{r}assets/video/{p["video"]}.mp4"{src}></video>\n'
+                 f'  <video class="video-lecteur" controls playsinline preload="none" width="1080" height="1920" poster="{r}assets/video/{p["couverture"]}" src="{r}assets/video/{p["video"]}.mp4"{src}></video>\n'
                  f'  <a class="btn-video-site" href="{r}{p["site"]}"{_txt(p["bouton"], D)}</a>\n'
                  f'  <button class="btn-video-partager" type="button" data-partager-video{_txt(cfg["partager"], D)}</button>\n'
                  f'</section>\n</main>')

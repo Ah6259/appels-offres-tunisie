@@ -48,7 +48,7 @@ const autorise = (csp, n) => { const d = x => csp.split(";").map(y => y.trim()).
 // 3. page vidéo
 const pv = existsSync(join(root, "video/index.html")) ? lire("video/index.html") : "";
 check("page video/ : lecteur (controls, playsinline, poster), gros bouton « Ouvrir le site », bouton Partager",
-  /<video class="video-lecteur" controls playsinline preload="metadata"[^>]*poster="\.\.\/assets\/video\/couverture\.jpg" src="\.\.\/assets\/video\/presentation\.mp4"/.test(pv)
+  /<video class="video-lecteur" controls playsinline preload="none"[^>]*poster="\.\.\/assets\/video\/couverture\.jpg" src="\.\.\/assets\/video\/presentation\.mp4"/.test(pv)
   && /<a class="btn-video-site" href="\.\.\/"/.test(pv) && pv.includes("data-partager-video") && pv.includes("افتح الموقع"));
 check("page video/ : og:type video.other, og:video mp4 1080 × 1920, og:image 1200 × 630, canonique",
   pv.includes('<meta property="og:type" content="video.other">') && pv.includes(`<meta property="og:video:secure_url" content="${SITE}assets/video/presentation.mp4">`)

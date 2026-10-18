@@ -43,3 +43,5 @@ jobs:
         run: python tools/test_pannes.py
       - name: Rapports du mois (chiffres = données, mois fini figé, pas de fausse évolution, plan du site)
         run: python tools/test_rapports.py
+      - name: Visiteur simule (comme un visiteur sur telephone, avant le vrai visiteur - regle generale du 18/10/2026)
+        run: python tools/visiteur_simule.py
