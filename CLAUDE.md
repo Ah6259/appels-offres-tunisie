@@ -64,7 +64,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (142 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) et `python tools/test_pannes.py` (87 scénarios).
+1. `node tools/test_site.mjs` (142 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) `python tools/test_pannes.py` (86 scénarios) et `python tools/test_rapports.py` (42 vérifications, Rapports du mois).
    Construire avec la date des données (`--aujourdhui AAAA-MM-JJ` = jour de la dernière lecture) sinon le test « données d'hier » échoue.
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
@@ -113,3 +113,18 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **Visibilité Google (12/10/2026, règle commune § 8)** : liens vers nos autres sites en `https://<site>.clicvia.com/` (jamais `ah6259.github.io`), lien « Tous nos services » → https://clicvia.com/ dans le pied de page, `robots.txt` avec ligne Sitemap, `sitemap.xml` daté, JSON-LD sur l'accueil, clé IndexNow `377f054ba9c5ed40d6796adc8d87d1e8.txt` à la racine (ne pas supprimer : robot `indexnow` du portail). Contrôle : `node "outils visibilite/controle.mjs"` (dépôt projets-ahmed). Sitemap envoyé dans Search Console par Ahmed le 12/10/2026.
 
 - **Google + Bing (12/10/2026)** : sitemap envoyé par Ahmed dans Google Search Console et dans Bing Webmaster Tools (site clicvia.com/), indexation de l'accueil demandée. Pour un nouveau site : mêmes gestes, voir `nouveau site - procedure.md` § 4 étape 5 (dépôt projets-ahmed).
+
+## Rapports du mois (18/10/2026, demande d'Ahmed, règle commune § 25)
+- Articles AUTOMATIQUES mais VRAIS pour Google : `robot/rapports.py`, appelé par `construire_site.py` (donc par `maj.yml`, chaque jour).
+  Pages `rapports/` (liste des mois), `rapports/AAAA-MM/` (bilan : en bref, par métier, par gouvernorat, acheteurs, délais et cautions,
+  procédures, ventes aux enchères de la Douane, méthode, « Citer ces chiffres », JSON-LD Article + FAQ + fil d'Ariane) et sous-pages
+  `rapports/AAAA-MM/gouvernorat|metier/<slug>/` (liste des fiches du mois + liens officiels). Lien « Rapports du mois » dans le pied (page.js).
+- Chaque phrase = un comptage (ou une médiane) des annonces GRATUITES du site ; rien d'Alertes Pro. Le texte dit « relevés par notre
+  robot » (pas le total officiel du portail). Minimums écrits : classement ≥ 3 appels d'offres par ligne et ≥ 3 lignes, médiane ≥ 5 valeurs,
+  sous-page ≥ 10 appels d'offres (au plus 25 par mois, jamais « Plusieurs », « National », « Autres »).
+- Historique `donnees/rapports.json` (fiches du mois en forme courte + chiffres + `derniere_date`) : mois en cours recalculé chaque jour,
+  mois fini FIGÉ le 3 du mois suivant puis jamais modifié ; un mois déjà fini au premier passage n'est pas créé après coup.
+  Évolution seulement si le mois précédent est « complet » (robot en marche dès son 1er jour ; `robot_depuis` = 04/10/2026, donc pas
+  d'évolution avant décembre 2026), sur la même période pour le mois en cours. Octobre 2026 = « Premier rapport » + avertissement
+  « relevés en partie avant le 04/10 ». Plan du site : lastmod = date des chiffres. Test : `python tools/test_rapports.py` (maj.yml + tests.yml).
+

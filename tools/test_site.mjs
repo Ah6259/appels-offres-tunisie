@@ -222,7 +222,7 @@ check("accueil : seulement 5 balises <script> dont GoatCounter et avis.js (aucun
 
 // ---- 4. Pages métier et gouvernorat ------------------------------------------
 let okM = true, okG = true;
-for (const u of urls.filter(x => /\/(metier|gouvernorat)\//.test(x))) {
+for (const u of urls.filter(x => x.startsWith(URL_SITE) && /^(metier|gouvernorat)\//.test(x.slice(URL_SITE.length)))) {   // pas les sous-pages des rapports
   const chemin = u.replace(URL_SITE, "") + "index.html";
   const [, type, slug] = chemin.match(/^(metier|gouvernorat)\/([^/]+)\//);
   const pw = await page(chemin, `jour=${JOUR}`);

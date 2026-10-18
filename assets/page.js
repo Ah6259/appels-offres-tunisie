@@ -38,6 +38,7 @@
           <a href="${racine}#metiers">${T("Par métier", "حسب الاختصاص")}</a>
           <a href="${racine}#gouvernorats">${T("Par gouvernorat", "حسب الولاية")}</a>
           <a href="${racine}encheres/">${T("Ventes aux enchères", "البيوعات بالمزاد")}</a>
+          <a href="${racine}rapports/">${T("Rapports du mois", "تقارير الشهر")}</a>
           <a href="${racine}publier/">${T("Publier un appel d'offres", "نشر طلب عروض")}</a>
           <a href="${racine}abonnement/">${T("Alertes Pro (abonnement)", "تنبيهات Pro (اشتراك)")}</a>
           <a href="${racine}a-propos/">${T("À propos et sources", "من نحن والمصادر")}</a>

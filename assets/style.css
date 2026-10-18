@@ -432,3 +432,19 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .avis-merci-titre{font-size:19px;font-weight:800;color:#1F7A47}
 .btn-avis-autre{font:inherit;font-weight:700;margin-top:6px;padding:9px 14px;border-radius:10px;border:1.5px solid #1F7A47;background:#fff;color:#1F7A47;cursor:pointer}
 .avis-merci:focus{outline:none}
+
+/* ---- Rapports du mois (18/10/2026) : tableaux de chiffres, liste des mois, citation ---- */
+.rap-bref{margin:0;padding-inline-start:20px}
+.rap-bref li{margin:6px 0}
+.rap-defile{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rap-table{width:100%;border-collapse:collapse;font-size:15px}
+.rap-table th,.rap-table td{padding:7px 8px;border-bottom:1px solid var(--ligne);text-align:start;vertical-align:top}
+.rap-table th{font-size:13px;color:var(--doux);font-weight:600}
+.rap-table .n{text-align:end;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rap-note{font-size:13.5px;color:var(--doux);margin:8px 0 0}
+.rap-mois{margin:0;padding-inline-start:20px}
+.rap-mois li{margin:6px 0}
+.rap-fiches{margin:8px 0 0;padding-inline-start:22px}
+.rap-fiches li{margin:0 0 10px}
+.rap-fiches .rap-meta{display:block;font-size:13.5px;color:var(--doux)}
+.rap-citation{margin:10px 0 0;padding:10px 12px;border-inline-start:4px solid var(--bleu);background:var(--bleu-tres-clair);border-radius:8px;font-size:14px;-webkit-user-select:all;user-select:all;overflow-wrap:anywhere}

@@ -41,3 +41,5 @@ jobs:
         run: node tools/test_avis.mjs
       - name: Scénarios de panne des robots
         run: python tools/test_pannes.py
+      - name: Rapports du mois (chiffres = données, mois fini figé, pas de fausse évolution, plan du site)
+        run: python tools/test_rapports.py

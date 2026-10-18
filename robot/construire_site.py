@@ -1309,13 +1309,29 @@ def construire(donnees, sortie, jour):
     # ---- Alertes Pro (abonnement payant) et ses conditions
     pages += pages_abonnement(adr, v, etat)
 
+    # ---- Rapports du mois (18/10/2026, règle commune § 25) : chiffres tirés des annonces GRATUITES du site,
+    # historique donnees/rapports.json (mois en cours recalculé, mois terminé figé ; robot/rapports.py)
+    sys.path.insert(0, ICI)
+    import rapports
+    chemin_hist = os.path.join(dossier_donnees, "rapports.json")
+    hist = rapports.charger_historique(chemin_hist)
+    date_chiffres = min(maj[:10], jour) if maj else jour
+    rapports.mettre_a_jour(hist, aos, rapports.charger_ventes(os.path.join(dossier_donnees, "encheres.json"), sys.modules[__name__]),
+                           jour, date_chiffres, sys.modules[__name__])
+    rapports.ecrire_historique(chemin_hist, hist)
+    dates_pages = {}
+    for chemin, contenu, date_chiffres_page in rapports.construire_rapports(sys.modules[__name__], hist, v, etat):
+        pages.append((chemin, contenu))
+        dates_pages[chemin] = date_chiffres_page
+
     # ---- écriture
     for chemin, contenu in pages:
         ecrire(sortie, chemin + "index.html", contenu)
     lastmod = jour
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for chemin, _ in pages:
-        sitemap.append(f"  <url><loc>{URL_SITE}{chemin}</loc><lastmod>{lastmod}</lastmod></url>")
+        # rapports : la date de leurs chiffres (un mois figé garde sa date) ; autres pages : le jour de construction
+        sitemap.append(f"  <url><loc>{URL_SITE}{chemin}</loc><lastmod>{dates_pages.get(chemin) or lastmod}</lastmod></url>")
     sitemap.append("</urlset>")
     ecrire(sortie, "sitemap.xml", "\n".join(sitemap) + "\n")
     # pages vidéo (video/) tirées de la page À propos : mêmes en-tête, pied, CSP et ?v= (tools/page_video.py)
