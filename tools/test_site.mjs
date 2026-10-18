@@ -162,6 +162,25 @@ changer(w, "f-tri", "limite");
 w = await page("index.html", `lang=fr&jour=${JOUR}&metier=${optM.value}`);
 check("filtre dans l'adresse (?metier=…)", visibles(w.document).length === parMetier[metierMax]);
 
+// ---- Recherche « au son » (règle commune § 27, 18/10/2026, demande d'Ahmed) : deux écritures d'un même nom = même résultat
+{ const w2 = await page("index.html", `lang=fr&jour=${JOUR}`), d2 = w2.document, fq = d2.getElementById("f-q"), S = w2.sonRecherche;
+  const chercher = t => { fq.value = t; fq.dispatchEvent(new w2.Event("input")); return visibles(d2).map(c => c.id); };
+  const commun = join(root, "..", "projets-ahmed", "outils communs", "recherche-au-son", "son.js");
+  check("recherche au son : assets/son.js chargé avant app.js (copie identique de l'outil commun quand il est présent)", !!S &&
+    (!existsSync(commun) || readFileSync(commun, "utf8") === lire("assets/son.js")));
+  const paires = [["Djerba", "Jerba"], ["Kairouan", "Qairouan"], ["Hammamet", "Hamamet"], ["Houmt Souk", "Houmet Essouk"]];
+  check("recherche au son : Djerba = Jerba, Kairouan = Qairouan, Hammamet = Hamamet, Houmt Souk = Houmet Essouk (même résultat)",
+    paires.every(([a, b]) => chercher(a).join() === chercher(b).join()) &&
+    paires.every(([a, b]) => S.trouve(S.cle("Commune de " + a), b) && S.trouve(S.cle("Commune de " + b), a)));
+  // une paire tirée des VRAIES cartes : un mot d'un titre écrit avec une consonne doublée (« travaux » -> « travvaux »)
+  const mots = [...d2.querySelectorAll("#liste .ao")].flatMap(c => ((c._q || c.textContent.toLowerCase()).match(/\b[a-z]{6,}\b/g) || []).map(m => [m, c.id]));
+  const [mot, id] = mots.find(([m]) => /[aeiou][bcdfglmnprstv][aeiou]/.test(m)) || ["", ""];
+  const double = mot.replace(/([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2");
+  const r1 = chercher(mot), r2 = chercher(double);
+  check(`recherche au son : « ${mot} » écrit « ${double} » trouve les mêmes cartes`, !!mot && r2.includes(id) && r2.length > 0 && r2.every(x => r1.includes(x)));
+  check("recherche au son : une recherche absurde (« zzzzqqq ») ne trouve toujours rien", chercher("zzzzqqq").length === 0);
+  chercher(""); }
+
 // Expiration et ancienneté selon la date du VISITEUR
 const premier = ouverts.filter(a => a.date_limite).sort((a, b) => a.date_limite.localeCompare(b.date_limite))[0];
 w = await page("index.html", `lang=fr&jour=${plus(premier.date_limite, 1)}`);
@@ -205,7 +224,7 @@ const tuilesSansLien = doc => [...doc.body.querySelectorAll("*")].filter(el => {
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : au moins 43 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions, page vidéo)", urls.length >= 43 && urls.includes(URL_SITE + "video/"));
-const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
+const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "son.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true, okTuiles = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
@@ -238,7 +257,7 @@ try {
   const ld = JSON.parse(lire("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   check("accueil : FAQ JSON-LD valide", ld["@type"] === "FAQPage" && ld.mainEntity.length >= 3);
 } catch (e) { check("accueil : FAQ JSON-LD valide", false); }
-check("accueil : seulement 5 balises <script> dont GoatCounter et avis.js (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 5);
+check("accueil : seulement 6 balises <script> dont GoatCounter, son.js et avis.js (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 6);
 
 // ---- 4. Pages métier et gouvernorat ------------------------------------------
 let okM = true, okG = true;

@@ -67,7 +67,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 1. `node tools/test_site.mjs` (155 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) `python tools/test_pannes.py` (86 scénarios) et `python tools/test_rapports.py` (50 vérifications, Rapports du mois).
    Construire avec la date des données (`--aujourdhui AAAA-MM-JJ` = jour de la dernière lecture) sinon le test « données d'hier » échoue.
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
-2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
+2. Le `?v=` est automatique (empreinte de style.css, page.js, son.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
 4. Image d'aperçu `assets/og-image-v6.jpg` : si on la change, **nouveau nom** (-v7). Toujours en **JPEG < 250 Ko**
    (capture PNG de `tools/og-image.html` puis conversion Pillow qualité 88) : au-delà, WhatsApp n'affiche qu'une petite vignette.
@@ -150,3 +150,5 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   (pour la facture) » (test dans test_site.mjs).
 
 - **Lieux officiels (18/10/2026, règle commune § 11.11)** : test_site.mjs vérifie dans les deux sens que la liste « Gouvernorat », les pages et la carte = les 24 gouvernorats de La Poste + les exceptions « national » et « plusieurs » (groupes, jamais des gouvernorats) ; la carte de l'accueil entoure le gouvernorat choisi dans le filtre (app.js).
+
+- **Recherche « au son » (18/10/2026, règle commune § 27)** : la case « Rechercher » utilise `assets/son.js` (outil commun de projets-ahmed, copié TEL QUEL, chargé avant app.js, compté dans le `?v=`) : Djerba = Jerba, Kairouan = Qairouan, Hammamet = Hamamet (l'ancienne recherche « mot contenu » reste valable en plus). Test dans test_site.mjs (paires + mot réel avec consonne doublée + « zzzzqqq » = 0).

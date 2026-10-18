@@ -19,6 +19,10 @@
   // Recherche : minuscules, sans accents ni voyelles arabes ; أإآٱ→ا, ة→ه, ى→ي
   const normaliser = t => (t || "").toLowerCase().normalize("NFKD").replace(/[\p{M}ـ]/gu, "")
     .replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي").replace(/[’'`]/g, " ").replace(/\s+/g, " ").trim();
+  // Recherche « au son » (règle commune § 27, 18/10/2026, demande d'Ahmed) : Jerba = Djerba, Qairouan = Kairouan,
+  // Hamamet = Hammamet… (assets/son.js, outil commun copié tel quel). L'ancienne recherche (mot contenu dans le texte) reste valable.
+  const SON = window.sonRecherche;
+  const cherche = (c, mots, tape) => !mots.length || (texteCarte(c), mots.every(x => c._q.includes(x)) || (!!SON && SON.trouve(c._s, tape)));
 
   const PAR_PAGE = 15;          // cartes montrées d'abord (téléphone) ; « Afficher plus » pour la suite
   const RAPPEL = 7;             // étiquette « J-N » jusqu'à 7 jours avant la date limite
@@ -69,7 +73,9 @@
     if (c._q === undefined) {
       const copie = c.cloneNode(true);
       copie.querySelectorAll(".reste,.rappel,.nouveau,.officiel,.ao-infos > div > span").forEach(x => x.remove());
-      c._q = normaliser(copie.textContent + " " + c.id);
+      const brut = copie.textContent + " " + c.id;
+      c._q = normaliser(brut);
+      c._s = SON ? SON.cle(brut) : "";
     }
     return c._q;
   };
@@ -85,9 +91,9 @@
     if (ft) ft.querySelectorAll("option").forEach(o => { o.textContent = T(o.dataset.fr, o.dataset.ar); });
     if (fq) fq.placeholder = T(fq.dataset.fr, fq.dataset.ar);
     const m = fm ? fm.value : "", g = fg ? fg.value : "", tri = ft ? ft.value : "limite";
-    const mots = normaliser(fq ? fq.value : "").split(" ").filter(Boolean);
+    const tape = fq ? fq.value : "", mots = normaliser(tape).split(" ").filter(Boolean);
     const garde = c => !c.dataset.expire && (!m || c.dataset.metier === m) && (!g || c.dataset.gouv === g) &&
-      mots.every(x => texteCarte(c).includes(x));
+      cherche(c, mots, tape);
     let visibles = 0;
     cartes.forEach(c => {
       const ok = garde(c);
