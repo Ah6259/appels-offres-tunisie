@@ -605,5 +605,13 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     && partages[0].text.includes("تنبيهات طلبات العروض تونس") && partages[0].title === wr.document.querySelector("button[data-partage-rapport]").dataset.titreAr);
 }
 
+// ---- og:locale lisible par Facebook (18/10/2026) : « fr_TN » / « ar_TN » sont REJETÉS par Facebook (« n'a pas pu être analysée en tant
+// que type enum ») et l'aperçu partagé était faux ; valeurs admises : fr_FR, ar_AR, en_US.
+{ const pagesLoc = [...sitemap.matchAll(/<loc>https:\/\/[^/]+\/([^<]*)<\/loc>/g)].map(m => m[1] + "index.html").filter(f => existsSync(join(root, f)));
+  const mauvaises = pagesLoc.filter(f => { const h = lire(f); return /_TN"/.test(h) || [...h.matchAll(/property="og:locale(?::alternate)?" content="([^"]+)"/g)].some(m => !["fr_FR", "ar_AR", "en_US"].includes(m[1])); });
+  check(`og:locale admis par Facebook (fr_FR / ar_AR / en_US, jamais fr_TN ni ar_TN) sur les ${pagesLoc.length} pages du plan du site`, pagesLoc.length > 3 && mauvaises.length === 0);
+  if (mauvaises.length) console.log("   og:locale refusé : " + mauvaises.slice(0, 5).join(", "));
+}
+
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

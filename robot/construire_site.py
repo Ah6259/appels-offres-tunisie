@@ -573,7 +573,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="{og_type}">
-<meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
+<meta property="og:locale" content="fr_FR"><meta property="og:locale:alternate" content="ar_AR">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Noto+Kufi+Arabic:wght@400;600;700;800&display=swap" rel="stylesheet">
