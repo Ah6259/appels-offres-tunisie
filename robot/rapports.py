@@ -334,7 +334,6 @@ def bloc_partage(cs, url, titre_fr, titre_ar, haut):
             f'<button class="rp-partager" type="button" data-partage-rapport data-url="{cs.E(url)}" '
             f'data-titre-fr="{cs.E(titre_fr)}" data-titre-ar="{cs.E(titre_ar)}">{ICONE_PARTAGE}'
             f'<span>{cs.L("Partager ce rapport", "شارك هذا التقرير")}</span></button>'
-            f'<p class="rp-aide">{cs.L("Facebook, WhatsApp, LinkedIn… : le menu de votre téléphone s’ouvre.", "فيسبوك، واتساب، لينكدإن…: تُفتح قائمة هاتفك.")}</p>'
             f'<p class="rp-copie" role="status" hidden></p></div>')
 
 

@@ -159,8 +159,8 @@ for p in pages_r:
     url_p = URL + p
     boutons = re.findall(r'<button class="rp-partager" type="button" data-partage-rapport data-url="([^"]*)"', h)
     haut, bas = h.find("rp-partage-haut"), h.find("rp-partage-bas")
-    if not (boutons == [url_p, url_p] and 0 < h.find("<h1") < haut < h.find('<main') < bas and h.count("rp-aide") == 2
-            and "Facebook, WhatsApp, LinkedIn… : le menu de votre téléphone s’ouvre." in h and 'class="rp-copie" role="status" hidden' in h):
+    if not (boutons == [url_p, url_p] and 0 < h.find("<h1") < haut < h.find('<main') < bas and h.count("rp-aide") == 0
+            and "LinkedIn… : le menu" not in h and 'class="rp-copie" role="status" hidden' in h):
         ok_btn = False; print("   bouton :", p, boutons)
     if re.search(r"facebook\.com/sharer|wa\.me/|linkedin\.com/share|twitter\.com/intent|onclick=", h) or "data-reseau=" in h:
         ok_res = False; print("   lien séparé :", p)
