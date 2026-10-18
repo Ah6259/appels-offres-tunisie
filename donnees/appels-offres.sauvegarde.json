@@ -7910,21 +7910,183 @@
    "lu_le": "2026-10-17 10:11",
    "metier": "BTP / génie civil",
    "gouvernorat": "Gabès"
+  },
+  "Tender-104292": {
+   "numero": "Tender-104292",
+   "objet": "Equipent des centres forestiers",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole Kasserine",
+   "type_commande": "Biens/ Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "KASSERINE"
+   ],
+   "date_publication": "2026-10-17",
+   "date_limite": "2026-11-19",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-19",
+   "cautionnement_provisoire_dt": [
+    1500,
+    1500
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104292",
+   "source": "HAICOP",
+   "lu_le": "2026-10-18 10:26",
+   "metier": "Autres",
+   "gouvernorat": "Kasserine"
+  },
+  "Tender-104291": {
+   "numero": "Tender-104291",
+   "objet": "طلب عروض عدد 01-2026 تغذية لسنة 2027 لتزويد المطعم الجامعي الأغالبة بالقيروان",
+   "descriptif": "مواد غذائية منقسمة على 10 حصص 01 - مواد عطرية 02 - زيت نباتي 03 - خبز 04 - خضر وغلال 05 - بيض 06 - لحم دجاج 07 - لحم الديك الرومي 08 - لحوم حمراء 09 - أسماك 10 - حليب ومشتقاته",
+   "acheteur": "Restaurant Universitaire Al Aghalba au Kairouan",
+   "type_commande": "Biens/ Nourriture",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-10-17",
+   "date_limite": "2026-11-16",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-11-16",
+   "cautionnement_provisoire_dt": [
+    1000,
+    400,
+    300,
+    600,
+    300,
+    700,
+    700,
+    700,
+    550,
+    500
+   ],
+   "cautionnement_total_dt": 5750,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "10",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104291",
+   "source": "HAICOP",
+   "lu_le": "2026-10-18 10:26",
+   "metier": "Alimentation",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104290": {
+   "numero": "Tender-104290",
+   "objet": "Acquisition d'un camion tracteur 6 X 4 et un porte char",
+   "descriptif": "Acquisition d'un camion tracteur 6 X 4 et un porte char",
+   "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ZAGOUANE",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-17",
+   "date_limite": "2026-11-20",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-20",
+   "cautionnement_provisoire_dt": [
+    8000
+   ],
+   "cautionnement_total_dt": 8000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104290",
+   "source": "HAICOP",
+   "lu_le": "2026-10-18 10:27",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104289": {
+   "numero": "Tender-104289",
+   "objet": "Acquisition de matériel d'appui à la SMSA Malyen",
+   "descriptif": "Acquisition de matériel d'appui à la SMSA MALYEN",
+   "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-17",
+   "date_limite": "2026-11-18",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-18",
+   "cautionnement_provisoire_dt": [
+    3000,
+    4000,
+    4000
+   ],
+   "cautionnement_total_dt": 11000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104289",
+   "source": "HAICOP",
+   "lu_le": "2026-10-18 10:27",
+   "metier": "Autres",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104288": {
+   "numero": "Tender-104288",
+   "objet": "ACQUISITION DES EQUIPEMENTS MEDICAUX",
+   "descriptif": "",
+   "acheteur": "Hôpital Habib Thameur Tunis",
+   "type_commande": "Biens/ Matériel Médical",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-17",
+   "date_limite": "2026-11-09",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    2870
+   ],
+   "cautionnement_total_dt": 2870,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104288",
+   "source": "HAICOP",
+   "lu_le": "2026-10-18 10:27",
+   "metier": "Médical",
+   "gouvernorat": "Tunis"
   }
  },
- "mis_a_jour": "2026-10-17 10:11",
+ "mis_a_jour": "2026-10-18 10:27",
  "dernier_passage": {
-  "date": "2026-10-17 10:11",
+  "date": "2026-10-18 10:27",
   "liste_ok": true,
-  "lus": 20,
+  "lus": 5,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-17 10:11",
+ "derniere_lecture_reussie": "2026-10-18 10:27",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-17 10:11",
+  "depuis": "2026-10-18 10:27",
   "raison": ""
  }
 }

@@ -1,8 +1,14 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 15/10/2026 et le 17/10/2026 · 28 appels d'offres encore ouverts · mis à jour le 17/10/2026 à 10:11
+Publiés entre le 15/10/2026 et le 17/10/2026 · 33 appels d'offres encore ouverts · mis à jour le 18/10/2026 à 10:27
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
+
+## Alimentation (1)
+
+### Kairouan
+
+- **طلب عروض عدد 01-2026 تغذية لسنة 2027 لتزويد المطعم الجامعي الأغالبة بالقيروان** — Restaurant Universitaire Al Aghalba au Kairouan · Biens/ Nourriture · date limite **16/11/2026 12:00** · caution 5 750 DT · [Tender-104291](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104291) (source : HAICOP)
 
 ## BTP / génie civil (13)
 
@@ -89,13 +95,17 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **توطين المعدات الراجعة للمنظومة الإعلامية للرهان التبادلي** — Agence Tunisienne de Solidarité · Services/ Services · date limite **09/11/2026 10:00** · caution 750 DT · [Tender-104270](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104270) (source : HAICOP)
 
-## Médical (1)
+## Médical (2)
 
 ### National / non précisé
 
 - **التزود باللوازم الصيدلية لمرضى تصفية الدم لسنة 2027** — Hôpital Régional de Zaghoun · Biens/ Produits pharmaceutiques · date limite **16/11/2026 11:00** · caution 3 500 DT · [Tender-104264](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104264) (source : HAICOP)
 
-## Transport / véhicules (4)
+### Tunis
+
+- **ACQUISITION DES EQUIPEMENTS MEDICAUX** — Hôpital Habib Thameur Tunis · Biens/ Matériel Médical · date limite **09/11/2026 11:00** · caution 2 870 DT · [Tender-104288](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104288) (source : HAICOP)
+
+## Transport / véhicules (5)
 
 ### Jendouba
 
@@ -110,7 +120,15 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Acquisition de deux voitures** — Société Tunisienne du Gazoduc Transtunisien · Biens/ Autres Fournitures · date limite **17/11/2026 10:00** · caution 1 500 DT · [Tender-104279](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104279) (source : HAICOP)
 
-## Autres (3)
+### Zaghouan
+
+- **Acquisition d'un camion tracteur 6 X 4 et un porte char** — Commissariat Regional au Developpement Agricole de Zaghouan · Biens/ Matériels roulants · date limite **20/11/2026 10:00** · caution 8 000 DT · [Tender-104290](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104290) (source : HAICOP)
+
+## Autres (5)
+
+### Kasserine
+
+- **Equipent des centres forestiers** — Commissariat Régional au Développement Agricole Kasserine · Biens/ Fournitures · date limite **19/11/2026 09:30** · caution 3 000 DT · [Tender-104292](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104292) (source : HAICOP)
 
 ### National / non précisé
 
@@ -123,6 +141,10 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### Tunis
 
 - **اكتتاب عقد تأمين متعدد المخاطر لفائدة الشركة التونسية للملاحة** — Compagnie Tunisienne de Navigation · Services/ Autres services · date limite **16/11/2026 09:30** · caution 81 650 DT · [Tender-104236](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104236) (source : HAICOP)
+
+### Zaghouan
+
+- **Acquisition de matériel d'appui à la SMSA Malyen** — Commissariat Regional au Developpement Agricole de Zaghouan · Biens/ Autres Fournitures · date limite **18/11/2026 10:00** · caution 11 000 DT · [Tender-104289](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104289) (source : HAICOP)
 
 ---
 Source : HAICOP — Haute Instance de la Commande Publique (www.marchespublics.gov.tn).

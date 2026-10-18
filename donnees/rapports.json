@@ -3061,12 +3061,72 @@
      "numero": "Tender-104287",
      "objet": "Installation d’un groupe électrogène au service samu 04",
      "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104288": {
+     "acheteur": "Hôpital Habib Thameur Tunis",
+     "caution": 2870,
+     "date_limite": "2026-11-09",
+     "date_publication": "2026-10-17",
+     "gouvernorat": "Tunis",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104288",
+     "metier": "Médical",
+     "numero": "Tender-104288",
+     "objet": "ACQUISITION DES EQUIPEMENTS MEDICAUX",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104289": {
+     "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
+     "caution": 11000,
+     "date_limite": "2026-11-18",
+     "date_publication": "2026-10-17",
+     "gouvernorat": "Zaghouan",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104289",
+     "metier": "Autres",
+     "numero": "Tender-104289",
+     "objet": "Acquisition de matériel d'appui à la SMSA Malyen",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104290": {
+     "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
+     "caution": 8000,
+     "date_limite": "2026-11-20",
+     "date_publication": "2026-10-17",
+     "gouvernorat": "Zaghouan",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104290",
+     "metier": "Transport / véhicules",
+     "numero": "Tender-104290",
+     "objet": "Acquisition d'un camion tracteur 6 X 4 et un porte char",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104291": {
+     "acheteur": "Restaurant Universitaire Al Aghalba au Kairouan",
+     "caution": 5750,
+     "date_limite": "2026-11-16",
+     "date_publication": "2026-10-17",
+     "gouvernorat": "Kairouan",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104291",
+     "metier": "Alimentation",
+     "numero": "Tender-104291",
+     "objet": "طلب عروض عدد 01-2026 تغذية لسنة 2027 لتزويد المطعم الجامعي الأغالبة بالقيروان",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104292": {
+     "acheteur": "Commissariat Régional au Développement Agricole Kasserine",
+     "caution": 3000,
+     "date_limite": "2026-11-19",
+     "date_publication": "2026-10-17",
+     "gouvernorat": "Kasserine",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104292",
+     "metier": "Autres",
+     "numero": "Tender-104292",
+     "objet": "Equipent des centres forestiers",
+     "procedure": "Appel d’offres ouvert"
     }
    },
    "chiffres": {
     "acheteurs": {
      "Agence de Réhabilitation et de Rénovation Urbaine": 8,
-     "Commissariat Régional au Développement Agricole Kasserine": 5,
+     "Commissariat Régional au Développement Agricole Kasserine": 6,
      "Commissariat Régional au Développement Agricole de Gafsa": 4,
      "Commissariat régional de l'éducation de Gafsa": 5,
      "Gouvernorat de Bizerte": 5,
@@ -3078,9 +3138,9 @@
      "Société Nationale des Chemins de Fer Tunisiens": 4,
      "Société Tunisienne d’Electricité et de Gaz": 9
     },
-    "appels_offres": 255,
-    "avec_caution": 218,
-    "avec_delai": 255,
+    "appels_offres": 260,
+    "avec_caution": 223,
+    "avec_delai": 260,
     "caution_mediane": 4500,
     "delai_median": 31,
     "derniere_publication": "2026-10-17",
@@ -3097,8 +3157,8 @@
      "Gabès": 9,
      "Gafsa": 13,
      "Jendouba": 5,
-     "Kairouan": 6,
-     "Kasserine": 7,
+     "Kairouan": 7,
+     "Kasserine": 8,
      "Kébili": 5,
      "La Manouba": 6,
      "Le Kef": 6,
@@ -3113,24 +3173,24 @@
      "Siliana": 6,
      "Sousse": 9,
      "Tataouine": 7,
-     "Tunis": 62,
-     "Zaghouan": 5
+     "Tunis": 63,
+     "Zaghouan": 7
     },
     "par_metier": {
-     "Alimentation": 10,
-     "Autres": 39,
+     "Alimentation": 11,
+     "Autres": 41,
      "BTP / génie civil": 107,
      "Fournitures de bureau": 7,
      "Informatique": 17,
-     "Médical": 7,
+     "Médical": 8,
      "Nettoyage / gardiennage": 8,
-     "Transport / véhicules": 17,
+     "Transport / véhicules": 18,
      "Électricité": 15,
      "Études / conseil": 28
     },
     "par_procedure": {
      "Appel d'offres avec concours": 1,
-     "Appel d’offres ouvert": 253,
+     "Appel d’offres ouvert": 258,
      "Appel d’offres restreint": 1
     },
     "premiere_publication": "2026-10-01",
@@ -3152,7 +3212,7 @@
    },
    "complet": false,
    "cree_le": "2026-10-17",
-   "derniere_date": "2026-10-17",
+   "derniere_date": "2026-10-18",
    "fige": false,
    "premier_jour": "2026-10-01",
    "ventes": {
