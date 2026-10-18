@@ -94,6 +94,8 @@
       c.dataset.ok = ok ? "1" : "";
       if (ok) visibles++;
     });
+    // la carte suit le filtre (règle commune § 11.11, 18/10/2026) : sur l'accueil, le gouvernorat choisi est entouré
+    if (fg) document.querySelectorAll(".carte-tn .tn-b[data-gouv]").forEach(b => b.classList.toggle("actif", b.dataset.gouv === g));
     // Tri : date limite la plus proche d'abord (sans date à la fin), ou plus récents d'abord
     const tries = cartes.slice().sort((a, b) => {
       if (tri === "recent") return (b.dataset.pub || "").localeCompare(a.dataset.pub || "") || (+b.dataset.num - +a.dataset.num);

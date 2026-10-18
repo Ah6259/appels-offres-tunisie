@@ -42,6 +42,24 @@ const visibles = d => [...d.querySelectorAll("#liste .ao")].filter(c => c.datase
 const affichees = d => [...d.querySelectorAll("#liste .ao")].filter(c => !c.hidden);
 const changer = (w, id, v) => { const s = w.document.getElementById(id); s.value = v; s.dispatchEvent(new w.Event("change")); };
 
+// ---- 0. Lieux (règle commune § 11.11, 18/10/2026) : les gouvernorats proposés = les 24 de La Poste + les exceptions listées ici
+//      (groupes qui ne sont PAS des gouvernorats : « national », « plusieurs »), dans les deux sens : toutes présentes, rien d'autre
+{ const OFFICIELS = ["ariana", "beja", "ben arous", "bizerte", "gabes", "gafsa", "jendouba", "kairouan", "kasserine", "kebili", "kef", "mahdia",
+    "manouba", "medenine", "monastir", "nabeul", "sfax", "sidi bouzid", "siliana", "sousse", "tataouine", "tozeur", "tunis", "zaghouan"];
+  const EXCEPTIONS = { "national": "National / non précisé", "plusieurs": "Plusieurs gouvernorats" };   // relues à la main
+  const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/-/g, " ").replace(/^(la|le) /, "").trim();
+  const exact = (l, avec) => { const n = l.map(norm), att = [...OFFICIELS, ...avec.map(norm)];
+    return n.length === att.length && new Set(n).size === n.length && att.every(o => n.includes(o)) && n.every(x => att.includes(x)); };
+  const acc = lire("index.html");
+  const m = acc.match(/<select id="f-gouv"[^>]*>([\s\S]*?)<\/select>/);
+  const vals = m ? [...m[1].matchAll(/<option value="([^"]*)"/g)].map(o => o[1]).filter(Boolean) : [];
+  check("lieux : liste « Gouvernorat » de l'accueil = les 24 gouvernorats officiels + « national » et « plusieurs », rien d'autre", exact(vals, Object.keys(EXCEPTIONS)));
+  check("lieux : pages de gouvernorat = les 24 officiels + « national » et « plusieurs », rien d'autre",
+    exact(readdirSync(join(root, "gouvernorat")).filter(n => existsSync(join(root, "gouvernorat", n, "index.html"))), Object.keys(EXCEPTIONS)));
+  check("lieux : carte de l'accueil = une bulle par gouvernorat officiel, rien d'autre", exact([...acc.matchAll(/class="tn-b[^"]*" data-gouv="([^"]+)"/g)].map(x => x[1]), []));
+  check("lieux : chaque appel d'offres est rangé dans un gouvernorat officiel ou une exception listée",
+    tous.every(a => OFFICIELS.includes(norm(a.gouvernorat)) || Object.values(EXCEPTIONS).includes(a.gouvernorat))); }
+
 // ---- 1. Accueil ----------------------------------------------------------------
 let w = await page("index.html", `lang=fr&jour=${JOUR}`);
 let d = w.document;
@@ -132,6 +150,8 @@ check("bouton « Tout afficher » remet tout", visibles(d).length === ouverts.le
 // Gouvernorat seul
 changer(w, "f-gouv", g);
 check("filtre gouvernorat seul", visibles(d).every(c => c.dataset.gouv === g) && visibles(d).length === ouverts.filter(a => d.querySelector(`#${a.numero}`).dataset.gouv === g).length);
+check("la carte suit le filtre : le gouvernorat choisi, et lui seul, est entouré sur la carte (règle § 11.11)",
+  (a => g === "national" || g === "plusieurs" ? a.length === 0 : a.length === 1 && a[0].dataset.gouv === g)([...d.querySelectorAll(".carte-tn .tn-b.actif")]));
 changer(w, "f-gouv", "");
 // Tri « plus récents »
 changer(w, "f-tri", "recent");

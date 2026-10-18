@@ -148,3 +148,5 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Corrigé : le bloc « Paiement », le libellé « Entreprise (motif du paiement et facture) » et les conditions disaient « motif = nom de
   l'entreprise » alors que les étapes disent « Motif : votre code personnel » -> partout « code personnel » ; libellé « Entreprise
   (pour la facture) » (test dans test_site.mjs).
+
+- **Lieux officiels (18/10/2026, règle commune § 11.11)** : test_site.mjs vérifie dans les deux sens que la liste « Gouvernorat », les pages et la carte = les 24 gouvernorats de La Poste + les exceptions « national » et « plusieurs » (groupes, jamais des gouvernorats) ; la carte de l'accueil entoure le gouvernorat choisi dans le filtre (app.js).
