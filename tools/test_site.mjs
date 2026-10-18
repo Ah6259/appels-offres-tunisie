@@ -176,8 +176,10 @@ check("filtre dans l'adresse (?metier=…)", visibles(w.document).length === par
   const mots = [...d2.querySelectorAll("#liste .ao")].flatMap(c => ((c._q || c.textContent.toLowerCase()).match(/\b[a-z]{6,}\b/g) || []).map(m => [m, c.id]));
   const [mot, id] = mots.find(([m]) => /[aeiou][bcdfglmnprstv][aeiou]/.test(m)) || ["", ""];
   const double = mot.replace(/([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2");
+  const triple = mot.replace(/([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2$2");   // lettre triplée (« demisssion »)
   const r1 = chercher(mot), r2 = chercher(double);
-  check(`recherche au son : « ${mot} » écrit « ${double} » trouve les mêmes cartes`, !!mot && r2.includes(id) && r2.length > 0 && r2.every(x => r1.includes(x)));
+  check(`recherche au son : « ${mot} » écrit « ${double} » ou « ${triple} » trouve les mêmes cartes ; « demisssion » = « Démission »`, !!mot && r2.includes(id) && r2.length > 0 && r2.every(x => r1.includes(x))
+    && chercher(triple).join() === r2.join() && S.trouve(S.cle("Démission"), "demisssion"));
   check("recherche au son : une recherche absurde (« zzzzqqq ») ne trouve toujours rien", chercher("zzzzqqq").length === 0);
   chercher(""); }
 
