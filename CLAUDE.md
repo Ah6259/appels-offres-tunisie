@@ -64,7 +64,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Robots : `maj.yml` (quotidien), `battement-de-coeur.yml` (mensuel), `tests.yml` (push) ; groupe `maj-site`.
 
 ## Avant chaque publication
-1. `node tools/test_site.mjs` (155 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) `python tools/test_pannes.py` (86 scénarios) et `python tools/test_rapports.py` (49 vérifications, Rapports du mois).
+1. `node tools/test_site.mjs` (155 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) `python tools/test_pannes.py` (86 scénarios) et `python tools/test_rapports.py` (50 vérifications, Rapports du mois).
    Construire avec la date des données (`--aujourdhui AAAA-MM-JJ` = jour de la dernière lecture) sinon le test « données d'hier » échoue.
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
 2. Le `?v=` est automatique (empreinte de style.css, page.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
@@ -127,6 +127,11 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   Évolution seulement si le mois précédent est « complet » (robot en marche dès son 1er jour ; `robot_depuis` = 04/10/2026, donc pas
   d'évolution avant décembre 2026), sur la même période pour le mois en cours. Octobre 2026 = « Premier rapport » + avertissement
   « relevés en partie avant le 04/10 ». Plan du site : lastmod = date des chiffres. Test : `python tools/test_rapports.py` (maj.yml + tests.yml).
+- **Image d'aperçu PROPRE à chaque rapport (18/10/2026, Ahmed : Facebook montrait l'image du site)** : `robot/apercus.py` (Pillow, polices
+  DejaVu dans `robot/polices/`, modèle d'Immobilier Tunisie) dessine `apercu-<empreinte 8>.jpg` 1200 × 630 dans le dossier de CHAQUE page
+  (bilan du mois + sous-pages : nombre d'appels d'offres relevés, part du total, date des chiffres) ; nom = empreinte du contenu (Facebook
+  reprend la nouvelle image quand les chiffres changent), anciennes images effacées ; og:image + `image` du JSON-LD Article ; liste
+  `rapports/` et sans Pillow : og-image-v6.jpg. maj.yml et tests.yml installent pillow. Test dans test_rapports.py et test_site.mjs.
 - **Partage des rapports (18/10/2026, demande d'Ahmed)** : sur TOUTES les pages des rapports, UN seul bouton « Partager ce rapport »
   (`bloc_partage` de rapports.py, en haut dans le bandeau ET en bas ; jamais de boutons Facebook / WhatsApp séparés) + signature
   « Un rapport de Alertes appels d'offres Tunisie · appels-offres.clicvia.com » sous le titre ; description = « Alertes appels d'offres Tunisie

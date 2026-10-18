@@ -28,7 +28,7 @@ jobs:
           node-version: "22"
       - name: Fichiers des robots lisibles par GitHub (YAML valide)
         run: |
-          pip install --quiet pyyaml
+          pip install --quiet pyyaml pillow
           python -c "import yaml,glob; [print('OK', f, list((yaml.safe_load(open(f, encoding='utf-8')) or {}).get(True) or [])) for f in sorted(glob.glob('.github/workflows/*.yml'))]"
       - run: npm install --no-save --no-package-lock jsdom
       - name: Test du site (pages, filtres, liens HAICOP, FR/AR, SEO)

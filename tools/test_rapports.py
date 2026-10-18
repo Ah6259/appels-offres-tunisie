@@ -153,7 +153,7 @@ check("rien de la partie payante dans les rapports (pas d'abonnés, pas de chat_
 
 
 # bouton « Partager ce rapport » (demande d'Ahmed, 18/10/2026) : UN seul bouton en haut + un en bas, sur TOUTES les pages des rapports
-ok_btn, ok_res, ok_sig, ok_desc, ok_og = True, True, True, True, True
+ok_btn, ok_res, ok_sig, ok_desc, ok_og, ok_img = True, True, True, True, True, True
 for p in pages_r:
     h = lire(SITE, p + "index.html")
     url_p = URL + p
@@ -172,13 +172,26 @@ for p in pages_r:
     if not (desc and ogd and desc.group(1).startswith("Alertes appels d&#x27;offres Tunisie — rapport du mois. ") and ogd.group(1) == desc.group(1)):
         ok_desc = False; print("   description :", p)
     if not (f'<meta property="og:url" content="{url_p}">' in h and re.search(r'<meta property="og:title" content="[^"|]{10,}">', h)
-            and f'<meta property="og:image" content="{URL}assets/og-image-v6.jpg">' in h and os.path.exists(os.path.join(SITE, "assets", "og-image-v6.jpg"))):
+            and (p != "rapports/" or (f'<meta property="og:image" content="{URL}assets/og-image-v6.jpg">' in h and os.path.exists(os.path.join(SITE, "assets", "og-image-v6.jpg"))))):
         ok_og = False; print("   og :", p)
+    # image PROPRE à chaque rapport (18/10/2026, Ahmed : sur Facebook, l'aperçu montrait l'image du site, pas l'article)
+    if p != "rapports/":
+        og = re.search(r'<meta property="og:image" content="([^"]*)">', h)
+        rel = og.group(1).replace(URL, "") if og else ""
+        ld = re.search(r'"@type": "Article"[^<]*"image": "([^"]+)"', h)
+        f_img = os.path.join(SITE, rel)
+        taille = (lambda b: next(((int.from_bytes(b[i + 7:i + 9], "big"), int.from_bytes(b[i + 5:i + 7], "big")) for i in range(2, len(b) - 9)
+                                  if b[i] == 0xFF and b[i + 1] in (0xC0, 0xC1, 0xC2)), None))(open(f_img, "rb").read()) if os.path.isfile(f_img) else None
+        if not (re.fullmatch(re.escape(p) + r"apercu-[0-9a-f]{8}\.jpg", rel) and os.path.isfile(f_img) and os.path.getsize(f_img) < 250 * 1024
+                and taille == (1200, 630) and ld and ld.group(1) == og.group(1) and '<meta property="og:type" content="article">' in h
+                and len([f for f in os.listdir(os.path.join(SITE, p)) if f.startswith("apercu-") and f.endswith(".jpg")]) == 1):
+            ok_img = False; print("   image d'aperçu :", p, rel, taille)
 check(f"partage : les {len(pages_r)} pages des rapports ont UN bouton « Partager ce rapport » en haut (sous le titre) et un en bas, avec leur adresse", ok_btn)
 check("partage : aucun lien Facebook / WhatsApp / LinkedIn séparé dans les rapports (le menu du téléphone propose tout)", ok_res)
 check("partage : signature « Un rapport de Alertes appels d'offres Tunisie · appels-offres.clicvia.com » sous le titre", ok_sig)
 check("partage : la description (et og:description) commence par « Alertes appels d'offres Tunisie — rapport du mois. »", ok_desc)
 check("partage : og:title, og:url (= adresse de la page) et og:image (image avec le nom du site) présents", ok_og)
+check("partage : chaque rapport (bilan du mois, gouvernorats, métiers) a SA propre image d'aperçu rapports/…/apercu-<empreinte>.jpg, JPEG 1200 × 630 < 250 Ko, aussi dans le JSON-LD Article", ok_img)
 js = lire(SITE, "assets/page.js")
 check("partage : code du bouton dans assets/page.js (button[data-partage-rapport], navigator.share, presse-papiers, prompt, GoatCounter)",
       all(x in js for x in ('closest("button[data-partage-rapport]")', "navigator.share(", "navigator.clipboard.writeText(", "window.prompt(",

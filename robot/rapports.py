@@ -19,6 +19,7 @@ Historique : donnees/rapports.json  {"robot_depuis": date, "mois": {"AAAA-MM": {
   - les fiches du mois y sont gardées (forme courte), pour que les chiffres ne dépendent pas des fiches encore en mémoire.
 """
 import datetime as dt
+import hashlib
 import json
 import os
 import re
@@ -210,14 +211,14 @@ def fil_rapport(cs, racine, niveaux):
     return '    <p class="fil">' + " › ".join(morceaux) + "</p>"
 
 
-def jsonld(cs, url, titre, e, fil_items, faq):
+def jsonld(cs, url, titre, e, fil_items, faq, image=None):
     blocs = [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": k + 1, "name": n, "item": u} for k, (n, u) in enumerate(fil_items)]},
         {"@context": "https://schema.org", "@type": "Article", "headline": titre, "inLanguage": ["fr", "ar"],
          "datePublished": e.get("cree_le") or e["derniere_date"], "dateModified": e["derniere_date"], "url": url,
          "author": {"@type": "Organization", "name": "Alertes appels d'offres Tunisie", "url": cs.URL_SITE},
          "publisher": {"@type": "Organization", "name": "Alertes appels d'offres Tunisie", "url": cs.URL_SITE},
-         "image": cs.URL_SITE + "assets/og-image-v6.jpg"}]
+         "image": cs.URL_SITE + (image or IMAGE_GENERALE)}]
     if faq:
         blocs.append({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": r}} for q, r in faq]})
@@ -338,13 +339,28 @@ def bloc_partage(cs, url, titre_fr, titre_ar, haut):
 
 
 # ------------------------------------------------------------------ pages
-def construire_rapports(cs, hist, v, etat):
-    """Renvoie [(chemin, html, lastmod)] pour rapports/ et chaque mois de l'historique."""
+IMAGE_GENERALE = "assets/og-image-v6.jpg"
+
+
+def apercu(chemin, titre, m, chiffre, sous):
+    """Image d'aperçu PROPRE à un rapport (18/10/2026, Ahmed) : (fichier, titre, mois, chiffre clé, sous-titre), chiffres de la page.
+    Le nom dépend du contenu : quand les chiffres changent, Facebook prend la nouvelle image."""
+    cle = hashlib.sha1(f"{titre}|{m}|{chiffre}|{sous}".encode()).hexdigest()[:8]
+    return (f"{chemin}apercu-{cle}.jpg", titre, mois_fr(m), chiffre, sous)
+
+
+def au_ou_definitif(cs, e):
+    return "chiffres définitifs" if e.get("fige") else f"chiffres au {cs.dfr(e['derniere_date'])}"
+
+
+def construire_rapports(cs, hist, v, etat, images=False):
+    """Renvoie [(chemin, html, lastmod, aperçu ou None)] pour rapports/ et chaque mois de l'historique (aperçu : voir apercu() ;
+    images=False : image générale du site, rien à dessiner)."""
     pages = []
     mois = sorted(hist["mois"], reverse=True)
     for m in mois:
-        pages += pages_mois(cs, hist, m, v, etat)
-    pages.insert(0, ("rapports/", page_liste(cs, hist, mois, v, etat), max((hist["mois"][m]["derniere_date"] for m in mois), default="") or None))
+        pages += pages_mois(cs, hist, m, v, etat, images)
+    pages.insert(0, ("rapports/", page_liste(cs, hist, mois, v, etat), max((hist["mois"][m]["derniere_date"] for m in mois), default="") or None, None))
     return pages
 
 
@@ -474,7 +490,7 @@ def bloc_ventes(cs, c, racine, mois):
             + f'<a href="{racine}encheres/">{cs.L("Voir les ventes encore ouvertes", "البيوعات المفتوحة")}</a></p>{t}</section>')
 
 
-def pages_mois(cs, hist, m, v, etat):
+def pages_mois(cs, hist, m, v, etat, images=False):
     e = hist["mois"][m]
     c = e["chiffres"]
     recs = list(e["appels_offres"].values())
@@ -570,14 +586,18 @@ def pages_mois(cs, hist, m, v, etat):
     titre = f"{titre_fr} ({nb(total)} relevés) | Alertes appels d'offres"
     desc = (f"Bilan de {mfr} des appels d'offres publics tunisiens relevés sur le portail officiel HAICOP : {nb(total)} appels d'offres, "
             f"par métier, par gouvernorat et par acheteur public. Chiffres vérifiables, gratuit. {titre_ar}.")
-    html = cs.page(f"rapports/{m}/", racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
-    pages = [(f"rapports/{m}/", html, e["derniere_date"])]
+    ap = apercu(f"rapports/{m}/", "Appels d’offres publics en Tunisie", m, f"{nb(total)} appels d’offres relevés",
+                f"Portail officiel HAICOP · {au_ou_definitif(cs, e)}") if images else None
+    img = ap[0] if ap else IMAGE_GENERALE
+    html = cs.page(f"rapports/{m}/", racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq, img),
+                   og_image=img, og_type="article")
+    pages = [(f"rapports/{m}/", html, e["derniere_date"], ap)]
     for t, nom, slug, n, lfr, lar in sp:
-        pages.append(page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat))
+        pages.append(page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat, images))
     return pages
 
 
-def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat):
+def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat, images=False):
     racine = "../../../../"
     chemin = f"rapports/{m}/{t}/{slug}/"
     url = cs.URL_SITE + chemin
@@ -637,8 +657,13 @@ def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat):
     titre = f"{titre_fr} ({nb(n)} relevés) | Alertes appels d'offres"
     desc = (f"{titre_fr} : {nb(n)} appels d'offres publics relevés sur le portail officiel HAICOP, par acheteur, avec la liste et le lien "
             f"vers chaque fiche officielle. Chiffres vérifiables, gratuit. {titre_ar}.")
-    html = cs.page(chemin, racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq))
-    return (chemin, html, e["derniere_date"])
+    ap = apercu(chemin, f"Appels d’offres à {lfr}" if t == "gouvernorat" else f"Appels d’offres publics : {lfr}", m, f"{nb(n)} appels d’offres relevés",
+                (f"{pct(n, total)} % des {nb(total)} relevés en Tunisie" if t == "gouvernorat" else f"{pct(n, total)} % des {nb(total)} relevés, tous métiers")
+                + f" · {au_ou_definitif(cs, e)}") if images else None
+    img = ap[0] if ap else IMAGE_GENERALE
+    html = cs.page(chemin, racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq, img),
+                   og_image=img, og_type="article")
+    return (chemin, html, e["derniere_date"], ap)
 
 
 def charger_ventes(chemin, cs):

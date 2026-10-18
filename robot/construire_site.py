@@ -544,7 +544,7 @@ AVIS = """<section class="carte avis" id="avis" aria-labelledby="avis-titre">
 </section>"""
 
 
-def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=()):
+def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=(), og_image="assets/og-image-v6.jpg", og_type="website"):
     canon = URL_SITE + chemin
     return f"""<!doctype html>
 <html lang="fr" dir="ltr" translate="no" data-racine="{racine}">
@@ -569,10 +569,10 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta property="og:title" content="{E(titre.split(' | ')[0])}">
 <meta property="og:description" content="{E(description)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{URL_SITE}assets/og-image-v6.jpg">
+<meta property="og:image" content="{URL_SITE}{og_image}">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
 <meta property="og:locale" content="fr_TN"><meta property="og:locale:alternate" content="ar_TN">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1320,9 +1320,19 @@ def construire(donnees, sortie, jour):
                            jour, date_chiffres, sys.modules[__name__])
     rapports.ecrire_historique(chemin_hist, hist)
     dates_pages = {}
-    for chemin, contenu, date_chiffres_page in rapports.construire_rapports(sys.modules[__name__], hist, v, etat):
+    import apercus                                   # image d'aperçu PROPRE à chaque rapport (18/10/2026, Ahmed : Facebook montrait l'image du site)
+    images = apercus.disponible()
+    for chemin, contenu, date_chiffres_page, ap in rapports.construire_rapports(sys.modules[__name__], hist, v, etat, images=images):
         pages.append((chemin, contenu))
         dates_pages[chemin] = date_chiffres_page
+        if ap:                                       # une seule image par page ; les anciennes (autres chiffres) sont effacées
+            rel, titre_img, mois_img, chiffre, sous = ap
+            dossier = os.path.join(sortie, chemin)
+            for f in (os.listdir(dossier) if os.path.isdir(dossier) else []):
+                if f.startswith("apercu-") and f.endswith(".jpg") and f != os.path.basename(rel):
+                    os.remove(os.path.join(dossier, f))
+            if not os.path.exists(os.path.join(sortie, rel)):
+                apercus.fabriquer(os.path.join(sortie, rel), titre_img, mois_img, chiffre, sous)
 
     # ---- écriture
     for chemin, contenu in pages:

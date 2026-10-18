@@ -192,7 +192,7 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && h.includes(`property="og:image" content="${URL_SITE}${chemin === "video/index.html" ? "assets/video/apercu-video.jpg" : "assets/og-image-v6.jpg"}"`) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && (/^rapports\/\d{4}-\d{2}\//.test(chemin) ? h.includes(`property="og:image" content="${u}apercu-`) : h.includes(`property="og:image" content="${URL_SITE}${chemin === "video/index.html" ? "assets/video/apercu-video.jpg" : "assets/og-image-v6.jpg"}"`)) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
