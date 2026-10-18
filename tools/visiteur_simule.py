@@ -102,7 +102,13 @@ def serveur():
         def log_message(self, *a, **k):
             pass
     h = functools.partial(Muet, directory=RACINE)
-    s = socketserver.TCPServer(("127.0.0.1", 0), h)
+
+    class Serveur(socketserver.ThreadingTCPServer):
+        daemon_threads = True
+
+        def handle_error(self, *a):          # navigateur qui coupe une connexion (vidéo) : sans importance, pas de message
+            pass
+    s = Serveur(("127.0.0.1", 0), h)
     threading.Thread(target=s.serve_forever, daemon=True).start()
     return s, s.server_address[1]
 
@@ -133,7 +139,7 @@ def main():
     pages = pages_html()
     anomalies = liens_morts(pages)
     nav = None if os.environ.get("SANS_NAVIGATEUR") else chrome()
-    n_vis = 0
+    n_vis, lentes = 0, []
     if nav:
         s, port = serveur()
         try:
@@ -157,6 +163,7 @@ def main():
             if len(res) < len(urls) + len(sc):
                 anomalies.append(f"seulement {len(res)} visites sur {len(urls) + len(sc)} (navigateur arrêté trop tôt ?)")
             groupes = {}
+            lentes += [(r.get("s") or r["u"].replace(base, "")) for r in res if r.get("lent")]
             for r in res:
                 nom = (r.get("s") or r["u"].replace(base, ""))
                 if r.get("err"):
@@ -190,6 +197,8 @@ def main():
     else:
         print("(navigateur absent : seulement les liens et images des pages)")
     print(f"Visiteur simulé : {len(pages)} pages relues, {n_vis} visites dans le navigateur (390 px)")
+    if lentes:
+        print("  (pages lentes, contenu affiché après plus de 8 s : " + ", ".join(lentes[:10]) + ")")
     for a in anomalies[:60]:
         print("  - " + a)
     print(f"ANOMALIES {len(anomalies)}")

@@ -3,16 +3,26 @@
 <script>
 /* Visiteur simulé COMMUN à tous les sites d'Ahmed (règle générale du 18/10/2026) : ouvre chaque page sur un téléphone de 390 px,
    remplit les formulaires des scénarios, lit le résultat affiché et note ce qu'un visiteur trouverait anormal. */
-var P = new URLSearchParams(location.search), liste = JSON.parse(decodeURIComponent(P.get("l"))), out = [], f = document.getElementById("f");
+var P = new URLSearchParams(location.search), liste = JSON.parse(P.get("l")), out = [], f = document.getElementById("f");
 function attendre(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
-function charger(url) { return new Promise(function (r) { var fini = false; f.onload = function () { if (!fini) { fini = true; r(true); } }; setTimeout(function () { if (!fini) { fini = true; r(false); } }, 8000); f.src = url; }); }
+// attend que la PAGE soit construite (DOMContentLoaded), pas que la vidéo soit chargée : une balise <video> retardait « load » (faux « non chargée »)
+function charger(url) { return new Promise(function (r) { var fini = false, t0 = Date.now();
+  function fin(v) { if (!fini) { fini = true; r(v); } }
+  f.onload = function () { fin(true); };
+  (function guetter() { try { var d = f.contentDocument; if (d && d.URL.indexOf(url) === 0 && d.readyState !== "loading" && d.body) return fin(true); } catch (e) {}
+    if (Date.now() - t0 > 8000) return fin(false); setTimeout(guetter, 100); })();
+  f.src = url; }); }
+// un élément dans une zone qui défile elle-même (menu horizontal) ne fait pas déborder la page : on cherche le vrai coupable
+function dansDefilement(e) { for (var p = e.parentElement; p && p !== e.ownerDocument.body; p = p.parentElement) { var o = getComputedStyle(p).overflowX; if (o === "auto" || o === "scroll" || o === "hidden") return true; } return false; }
 (async function () {
   for (var i = 0; i < liste.length; i++) {
     var x = liste[i], r = {u: x.u, s: x.s || null};
     try {
       var ok = await charger(x.u); await attendre(x.attente || 1200);
       var d = f.contentDocument, w = f.contentWindow;
-      if (!ok || !d || !d.body) { r.err = "page non chargée"; out.push(r); continue; }
+      // 18/10/2026 : une page dont le contenu est là mais qui finit de charger après 8 s (vidéo + service worker) est « lente », pas « cassée »
+      if (!d || !d.body || (!ok && (d.body.innerText || "").replace(/\s+/g, "").length < 200)) { r.err = "page non chargée"; out.push(r); continue; }
+      if (!ok) r.lent = true;
       (x.etapes || []).forEach(function (e) {
         var el = d.querySelector(e.sel);
         if (!el) { r.manque = (r.manque || []).concat(e.sel); return; }
@@ -22,7 +32,7 @@ function charger(url) { return new Promise(function (r) { var fini = false; f.on
       });
       if (x.etapes && x.etapes.length) await attendre(x.apres || 500);
       r.largeur = d.documentElement.scrollWidth;
-      r.deborde = [].slice.call(d.querySelectorAll("body *")).filter(function (e) { var b = e.getBoundingClientRect(); return b.width > 0 && b.right > 393 && getComputedStyle(e).position !== "fixed"; })
+      r.deborde = [].slice.call(d.querySelectorAll("body *")).filter(function (e) { var b = e.getBoundingClientRect(); return b.width > 0 && b.right > 393 && getComputedStyle(e).position !== "fixed" && !dansDefilement(e); })
         .slice(0, 3).map(function (e) { return e.tagName.toLowerCase() + (e.id ? "#" + e.id : "") + (e.className && typeof e.className === "string" ? "." + e.className.split(" ")[0] : ""); });
       r.images = [].slice.call(d.images).filter(function (im) { return im.complete && im.naturalWidth === 0 && im.getBoundingClientRect().width > 0 && !/goatcounter|count/.test(im.src); })
         .slice(0, 3).map(function (im) { return im.getAttribute("src"); });
