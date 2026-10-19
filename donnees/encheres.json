@@ -1015,19 +1015,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-b6bc9766b9": {
-   "id": "Vente-b6bc9766b9",
-   "date_publication": "2026-08-04",
-   "bureau": "Recette des Douanes des Ventes de Tunis",
-   "objet": "Avis de vente aux enchères sous plis fermés N°14/2026 de plusieurs véhicules et diverses marchandises.",
-   "date_limite": "2026-08-19",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-04_AV_OP_RECETTE-DES-VENTES-TUNIS_N°14-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Tunis",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-bbb342c586": {
    "id": "Vente-bbb342c586",
    "date_publication": "2026-10-05",
@@ -1381,10 +1368,10 @@
   }
  },
  "lignes_lues": 355,
- "derniere_lecture_reussie": "2026-10-18 10:27",
+ "derniere_lecture_reussie": "2026-10-19 11:40",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-18 10:27",
+  "depuis": "2026-10-19 11:40",
   "raison": ""
  }
 }
