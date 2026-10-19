@@ -113,11 +113,15 @@ def serveur():
     return s, s.server_address[1]
 
 
-def visiter(port, liste, nav):
+PC = 1280                                  # largeur d'un écran d'ordinateur (19/10/2026)
+N_PC = 12                                  # pages revues aussi sur PC (accueil d'abord)
+
+
+def visiter(port, liste, nav, largeur=390):
     shutil.copy(os.path.join(ICI, "visiteur_simule.html"), os.path.join(RACINE, "_visiteur_simule.html"))
     try:
-        u = f"http://127.0.0.1:{port}/_visiteur_simule.html?l=" + urllib.parse.quote(json.dumps(liste))
-        r = subprocess.run([nav, "--headless", "--no-sandbox", "--disable-gpu", "--window-size=400,1400", "--hide-scrollbars",
+        u = f"http://127.0.0.1:{port}/_visiteur_simule.html?w={largeur}&l=" + urllib.parse.quote(json.dumps(liste))
+        r = subprocess.run([nav, "--headless", "--no-sandbox", "--disable-gpu", f"--window-size={largeur + 10},1400", "--hide-scrollbars",
                             f"--virtual-time-budget={20000 + 4000 * len(liste)}", "--dump-dom", u], capture_output=True, text=True, timeout=900).stdout
         t = re.search(r"<title>R(.*?)</title>", r, re.S)
         return json.loads(html.unescape(t.group(1))) if t else []
@@ -159,18 +163,24 @@ def main():
                     for x, r in zip(paquet, res_sc):
                         r["scenario"] = x
                     res += res_sc
+            # 19/10/2026 (capture d'Ahmed : accueil cassé sur PC, jamais vu à 390 px) : les premières pages aussi sur un écran d'ordinateur
+            for r in visiter(port, [{"u": base + u} for u in urls[:N_PC]], nav, PC):
+                r["pc"] = True
+                res.append(r)
             n_vis = len(res)
-            if len(res) < len(urls) + len(sc):
-                anomalies.append(f"seulement {len(res)} visites sur {len(urls) + len(sc)} (navigateur arrêté trop tôt ?)")
+            if len(res) < len(urls) + len(sc) + min(N_PC, len(urls)):
+                anomalies.append(f"seulement {len(res)} visites sur {len(urls) + len(sc) + min(N_PC, len(urls))} (navigateur arrêté trop tôt ?)")
             groupes = {}
             lentes += [(r.get("s") or r["u"].replace(base, "")) for r in res if r.get("lent")]
             for r in res:
-                nom = (r.get("s") or r["u"].replace(base, ""))
+                nom = (r.get("s") or r["u"].replace(base, "")) + (" (PC 1280 px)" if r.get("pc") else "")
                 if r.get("err"):
                     anomalies.append(f"{nom} : {r['err']}")
                     continue
-                if (r.get("largeur") or 0) > 392:
-                    anomalies.append(f"{nom} : page plus large que l'écran du téléphone ({r['largeur']} px ; {', '.join(r.get('deborde') or [])})")
+                if (r.get("largeur") or 0) > (PC if r.get("pc") else 390) + 2:
+                    anomalies.append(f"{nom} : page plus large que l'écran ({r['largeur']} px ; {', '.join(r.get('deborde') or [])})")
+                for e in r.get("chevauche") or []:   # 19/10/2026 : un élément caché par son voisin
+                    anomalies.append(f"{nom} : {e}")
                 for im in r.get("images") or []:
                     anomalies.append(f"{nom} : image cassée « {im} »")
                 if r.get("mot"):
@@ -198,9 +208,10 @@ def main():
             s.shutdown()
     else:
         print("(navigateur absent : seulement les liens et images des pages)")
-    print(f"Visiteur simulé : {len(pages)} pages relues, {n_vis} visites dans le navigateur (390 px)")
+    print(f"Visiteur simulé : {len(pages)} pages relues, {n_vis} visites dans le navigateur (390 px, et {N_PC} pages sur PC {PC} px)")
     if lentes:
         print("  (pages lentes, contenu affiché après plus de 8 s : " + ", ".join(lentes[:10]) + ")")
+    anomalies = list(dict.fromkeys(anomalies))
     for a in anomalies[:60]:
         print("  - " + a)
     print(f"ANOMALIES {len(anomalies)}")
