@@ -177,6 +177,8 @@ def main():
                     anomalies.append(f"{nom} : texte « {r['mot']} »")
                 if r.get("vide") and not r.get("scenario"):
                     anomalies.append(f"{nom} : page presque vide")
+                for e in r.get("espaces") or []:     # § 29 : espaces vus comme un œil (éléments qui se touchent, espaces inégaux)
+                    anomalies.append(f"{nom} : {e}")
                 for m in r.get("manque") or []:
                     anomalies.append(f"{nom} : élément « {m} » introuvable (scénario à mettre à jour ?)")
                 x = r.get("scenario")

@@ -14,6 +14,107 @@ function charger(url) { return new Promise(function (r) { var fini = false, t0 =
   f.src = url; }); }
 // un élément dans une zone qui défile elle-même (menu horizontal) ne fait pas déborder la page : on cherche le vrai coupable
 function dansDefilement(e) { for (var p = e.parentElement; p && p !== e.ownerDocument.body; p = p.parentElement) { var o = getComputedStyle(p).overflowX; if (o === "auto" || o === "scroll" || o === "hidden") return true; } return false; }
+// ESPACES (18/10/2026, Ahmed : « pourquoi ce genre de problème d'espace, tu ne l'as pas détecté toi-même ? ») : ce qu'un œil voit et
+// qu'aucun test de contenu ne voit. 1) deux éléments côte à côte qui se TOUCHENT (dessins autour d'un élément compris : traits ::after) ;
+// 2) un petit élément entre deux voisins sur une ligne avec des espaces INÉGAUX (« by » entre « Tunisie » et le carré IA) ;
+// 3) un bouton « pilule » entre l'élément du dessus et celui du dessous avec des espaces INÉGAUX (« Plus de filtres » : 22 px / 0 px).
+function espaces(d, w) {
+  var out = [], vus = {};
+  function nom(e) { if (e.nodeType === 3) return "« " + e.textContent.trim().slice(0, 20) + " »";
+    var t = (e.innerText || e.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 24);
+    return e.tagName.toLowerCase() + (e.id ? "#" + e.id : "") + (typeof e.className === "string" && e.className ? "." + e.className.trim().split(/\s+/)[0] : "") + (t ? " « " + t + " »" : ""); }
+  function visible(e) { var cs = w.getComputedStyle(e), b = e.getBoundingClientRect();
+    return b.width > 0 && b.height > 0 && cs.visibility !== "hidden" && +cs.opacity > 0.05 && cs.display !== "none"; }
+  function boite(e) {                       // un élément qu'on VOIT comme une forme (fond, bordure, image, champ, bouton)
+    if (e.nodeType !== 1 || !visible(e)) return false;
+    if (/^(BUTTON|INPUT|SELECT|TEXTAREA|IMG|SUMMARY)$/.test(e.tagName) || (e.tagName.toLowerCase() === "svg" && !(e.parentElement && e.parentElement.closest("svg")))) return true;
+    var cs = w.getComputedStyle(e);
+    return (cs.backgroundColor && !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor)) || parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderLeftWidth) > 0;
+  }
+  function rect(n, fin) {                   // boîte visible, avec les dessins ::before / ::after qui dépassent (traits du carré IA) ;
+                                            // texte sur plusieurs lignes : la DERNIÈRE ligne (fin) ou la PREMIÈRE (début)
+    if (n.nodeType === 3) { var rg = d.createRange(), t = n.textContent, a = t.length - t.replace(/^\s+/, "").length, z = t.replace(/\s+$/, "").length;
+      if (z <= a) return null; rg.setStart(n, a); rg.setEnd(n, z); var rs = rg.getClientRects(); return rs.length === 1 ? rs[0] : null; }
+    var cr = n.getClientRects(), b = cr.length > 1 ? cr[fin ? cr.length - 1 : 0] : n.getBoundingClientRect(),
+        r = { left: b.left, right: b.right, top: b.top, bottom: b.bottom, width: b.width, height: b.height };
+    if (cr.length > 1) return r;
+    // élément SANS forme (ni fond, ni bordure, ni forme dedans) : l'œil voit son TEXTE, pas sa boîte (« La Manouba » sur deux lignes
+    // dans une case flexible : la boîte va jusqu'au voisin, le texte non)
+    var csn = w.getComputedStyle(n);         // (sans marge intérieure : celle d'un lien de menu fait partie de sa place, voulue)
+    if (!boite(n) && !(parseFloat(csn.paddingLeft) || parseFloat(csn.paddingRight)) && n.textContent.trim() && ![].some.call(n.querySelectorAll("*"), boite)) {
+      var rgn = d.createRange(); rgn.selectNodeContents(n);
+      var ls = [].slice.call(rgn.getClientRects()).filter(function (q) { return q.width > 0 && q.height > 0; });
+      if (ls.length) {
+        var bord = fin ? Math.max.apply(null, ls.map(function (q) { return q.bottom; })) : Math.min.apply(null, ls.map(function (q) { return q.top; }));
+        ls = ls.filter(function (q) { return fin ? q.bottom > bord - q.height / 2 : q.top < bord + q.height / 2; });   // la ligne du bout
+        r = { left: Math.min.apply(null, ls.map(function (q) { return q.left; })), right: Math.max.apply(null, ls.map(function (q) { return q.right; })),
+              top: Math.min.apply(null, ls.map(function (q) { return q.top; })), bottom: Math.max.apply(null, ls.map(function (q) { return q.bottom; })) };
+        if (csn.overflowX !== "visible") { r.left = Math.max(r.left, b.left); r.right = Math.min(r.right, b.right); }   // texte coupé « … »
+        r.width = r.right - r.left; r.height = r.bottom - r.top;
+      }
+    }
+    var ov = w.getComputedStyle(n);          // dessin coupé par l'élément lui-même (reflet animé d'un bouton) : ne dépasse pas
+    if (ov.overflowX === "visible" && ov.overflowY === "visible") ["::before", "::after"].forEach(function (p) { var cs = w.getComputedStyle(n, p);
+      if (cs.content === "none" || cs.content === "normal" || cs.position !== "absolute") return;
+      var l = parseFloat(cs.left), rt = parseFloat(cs.right); if (l < 0) r.left += l; if (rt < 0) r.right -= rt; });
+    return r;
+  }
+  function memeLigne(a, b) { var h = Math.min(a.bottom - a.top, b.bottom - b.top); return h > 0 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) >= h * 0.5; }
+  function noter(cle, msg) { if (!vus[cle] && out.length < 6) { vus[cle] = 1; out.push(msg); } }
+  [].slice.call(d.querySelectorAll("body *")).forEach(function (par) {
+    if (/^(SCRIPT|STYLE|SVG|svg|SELECT|OPTION|P|LI|TD|TH|SMALL|SPAN)$/.test(par.tagName) && par.tagName !== "SPAN") return;
+    if (!visible(par)) return;
+    var n = [].slice.call(par.childNodes).filter(function (x) { return (x.nodeType === 3 && x.textContent.trim()) || (x.nodeType === 1 && visible(x) && w.getComputedStyle(x).position !== "absolute" && w.getComputedStyle(x).position !== "fixed"); })
+      .map(function (x) { return { n: x, r: rect(x, false), f: rect(x, true) }; }).filter(function (x) { return x.r && x.f; });
+    if (/^(TR|THEAD|TBODY|TABLE)$/.test(par.tagName)) return;      // cellules d'un tableau : collées par nature
+    for (var i = 0; i + 1 < n.length; i++) {
+      var A = { n: n[i].n, r: n[i].f }, B = n[i + 1];
+      if (!memeLigne(A.r, B.r) || B.r.left < A.r.left) continue;
+      var g = B.r.left - A.r.right, bA = boite(A.n), bB = boite(B.n);
+      // fam : éléments de même sorte (même classe ; sans classe : même balise) = onglets d'une même barre, collés exprès ;
+      // dessin : deux formes VIDES (ni texte ni contenu) accolées = morceaux d'un même dessin (barre de proportions en couleurs)
+      var cA = A.n.nodeType === 1 && typeof A.n.className === "string" ? A.n.className.trim().split(/\s+/)[0] : null,
+          cB = B.n.nodeType === 1 && typeof B.n.className === "string" ? B.n.className.trim().split(/\s+/)[0] : null;
+      var fam = cA !== null && cA === cB && (cA !== "" || A.n.tagName === B.n.tagName);
+      var dessin = A.n.nodeType === 1 && B.n.nodeType === 1 && !A.n.children.length && !B.n.children.length && !A.n.textContent.trim() && !B.n.textContent.trim()
+                && !/^(BUTTON|INPUT|SELECT|TEXTAREA|IMG)$/.test(A.n.tagName + "") && !/^(BUTTON|INPUT|SELECT|TEXTAREA|IMG)$/.test(B.n.tagName + "");
+      if ((bA || bB) && g < 0.5 && !fam && !dessin && !(A.n.nodeType === 3 && B.n.nodeType === 3))
+        noter("t" + nom(A.n) + nom(B.n), "se touchent : " + nom(A.n) + " | " + nom(B.n) + " (" + g.toFixed(1) + " px)");
+      var C = n[i + 2];                     // A [B] C : B petit, entre deux voisins sur la même ligne, au moins un voisin est une forme
+      if (C && memeLigne(B.r, C.r) && C.r.left >= B.r.right - 1 && (B.r.right - B.r.left) < 160 && (bA || boite(C.n))) {
+        var gL = B.r.left - A.r.right, gR = C.r.left - B.r.right;
+        // texte qui ne remplit pas sa boîte (aligné à droite, au centre, coupé en lignes) : l'espace vient de l'alignement voulu, pas d'une marge
+        var souple = (A.n.nodeType === 1 && A.n.getBoundingClientRect().right - A.r.right > 1) || (C.n.nodeType === 1 && C.r.left - C.n.getBoundingClientRect().left > 1);
+        if (!souple && gL >= 0 && gR >= 0 && Math.max(gL, gR) <= 24 && Math.abs(gL - gR) > 3)
+          noter("h" + nom(B.n), "espaces inégaux autour de " + nom(B.n) + " : " + gL.toFixed(1) + " px à gauche, " + gR.toFixed(1) + " px à droite");
+      }
+    }
+  });
+  // bouton « pilule » (arrondi, plus étroit que sa colonne) entre le bloc du dessus et celui du dessous
+  [].slice.call(d.querySelectorAll("button, summary, a")).forEach(function (p) {
+    if (!boite(p) && !(p.tagName === "SUMMARY" && visible(p))) return;
+    var cs = w.getComputedStyle(p), r = p.getBoundingClientRect();
+    if (parseFloat(cs.borderTopLeftRadius) < 12 || !(boite(p))) return;
+    if (p.closest("td, th")) return;        // bouton dans la case d'un tableau : aligné sur sa ligne, pas entre deux blocs
+    if ([].some.call(p.parentElement.children, function (x) { return x !== p && visible(x) && memeLigne(x.getBoundingClientRect(), r); })) return;   // bouton dans une RANGÉE (menu) : aligné sur sa rangée
+    var m = p; for (var k = 0; k < 3 && m && !(m.previousElementSibling && m.nextElementSibling); k++) m = m.parentElement;
+    if (!m || !m.parentElement || r.width > m.parentElement.getBoundingClientRect().width * 0.85) return;
+    var av = m.previousElementSibling, ap = m.nextElementSibling;
+    while (av && !visible(av)) av = av.previousElementSibling;
+    while (ap && !visible(ap)) ap = ap.nextElementSibling;
+    if (!av || !ap) return;
+    function forme(x) { return boite(x) || !!x.querySelector("input, select, textarea, button, summary, [class*=btn]"); }
+    if (!forme(av) || !forme(ap)) return;   // seulement un bouton pris ENTRE deux autres formes (champ, bouton…)
+    // bord VU : si le voisin n'a pas de forme lui-même (simple bloc qui contient des boutons), on mesure jusqu'à la forme qu'il contient
+    function bordVu(x, bas) { if (boite(x)) return x.getBoundingClientRect()[bas ? "bottom" : "top"];
+      var v = [].slice.call(x.querySelectorAll("*")).filter(function (y) { return boite(y) && !y.closest("[hidden]"); }).map(function (y) { return y.getBoundingClientRect()[bas ? "bottom" : "top"]; });
+      return v.length ? (bas ? Math.max.apply(null, v) : Math.min.apply(null, v)) : x.getBoundingClientRect()[bas ? "bottom" : "top"]; }
+    var hA = r.top - bordVu(av, true), hB = bordVu(ap, false) - r.bottom;
+    if (hA >= 0 && hB >= 0 && Math.max(hA, hB) <= 48 && Math.abs(hA - hB) > 4)
+      noter("v" + nom(p), "pas centré entre le dessus et le dessous : " + nom(p) + " (" + Math.round(hA) + " px au-dessus, " + Math.round(hB) + " px au-dessous)");
+  });
+  return out;
+}
 (async function () {
   for (var i = 0; i < liste.length; i++) {
     var x = liste[i], r = {u: x.u, s: x.s || null};
@@ -40,6 +141,7 @@ function dansDefilement(e) { for (var p = e.parentElement; p && p !== e.ownerDoc
       var m = txt.match(/\bNaN\b|\bundefined\b|\[object Object\]|\bInfinity\b|null DT|NaN DT/);
       r.mot = m ? m[0] + " … " + txt.slice(Math.max(0, m.index - 40), m.index + 30).replace(/\s+/g, " ") : null;
       r.vide = txt.replace(/\s+/g, "").length < 200;
+      try { r.espaces = espaces(d, w); } catch (e) { r.espaces = []; }
       if (x.lire) { var z = d.querySelector(x.lire); r.lu = z ? (z.innerText || z.textContent || "").replace(/\s+/g, " ").trim().slice(0, 200) : null; }
     } catch (e) { r.err = String(e).slice(0, 120); }
     out.push(r);

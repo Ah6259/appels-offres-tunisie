@@ -152,3 +152,5 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **Lieux officiels (18/10/2026, règle commune § 11.11)** : test_site.mjs vérifie dans les deux sens que la liste « Gouvernorat », les pages et la carte = les 24 gouvernorats de La Poste + les exceptions « national » et « plusieurs » (groupes, jamais des gouvernorats) ; la carte de l'accueil entoure le gouvernorat choisi dans le filtre (app.js).
 
 - **Recherche « au son » (18/10/2026, règle commune § 27)** : la case « Rechercher » utilise `assets/son.js` (outil commun de projets-ahmed, copié TEL QUEL, chargé avant app.js, compté dans le `?v=`) : Djerba = Jerba, Kairouan = Qairouan, Hammamet = Hamamet (l'ancienne recherche « mot contenu » reste valable en plus). Test dans test_site.mjs (paires + mot réel avec consonne doublée + « zzzzqqq » = 0).
+
+- **19/10/2026 — Visiteur simulé : contrôle des ESPACES (règle commune § 29)** : nouvelle copie commune installée, 0 anomalie, aucun défaut d'espace sur ce site.
