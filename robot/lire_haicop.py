@@ -29,6 +29,13 @@ import urllib.request
 
 BASE = "https://www.marchespublics.gov.tn/fr/appels-doffres"
 UA = "Mozilla/5.0 (compatible; alertes-ao-tunisie; robot lent, 1 page / 2 s)"
+# Lecture suspecte : relue jusqu'à 3 fois (2 puis 4 min d'écart, 8 min au plus) avant la panne ; la meilleure lecture est gardée
+# (règle commune § 38, venue du site Concours le 20/10/2026 : une liste coupée une seule fois mettait le robot au rouge à tort).
+REPRISE_ESSAIS = 3
+REPRISE_ATTENTE = 120
+REPRISE_BUDGET = 8 * 60
+DORMIR = time.sleep          # remplacés dans les tests (aucune vraie attente)
+HORLOGE = time.monotonic
 PAUSE = 2.5  # secondes entre deux requêtes (minimum demandé : 2)
 
 ICI = os.path.dirname(os.path.abspath(__file__))
@@ -84,6 +91,23 @@ def liste_recente(nombre):
         print("  ! liste : réponse inattendue (pas du JSON)")
         return []
     return [d["id"] for d in donnees if isinstance(d, dict) and str(d.get("id", "")).startswith("Tender-")]
+
+
+def liste_avec_reprise(nombre, minimum):
+    """Liste coupée ou injoignable (moins de « minimum » numéros) : redemandée (REPRISE_ESSAIS fois au plus, dans
+    REPRISE_BUDGET) ; la plus longue est gardée (règle commune § 38). Le plan B reste là si elle est toujours trop courte."""
+    debut = HORLOGE()
+    meilleure = liste_recente(nombre)
+    for n in range(1, REPRISE_ESSAIS):
+        attente = REPRISE_ATTENTE * n
+        if len(meilleure) >= minimum or HORLOGE() - debut + attente > REPRISE_BUDGET:
+            break
+        print(f"  liste suspecte ({len(meilleure)} numéros, au moins {minimum} attendus) : nouvel essai dans {attente} s")
+        DORMIR(attente)
+        autre = liste_recente(nombre)
+        if len(autre) > len(meilleure):
+            meilleure = autre
+    return meilleure
 
 
 def numero(tid):
@@ -400,7 +424,7 @@ def main():
         ao["gouvernorat"] = classer_gouvernorat(ao)
 
     print("1) Liste des appels d'offres récents…")
-    ids = ids_liste = liste_recente(max(a.max, 1))
+    ids = ids_liste = liste_avec_reprise(max(a.max, 1), max(1, int(0.3 * a.max)))
     if len(ids) < max(1, int(0.3 * a.max)) and connus:
         # Plan B : remonter les numéros à partir du plus grand déjà connu
         dernier = max(numero(k) for k in connus)

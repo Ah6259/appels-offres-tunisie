@@ -28,6 +28,8 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ICI)
 sys.path.insert(0, os.path.join(SITE, "robot"))
 import lire_haicop as R  # noqa: E402
+ATTENTES = []
+R.DORMIR = ATTENTES.append     # relecture d'une lecture suspecte (§ 38) : aucune vraie attente dans les tests
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -300,6 +302,39 @@ try:
     check("liste vide (< 30 % du volume) et rien derrière : panne, pas « aucun appel d'offres »",
           code == 1 and d["statut_source"]["etat"] == "panne" and len(d["appels_offres"]) == 12)
 
+    # 20/10/2026 (règle commune § 38, venue de Concours) : liste coupée une fois -> redemandée, la bonne est gardée
+    def liste_coupee_une_fois(essais=None):
+        vide, normal_, vu = portail("liste-vide"), portail("normal"), []
+        def tel(url, json_attendu=False):
+            if json_attendu:
+                vu.append(1)
+                return (vide if len(vu) == 1 else normal_)(url, json_attendu)
+            if url.rsplit("/", 1)[1] not in ("Tender-104050", "Tender-104051", "Tender-104052"):
+                return 404, ""               # rien après les numéros connus : le plan B seul ne trouverait rien
+            return normal_(url, json_attendu)
+        ecrire_json(os.path.join(tmp, "appels-offres.json"), donnees(NORMALES))
+        del ATTENTES[:]
+        _e = R.REPRISE_ESSAIS
+        R.REPRISE_ESSAIS = essais or _e
+        try:
+            R.telecharger = tel
+            sortie = io.StringIO()
+            sys.argv = ["lire_haicop.py", "--max", "3"]
+            with contextlib.redirect_stdout(sortie):
+                code = R.main()
+        finally:
+            R.REPRISE_ESSAIS = _e
+        with open(R.FICHIER_JSON, encoding="utf-8") as f:
+            return code, json.load(f)
+    code, d = liste_coupee_une_fois()
+    check("liste HAICOP vide une fois : redemandée après 2 min, 3 fiches lues, source OK (pas de rouge à tort)",
+          code == 0 and d["statut_source"]["etat"] == "ok" and len(d["appels_offres"]) == 15 and ATTENTES == [120])
+    code, d, log = lancer_robot(tmp, "liste-vide")
+    check("liste HAICOP vide à chaque essai : 3 essais (2 puis 4 min) puis panne", code == 1 and ATTENTES[-2:] == [120, 240])
+    code, d = liste_coupee_une_fois(essais=1)
+    check("liste HAICOP, sabotage : sans relecture, la même coupure passagère serait une panne (le test ci-dessus le voit)",
+          code == 1 and ATTENTES == [])
+
     ecrire_json(os.path.join(tmp, "appels-offres.json"), donnees(NORMALES))
     code, d, log = lancer_robot(tmp, "format")
     check("format du portail changé (page sans fiche) : panne « format », rien d'ajouté",
@@ -522,6 +557,7 @@ with copie_site() as s:
 print("\nF. Ventes aux enchères (page de la Douane simulée)")
 import lire_douane as D  # noqa: E402
 MINIMUM_VRAI, D.MINIMUM_LIGNES = D.MINIMUM_LIGNES, 5   # les pages simulées ont 13 lignes
+D.DORMIR = ATTENTES.append
 
 
 def page_douane(lignes, entete=True):
@@ -544,8 +580,10 @@ def dfr_(d):
     return f"{d[8:10]}-{d[5:7]}-{d[0:4]}"
 
 
-def lancer_douane(dossier, mode, lignes=None):
+def lancer_douane(dossier, mode, lignes=None, suite=None):
     def tel(url):
+        if suite is not None:          # pages successives (relecture § 38)
+            return 200, page_douane(suite.pop(0) if len(suite) > 1 else suite[0])
         if mode == "injoignable":
             return 503, ""
         if mode == "exception":
@@ -596,6 +634,32 @@ with copie_site() as s:
     check("enchères : erreur réseau -> panne, pas de plantage", code == 1 and d["statut_source"]["etat"] == "panne")
     code, d, log = lancer_douane(dd, "normal", lignes[:2])
     check("enchères : chute brutale (2 lignes au lieu de 13) -> panne, rien perdu", code == 1 and "lignes" in d["statut_source"]["raison"] and d["ventes"] == avant)
+    # 20/10/2026 (règle commune § 38, venue de Concours) : page coupée une fois -> relue, la bonne lecture gardée
+    code, d, log = lancer_douane(dd, "normal", lignes)            # état de départ : 13 lignes, source OK
+    del ATTENTES[:]
+    code, d, log = lancer_douane(dd, "normal", suite=[lignes[:2], lignes])
+    check("enchères : page coupée une fois (2 lignes au lieu de 13) : relue après 2 min, lecture complète gardée, source OK",
+          code == 0 and d["lignes_lues"] == 13 and d["statut_source"]["etat"] == "ok" and ATTENTES == [120])
+    del ATTENTES[:]
+    code, d, log = lancer_douane(dd, "normal", suite=[lignes[:2], lignes[:3], lignes[:2]])
+    check("enchères : page coupée à chaque essai : 3 essais (2 puis 4 min), puis panne, rien perdu",
+          code == 1 and "3 lignes" in d["statut_source"]["raison"] and ATTENTES == [120, 240])
+    code, d, log = lancer_douane(dd, "normal", lignes)
+    del ATTENTES[:]
+    _t, _h = iter([0] + [600] * 20), D.HORLOGE
+    D.HORLOGE = lambda: next(_t)
+    try:
+        code, d, log = lancer_douane(dd, "normal", suite=[lignes[:2], lignes])
+    finally:
+        D.HORLOGE = _h
+    check("enchères : lecture déjà longue (10 min) : pas de nouvel essai (robot GitHub limité)", code == 1 and ATTENTES == [])
+    code, d, log = lancer_douane(dd, "normal", lignes)
+    _e, D.REPRISE_ESSAIS = D.REPRISE_ESSAIS, 1
+    try:
+        code, d, log = lancer_douane(dd, "normal", suite=[lignes[:2], lignes])
+    finally:
+        D.REPRISE_ESSAIS = _e
+    check("enchères, sabotage : sans relecture, la même coupure passagère serait une panne (le test ci-dessus le voit)", code == 1)
     D.MINIMUM_LIGNES = MINIMUM_VRAI
     code, d, log = lancer_douane(dd, "normal", lignes)
     check("enchères : 13 lignes seulement (moins de 50 attendues) -> panne « presque rien lu », même sans historique (§ 17)",

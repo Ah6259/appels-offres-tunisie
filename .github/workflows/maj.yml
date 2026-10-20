@@ -24,7 +24,8 @@ env:
 jobs:
   maj:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 5 min d'habitude ; jusqu'à ~21 min si HAICOP et la Douane sont relus 3 fois (§ 38, 20/10/2026) : limite = 2 × ce pire cas
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

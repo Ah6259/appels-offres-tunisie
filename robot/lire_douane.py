@@ -20,6 +20,7 @@ import os
 import re
 import ssl
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -35,6 +36,13 @@ GARDER_JOURS = 60          # ventes dont l'échéance est passée depuis plus de
 SEUIL_CHUTE = 0.3
 # Moins de lignes que ça = lecteur cassé, même à la première lecture (352 lignes le 14/10/2026 ; règle commune § 17, 15/10/2026)
 MINIMUM_LIGNES = 50
+# Lecture suspecte : relue jusqu'à 3 fois (2 puis 4 min d'écart, 8 min au plus) avant la panne ; la meilleure lecture est gardée
+# (règle commune § 38, venue du site Concours le 20/10/2026 : une liste coupée une seule fois mettait le robot au rouge à tort).
+REPRISE_ESSAIS = 3
+REPRISE_ATTENTE = 120
+REPRISE_BUDGET = 8 * 60
+DORMIR = time.sleep          # remplacés dans les tests (aucune vraie attente)
+HORLOGE = time.monotonic
 
 # Bureaux des douanes -> gouvernorat (quand le nom du gouvernorat n'apparaît pas dans le nom du bureau)
 VILLES = {
@@ -146,6 +154,43 @@ def sauver(d):
     os.replace(tmp, FICHIER)
 
 
+def lire_une_fois(precedent):
+    """(ventes, raison) : raison vide = lecture correcte."""
+    try:
+        code, page = telecharger(URL)
+    except Exception as e:     # réseau coupé, délai… : panne, jamais un plantage
+        return None, f"page injoignable ({e})"
+    if code != 200:
+        return None, f"page injoignable (code HTTP {code})"
+    ventes = lire_tableau(page)
+    if ventes is None:
+        return None, "format de la page changé (tableau introuvable)"
+    if not ventes:
+        return ventes, "tableau vide"
+    if precedent and len(ventes) < SEUIL_CHUTE * precedent:
+        return ventes, f"seulement {len(ventes)} lignes contre {precedent} avant"
+    if len(ventes) < MINIMUM_LIGNES:
+        return ventes, f"presque rien lu : {len(ventes)} lignes (au moins {MINIMUM_LIGNES} attendues)"
+    return ventes, ""
+
+
+def lire_avec_reprise(precedent):
+    """Lecture suspecte refaite (REPRISE_ESSAIS fois au plus, dans REPRISE_BUDGET) ; la meilleure est gardée : une lecture
+    correcte, sinon celle qui a le plus de lignes (règle commune § 38)."""
+    debut = HORLOGE()
+    meilleure = lire_une_fois(precedent)
+    for n in range(1, REPRISE_ESSAIS):
+        attente = REPRISE_ATTENTE * n
+        if not meilleure[1] or HORLOGE() - debut + attente > REPRISE_BUDGET:
+            break
+        print(f"  lecture suspecte ({meilleure[1]}) : nouvel essai dans {attente} s")
+        DORMIR(attente)
+        autre = lire_une_fois(precedent)
+        if not autre[1] or len(autre[0] or []) > len(meilleure[0] or []):
+            meilleure = autre
+    return meilleure
+
+
 def main():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -153,25 +198,7 @@ def main():
     maintenant = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     precedent = int(d.get("lignes_lues") or 0)
     print("Ventes aux enchères (Douane tunisienne)…")
-    raison = ""
-    try:
-        code, page = telecharger(URL)
-    except Exception as e:     # réseau coupé, délai… : panne, jamais un plantage
-        code, page, raison = 0, "", f"page injoignable ({e})"
-    ventes = None
-    if not raison:
-        if code != 200:
-            raison = f"page injoignable (code HTTP {code})"
-        else:
-            ventes = lire_tableau(page)
-            if ventes is None:
-                raison = "format de la page changé (tableau introuvable)"
-            elif not ventes:
-                raison = "tableau vide"
-            elif precedent and len(ventes) < SEUIL_CHUTE * precedent:
-                raison = f"seulement {len(ventes)} lignes contre {precedent} avant"
-            elif len(ventes) < MINIMUM_LIGNES:
-                raison = f"presque rien lu : {len(ventes)} lignes (au moins {MINIMUM_LIGNES} attendues)"
+    ventes, raison = lire_avec_reprise(precedent)
     if raison:
         ancien = d.get("statut_source") or {}
         depuis = ancien.get("depuis") if ancien.get("etat") == "panne" else maintenant
