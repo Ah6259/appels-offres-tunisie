@@ -11,7 +11,8 @@
 (function (racine) {
   function base(t) {
     return " " + String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
-      .replace(/[ً-ْٰـ]/g, "").replace(/[إأآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه").replace(/ؤ/g, "و").replace(/ئ/g, "ي")
+      .replace(/[ً-ٰٕـ]/g, "").replace(/[إأآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه").replace(/ؤ/g, "و").replace(/ئ/g, "ي")
+      .replace(/([؀-ۿ])([a-z0-9])/g, "$1 $2").replace(/([a-z0-9])([؀-ۿ])/g, "$1 $2")   // latin et arabe collés -> deux mots (20/10/2026)
       .replace(/[^a-z0-9؀-ۿ]+/g, " ").trim() + " ";
   }
   function cle(t) {
