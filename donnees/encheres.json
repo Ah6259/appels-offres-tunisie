@@ -976,19 +976,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-aefe4681a6": {
-   "id": "Vente-aefe4681a6",
-   "date_publication": "2026-08-06",
-   "bureau": "Bureau régional des douanes de Mehdia",
-   "objet": "Avis de vente aux enchères sous plis fermés N°03/2026 de diverses marchandises.",
-   "date_limite": "2026-08-20",
-   "heure": "13:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-06_AV_OP_Mehdia_N°03-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Mahdia",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-efab27a83f": {
    "id": "Vente-efab27a83f",
    "date_publication": "2026-08-05",
@@ -999,19 +986,6 @@
    "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-05_AV_OP_rades-port_09-2026.pdf",
    "lien_cahier": "",
    "gouvernorat": "Ben Arous",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-f53f9bfadd": {
-   "id": "Vente-f53f9bfadd",
-   "date_publication": "2026-08-04",
-   "bureau": "Bureau régional des douanes de Monastir",
-   "objet": "Avis de vente aux enchères sous plis fermés N°10/2026 de boissons alcoolisées.",
-   "date_limite": "2026-08-20",
-   "heure": "12:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-04_AV_OP_Monastir_N°10-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Monastir",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
@@ -1368,10 +1342,10 @@
   }
  },
  "lignes_lues": 355,
- "derniere_lecture_reussie": "2026-10-19 11:40",
+ "derniere_lecture_reussie": "2026-10-20 11:11",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-19 11:40",
+  "depuis": "2026-10-20 11:11",
   "raison": ""
  }
 }
