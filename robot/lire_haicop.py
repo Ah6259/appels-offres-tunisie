@@ -320,7 +320,7 @@ def sauver_cache(cache):
     os.makedirs(DOSSIER_DONNEES, exist_ok=True)
     cache["mis_a_jour"] = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     tmp = FICHIER_JSON + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         json.dump(cache, f, ensure_ascii=False, indent=1)
     os.replace(tmp, FICHIER_JSON)
 
