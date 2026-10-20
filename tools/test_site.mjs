@@ -174,9 +174,9 @@ check("filtre dans l'adresse (?metier=…)", visibles(w.document).length === par
     paires.every(([a, b]) => S.trouve(S.cle("Commune de " + a), b) && S.trouve(S.cle("Commune de " + b), a)));
   // une paire tirée des VRAIES cartes : un mot d'un titre écrit avec une consonne doublée (« travaux » -> « travvaux »)
   const mots = [...d2.querySelectorAll("#liste .ao")].flatMap(c => ((c._q || c.textContent.toLowerCase()).match(/\b[a-z]{6,}\b/g) || []).map(m => [m, c.id]));
-  const [mot, id] = mots.find(([m]) => /[aeiou][bcdfglmnprstv][aeiou]/.test(m)) || ["", ""];
-  const double = mot.replace(/([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2");
-  const triple = mot.replace(/([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2$2");   // lettre triplée (« demisssion »)
+  const [mot, id] = mots.find(([m]) => /(?<=[a-z])[aeiou][bcdfglmnprstv][aeiou]/.test(m)) || ["", ""];
+  const double = mot.replace(/(?<=[a-z])([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2");
+  const triple = mot.replace(/(?<=[a-z])([aeiou])([bcdfglmnprstv])(?=[aeiou])/, "$1$2$2$2");   // lettre triplée (« demisssion ») ; jamais au début du mot : « ettudes » y serait lu comme l'article (« Ettadhamen » = « Tadhamen »)
   const r1 = chercher(mot), r2 = chercher(double);
   check(`recherche au son : « ${mot} » écrit « ${double} » ou « ${triple} » trouve les mêmes cartes ; « demisssion » = « Démission »`, !!mot && r2.includes(id) && r2.length > 0 && r2.every(x => r1.includes(x))
     && chercher(triple).join() === r2.join() && S.trouve(S.cle("Démission"), "demisssion"));
