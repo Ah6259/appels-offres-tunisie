@@ -159,3 +159,6 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   de l'accueil, page `abonnement/`, conditions renumérotées 1-8, titres, descriptions, FAQ JSON-LD) ; formule 1 mois (cochée) ou 1 an ;
   le code reste créé sur la page, le robot privé le met « en attente » jusqu'au paiement. Test : « aucune page ne parle d'essai
   gratuit » dans test_site.mjs.
+- **20/10/2026** : le robot `maj-appels-offres` a été bloqué à tort par le test de recherche au son (il avait tiré « etudes » et fabriqué
+  « ettudes », lu exprès comme l'article « Ett… ») ; test corrigé (faute jamais au début du mot), robot relancé, vert. Les robots rouges
+  sont désormais réparés seuls par la tâche Claude « Réparer les robots rouges » (règle commune § 33, projets-ahmed).
