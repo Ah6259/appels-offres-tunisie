@@ -62,7 +62,7 @@ Guide réutilisable pour créer un autre site du même genre. Une ligne par éta
 - Icône mégaphone (famille commune des sites) ; titres « consultation gratuite » fabriqués par `robot/construire_site.py`.
 
 ## 06/10/2026 — Partie payante « Alertes Pro » (accord écrit d'Ahmed)
-- Offre : alertes personnalisées sur Telegram, 25 DT/mois ou 199 DT/an, 14 jours d'essai, sans renouvellement automatique ;
+- Offre : alertes personnalisées sur Telegram, 25 DT/mois ou 199 DT/an, plus d'essai gratuit depuis le 20/10/2026, sans renouvellement automatique ;
   la consultation reste gratuite (titres et FAQ honnêtes).
 - Bouton doré « Alertes Pro » dans l'en-tête de toutes les pages + gros bouton sur l'accueil → page `abonnement/` : prix et
   avantages tout de suite, bouton « Paiement » (D17, IZI, preuve WhatsApp), formulaire Formspree, conditions.

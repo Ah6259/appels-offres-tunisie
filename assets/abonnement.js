@@ -22,7 +22,7 @@
     return n.length === 8 ? n : "";
   }
 
-  // Essai IMMÉDIAT (14/10/2026, règle commune § 15) : même calcul que decoder_choix() du robot privé :
+  // Inscription immédiate (14/10/2026, règle commune § 15 ; aucun essai depuis le 20/10/2026) : même calcul que decoder_choix() du robot privé :
   // listes TRIÉES, 5 cases par caractère, « x » = tous
   var B32 = "0123456789abcdefghijklmnopqrstuv", ALPH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   function encoder(choix, liste) {
@@ -107,7 +107,7 @@
       // ligne prête pour le bouton « activer-abonne » (dépôt privé)
       donnees.set("pour_activer", "nom: " + val("nom") + " (" + val("entreprise") + ") ; telephone: " + tel +
         " ; metiers: " + metiers.join(",") + " ; gouvernorats: " + gouv.join(","));
-      donnees.set("code", code);                               // code de l'essai (motif du paiement)
+      donnees.set("code", code);                               // code personnel (motif du paiement)
       bouton.disabled = true;
       dire("", "Envoi…", "جارٍ الإرسال…");
       fetch(ADRESSE, { method: "POST", body: donnees, headers: { "Accept": "application/json" } })
@@ -117,9 +117,9 @@
           fini();
         })
         .catch(function () {
-          // l'essai ne dépend pas de cet envoi : le robot Telegram le crée seul ; on continue quand même
-          dire("", "Inscription non envoyée (connexion), mais votre essai fonctionne : ouvrez Telegram ci-dessous.",
-               "لم يُرسل التسجيل (الاتصال)، لكن تجربتك تعمل: افتح تيليغرام أسفله.");
+          // l'inscription ne dépend pas de cet envoi : le robot Telegram la crée seul ; on continue quand même
+          dire("", "Inscription non envoyée (connexion), mais votre code fonctionne : ouvrez Telegram ci-dessous.",
+               "لم يُرسل التسجيل (الاتصال)، لكن رمزك يعمل: افتح تيليغرام أسفله.");
           fini();
         })
         .then(function () { bouton.disabled = false; });

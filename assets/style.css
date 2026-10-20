@@ -418,7 +418,7 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .hero-carte .tn-b text{fill:#fff}
 .tn-b.actif circle{fill:#F2B33D!important;fill-opacity:1;stroke:#16304A!important;stroke-width:2.5}
 @media (max-width:640px){ .hero-grille{grid-template-columns:1fr} .hero-carte,.hero-carte.petite{max-width:240px;width:100%;margin:6px auto 0;justify-self:center} }
-/* Essai immédiat sur Telegram (14/10/2026, règle commune § 15) : gestes expliqués avant d'ouvrir l'application */
+/* Inscription sur Telegram (14/10/2026, règle commune § 15) : gestes expliqués avant d'ouvrir l'application */
 .abo-code{font-size:20px;letter-spacing:.08em;background:var(--or-clair);border-radius:8px;padding:2px 10px}
 .etapes-tg{margin:10px 0;padding-inline-start:22px;line-height:1.55}
 .etapes-tg li{margin-bottom:6px}

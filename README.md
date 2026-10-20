@@ -14,7 +14,7 @@ Dernier jour » et section « Clôturent bientôt », **ventes aux enchères** d
 **publication gratuite** d'appels d'offres par les entreprises privées (`publier/`), **alerte Telegram** quotidienne.
 
 **Partie payante « Alertes Pro »** (`abonnement/`) : alertes personnalisées (métiers + gouvernorats) chaque matin sur Telegram,
-25 DT/mois ou 199 DT/an, 14 jours d'essai gratuit, sans renouvellement automatique. La consultation reste gratuite.
+25 DT/mois ou 199 DT/an, sans essai gratuit (depuis le 20/10/2026), sans renouvellement automatique. La consultation reste gratuite.
 
 ## Comment ça marche
 | Étape | Fichier | Rôle |

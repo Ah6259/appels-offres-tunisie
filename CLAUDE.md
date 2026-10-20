@@ -82,8 +82,8 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Titres : « consultation gratuite » (pas « alertes gratuites » : les alertes personnalisées deviendront payantes) ; descriptions « Gratuit, sans inscription » (`robot/construire_site.py`).
 
 ## Alertes Pro — partie payante (06/10/2026, accord écrit d'Ahmed : « commencer par Appels d'offres »)
-- Offre : alertes PERSONNALISÉES (métiers + gouvernorats) chaque matin sur Telegram. **25 DT/mois ou 199 DT/an**, **14 jours d'essai
-  gratuit**, « Sans engagement au-delà d'un an », **pas de renouvellement automatique** (rappel 3 jours avant, puis l'alerte s'arrête).
+- Offre : alertes PERSONNALISÉES (métiers + gouvernorats) chaque matin sur Telegram. **25 DT/mois ou 199 DT/an**, **plus d'essai
+  gratuit depuis le 20/10/2026**, « Sans engagement au-delà d'un an », **pas de renouvellement automatique** (rappel 3 jours avant, puis l'alerte s'arrête).
   La consultation du site reste GRATUITE (titres « consultation gratuite », « Gratuit, sans inscription » dans le texte d'intro, FAQ honnête).
 - Constantes `ABO` + `pages_abonnement()` dans `robot/construire_site.py`. Bouton doré « Alertes Pro » dans l'en-tête de CHAQUE page
   (`assets/page.js`, classe `entete-pro`) + gros bouton `#btn-pro-accueil` dans le bandeau de l'accueil + lien dans le pied.
@@ -144,7 +144,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 
 ## Code personnel des Alertes Pro (18/10/2026, contrôle commun « case du code »)
 - Ce site n'a AUCUNE case où le visiteur tape un code : `abonnement/` CRÉE le code (6 caractères, `assets/abonnement.js`), l'affiche
-  (`#abo-code`) et le met dans le lien Telegram ; rien dans localStorage. Essai gratuit réel de 14 jours (texte juste).
+  (`#abo-code`) et le met dans le lien Telegram ; rien dans localStorage. Plus d'essai gratuit depuis le 20/10/2026.
 - Corrigé : le bloc « Paiement », le libellé « Entreprise (motif du paiement et facture) » et les conditions disaient « motif = nom de
   l'entreprise » alors que les étapes disent « Motif : votre code personnel » -> partout « code personnel » ; libellé « Entreprise
   (pour la facture) » (test dans test_site.mjs).
@@ -154,3 +154,8 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **Recherche « au son » (18/10/2026, règle commune § 27)** : la case « Rechercher » utilise `assets/son.js` (outil commun de projets-ahmed, copié TEL QUEL, chargé avant app.js, compté dans le `?v=`) : Djerba = Jerba, Kairouan = Qairouan, Hammamet = Hamamet (l'ancienne recherche « mot contenu » reste valable en plus). Test dans test_site.mjs (paires + mot réel avec consonne doublée + « zzzzqqq » = 0).
 
 - **19/10/2026 — Visiteur simulé : contrôle des ESPACES (règle commune § 29)** : nouvelle copie commune installée, 0 anomalie, aucun défaut d'espace sur ce site.
+
+- **20/10/2026 — PLUS D'ESSAI GRATUIT** (Ahmed : « Enlève tous les essais gratuits ») : aucune mention d'essai sur le site (bouton doré
+  de l'accueil, page `abonnement/`, conditions renumérotées 1-8, titres, descriptions, FAQ JSON-LD) ; formule 1 mois (cochée) ou 1 an ;
+  le code reste créé sur la page, le robot privé le met « en attente » jusqu'au paiement. Test : « aucune page ne parle d'essai
+  gratuit » dans test_site.mjs.

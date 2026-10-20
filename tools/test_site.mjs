@@ -485,21 +485,21 @@ check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(li
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
 const gros = d.querySelector(".hero #btn-pro-accueil");
-check("accueil : gros bouton doré « Alertes Pro » en haut (dans le bandeau) vers abonnement/, 14 jours d'essai gratuit",
-  !!gros && gros.getAttribute("href") === "abonnement/" && /Alertes Pro/.test(texte(gros)) && /14 jours d'essai gratuit/.test(texte(gros)));
+check("accueil : gros bouton doré « Alertes Pro » en haut (dans le bandeau) vers abonnement/, avec le prix",
+  !!gros && gros.getAttribute("href") === "abonnement/" && /Alertes Pro/.test(texte(gros)) && /25 DT \/ mois/.test(texte(gros)));
 const hAcc = lire("index.html");
 check("accueil : titre « consultation gratuite » et description « Gratuit, sans inscription » gardés",
   /<title>[^<]*consultation gratuite[^<]*<\/title>/.test(hAcc) && /<meta name="description" content="[^"]*Gratuit, sans inscription/.test(hAcc));
-check("accueil : la FAQ dit vrai (consultation gratuite, Alertes Pro payantes avec essai)", (() => {
+check("accueil : la FAQ dit vrai (consultation gratuite, Alertes Pro payantes, sans essai)", (() => {
   const q = JSON.parse(hAcc.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]).mainEntity.find(x => /gratuit/.test(x.name));
-  return q && /consultation des appels d'offres est gratuite/.test(q.acceptedAnswer.text) && /25 DT/.test(q.acceptedAnswer.text) && /14 jours d'essai gratuit/.test(q.acceptedAnswer.text); })());
+  return q && /consultation des appels d'offres est gratuite/.test(q.acceptedAnswer.text) && /25 DT/.test(q.acceptedAnswer.text) && !/essai/.test(q.acceptedAnswer.text); })());
 
 w = await page("abonnement/index.html", "lang=fr");
 d = w.document;
 const mainA = texte(d.querySelector("main"));
 check("abonnement : prix 25 DT / mois ou 199 DT / an affiché tout de suite", /25 DT \/ mois/.test(texte(d.getElementById("abo-prix"))) && /199 DT \/ an/.test(texte(d.getElementById("abo-prix"))));
-check("abonnement : 14 jours d'essai gratuit, sans engagement au-delà d'un an, pas de renouvellement automatique, rappel 3 jours avant",
-  /14 jours d'essai gratuit/.test(mainA) && /Sans engagement au-delà d'un an/.test(mainA) && /Pas de renouvellement automatique/.test(mainA) && /rappel 3 jours avant la fin/.test(mainA));
+check("abonnement : alertes dès réception du paiement, sans engagement au-delà d'un an, pas de renouvellement automatique, rappel 3 jours avant",
+  /dès réception du paiement/.test(mainA) && /Sans engagement au-delà d'un an/.test(mainA) && /Pas de renouvellement automatique/.test(mainA) && /rappel 3 jours avant la fin/.test(mainA));
 check("abonnement : « la consultation du site reste gratuite »", /consultation du site reste gratuite/.test(mainA));
 const det = d.getElementById("paiement");
 const paie = texte(det);
@@ -531,7 +531,7 @@ check("abonnement : formulaire Formspree (mwlpakqj) nom, entreprise, téléphone
 check(`abonnement : cases des 10 métiers du site + 24 gouvernorats + « Toute la Tunisie »`,
   nomsM.length === 10 && metiersSite.every(m => nomsM.includes(m)) && nomsG.length === 25 && nomsG[0] === "tous" && nomsG.includes("sfax") && !nomsG.includes("national"));
 const radios = [...fa.querySelectorAll('[name="formule"]')];
-check("abonnement : choix « 14 jours d'essai » (par défaut) ou « je paie directement »", radios.length === 2 && radios[0].checked && /essai/.test(radios[0].value) && radios[1].value === "je paie directement");
+check("abonnement : choix « 1 mois » (par défaut) ou « 1 an », plus de formule « essai »", radios.length === 2 && radios[0].checked && radios[0].value === "1 mois" && radios[1].value === "1 an");
 const cond = fa.querySelector('[name="conditions"]');
 check("abonnement : case obligatoire « J'accepte les conditions » avec lien vers abonnement/conditions/",
   cond?.type === "checkbox" && cond.required && cond.closest("label").querySelector("a")?.href === URL_SITE + "abonnement/conditions/" && existsSync(join(root, "abonnement/conditions/index.html")));
@@ -566,33 +566,40 @@ check("abonnement : envoi à Formspree avec métiers et gouvernorats sur une lig
   envois.length === 1 && envois[0][0] === "https://formspree.io/f/mwlpakqj" && envois[0][1].headers.Accept === "application/json" &&
   corps.get("metiers") === "btp-genie-civil, informatique" && corps.get("gouvernorats") === "sfax" && corps.get("telephone") === "24321390" &&
   corps.getAll("metiers").length === 1 && /telephone: 24321390 ; metiers: btp-genie-civil,informatique ; gouvernorats: sfax/.test(corps.get("pour_activer")) &&
-  corps.get("conditions") === "oui" && /essai/.test(corps.get("formule")));
+  corps.get("conditions") === "oui" && corps.get("formule") === "1 mois");
 const apresA = d.getElementById("apres-abo");
 const robotVide = /^TELEGRAM_ROBOT_ALERTES = ""/m.test(reglagesPy);
-// 14/10/2026 (règle commune § 15 : essai immédiat) : code créé sur place, lien Telegram avec les choix, gestes expliqués avant
+// 14/10/2026 (règle commune § 15 : inscription immédiate ; plus d'essai depuis le 20/10/2026) : code créé sur place, lien Telegram avec les choix, gestes expliqués avant
 const codeA = d.getElementById("abo-code").textContent, lienA = d.getElementById("abo-ouvrir-tg").getAttribute("href");
-check("abonnement : après l'envoi -> essai IMMÉDIAT : code de 6 caractères, « Ouvrir Telegram » avec les choix, 3 gestes (DÉMARRER, réponse le matin suivant), paiement, WhatsApp avec l'entreprise et le code",
+check("abonnement : après l'envoi -> inscription IMMÉDIATE : code de 6 caractères, « Ouvrir Telegram » avec les choix, 3 gestes (DÉMARRER, réponse le matin suivant), paiement, WhatsApp avec l'entreprise et le code",
   fa.hidden && !apresA.hidden && /^[A-HJ-NP-Z2-9]{6}$/.test(codeA) && !robotVide
   && lienA === `https://t.me/${fa.getAttribute("data-robot")}?start=e${codeA}_${w.ESSAI_ALERTES.encoder(["btp-genie-civil", "informatique"], fa.getAttribute("data-metiers").split(","))}_${w.ESSAI_ALERTES.encoder(["sfax"], fa.getAttribute("data-gouv").split(","))}`
   && lienA.split("start=")[1].length <= 64 && corps.get("code") === codeA
   && apresA.querySelectorAll(".etapes-tg li").length === 3 && /DÉMARRER/.test(texte(apresA)) && /le matin suivant, vers 8 h/.test(texte(apresA))
   && ["D17", "IZI", "24 321 390"].every(x => texte(apresA).includes(x))
   && decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("Société Essai SARL — code " + codeA));
-check("essai immédiat : plus d'« activation sous 24 heures » ; listes triées du formulaire = cases",
+check("inscription immédiate : plus d'« activation sous 24 heures » ; listes triées du formulaire = cases",
   !/24 heures/.test(lire("abonnement/index.html")) && JSON.stringify([...fa.querySelectorAll('[name="metiers"]')].map(x => x.value).sort()) === JSON.stringify(fa.getAttribute("data-metiers").split(",")));
 w = await page("abonnement/index.html", "lang=ar");
 check("abonnement en arabe : titre, prix en دينار, bouton الدفع", /تنبيهات Pro/.test(texte(w.document.querySelector("h1"))) &&
   /دينار/.test(texte(w.document.getElementById("abo-prix"))) && texte(w.document.querySelector('#paiement summary [data-l="ar"]')) === "الدفع");
 w = await page("abonnement/conditions/index.html", "lang=fr");
 const tc = texte(w.document.querySelector("main"));
-check("conditions : prix, essai 14 jours, paiement D17/IZI, pas de renouvellement automatique, données personnelles, résiliation",
-  /25 DT par mois ou 199 DT par an/.test(tc) && /14 premiers jours sont gratuits/.test(tc) && /D17 ou IZI/.test(tc) &&
+check("conditions : prix, paiement D17/IZI (période payée dès l'activation), pas de renouvellement automatique, données personnelles, résiliation",
+  /25 DT par mois ou 199 DT par an/.test(tc) && /commence le jour de l'activation/.test(tc) && !/gratuits/.test(tc) && /D17 ou IZI/.test(tc) &&
   /aucun renouvellement automatique/.test(tc) && /Sans engagement au-delà d'un an/.test(tc) && /Données personnelles/.test(tc) && /résiliation/.test(tc) && /facture/.test(tc));
 // Aucune donnée d'abonné dans le dépôt PUBLIC (elles vivent dans le dépôt privé Ah6259/appels-offres-abonnes)
 const fichiersAbo = fichiers.filter(f => /abonn[ée]s?[^/\\]*\.json$/i.test(f) || /memoire[^/\\]*\.json$/i.test(f));
 const avecChat = fichiers.filter(f => /"chat_?id"\s*:\s*-?\d/.test(lire(f)) || /"fin_essai"\s*:\s*"\d{4}/.test(lire(f)));
 check("aucune donnée d'abonné dans le dépôt public (pas de abonnes.json, aucun chat_id ni fin d'essai)", !fichiersAbo.length && !avecChat.length);
 if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...fichiersAbo, ...avecChat].join(", "));
+{ // 20/10/2026 (décision d'Ahmed : « Enlève tous les essais gratuits ») : aucune page, aucun script, ni le manifeste ne parle d'essai gratuit
+  const ESSAI = /essais? gratuits?|jours? d(?:'|&#x27;|&#39;|’)essai|(?:votre|pendant l(?:'|&#x27;|&#39;|’)|après l(?:'|&#x27;|&#39;|’)|fin de l(?:'|&#x27;|&#39;|’))essai\b|free[ -]trial|trial (?:until|period)|تجربة مجانية|التجربة المجانية|تجربتك|بعد التجربة|نهاية التجربة/i;
+  const publics = [...fichiers.filter(f => /\.(html|js|json|txt|xml)$/.test(f) && !/^(\.\/)?(tools|robot)[\/\\]/.test(f)), "manifest.webmanifest"].filter(f => existsSync(join(root, f)));
+  const fautifs = publics.filter(f => ESSAI.test(lire(f)));
+  check(`aucune page ne parle d'essai gratuit / free trial / تجربة مجانية (${publics.length} fichiers lus)` + (fautifs.length ? " : " + fautifs.slice(0, 5).join(", ") : ""),
+    publics.length > 50 && !fautifs.length);
+}
 
 // ---- 12. Bouton « Partager » (demande d'Ahmed, 06/10/2026 : plus de partages entre visiteurs) ----
 {
