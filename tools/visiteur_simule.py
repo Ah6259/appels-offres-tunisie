@@ -33,13 +33,27 @@ IGNORE = re.compile(r"^(https?:|mailto:|tel:|data:|javascript:|#|//|whatsapp:|sm
 
 def chrome():
     for c in (os.environ.get("CHROME"), "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", shutil.which("google-chrome"),
-              shutil.which("chromium"), shutil.which("chromium-browser")):
+              shutil.which("chromium"), shutil.which("chromium-browser"),
+              # PC Windows (20/10/2026 : le visiteur ne trouvait pas Chrome sur le PC et ne faisait que la moitié du contrôle)
+              r"C:\Program Files\Google\Chrome\Application\chrome.exe", r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+              r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"):
         if c and os.path.exists(c):
             return c
     return None
 
 
 def pages_html():
+    # seulement les pages PUBLIÉES (suivies par Git) : un dossier exclu (.gitignore) qui n'existe que sur le PC, ex. les copies de
+    # conditions d'utilisation gardées en preuve, n'est pas une page du site (20/10/2026 : 970 « anomalies » sur le PC pour rien)
+    try:
+        r = subprocess.run(["git", "ls-files", "-z", "--", "*.html"], cwd=RACINE, capture_output=True, timeout=60)
+        if r.returncode == 0 and r.stdout:
+            exclus = ("node_modules", "tools", "robot", "data-brut", "preuves")
+            return sorted(f for f in r.stdout.decode("utf-8", "replace").split("\0")
+                          if f.endswith(".html") and not any(p.startswith((".", "_")) or p in exclus for p in f.split("/")[:-1])
+                          and not f.split("/")[-1].startswith("_"))
+    except (OSError, subprocess.SubprocessError):
+        pass
     out = []
     for d, dirs, fs in os.walk(RACINE):
         dirs[:] = [x for x in dirs if not x.startswith((".", "_")) and x not in ("node_modules", "tools", "robot", "data-brut", "preuves")]
@@ -122,7 +136,8 @@ def visiter(port, liste, nav, largeur=390):
     try:
         u = f"http://127.0.0.1:{port}/_visiteur_simule.html?w={largeur}&l=" + urllib.parse.quote(json.dumps(liste))
         r = subprocess.run([nav, "--headless", "--no-sandbox", "--disable-gpu", f"--window-size={largeur + 10},1400", "--hide-scrollbars",
-                            f"--virtual-time-budget={20000 + 4000 * len(liste)}", "--dump-dom", u], capture_output=True, text=True, timeout=900).stdout
+                            f"--virtual-time-budget={20000 + 4000 * len(liste)}", "--dump-dom", u], capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           timeout=900).stdout or ""   # UTF-8 : sous Windows, la sortie était lue en cp1252 et perdue (20/10/2026)
         t = re.search(r"<title>R(.*?)</title>", r, re.S)
         return json.loads(html.unescape(t.group(1))) if t else []
     finally:
