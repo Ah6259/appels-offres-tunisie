@@ -51,7 +51,8 @@ def pages_html():
             exclus = ("node_modules", "tools", "robot", "data-brut", "preuves")
             return sorted(f for f in r.stdout.decode("utf-8", "replace").split("\0")
                           if f.endswith(".html") and not any(p.startswith((".", "_")) or p in exclus for p in f.split("/")[:-1])
-                          and not f.split("/")[-1].startswith("_"))
+                          and not f.split("/")[-1].startswith("_")
+                          and os.path.exists(os.path.join(RACINE, f)))   # 21/10/2026 : page suivie mais effacée par la construction (doublon fusionné)
     except (OSError, subprocess.SubprocessError):
         pass
     out = []
