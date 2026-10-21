@@ -976,19 +976,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-efab27a83f": {
-   "id": "Vente-efab27a83f",
-   "date_publication": "2026-08-05",
-   "bureau": "Bureau frontalier des opérations commerciales de Radès Port (16)",
-   "objet": "Avis de vente aux enchères sous plis fermés N°09/2026 de diverses marchandises.",
-   "date_limite": "2026-08-21",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/08/2026-08-05_AV_OP_rades-port_09-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Ben Arous",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-bbb342c586": {
    "id": "Vente-bbb342c586",
    "date_publication": "2026-10-05",
@@ -1342,10 +1329,10 @@
   }
  },
  "lignes_lues": 355,
- "derniere_lecture_reussie": "2026-10-20 11:11",
+ "derniere_lecture_reussie": "2026-10-21 11:01",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-20 11:11",
+  "depuis": "2026-10-21 11:01",
   "raison": ""
  }
 }
