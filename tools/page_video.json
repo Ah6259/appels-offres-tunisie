@@ -1,4 +1,5 @@
 {
+  "preload": "none",
  "site": "https://appels-offres.clicvia.com/",
  "logo": "assets/logo.svg",
  "defaut": "fr",

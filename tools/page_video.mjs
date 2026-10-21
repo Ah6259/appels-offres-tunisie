@@ -9,6 +9,10 @@ const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").re
 // texte dans la langue par défaut du site + data-v<langue> pour le changement de langue (assets : bloc « vidéo de présentation »)
 const txt = (o, defaut) => `${Object.entries(o).map(([l, t]) => ` data-v${l}="${esc(t)}"`).join("")}>${esc(o[defaut] ?? o.fr)}`;
 
+// 21/10/2026 (Ahmed) : lancement automatique SANS le son (seul permis par les navigateurs) + « Activer le son » (assets/video-son.js)
+const SON = {"fr": "🔊 Activer le son", "ar": "🔊 شغّل الصوت", "en": "🔊 Turn on the sound"};
+const SON_JS = "// Page vidéo (21/10/2026, Ahmed : « pourquoi la vidéo ne se lance pas toute seule ? ») : les navigateurs interdisent le lancement\n// automatique d'une vidéo AVEC le son ; elle se lance donc toute seule SANS le son, et « Activer le son » la reprend depuis le début\n// avec le son. Écrit par tools/page_video (outil vidéos d'Ahmed) : ne pas modifier ici. Style posé par le script (CSP : pas de style en ligne).\n(function () {\n  \"use strict\";\n  var v = document.querySelector(\".video-lecteur\"), b = document.querySelector(\".btn-video-son\");\n  if (!v || !b) return;\n  if (v.hasAttribute(\"muted\")) v.muted = true;\n  var st = { display: \"block\", margin: \"-4px auto 14px\", padding: \"11px 22px\", border: \"0\", borderRadius: \"999px\", background: \"#1d1d1f\",\n             color: \"#fff\", font: \"inherit\", fontWeight: \"700\", fontSize: \"1.05rem\", cursor: \"pointer\", whiteSpace: \"nowrap\" };\n  for (var k in st) b.style[k] = st[k];\n  function cacher() { b.hidden = !v.muted; b.style.display = v.muted ? \"block\" : \"none\"; }\n  b.addEventListener(\"click\", function () {\n    v.muted = false;\n    try { v.currentTime = 0; } catch (e) { /* vidéo pas encore prête */ }\n    var p = v.play();\n    if (p && p.catch) p.catch(function () { /* refusé : les commandes de la vidéo restent là */ });\n    cacher();\n  });\n  v.addEventListener(\"volumechange\", cacher);\n  var p = v.play();\n  if (p && p.catch) p.catch(function () { /* lancement automatique bloqué : le bouton lance la vidéo avec le son */ });\n  cacher();\n})();\n";
+
 export function pagesVideo(root, cfg = JSON.parse(readFileSync(join(root, "tools/page_video.json"), "utf8"))) {
   const modele = readFileSync(join(root, cfg.modele || "a-propos/index.html"), "utf8");
   const D = cfg.defaut || "fr", fait = [];
@@ -35,6 +39,7 @@ export function pagesVideo(root, cfg = JSON.parse(readFileSync(join(root, "tools
     let h = modele
       .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, "")
       .replace(/<link rel="canonical"[^>]*>\s*/g, "")
+      .replace(/<link rel="alternate" hreflang[^>]*>\s*/g, "")      // la page vidéo n'est pas une traduction de la page modèle (portail, 21/10/2026 : dans l'original)
       .replace(/<meta (property="og:[^"]*"|name="twitter:[^"]*")[^>]*>\s*/g, "")
       .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titre)} | ${esc(nom)}</title>`)
       .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
@@ -51,16 +56,21 @@ export function pagesVideo(root, cfg = JSON.parse(readFileSync(join(root, "tools
 <section class="video-page" id="video">
   <div class="video-tete">${cfg.logo ? `<img src="${r}${cfg.logo}" alt="" width="52" height="52">` : ""}<p class="video-nom"${txt(cfg.nom, D)}</p></div>
   <h1${txt(p.titre, D)}</h1>
-  <video class="video-lecteur" controls playsinline preload="none" width="1080" height="1920" poster="${r}assets/video/${p.couverture}" src="${r}assets/video/${p.video}.mp4"${src}></video>
+${p.texte ? `  <p class="video-texte"${txt(p.texte, D)}</p>
+` : ""}  <video class="video-lecteur" controls playsinline preload="${p.preload || cfg.preload || "metadata"}" width="1080" height="1920" poster="${r}assets/video/${p.couverture}" src="${r}assets/video/${p.video}.mp4"${src} autoplay muted></video>
+  <button class="btn-video-son" type="button"${txt(Object.fromEntries(Object.keys(cfg.partager).map(l => [l, SON[l] || SON.fr])), D)}</button>
   <a class="btn-video-site" href="${r}${p.site}"${txt(p.bouton, D)}</a>
   <button class="btn-video-partager" type="button" data-partager-video${txt(cfg.partager, D)}</button>
 </section>
 </main>`;
     h = h.slice(0, debut) + corps + h.slice(fin);
+    h = h.replace("</body>", `<script src="${r}assets/video-son.js" defer></script>\n</body>`);
     mkdirSync(join(root, p.chemin), { recursive: true });
     writeFileSync(join(root, p.chemin, "index.html"), h);
     fait.push(p.chemin);
   }
+  mkdirSync(join(root, "assets"), { recursive: true });
+  writeFileSync(join(root, "assets/video-son.js"), SON_JS);
   // sitemap : ajoute les pages vidéo si elles n'y sont pas
   const sm = join(root, "sitemap.xml");
   if (existsSync(sm)) {
