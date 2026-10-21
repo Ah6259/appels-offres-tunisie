@@ -89,7 +89,7 @@ def copie_site():
 
 
 def ecrire_json(chemin, contenu):
-    with open(chemin, "w", encoding="utf-8") as f:
+    with open(chemin, "w", encoding="utf-8", newline="\n") as f:
         f.write(contenu if isinstance(contenu, str) else json.dumps(contenu, ensure_ascii=False))
 
 
@@ -282,6 +282,16 @@ try:
           d["appels_offres"]["Tender-104052"]["date_limite"] == "2026-11-10"
           and d["appels_offres"]["Tender-104052"]["cautionnement_total_dt"] == 17000
           and d["appels_offres"]["Tender-104052"]["gouvernorat"] == "Nabeul")
+    # 21/10/2026 (règle commune § 40) : un appel d'offres rangé dans « Autres » est NOTÉ dans le carnet donnees/sans-metier.json
+    _inclassable = dict(NORMALES[0], numero="Tender-103999", objet="Carénage et réparation à sec de la pilotine du port",
+                        descriptif="", type_commande="Services/ Autres services", specialite="", categorie="")
+    ecrire_json(os.path.join(tmp, "appels-offres.json"), donnees(NORMALES + [_inclassable]))
+    code, d, log = lancer_robot(tmp, "normal")
+    _carnet = json.load(open(os.path.join(tmp, "sans-metier.json"), encoding="utf-8"))["elements"]
+    _autres = sorted(k for k, v in d["appels_offres"].items() if v["metier"] == "Autres")
+    check("carnet sans-metier.json : l'appel d'offres inclassable est rangé dans « Autres » ET noté (objet, type de commande) ; rien d'autre",
+          d["appels_offres"]["Tender-103999"]["metier"] == "Autres" and sorted(e["cle"] for e in _carnet) == _autres
+          and any(e["cle"] == "Tender-103999" and "pilotine" in e["texte"] and e["type_commande"] for e in _carnet))
 
     ecrire_json(os.path.join(tmp, "appels-offres.json"), donnees(NORMALES))
     code, d, log = lancer_robot(tmp, "injoignable")
@@ -690,7 +700,7 @@ def avec_reglages(site, **valeurs):
     t = open(p, encoding="utf-8").read()
     for k, v in valeurs.items():
         t = re.sub(rf'^{k} = ".*"$', f'{k} = "{v}"', t, flags=re.M)
-    open(p, "w", encoding="utf-8").write(t)
+    open(p, "w", encoding="utf-8", newline="\n").write(t)
 
 
 with copie_site() as s:

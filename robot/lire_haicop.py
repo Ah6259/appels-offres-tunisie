@@ -483,6 +483,16 @@ def main():
         cache["statut_source"] = {"etat": "panne", "depuis": depuis, "raison": " ; ".join(raisons)}
         print(f"   ! échec : source HAICOP en panne ({' ; '.join(raisons)}) — anciennes données gardées")
     sauver_cache(cache)
+    # 21/10/2026 (règle commune § 40, Ahmed) : un appel d'offres rangé dans « Autres » n'y va plus en silence -> carnet
+    # donnees/sans-metier.json, lu par la routine « appels-offres-nouveau-metier » (mots-clés ajoutés à un métier, ou nouveau métier)
+    sys.path.insert(0, ICI)
+    import carnet_categories as CC   # outil commun (copie identique)
+    n_sans = CC.noter(os.path.join(os.path.dirname(FICHIER_JSON), "sans-metier.json"),
+                      [{"cle": tid, "texte": ao.get("objet") or "", "type_commande": ao.get("type_commande") or "",
+                        "acheteur": (ao.get("acheteur") or "")[:120]}
+                       for tid, ao in connus.items() if ao.get("metier") == "Autres" and ao.get("objet")],
+                      dt.date.today().isoformat())
+    print(f"   {n_sans} appel(s) d'offres rangé(s) dans « Autres » dans le carnet donnees/sans-metier.json")
     n = ecrire_du_jour(cache, a.jours)
     print(f"3) Terminé : {lus} fiches lues, {echecs} échecs, {formats} formats inconnus, {len(connus)} en mémoire, "
           f"{n} dans du-jour.md")
