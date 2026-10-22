@@ -10099,21 +10099,507 @@
    "lu_le": "2026-10-21 11:01",
    "metier": "Transport / véhicules",
    "gouvernorat": "Le Kef"
+  },
+  "Tender-104379": {
+   "numero": "Tender-104379",
+   "objet": "FOURNITURE DE MATERIEL POUR LES SALLES DE SPORT AU PORT DE BIZERTE ET AU PORT DE ZARZIS (Pour la troisième fois)",
+   "descriptif": "FOURNITURE DE MATERIEL POUR LES SALLES DE SPORT AU PORT DE BIZERTE ET AU PORT DE ZARZIS (Pour la troisième fois)",
+   "acheteur": "Office de la Marine Marchande et des Ports",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-10",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    700,
+    300
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104379",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Autres",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104378": {
+   "numero": "Tender-104378",
+   "objet": "تهيئة مبنى محافظة شرطة الحدود بميناء حلق الوادي",
+   "descriptif": "TRAVAUX D'AMENAGEMENT DU BATIMENT DE LA POLICE FRONTIERE AU PORT DE LA GOULETTE",
+   "acheteur": "Office de la Marine Marchande et des Ports",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-06",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-06",
+   "cautionnement_provisoire_dt": [
+    2500
+   ],
+   "cautionnement_total_dt": 2500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104378",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104377": {
+   "numero": "Tender-104377",
+   "objet": "أشغال تهيئة مأوى سيارات بالضفة الشمالية لميناء سوسة",
+   "descriptif": "TRAVAUX D’AMENAGEMENT ET DE RENFORCEMENT DE L’ECLAIRAGE DU PARKING DE LA RIVE NORD DU PORT DE SOUSSE",
+   "acheteur": "Office de la Marine Marchande et des Ports",
+   "type_commande": "Travaux/ Charpente métallique",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SOUSSE",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-04",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-04",
+   "cautionnement_provisoire_dt": [
+    4000
+   ],
+   "cautionnement_total_dt": 4000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104377",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104376": {
+   "numero": "Tender-104376",
+   "objet": "services de balayage des routes et des trottoirs dans la zone municipale d'El Ain.",
+   "descriptif": "",
+   "acheteur": "Municipalité El Ain",
+   "type_commande": "Services/ Nettoyage",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SFAX",
+   "regions_lots": [
+    "SFAX"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-30",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-30",
+   "cautionnement_provisoire_dt": [
+    4000
+   ],
+   "cautionnement_total_dt": 4000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104376",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Sfax"
+  },
+  "Tender-104375": {
+   "numero": "Tender-104375",
+   "objet": "اقتناء وتركيز مولّدات كهرباء لتجهيزات الملاحة الجويّة",
+   "descriptif": "la fourniture et la mise en service des groupes electrogenes et des mats d’éclairage mobiles composé de trois (03) lots comme suit : N° LOT Désignation Montant De la Caution provisoire Lot n°1 LA FOURNITURE, LA POSE, L’INSTALLATION ET LA MISE EN SERVICE DES GROUPES ELECTROGENES AUTOMATIQUES DE PUISSANCE 100 KVA DES AIDES RADIOS A LA NAVIGATION AERIENNE A AKOUDA, 60kVA BOREJ AMRI. 7.000 DT Lot n°2 LA FOURNITURE ET LA MISE EN SERVICE DE SIX (06) MÂT D’ELCAIRAGE MOBILE SUR DES GROUPES ELECTROGENES 05 KVA ET UN (01) GROUPE MOBILE 250KVA 5.000 DT Lot n°3 LA FOURNITURE, LA POSE, L’INSTALLATION ET LA MISE EN SERVICE DES GROUPES ELECTROGENES AUTOMATIQUES 60 kVA DES AIDES RADIOS A LA NAVIGATION AERIENNE A TEJRA ET 630 kVA à l'AEROPORT de DJERBA 10.000 DT",
+   "acheteur": "Office de l'Aviation Civile et des Aéroports",
+   "type_commande": "Travaux/ Electricité",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "ARIANA",
+    "MEDNINE"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-12-03",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    7000,
+    4997,
+    10
+   ],
+   "cautionnement_total_dt": 12007,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104375",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Électricité",
+   "gouvernorat": "Ariana"
+  },
+  "Tender-104374": {
+   "numero": "Tender-104374",
+   "objet": "Acquisition des joints en caoutchouc (Jaquette) pour voie en béton",
+   "descriptif": "",
+   "acheteur": "La Société des Transports de Tunis",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-12-01",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-01",
+   "cautionnement_provisoire_dt": [
+    1
+   ],
+   "cautionnement_total_dt": 1,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104374",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104373": {
+   "numero": "Tender-104373",
+   "objet": "RESTE PROGRAMME EXTENSION ECOLE PRIMAIRE ANNEE 2024-2025/PROGRAMME EXTENSIION ECOLE PRIMAIRE ANNEE 2026-TRANCHE 1",
+   "descriptif": "Travaux D’extension aux Ecoles Primaires Gouvernorat De Sousse ‎ ‎ AO N° 05-2026 ‎‏-‏‎2eme fois‎‏-‏",
+   "acheteur": "Commissariat régional de l'éducation de Sousse",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-19",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-19",
+   "cautionnement_provisoire_dt": [
+    1000,
+    2300,
+    2000
+   ],
+   "cautionnement_total_dt": 5300,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104373",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104372": {
+   "numero": "Tender-104372",
+   "objet": "achat des réactifs avec mise à la disposition d'un automate",
+   "descriptif": "acquisition de réactifs avec mise à la disposition d'un automate d'hémoglobine glyquée par HPLC",
+   "acheteur": "Hôpital Régional de Zarzis",
+   "type_commande": "Biens/ Matériels électriques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MEDNINE",
+   "regions_lots": [
+    "MEDNINE"
+   ],
+   "date_publication": "2026-10-22",
+   "date_limite": "2026-11-23",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-23",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104372",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Électricité",
+   "gouvernorat": "National / non précisé"
+  },
+  "Tender-104370": {
+   "numero": "Tender-104370",
+   "objet": "Acquisition pièces en fonte",
+   "descriptif": "",
+   "acheteur": "Office National de l'Assainissement",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-24",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-24",
+   "cautionnement_provisoire_dt": [
+    24000
+   ],
+   "cautionnement_total_dt": 24000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104370",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104369": {
+   "numero": "Tender-104369",
+   "objet": "TRAVAUX DE REHABILITATION DU RESEAU PRIMAIRE DANS LA VILLE DE SOUKRA",
+   "descriptif": "",
+   "acheteur": "Office National de l'Assainissement",
+   "type_commande": "Travaux/ Travaux de Rehabilitation",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ARIANA",
+   "regions_lots": [
+    "ARIANA"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-12-08",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    300000
+   ],
+   "cautionnement_total_dt": 300000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104369",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Ariana"
+  },
+  "Tender-104367": {
+   "numero": "Tender-104367",
+   "objet": "la commune de Mahdia confie à des avocats pour la représenter devant les tribinaux et les organismes judiciaires,",
+   "descriptif": "",
+   "acheteur": "Municipalité de Mahdia",
+   "type_commande": "Services/ Nettoyage",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MAHDIA",
+   "regions_lots": [
+    "MAHDIA"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-19",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-19",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104367",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:00",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Mahdia"
+  },
+  "Tender-104366": {
+   "numero": "Tender-104366",
+   "objet": "Souscription des contrats d'assurances pour l'exercice 2027",
+   "descriptif": "",
+   "acheteur": "Société Tunisienne des Industries de Raffinage",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BIZERTE",
+   "regions_lots": [
+    "BIZERTE"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-23",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-23",
+   "cautionnement_provisoire_dt": [
+    160000
+   ],
+   "cautionnement_total_dt": 160000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104366",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:01",
+   "metier": "Autres",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104365": {
+   "numero": "Tender-104365",
+   "objet": "صفقة إطارية قصد تامين أسطول وسائل النقل و المعـــدات و البناءات لمدة 3 سنوات 2027-2028-2029",
+   "descriptif": "صفقة إطارية قصد تامين أسطول وسائل النقل و المعـــدات و البناءات لمدة 3 سنوات 2027-2028-2029",
+   "acheteur": "Municipalité El Mourouj",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-23",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-23",
+   "cautionnement_provisoire_dt": [
+    8400,
+    840
+   ],
+   "cautionnement_total_dt": 9240,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104365",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:01",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Ben Arous"
+  },
+  "Tender-104364": {
+   "numero": "Tender-104364",
+   "objet": "Etalonnage de matériels d'essais (APL, Ecodyn, Capteurs de forces)",
+   "descriptif": "Appel d’offre relatif à l’étalonnage d’accessoires et matériels d’essai : Lot N° 01 : Matériels de la marque VECTRA Article n° 01 Etalonnage des deux remorques de l’analyseur du profil en long (APL) Article n° 02 Etalonnage de deux têtes de rétro-réflectomètre dynamique de mesure de visibilité de nuit du marquage routier au temps sec ECODYN 3 Lot N° 02 : Capteurs forces Article n° 01 Etalonnage des Capteurs de force à jauges en compression et traction ; Classe 1 de Capacité 3000, 1500, 1000, 500, 300, 100, 50, 10, 5 et 2 kN.",
+   "acheteur": "Centre D’Essais et des Techniques de Construction",
+   "type_commande": "Services/ Services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-20",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-20",
+   "cautionnement_provisoire_dt": [
+    2500,
+    500
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104364",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:01",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104363": {
+   "numero": "Tender-104363",
+   "objet": "acquisition voitures de services",
+   "descriptif": "اقتناء سيارات إدارية",
+   "acheteur": "Agence Nationale de la Métrologie",
+   "type_commande": "Biens/ Mobilier",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    1100
+   ],
+   "cautionnement_total_dt": 1100,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104363",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:01",
+   "metier": "Fournitures de bureau",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104362": {
+   "numero": "Tender-104362",
+   "objet": "انجاز مشروع اقتناء وتركيز مولد كهربائي بمقر ثكنة الأمن الوطني حي المزوغي بن عروس",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Ben Arous",
+   "type_commande": "Services/ Services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEN AROUS",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-21",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    3000
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104362",
+   "source": "HAICOP",
+   "lu_le": "2026-10-22 11:01",
+   "metier": "Électricité",
+   "gouvernorat": "Ben Arous"
   }
  },
- "mis_a_jour": "2026-10-21 11:01",
+ "mis_a_jour": "2026-10-22 11:01",
  "dernier_passage": {
-  "date": "2026-10-21 11:01",
+  "date": "2026-10-22 11:01",
   "liste_ok": true,
-  "lus": 26,
+  "lus": 16,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-21 11:01",
+ "derniere_lecture_reussie": "2026-10-22 11:01",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-21 11:01",
+  "depuis": "2026-10-22 11:01",
   "raison": ""
  }
 }

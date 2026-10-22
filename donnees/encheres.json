@@ -1331,8 +1331,8 @@
  "lignes_lues": 355,
  "derniere_lecture_reussie": "2026-10-21 11:01",
  "statut_source": {
-  "etat": "ok",
-  "depuis": "2026-10-21 11:01",
-  "raison": ""
+  "etat": "panne",
+  "depuis": "2026-10-22 11:01",
+  "raison": "page injoignable (<urlopen error [Errno 111] Connection refused>)"
  }
 }
