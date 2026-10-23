@@ -79,9 +79,11 @@ Les abonnés ne sont **jamais** dans ce dépôt public : ils sont dans le dépô
 1. Créer le robot Telegram avec @BotFather (ou réutiliser celui du canal) et mettre son jeton dans les Secrets du dépôt
    **privé** : `TELEGRAM_BOT_TOKEN`.
 2. Mettre son nom (sans @) dans `robot/reglages.py` : `TELEGRAM_ROBOT_ALERTES = "AlertesAOTunisieBot"`.
-3. Chaque inscription arrive par e-mail (Formspree, ligne `pour_activer`) → bouton `activer-abonne` (action `essai`) →
-   le résumé donne le CODE et un lien WhatsApp pour l'envoyer au client → le client envoie `/start CODE` au robot.
-4. Preuve de paiement reçue sur WhatsApp → bouton `activer-abonne`, action `paye`, code + mois (1 ou 12) → facture.
+3. Chaque inscription arrive par e-mail (Formspree, ligne `pour_activer`) : son code reste « en attente » (rien n'est envoyé)
+   jusqu'au paiement. **Plus d'essai gratuit depuis le 20/10/2026** (décision d'Ahmed) : l'action `essai` n'existe plus.
+4. Preuve de paiement reçue sur WhatsApp → bouton `activer-abonne`, action `paye`, code + mois (1 ou 12) → facture ; le résumé
+   donne le CODE et un lien WhatsApp pour l'envoyer au client → le client envoie `/start CODE` au robot.
+   Nouvel abonné qui paie directement : action `paye`, code vide, avec nom, téléphone, métiers et gouvernorats.
 
 ### 2. WhatsApp (plus tard, rien à coder pour l'instant)
 WhatsApp ne permet pas à un robot gratuit de publier dans un canal. Il faudra : créer un **canal WhatsApp**
