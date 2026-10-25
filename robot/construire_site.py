@@ -1150,7 +1150,8 @@ def construire(donnees, sortie, jour):
     <li>يُرتَّب كل طلب عروض حسب <b>الاختصاص</b> و<b>الولاية</b>.</li>
     <li>تفتح <b>البطاقة الرسمية</b> للتفاصيل، ويُسحب كراس الشروط من منظومة <b>{ISO("TUNEPS")}</b>.</li>
   </ol>
-  <p class="avert">{L("Ce site n'est pas officiel. Vérifiez toujours la fiche officielle avant de répondre : seule elle fait foi.", "هذا الموقع ليس رسميًا. تثبّت دائمًا من البطاقة الرسمية قبل المشاركة: هي وحدها المرجع.")} <a href="a-propos/">{L("Méthode et sources", "المنهجية والمصادر")}</a></p>
+  <p class="avert">{L("Ce site n'est pas officiel. Vérifiez toujours la fiche officielle avant de répondre : seule elle fait foi.", "هذا الموقع ليس رسميًا. تثبّت دائمًا من البطاقة الرسمية قبل المشاركة: هي وحدها المرجع.")} </p>
+  <p class="lien-comment"><a href="a-propos/">{L("Comment fonctionne le site ?", "كيف يعمل الموقع؟")}</a></p>
 </section>"""
     contenu += "\n" + AVIS
     titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, consultation gratuite | Alertes appels d'offres"
@@ -1197,14 +1198,66 @@ def construire(donnees, sortie, jour):
             hero = hero_carte(hero, cg, "../../", slug)
         pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
-    # ---- à propos et sources
-    hero = f"""{fil("../", "À propos", "من نحن")}
-    <h1>{L("À propos et sources", "من نحن والمصادر")}</h1>
-    <p class="intro">{L("D'où viennent les annonces, comment elles sont classées, et leurs limites.", "من أين تأتي الإعلانات، كيف تُرتَّب، وحدودها.")}</p>"""
+    # ---- « Comment fonctionne le site ? » (règle commune § 44, Ahmed 25/10/2026) : à mettre à jour à CHAQUE modification visible,
+    # dans le même envoi ; test FONCTIONS dans tools/test_site.mjs (une fonction du site absente de cette page = test rouge)
+    NB = " "
+    def li(fr, ar):
+        return f"<li>{L(fr, ar)}</li>"
+    fonctions = "".join(li(fr, ar) for fr, ar in [
+        ("<b>Résumé du jour</b> en haut de l'accueil : appels d'offres ouverts, nouveaux et qui se terminent bientôt.",
+         "<b>ملخص اليوم</b> في أعلى الصفحة الرئيسية: طلبات العروض المفتوحة، الجديدة والتي تنتهي قريبًا."),
+        ("<b>Carte de la Tunisie</b> : une bulle par gouvernorat avec le nombre d'appels d'offres ; touchez une bulle pour voir les siens.",
+         "<b>خريطة تونس</b>: دائرة لكل ولاية مع عدد طلبات العروض؛ المس دائرة لترى طلباتها."),
+        ("<b>Clôturent bientôt</b> : les dates limites les plus proches ; étiquettes « J-7 » … « J-1 » et « Dernier jour » sur les cartes.",
+         "<b>تنتهي قريبًا</b>: أقرب الآجال؛ علامات من «" + ISO("J-7") + "» إلى «" + ISO("J-1") + "» و«آخر يوم» على البطاقات."),
+        ("<b>Rechercher</b> par mots-clés, en français ou en arabe : la recherche comprend aussi les écritures proches (Jerba = Djerba).",
+         "<b>البحث</b> بالكلمات، بالعربية أو بالفرنسية: البحث يفهم أيضًا الكتابات القريبة."),
+        ("<b>Filtres</b> par métier et par gouvernorat, et <b>tri</b> par date limite ou par les plus récents.",
+         "<b>تصفية</b> حسب الاختصاص والولاية، و<b>ترتيب</b> حسب آخر أجل أو الأحدث."),
+        ("Sur chaque carte : objet, acheteur, date limite, <b>caution provisoire</b> et bouton « Voir la fiche officielle ».",
+         "في كل بطاقة: الموضوع، المشتري العمومي، آخر أجل، <b>الضمان الوقتي</b> وزر «البطاقة الرسمية»."),
+        ("<b>Résumé traduit</b> : un résumé court de l'objet dans l'autre langue (français ou arabe), seulement si la plupart des mots sont reconnus.",
+         "<b>ملخص مترجم</b>: ملخص قصير للموضوع باللغة الأخرى، فقط إذا عُرفت أغلب الكلمات."),
+        ("Les premières annonces d'abord, puis le bouton <b>« Afficher plus »</b>.", "الإعلانات الأولى أولًا، ثم زر <b>«عرض المزيد»</b>."),
+        ("<b>Une page par métier</b> (10" + NB + "métiers : BTP, informatique, médical…).",
+         "<b>صفحة لكل اختصاص</b> (" + ISO(10) + " اختصاصات: بناء، إعلامية، طبي…)."),
+        ("<b>Une page par gouvernorat</b> (les 24), plus « National » et « Plusieurs gouvernorats ».",
+         "<b>صفحة لكل ولاية</b> (الـ" + ISO(24) + ")، مع «وطني» و«عدة ولايات»."),
+        ("<b>Ventes aux enchères</b> de la Douane tunisienne (marchandises, véhicules…), triées par échéance.",
+         "<b>البيوعات بالمزاد</b> للديوانة التونسية (بضائع، عربات…)، مرتبة حسب آخر أجل."),
+        ("<b>Appels d'offres d'entreprises privées</b> : page « Publier un appel d'offres » (gratuit) ; le formulaire ouvrira bientôt.",
+         "<b>طلبات عروض المؤسسات الخاصة</b>: صفحة «نشر طلب عروض» (مجانًا)؛ الاستمارة ستُفتح قريبًا.") if not adr["formulaire"] else
+        ("<b>Appels d'offres d'entreprises privées</b> : page « Publier un appel d'offres » (gratuit), avec la mention « non vérifié par HAICOP ».",
+         "<b>طلبات عروض المؤسسات الخاصة</b>: صفحة «نشر طلب عروض» (مجانًا)، مع عبارة «لم تتحقق منه الهيئة»."),
+        ("<b>Rapports du mois</b> : les appels d'offres en chiffres (par métier, par gouvernorat, acheteurs), avec un bouton « Partager ce rapport ».",
+         "<b>تقارير الشهر</b>: طلبات العروض بالأرقام (حسب الاختصاص والولاية والمشترين)، مع زر «شارك هذا التقرير»."),
+        ("<b>Alertes Pro</b> sur Telegram (payant) : voir plus bas.", "<b>تنبيهات Pro</b> على تيليغرام (بمقابل): انظر أسفله."),
+        ("Bouton <b>Partager</b> en haut de chaque page (menu de partage du téléphone).", "زر <b>شارك</b> في أعلى كل صفحة (قائمة المشاركة في الهاتف)."),
+        ("Bouton <b>ع / Fr</b> : tout le site en arabe ou en français.", "زر <b>ع / Fr</b>: كل الموقع بالعربية أو بالفرنسية."),
+        ("<b>Vidéo de présentation</b> du site (lien en bas de l'accueil).", "<b>فيديو تقديمي</b> للموقع (رابط أسفل الصفحة الرئيسية)."),
+        ("<b>Votre avis</b> : un petit formulaire pour nous écrire.", "<b>رأيك</b>: استمارة صغيرة لمراسلتنا."),
+        ("<b>Installer le site</b> sur l'écran d'accueil du téléphone ; les pages déjà vues s'ouvrent même sans connexion.",
+         "<b>تثبيت الموقع</b> على الشاشة الرئيسية للهاتف؛ الصفحات التي زرتها تفتح حتى دون اتصال."),
+    ])
+    hero = f"""{fil("../", "Comment fonctionne le site ?", "كيف يعمل الموقع؟")}
+    <h1>{L("Comment fonctionne le site ?", "كيف يعمل الموقع؟")}</h1>
+    <p class="intro">{L("Tout ce que fait Alertes appels d'offres Tunisie, d'où viennent les annonces, et leurs limites.", "كل ما يقدمه موقع تنبيهات طلبات العروض، من أين تأتي الإعلانات، وحدودها.")}</p>"""
     contenu = f"""<section class="carte">
-  <h2>{L("Ce que fait ce site", "ماذا يقدّم هذا الموقع")}</h2>
-  <p data-l="fr">Un service <b>gratuit, sans inscription</b>, qui rassemble chaque jour les nouveaux appels d'offres publics tunisiens, les range par <b>métier</b> et par <b>gouvernorat</b>, et met en avant la <b>date limite</b> et la <b>caution provisoire</b>. Aussi : recherche par mots-clés (français et arabe), résumé traduit des objets, rappels avant la date limite, ventes aux enchères de la Douane, publication gratuite pour les entreprises privées, alertes Telegram (puis WhatsApp). Seules les alertes personnalisées par métier et gouvernorat (<a href="../abonnement/">Alertes Pro</a>) sont payantes.</p>
-  <p data-l="ar">خدمة <b>مجانية ودون تسجيل</b> تجمع كل يوم طلبات العروض العمومية الجديدة في تونس، وترتّبها حسب <b>الاختصاص</b> و<b>الولاية</b>، وتُبرز <b>آخر أجل</b> و<b>الضمان الوقتي</b>. وأيضًا: بحث بالكلمات (بالعربية والفرنسية)، ملخص مترجم للمواضيع، تذكير قبل آخر أجل، بيوعات الديوانة بالمزاد، نشر مجاني للمؤسسات الخاصة، وتنبيهات تيليغرام (ثم واتساب). التنبيهات الشخصية حسب الاختصاص والولاية (<a href="../abonnement/">تنبيهات Pro</a>) وحدها بمقابل.</p>
+  <h2>{L("À quoi sert le site ?", "ما فائدة الموقع؟")}</h2>
+  <p>{L("Un service <b>gratuit, sans inscription</b>, qui rassemble chaque jour les nouveaux appels d'offres publics tunisiens, les range par <b>métier</b> et par <b>gouvernorat</b>, et met en avant la <b>date limite</b> et la <b>caution provisoire</b>.",
+        "خدمة <b>مجانية ودون تسجيل</b> تجمع كل يوم طلبات العروض العمومية الجديدة في تونس، وترتّبها حسب <b>الاختصاص</b> و<b>الولاية</b>، وتُبرز <b>آخر أجل</b> و<b>الضمان الوقتي</b>.")}</p>
+</section>
+<section class="carte">
+  <h2>{L("Comment s'en servir ?", "كيف تستعمله؟")}</h2>
+  <ol class="etapes">
+  {li("Choisissez votre <b>métier</b> et votre <b>gouvernorat</b>, ou tapez un mot dans « Rechercher ».", "اختر <b>اختصاصك</b> و<b>ولايتك</b>، أو اكتب كلمة في «بحث».")}
+  {li("Regardez la <b>date limite</b> et la caution de chaque appel d'offres.", "انظر إلى <b>آخر أجل</b> والضمان في كل طلب عروض.")}
+  {li("Ouvrez la <b>fiche officielle</b> pour les détails ; le cahier des charges se retire sur TUNEPS.", "افتح <b>البطاقة الرسمية</b> للتفاصيل؛ ويُسحب كراس الشروط من منظومة " + ISO("TUNEPS") + ".")}
+  </ol>
+</section>
+<section class="carte">
+  <h2>{L("Ce que vous trouvez sur le site", "ما تجده في الموقع")}</h2>
+  <ul>{fonctions}</ul>
 </section>
 <section class="carte">
   <h2>{L("Source officielle", "المصدر الرسمي")}</h2>
@@ -1244,12 +1297,39 @@ def construire(donnees, sortie, jour):
   <p class="avert">{L("<b>Avertissement :</b> ce site n'est pas officiel et n'est pas lié à la HAICOP ni à TUNEPS. Les résumés sont indicatifs : <b>vérifiez toujours la fiche officielle</b> (dates, montants, conditions) avant de répondre à un appel d'offres. Seule la fiche officielle fait foi.",
                         "<b>تنبيه:</b> هذا الموقع ليس رسميًا ولا علاقة له بالهيئة العليا للطلب العمومي ولا بمنظومة " + ISO("TUNEPS") + ". الملخصات للإرشاد فقط: <b>تثبّت دائمًا من البطاقة الرسمية</b> (الآجال، المبالغ، الشروط) قبل المشاركة. البطاقة الرسمية هي المرجع الوحيد.")}</p>
 </section>
+<section class="carte">
+  <h2>{L("Gratuit et payant", "مجاني وبمقابل")}</h2>
+  <p>{L("<b>Gratuit</b> : la consultation de tous les appels d'offres, des ventes aux enchères, des pages et des rapports du mois. Sans inscription.",
+        "<b>مجانًا</b>: تصفح كل طلبات العروض والبيوعات بالمزاد والصفحات والتقارير الشهرية. دون تسجيل.")}</p>
+  <p>{L(f"<b>Payant : Alertes Pro sur Telegram</b> ({ABO['prix_mois']}" + NB + f"DT par mois ou {ABO['prix_an']}" + NB + "DT par an). Chaque matin, les nouveaux appels d'offres de vos métiers et de vos gouvernorats (y compris « National » et « Plusieurs gouvernorats »).",
+        f"<b>بمقابل: تنبيهات Pro على تيليغرام</b> ({ISO(ABO['prix_mois'])} دينار في الشهر أو {ISO(ABO['prix_an'])} دينار في السنة). كل صباح، طلبات العروض الجديدة في اختصاصاتك وولاياتك (ومنها «الوطنية» و«لعدة ولايات»).")}</p>
+  <p>{L(f"Paiement par D17 ou IZI, avec pour motif votre <b>code personnel</b> donné sur la page Alertes Pro. Pas de renouvellement automatique : rappel {ABO['rappel_jours']}" + NB + "jours avant la fin, puis l'alerte s'arrête simplement.",
+        f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ مع ذكر <b>رمزك الشخصي</b> المعطى في صفحة تنبيهات Pro. لا تجديد آلي: تذكير قبل النهاية بـ{ISO(ABO['rappel_jours'])} أيام، ثم يتوقف التنبيه ببساطة.")}</p>
+  <a class="btn" href="../abonnement/">{L("Voir les Alertes Pro", "اطّلع على تنبيهات Pro")}</a>
+</section>
+<section class="carte">
+  <h2>{L("Vos données", "بياناتك")}</h2>
+  <ul>
+  {li("Pas de compte à créer pour consulter le site. Votre téléphone garde seulement la langue choisie.", "لا حساب لإنشائه لتصفح الموقع. هاتفك يحفظ فقط اللغة المختارة.")}
+  {li("Statistiques de visite anonymes, sans cookies (GoatCounter).", "إحصائيات زيارات مجهولة، دون ملفات تعريف الارتباط (⁨GoatCounter⁩).")}
+  {li("Votre avis et l'inscription aux Alertes Pro ne sont envoyés que si vous touchez « Envoyer » (service Formspree). Vos coordonnées servent seulement à l'abonnement : elles ne sont jamais publiées ni vendues.", "رأيك والتسجيل في تنبيهات Pro لا يُرسلان إلا إذا لمست «أرسل» (خدمة ⁨Formspree⁩). بياناتك تُستعمل للاشتراك فقط: لا تُنشر ولا تُباع أبدًا.")}
+  </ul>
+</section>
+<section class="carte">
+  <h2>{L("Mises à jour automatiques", "تحيين آلي")}</h2>
+  <p>{L("Chaque jour, un robot relit les sources et refait toutes les pages, sans intervention à la main. La date de la dernière lecture est écrite en bas de chaque page.",
+        "كل يوم، يعيد برنامج آلي قراءة المصادر ويعيد بناء كل الصفحات، دون أي تدخل يدوي. تاريخ آخر قراءة مكتوب أسفل كل صفحة.")}</p>
+</section>
+<section class="carte">
+  <h2>{L("Un site indépendant", "موقع مستقل")}</h2>
+  <p>{L("Ce site est indépendant : il n'est lié ni à la HAICOP ni à TUNEPS ni à la Douane.", "هذا الموقع مستقل: لا علاقة له بالهيئة العليا للطلب العمومي ولا بمنظومة " + ISO("TUNEPS") + " ولا بالديوانة.")}</p>
+</section>
 <section class="carte" id="credits-photos">
   <h2>{L("Crédits des photos", "حقوق الصور")}</h2>
   <ul class="sources">{"".join(f'<li data-photo="{E(MOSAIQUE)} {E(MOSAIQUE_MOBILE)}">{L(E(ph["sujet_fr"]) + " (mosaïque, " + ph["tuile"] + ", recadrée)", ph["sujet_ar"])} — {L("photo", "صورة")} : <b>{E(ph["auteur"])}</b>, {L("licence", "رخصة")} <a href="{E(ph["licence_url"])}" rel="noopener license">{E(ph["licence"])}</a>, <a href="{E(ph["source_url"])}" rel="noopener">Wikimedia Commons</a>.</li>' for ph in PHOTOS)}</ul>
 </section>"""
-    titre = "À propos et sources — appels d'offres HAICOP | Alertes appels d'offres Tunisie"
-    desc = "Service gratuit. D'où viennent les appels d'offres affichés (portail officiel de la HAICOP), comment ils sont classés, et pourquoi vérifier toujours la fiche officielle."
+    titre = "Comment fonctionne le site ? | Alertes appels d'offres Tunisie"
+    desc = "Comment fonctionne Alertes appels d'offres Tunisie : d'où viennent les annonces (portail officiel de la HAICOP, Douane), comment s'en servir, chaque fonction, gratuit et payant, vos données."
     pages.append(("a-propos/", page("a-propos/", "../", titre, desc, hero, contenu, v, etat)))
 
     # ---- publier un appel d'offres (entreprises privées, gratuit)

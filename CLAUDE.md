@@ -162,3 +162,11 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **20/10/2026** : le robot `maj-appels-offres` a été bloqué à tort par le test de recherche au son (il avait tiré « etudes » et fabriqué
   « ettudes », lu exprès comme l'article « Ett… ») ; test corrigé (faute jamais au début du mot), robot relancé, vert. Les robots rouges
   sont désormais réparés seuls par la tâche Claude « Réparer les robots rouges » (règle commune § 33, projets-ahmed).
+
+- **RÈGLE D'AHMED (25/10/2026, règle commune § 44) : la page « Comment fonctionne le site ? » (`a-propos/`, bloc « Comment fonctionne
+  le site ? » de robot/construire_site.py, FR + AR ; elle sert aussi de modèle à la page `video/`) est mise à jour à CHAQUE modification
+  visible du site, dans le même envoi** : à quoi sert le site, mode d'emploi, une ligne par fonction visible, sources, méthode,
+  gratuit / payant (Alertes Pro), vos données, mises à jour, site indépendant, crédits des photos. Lien « Comment fonctionne le site ? »
+  dans le pied de page (page.js) et sur l'accueil (carte « Comment ça marche ? »). Test `FONCTIONS` dans tools/test_site.mjs
+  (repère dans le site -> phrase attendue dans la page) : une fonction absente = test rouge. Nouvelle fonction = une ligne dans
+  `FONCTIONS` + son explication dans la liste `fonctions` de construire_site.py.

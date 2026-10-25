@@ -668,5 +668,40 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   if (mauvaises.length) console.log("   og:locale refusé : " + mauvaises.slice(0, 5).join(", "));
 }
 
+// 25/10/2026 (RÈGLE d'Ahmed : « la page Comment fonctionne le site doit être mise à jour chaque fois qu'on modifie le site », règle commune § 44) :
+// chaque fonction visible du site (repère dans les pages ou le code) doit être expliquée dans a-propos/ ; nouvelle fonction = une ligne ici + la page
+{ const apx = lire("a-propos/index.html"), acc2 = lire("index.html"), js = lire("assets/app.js") + lire("assets/page.js");
+  const FONCTIONS = [
+    ["résumé du jour (ouverts, nouveaux, bientôt)", /id="r-nouveaux"/.test(acc2), /Résumé du jour/],
+    ["carte de la Tunisie", /class="carte-tn"/.test(acc2), /Carte de la Tunisie/],
+    ["clôturent bientôt + étiquettes J-7 / Dernier jour", /id="bientot"/.test(acc2) && /Dernier jour/.test(js), /Clôturent bientôt<\/b>[\s\S]*Dernier jour/],
+    ["recherche FR + AR (aussi « au son »)", /id="f-q"/.test(acc2) && existsSync(join(root, "assets/son.js")), /Rechercher<\/b>[^<]*écritures proches/],
+    ["filtres métier / gouvernorat et tri", /id="f-metier"/.test(acc2) && /id="f-gouv"/.test(acc2) && /value="recent"/.test(acc2), /Filtres<\/b> par métier et par gouvernorat[\s\S]*plus récents/],
+    ["caution provisoire + fiche officielle", true, /caution provisoire<\/b>[^<]*Voir la fiche officielle/],
+    ["résumé traduit (glossaire)", existsSync(join(root, "robot/glossaire.py")), /Résumé traduit/],
+    ["bouton « Afficher plus »", /id="plus"/.test(acc2), /Afficher plus/],
+    ["une page par métier", existsSync(join(root, "metier")), /Une page par métier/],
+    ["une page par gouvernorat (+ National, Plusieurs)", existsSync(join(root, "gouvernorat/plusieurs/index.html")), /Une page par gouvernorat[\s\S]*Plusieurs gouvernorats/],
+    ["ventes aux enchères (Douane)", existsSync(join(root, "encheres/index.html")), /Ventes aux enchères<\/b> de la Douane/],
+    ["appels d'offres privés / publier", existsSync(join(root, "publier/index.html")), /Appels d'offres d'entreprises privées<\/b>|Appels d&#x27;offres d&#x27;entreprises privées<\/b>/],
+    ["rapports du mois", existsSync(join(root, "rapports/index.html")), /Rapports du mois<\/b>/],
+    ["Alertes Pro payantes (Telegram)", existsSync(join(root, "abonnement/index.html")), /Payant : Alertes Pro sur Telegram/],
+    ["paiement avec le code personnel, sans renouvellement automatique", /abo-code/.test(lire("abonnement/index.html") + lire("assets/abonnement.js")), /code personnel[\s\S]*Pas de renouvellement automatique/],
+    ["bouton Partager", /class="partager"/.test(js), /Partager<\/b>/],
+    ["français / arabe", /class="langue"/.test(js), /ع \/ Fr/],
+    ["vidéo de présentation", existsSync(join(root, "video/index.html")), /Vidéo de présentation/],
+    ["votre avis", /id="avis-form"/.test(acc2), /Votre avis<\/b>/],
+    ["installation sur le téléphone (service worker)", existsSync(join(root, "sw.js")) && /serviceWorker/.test(js), /Installer le site/],
+    ["vos données (GoatCounter, Formspree)", true, /GoatCounter[\s\S]*Formspree/],
+    ["mises à jour automatiques", true, /Mises à jour automatiques/],
+    ["site indépendant", true, /Ce site est indépendant/]];
+  const manque = FONCTIONS.filter(([, sur, re]) => sur && !re.test(apx)).map(([n]) => n);
+  check(`page « Comment fonctionne le site ? » à jour : chaque fonction du site y est expliquée (${FONCTIONS.length} fonctions)` + (manque.length ? " — manque : " + manque.join(", ") : ""),
+    manque.length === 0);
+  check("page « Comment fonctionne le site ? » : titre h1, lien dans le pied de page (page.js) et sur l'accueil, dans le plan du site",
+    /<h1><span data-l="fr">Comment fonctionne le site \?<\/span><span data-l="ar">كيف يعمل الموقع؟<\/span><\/h1>/.test(apx)
+    && /a-propos\/">\$\{T\("Comment fonctionne le site \?"/.test(lire("assets/page.js")) && /<a href="a-propos\/"><span data-l="fr">Comment fonctionne le site \?/.test(acc2)
+    && lire("sitemap.xml").includes("https://appels-offres.clicvia.com/a-propos/")); }
+
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);
