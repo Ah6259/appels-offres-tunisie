@@ -11943,21 +11943,455 @@
    "lu_le": "2026-10-24 10:25",
    "metier": "BTP / génie civil",
    "gouvernorat": "Sfax"
+  },
+  "Tender-104442": {
+   "numero": "Tender-104442",
+   "objet": "l’élaboration de l’étude de faisabilité d’un système d’interception, de régulation et de transfert des rejets des pôles d’épuration Sud Méliane, El Attar et El Allef vers l’Émissaire en mer projeté dans la zone sud de Tunis dans le cadre du dépollution d’oued Méliane",
+   "descriptif": "",
+   "acheteur": "Office National de l'Assainissement",
+   "type_commande": "Etudes/ Activité littéraire et artistique",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEN AROUS",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-24",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-24",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104442",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:56",
+   "metier": "Études / conseil",
+   "gouvernorat": "Ben Arous"
+  },
+  "Tender-104437": {
+   "numero": "Tender-104437",
+   "objet": "التزود بالاكلات الجاهزة وتوزيعها على رياضي النخبة و الرياضيين الوافدين على المركب الرياضي ببرج السدرية لسنة 2027",
+   "descriptif": "",
+   "acheteur": "Complexe Sportif de Borj Cedria",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEN AROUS",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-24",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-24",
+   "cautionnement_provisoire_dt": [
+    5600
+   ],
+   "cautionnement_total_dt": 5600,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104437",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:56",
+   "metier": "Autres",
+   "gouvernorat": "Ben Arous"
+  },
+  "Tender-104438": {
+   "numero": "Tender-104438",
+   "objet": "l’acquisition de matériels roulants",
+   "descriptif": "",
+   "acheteur": "Office National de l'Assainissement",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-12-24",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-24",
+   "cautionnement_provisoire_dt": [
+    20000,
+    1600
+   ],
+   "cautionnement_total_dt": 21600,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104438",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:56",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104432": {
+   "numero": "Tender-104432",
+   "objet": "Marché Cadre de collecte et transport des dechets menagers et similaires 2027-2029",
+   "descriptif": "",
+   "acheteur": "Municipalite de Sousse",
+   "type_commande": "Services/ Nettoyage",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-10",
+   "heure_limite": "14:00",
+   "date_ouverture": "2026-11-10",
+   "cautionnement_provisoire_dt": [
+    10000,
+    10000
+   ],
+   "cautionnement_total_dt": 20000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104432",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104434": {
+   "numero": "Tender-104434",
+   "objet": "استشارة عدد 59-2026 اقتناء مواد التنظيف و التعقيم لفائدة المستشفى الجامعي بقابس لسنة 2026 (فصول غير مثمرة من طلب عروض عدد05/2026)",
+   "descriptif": "",
+   "acheteur": "Hopital Régional de Gabes",
+   "type_commande": "Biens/ Produits d’entretien",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GABES",
+   "regions_lots": [
+    "GABES"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-02",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-02",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104434",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Gabès"
+  },
+  "Tender-104167": {
+   "numero": "Tender-104167",
+   "objet": "Acquisition de réactifs et accessoires de laboratoire - 2éme fois",
+   "descriptif": "",
+   "acheteur": "Centre de Traumatologie et des Grands Brûlés de Ben Arous",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEN AROUS",
+   "regions_lots": [
+    "BEN AROUS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    300
+   ],
+   "cautionnement_total_dt": 300,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104167",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Médical",
+   "gouvernorat": "Ben Arous"
+  },
+  "Tender-104431": {
+   "numero": "Tender-104431",
+   "objet": "تكليف محامي أو شركة محامين لنيابة بلدية طبرقة",
+   "descriptif": "",
+   "acheteur": "Municipalité Tabarka",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "JENDOUBA",
+   "regions_lots": [
+    "JENDOUBA"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-16",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-16",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104431",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Études / conseil",
+   "gouvernorat": "Jendouba"
+  },
+  "Tender-104429": {
+   "numero": "Tender-104429",
+   "objet": "acquisition des cagoules de protection",
+   "descriptif": "",
+   "acheteur": "Office National de la Protection Civile",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-12-01",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-01",
+   "cautionnement_provisoire_dt": [
+    7200
+   ],
+   "cautionnement_total_dt": 7200,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104429",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104428": {
+   "numero": "Tender-104428",
+   "objet": "برنامج الصفقات المزمع تخصيصها للصفقات الصغرى 2026",
+   "descriptif": "اختيار مقاولات قصد صيانة البنايات التابعة لبلدية نفزة",
+   "acheteur": "Municipalite de Nefza",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "BEJA"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-26",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-26",
+   "cautionnement_provisoire_dt": [
+    1000,
+    3000,
+    2000
+   ],
+   "cautionnement_total_dt": 6000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Electricité",
+   "niveau_specialite": "3",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104428",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Béja"
+  },
+  "Tender-104427": {
+   "numero": "Tender-104427",
+   "objet": "désignation d'un avocat ou d'un cabinet d'avocats professionnel pour représenter l'O.N.T devant tous les tribunaux et instances judiciaires pour les années 2026-2027-2028",
+   "descriptif": "",
+   "acheteur": "Office National de la Télédiffusion",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-12",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104427",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Études / conseil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104426": {
+   "numero": "Tender-104426",
+   "objet": "اقتناء معدات إعلامية لفائدة جامعة المنستير والمؤسسات الراجعة لها بالنظر في إطار طلب العروض عدد 11/2026 (إعادة الأقساط الغير مثمرة من طلب العروض 06/2026)",
+   "descriptif": "",
+   "acheteur": "Université de Monastir",
+   "type_commande": "Biens/ Matériels informatiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "MONASTIR"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-27",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    25,
+    45,
+    50,
+    160,
+    10
+   ],
+   "cautionnement_total_dt": 290,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "5",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104426",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Informatique",
+   "gouvernorat": "Monastir"
+  },
+  "Tender-104425": {
+   "numero": "Tender-104425",
+   "objet": "Acquisition de voitures administratives",
+   "descriptif": "",
+   "acheteur": "Manufacture Tunisienne des Tabacs de Kairouan",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-26",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-26",
+   "cautionnement_provisoire_dt": [
+    1500,
+    2000
+   ],
+   "cautionnement_total_dt": 3500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104425",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104424": {
+   "numero": "Tender-104424",
+   "objet": "صيانة المعدات الإعلامية",
+   "descriptif": "Maintenance des équipements du Data Center du RNE",
+   "acheteur": "CENTRE NATIONAL DES REGISTRES DES ENTREPRISES",
+   "type_commande": "Services/ Maintenance",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    6000
+   ],
+   "cautionnement_total_dt": 6000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104424",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Informatique",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104423": {
+   "numero": "Tender-104423",
+   "objet": "Marché cadre sur 3 ans pour la fourniture de service de maintenance des équipement et solutions mis en exploitation au niveau de l'ANCE",
+   "descriptif": "APPEL D’OFFRES N°08/2026 portant sur la conclusion d’un marché cadre sur trois ans pour la fourniture de services de maintenance préventive, curative des solutions, logiciels et équipements mis en exploitation au niveau de l’ANCE",
+   "acheteur": "Agence Nationale de Certification Electronique",
+   "type_commande": "Services/ Maintenance",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "ARIANA"
+   ],
+   "date_publication": "2026-10-26",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    1000,
+    100,
+    1400,
+    500,
+    130,
+    3000
+   ],
+   "cautionnement_total_dt": 6130,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "6",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104423",
+   "source": "HAICOP",
+   "lu_le": "2026-10-26 11:57",
+   "metier": "Informatique",
+   "gouvernorat": "Ariana"
   }
  },
- "mis_a_jour": "2026-10-25 10:43",
+ "mis_a_jour": "2026-10-26 11:57",
  "dernier_passage": {
-  "date": "2026-10-25 10:43",
+  "date": "2026-10-26 11:57",
   "liste_ok": true,
-  "lus": 0,
+  "lus": 14,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-25 10:43",
+ "derniere_lecture_reussie": "2026-10-26 11:57",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-25 10:43",
+  "depuis": "2026-10-26 11:57",
   "raison": ""
  }
 }
