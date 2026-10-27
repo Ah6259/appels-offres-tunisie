@@ -1,15 +1,63 @@
 {
- "maj": "2026-10-26",
+ "maj": "2026-10-27",
  "explication": "Éléments lus par le robot mais rangés dans aucune catégorie (gardés 120 jours) : une routine y cherche les thèmes qui reviennent (règle commune § 40).",
- "nombre": 68,
+ "nombre": 74,
  "elements": [
+  {
+   "cle": "Tender-104468",
+   "texte": "Acquisition des appareils de mesures",
+   "type_commande": "Biens/ Matériels de télécommunications",
+   "acheteur": "Centre d Etudes et de Recherches de Télécommunication",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
+  {
+   "cle": "Tender-104466",
+   "texte": "La souscription par l'Agence Nationale d'Evaluation des Risques à des contrats d'assurances pour les années 2027/2028/2029",
+   "type_commande": "Services/ Autres services",
+   "acheteur": "Agence nationale de l’évaluation des risques",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
+  {
+   "cle": "Tender-104465",
+   "texte": "l’acquisition et la mise en place d’un système de contrôle de présence et de contrôle d’accès",
+   "type_commande": "Biens/ Autres Fournitures",
+   "acheteur": "Agence Nationale pour la Maîtrise de l’Energie",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
+  {
+   "cle": "Tender-104458",
+   "texte": "Désignation d'une compagnie d'assurance pour les année 2027-2029",
+   "type_commande": "Services/ Autres services",
+   "acheteur": "Agence de Promotion de l’Investissement Extérieur",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
+  {
+   "cle": "Tender-104456",
+   "texte": "Réalisation d’une centrale photovoltaïque de 300kWc raccordée au réseau moyenne tension au niveau du siège de la SECADENORD à Naassène (Gouvernorat de Ben Arous)",
+   "type_commande": "Biens/ Autres Fournitures",
+   "acheteur": "Société d'Exploitation du Canal et Adduction des Eaux du Nord",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
+  {
+   "cle": "Tender-104448",
+   "texte": "اقتناء رافعة صغيرة",
+   "type_commande": "Biens/ Matériel",
+   "acheteur": "Municipalité Zarmdin",
+   "premier_vu": "2026-10-27",
+   "dernier_vu": "2026-10-27"
+  },
   {
    "cle": "Tender-104438",
    "texte": "l’acquisition de matériels roulants",
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office National de l'Assainissement",
    "premier_vu": "2026-10-26",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104437",
@@ -17,7 +65,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Complexe Sportif de Borj Cedria",
    "premier_vu": "2026-10-26",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104429",
@@ -25,7 +73,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office National de la Protection Civile",
    "premier_vu": "2026-10-26",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104418",
@@ -33,7 +81,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Ministère de la Santé Publique",
    "premier_vu": "2026-10-24",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104408",
@@ -41,7 +89,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Pharmacie Centrale de Tunisie",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104400",
@@ -49,7 +97,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Ecole Nationale d'Ingénieurs de Gabès",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104388",
@@ -57,7 +105,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Nationale de la Cellulose et du Papier Alfa",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104387",
@@ -65,7 +113,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Office National d l'Huile",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104383",
@@ -73,7 +121,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office de la Marine Marchande et des Ports",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104382",
@@ -81,7 +129,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Ministère de l’éducation",
    "premier_vu": "2026-10-23",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104379",
@@ -89,7 +137,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office de la Marine Marchande et des Ports",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104374",
@@ -97,7 +145,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "La Société des Transports de Tunis",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104370",
@@ -105,7 +153,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office National de l'Assainissement",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104366",
@@ -113,7 +161,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Société Tunisienne des Industries de Raffinage",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104364",
@@ -121,7 +169,7 @@
    "type_commande": "Services/ Services",
    "acheteur": "Centre D’Essais et des Techniques de Construction",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104359",
@@ -129,7 +177,7 @@
    "type_commande": "Biens/ Fournitures",
    "acheteur": "Gouvernorat de Sidi Bouzid",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104358",
@@ -137,7 +185,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Nationale des Chemins de Fer Tunisiens",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104349",
@@ -145,7 +193,7 @@
    "type_commande": "Biens/ Matériels roulants",
    "acheteur": "Commissariat Régional au Développement Agricole de Gabès",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104348",
@@ -153,7 +201,7 @@
    "type_commande": "Biens/ Matériels roulants",
    "acheteur": "Commissariat Régional au Développement Agricole de Gabès",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104346",
@@ -161,7 +209,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Régionale de Transport Gouvernorat de Sfax",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104337",
@@ -169,7 +217,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "La Société des Transports de Tunis",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104336",
@@ -177,7 +225,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Ministère de l'équipement, de l'habitat et de l'aménagement du territoire",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104328",
@@ -185,7 +233,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Caisse Nationale de la Sécurité Sociale",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104323",
@@ -193,7 +241,7 @@
    "type_commande": "Biens/ Matériel",
    "acheteur": "Office des Oeuvres Universitaires du Sud",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104317",
@@ -201,7 +249,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société de Transport du Sahel",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104309",
@@ -209,7 +257,7 @@
    "type_commande": "Services/ Maintenance",
    "acheteur": "Assemblée des Représentants du Peuple",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104292",
@@ -217,7 +265,7 @@
    "type_commande": "Biens/ Fournitures",
    "acheteur": "Commissariat Régional au Développement Agricole Kasserine",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104289",
@@ -225,7 +273,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104271",
@@ -233,7 +281,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Hôpital Habib Bourguiba Sfax",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104263",
@@ -241,7 +289,7 @@
    "type_commande": "Biens/ Autres types de matériels",
    "acheteur": "Municipalité Jerba Midoune",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104239",
@@ -249,7 +297,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "La Société des Transports de Tunis",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104236",
@@ -257,7 +305,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Compagnie Tunisienne de Navigation",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104233",
@@ -265,7 +313,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "La Société des Transports de Tunis",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104232",
@@ -273,7 +321,7 @@
    "type_commande": "Biens/ Habillement",
    "acheteur": "Société Régionale de Transport de Siliana",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104231",
@@ -281,7 +329,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Tunisienne des Industries de Raffinage",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104227",
@@ -289,7 +337,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Nationale des Chemins de Fer Tunisiens",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104212",
@@ -297,7 +345,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office de l'Elevage et des Pâturages",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104198",
@@ -305,7 +353,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Centre National de la Formation Continue et de la Promotion Professionnelle",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104193",
@@ -313,7 +361,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Agence Nationale de Certification Electronique",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104185",
@@ -321,7 +369,7 @@
    "type_commande": "Biens/ Matériels roulants",
    "acheteur": "Société d'Exploitation du Canal et Adduction des Eaux du Nord",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104181",
@@ -329,7 +377,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Société Tunisienne d’Electricité et de Gaz",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104166",
@@ -337,7 +385,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Ministère des Finances",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104164",
@@ -345,7 +393,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Municipalité Dar Chaabane El Fehri",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104151",
@@ -353,7 +401,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Manufacture Tunisienne des Tabacs de Kairouan",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104147",
@@ -361,7 +409,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Commissariat Régional au Développement Agricole Kasserine",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104135",
@@ -369,7 +417,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Municipalité Ben Arous",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104134",
@@ -377,7 +425,7 @@
    "type_commande": "Services/ Services",
    "acheteur": "Agence Nationale pour la Maîtrise de l’Energie",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104129",
@@ -385,7 +433,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Hôpital Sahloul de Sousse",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104127",
@@ -393,7 +441,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "ECOLE NATIONALE DES DOUANES",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104126",
@@ -401,7 +449,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Office National de la Télédiffusion",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104124",
@@ -409,7 +457,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Nationale des Chemins de Fer Tunisiens",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104108",
@@ -417,7 +465,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Société d'Exploitation du Canal et Adduction des Eaux du Nord",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104105",
@@ -425,7 +473,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Régie Nationale des Tabacs et des Allumettes",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104089",
@@ -433,7 +481,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "institut des zones arides",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104088",
@@ -441,7 +489,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Hopital Régional de Gabes",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104085",
@@ -449,7 +497,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Compagnie des Phosphates de Gafsa",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104083",
@@ -457,7 +505,7 @@
    "type_commande": "Services/ Services",
    "acheteur": "Société Régionale de Transport de Gafsa",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104077",
@@ -465,7 +513,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Centre de Calcul Khawarizmi",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104074",
@@ -473,7 +521,7 @@
    "type_commande": "Biens/ Matériel",
    "acheteur": "Imprimerie Officielle de la République Tunisienne",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104072",
@@ -481,7 +529,7 @@
    "type_commande": "Biens/ Equipements hydromécaniques",
    "acheteur": "ACADEMIE MILITAIRE DE FOUNDOK JEDID",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104065",
@@ -489,7 +537,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Etablissement Fidaa",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104062",
@@ -497,7 +545,7 @@
    "type_commande": "Biens/ Autres types de matériels",
    "acheteur": "Société Tunisienne d’Electricité et de Gaz",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104059",
@@ -505,7 +553,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Agence Tunisienne de Solidarité",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104053",
@@ -513,7 +561,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Tunisienne d’Electricité et de Gaz",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104051",
@@ -521,7 +569,7 @@
    "type_commande": "Biens/ Autres Fournitures",
    "acheteur": "Société Tunisienne d’Electricité et de Gaz",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104044",
@@ -529,7 +577,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Compagnie des Tranports par Pipe Lines au Sahara",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-104011",
@@ -537,7 +585,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Municipalité de Metline",
    "premier_vu": "2026-10-22",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   },
   {
    "cle": "Tender-103108",
@@ -545,7 +593,7 @@
    "type_commande": "Services/ Autres services",
    "acheteur": "Centre de Calcul Khawarizmi",
    "premier_vu": "2026-10-24",
-   "dernier_vu": "2026-10-26"
+   "dernier_vu": "2026-10-27"
   }
  ]
 }
