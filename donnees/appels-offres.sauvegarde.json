@@ -14036,21 +14036,482 @@
    "lu_le": "2026-10-28 12:14",
    "metier": "Autres",
    "gouvernorat": "Tunis"
+  },
+  "Tender-104505": {
+   "numero": "Tender-104505",
+   "objet": "La prestation de services des opérations de transit, dédouanement et transport des marchandises importées pendant 03 ans",
+   "descriptif": "La prestation de services des opérations de transit, dédouanement et transport des marchandises importées pendant 03 ans",
+   "acheteur": "Société Tunisinne de Sidérurgie El Fouladh",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "BIZERTE"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-12-04",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-12-04",
+   "cautionnement_provisoire_dt": [
+    1000,
+    3000
+   ],
+   "cautionnement_total_dt": 4000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104505",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104515": {
+   "numero": "Tender-104515",
+   "objet": "Acheter un camion compacteur de 7 m³ avec un élévateur de conteneurs pour la municipalité de Reguim Maâtoug",
+   "descriptif": "",
+   "acheteur": "MUNICIPALITE REJIM MAATOUG",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-11-27",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104515",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104503": {
+   "numero": "Tender-104503",
+   "objet": "La démantèlement de la grue portique sur rails \"CAILLARD\" sis au quai sud du port Bizerte-Menzel Bourguiba",
+   "descriptif": "La démantèlement de la grue portique sur rails \"CAILLARD\" sis au quai sud du port Bizerte-Menzel Bourguiba",
+   "acheteur": "Société Tunisinne de Sidérurgie El Fouladh",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BIZERTE",
+   "regions_lots": [
+    "BIZERTE"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-12-03",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    2500
+   ],
+   "cautionnement_total_dt": 2500,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104503",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Bizerte"
+  },
+  "Tender-104511": {
+   "numero": "Tender-104511",
+   "objet": "Acquisition de pièces détachées pour véhicules de transport et équipements spéciales",
+   "descriptif": "",
+   "acheteur": "Municipalite de Moknine",
+   "type_commande": "Biens/ Produits d’entretien",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "MONASTIR"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-11-12",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-12",
+   "cautionnement_provisoire_dt": [
+    275,
+    200,
+    400,
+    100,
+    200,
+    100
+   ],
+   "cautionnement_total_dt": 1275,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "6",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104511",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "Nettoyage / gardiennage",
+   "gouvernorat": "Monastir"
+  },
+  "Tender-104514": {
+   "numero": "Tender-104514",
+   "objet": "تركيز ألواح شمسية لتوليد الطاقة بمؤسسات الطفولة",
+   "descriptif": "",
+   "acheteur": "Ministère des affaires de la femme et de la famille",
+   "type_commande": "Biens/ Matériel",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-12-03",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    2500
+   ],
+   "cautionnement_total_dt": 2500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104514",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104139": {
+   "numero": "Tender-104139",
+   "objet": "Acquisition et installation des groupes électrogènes aux Hôpitaux de Circonscription de la Région Sanitaire de Monastir",
+   "descriptif": "",
+   "acheteur": "Direction Régionale de la santé publique de Monastir",
+   "type_commande": "Travaux/ Fondation Spéciale",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MONASTIR",
+   "regions_lots": [
+    "MONASTIR"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-11-27",
+   "heure_limite": "14:30",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    1200000
+   ],
+   "cautionnement_total_dt": 1200000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Electricité",
+   "niveau_specialite": "5",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104139",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Monastir"
+  },
+  "Tender-104513": {
+   "numero": "Tender-104513",
+   "objet": "TRAVAUX DE REHABILITATION ET CONFORTEMENT PARTIEL DE LA CITE LOCATIVE CNRPS DE SOUSSE",
+   "descriptif": "TRAVAUX DE REHABILITATION ET CONFORTEMENT PARTIEL DE LA CITEE LOCATIVE CNRPS DE SOUSSE",
+   "acheteur": "Caisse Nationale de Retraite et de Prévoyance Sociale",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SOUSSE",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-10-29",
+   "date_limite": "2026-12-01",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-01",
+   "cautionnement_provisoire_dt": [
+    1500
+   ],
+   "cautionnement_total_dt": 1500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104513",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104512": {
+   "numero": "Tender-104512",
+   "objet": "Construction du local UGP du projet de développement et de promotion des filières agricoles de Zaghouan",
+   "descriptif": "Construction du local UGP du projet PDPFA-GZ",
+   "acheteur": "Commissariat Regional au Developpement Agricole de Zaghouan",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ZAGOUANE",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    12000
+   ],
+   "cautionnement_total_dt": 12000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104512",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:25",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104510": {
+   "numero": "Tender-104510",
+   "objet": "Programme d'entretien des établissements d'enseignement du gouvernorat de Zaghouan pour les années 2023 et 2025",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation de Zaghouan",
+   "type_commande": "Travaux/ Travaux de Rehabilitation",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-30",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-30",
+   "cautionnement_provisoire_dt": [
+    4400,
+    3800,
+    1200,
+    1200
+   ],
+   "cautionnement_total_dt": 10600,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "4",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104510",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104509": {
+   "numero": "Tender-104509",
+   "objet": "تعلية طوابي بتركيز حباك من الجريد الجاف",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de KEBILI",
+   "type_commande": "Travaux/ Autres travaux",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-12-01",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-12-01",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104509",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104508": {
+   "numero": "Tender-104508",
+   "objet": "تهيئة ملعب حي بوادي العبيد ضمن برامج التنمية المندمجة",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Nabeul",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "NABEUL",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    3000
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104508",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104507": {
+   "numero": "Tender-104507",
+   "objet": "تهيئة ملعب حي لزدين بمنزل تميم ضمن برامج التنمية المندمجة",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Nabeul",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "NABEUL",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-09",
+   "cautionnement_provisoire_dt": [
+    3000
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104507",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104506": {
+   "numero": "Tender-104506",
+   "objet": "Programme de construction d'espaces préscolaires dans les écoles primaires du gouvernorat de Zaghouan pour l'année 2025",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation de Zaghouan",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "ZAGOUANE"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-27",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    2100,
+    2100,
+    2100
+   ],
+   "cautionnement_total_dt": 6300,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104506",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Zaghouan"
+  },
+  "Tender-104504": {
+   "numero": "Tender-104504",
+   "objet": "APPEL D’OFFRES D’ETUDES POUR L’ELABORATION DE PLAN DIRECTEUR IMMOBILIER DE L’HOPITAL ABDERRAHMANE MAMI ARIANA",
+   "descriptif": "",
+   "acheteur": "Hôpital Abderrahmane Mami de Pneumophistiologie",
+   "type_commande": "Etudes/ Etudes",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ARIANA",
+   "regions_lots": [
+    "ARIANA"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-12-02",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-02",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104504",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "Études / conseil",
+   "gouvernorat": "Ariana"
+  },
+  "Tender-104501": {
+   "numero": "Tender-104501",
+   "objet": "Appel d offre selon les procedures simplifiees n 022026 Pour la 2eme fois relatif a l Acquisition des Analyseurs XRF pour metaux precieux et bijouterie",
+   "descriptif": "",
+   "acheteur": "Ministère des Finances",
+   "type_commande": "Biens/ Matériel",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-10-28",
+   "date_limite": "2026-11-24",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-24",
+   "cautionnement_provisoire_dt": [
+    1800
+   ],
+   "cautionnement_total_dt": 1800,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104501",
+   "source": "HAICOP",
+   "lu_le": "2026-10-29 12:26",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
   }
  },
- "mis_a_jour": "2026-10-28 12:14",
+ "mis_a_jour": "2026-10-29 12:26",
  "dernier_passage": {
-  "date": "2026-10-28 12:14",
+  "date": "2026-10-29 12:26",
   "liste_ok": true,
-  "lus": 22,
+  "lus": 15,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-10-28 12:14",
+ "derniere_lecture_reussie": "2026-10-29 12:26",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-10-28 12:14",
+  "depuis": "2026-10-29 12:26",
   "raison": ""
  }
 }
