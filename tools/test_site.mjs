@@ -194,10 +194,12 @@ d = w.document;
 check("données de plus de 2 jours : avertissement daté visible",
   d.getElementById("alerte-panne").classList.contains("on") && /depuis le \d\d\/\d\d\/\d{4}/.test(texte(d.getElementById("alerte-panne"))));
 const dernier = ouverts.map(a => a.date_limite || "").sort().pop();
+// une fiche SANS date limite reste montrée 30 jours après sa publication, quelle que soit la date du visiteur : elle ne peut pas « expirer »
+const sansDate = ouverts.filter(a => !a.date_limite).length;
 w = await page("index.html", `lang=fr&jour=${plus(dernier, 1)}`);
 d = w.document;
-check("tout expiré : aucune carte, message « aucun appel d'offres », site non vide (grilles, sources)",
-  visibles(d).length === 0 && affichees(d).length === 0 && !d.getElementById("vide").hidden && d.querySelectorAll("#grille-metiers a").length === 10);
+check("tout expiré : plus aucune carte à date limite, message « aucun appel d'offres » si rien d'autre, site non vide (grilles, sources)",
+  visibles(d).length === sansDate && affichees(d).length === sansDate && (sansDate > 0 || !d.getElementById("vide").hidden) && d.querySelectorAll("#grille-metiers a").length === 10);
 w = await page("index.html", `lang=fr&jour=${plus(JOUR, 1)}`);
 check("données d'hier : pas encore d'avertissement", !w.document.getElementById("alerte-panne").classList.contains("on"));
 
@@ -350,7 +352,13 @@ check("résumé traduit : objet arabe -> « Aménagement — centre pour personn
   !!tr && tr.lang === "fr" && texte(tr.querySelector(".trad-t")) === "≈ Aménagement — centre pour personnes âgées — Grombalia");
 check("résumé traduit : mention « traduction automatique approximative » sur chaque résumé",
   d.querySelectorAll(".trad").length >= 10 && [...d.querySelectorAll(".trad")].every(t => /traduction automatique approximative/.test(texte(t))));
-check("résumé traduit : objet français -> résumé arabe (rtl)", (() => { const t = d.querySelector("#Tender-104006 .trad"); return !!t && t.dir === "rtl" && /قرطاج/.test(t.textContent); })());
+// un appel d'offres de l'exemple (104006, Carthage) peut être expiré un jour : sinon on prend un objet français quelconque affiché avec un résumé
+check("résumé traduit : objet français -> résumé arabe (rtl)", (() => {
+  const t = d.querySelector("#Tender-104006 .trad");
+  if (t) return t.dir === "rtl" && /قرطاج/.test(t.textContent);
+  const autres = [...d.querySelectorAll("#liste .ao .trad")].filter(x => x.dir === "rtl" && /[؀-ۿ]/.test(x.textContent));
+  return autres.length > 0;
+})());
 check("résumé traduit : rien d'affiché quand l'objet est trop peu reconnu (Tender-104043)", !d.querySelector("#Tender-104043 .trad"));
 
 // ---- 8. Rappels avant la date limite (date du téléphone) -------------------------
@@ -406,13 +414,19 @@ const ench = Object.values(JSON.parse(lire("donnees/encheres.json")).ventes).fil
 w = await page("encheres/index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
 check(`ventes aux enchères : ${ench.length} cartes ouvertes, chacune avec l'avis officiel de la Douane`,
-  ench.length > 0 && visibles(d).length === ench.length &&
+  // aucune vente ouverte (ex. source de la Douane injoignable, anciennes ventes toutes expirées) : la page doit le dire
+  (ench.length > 0 || !d.getElementById("vide").hidden) && visibles(d).length === ench.length &&
   visibles(d).every(c => /^https:\/\/www\.douane\.gov\.tn\//.test(c.querySelector("a.officiel").href) && c.querySelector("a.officiel").rel.includes("noopener")));
 check("ventes aux enchères : source « Douane tunisienne » + « pas officiel »", /Douane tunisienne/.test(texte(d.querySelector("main"))) && /n'est pas officiel/.test(texte(d.querySelector("main"))));
 check("ventes aux enchères : compteur « ventes aux enchères ouvertes »", /ventes? aux enchères ouvertes?/.test(texte(d.getElementById("compte"))));
 const premiereE = ench.slice().sort((a, b) => a.date_limite.localeCompare(b.date_limite))[0];
-w = await page("encheres/index.html", `lang=fr&jour=${plus(premiereE.date_limite, 1)}`);
-check("ventes aux enchères : une vente expirée (date du visiteur) est masquée", w.document.getElementById(premiereE.id).hidden);
+if (premiereE) {
+  w = await page("encheres/index.html", `lang=fr&jour=${plus(premiereE.date_limite, 1)}`);
+  check("ventes aux enchères : une vente expirée (date du visiteur) est masquée", w.document.getElementById(premiereE.id).hidden);
+} else {
+  w = await page("encheres/index.html", `lang=fr&jour=${JOUR}`);
+  check("ventes aux enchères : aucune vente ouverte, aucune carte visible", visibles(w.document).length === 0);
+}
 check("pied de page : liens « Ventes aux enchères » et « Publier un appel d'offres »",
   !!w.document.querySelector('#pied a[href="../encheres/"]') && !!w.document.querySelector('#pied a[href="../publier/"]'));
 w = await page("a-propos/index.html", "lang=fr");
