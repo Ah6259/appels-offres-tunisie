@@ -15321,21 +15321,83 @@
    "lu_le": "2026-11-02 07:03",
    "metier": "Autres",
    "gouvernorat": "Tunis"
+  },
+  "Tender-104551": {
+   "numero": "Tender-104551",
+   "objet": "تكليف محامين أو شركة مهنية للمحاماة بتونس الكبرى لنيابة ديوان مساكن أعوان وزارة التربية لدى المحاكم وسائر الهيئات القضائية بعنوان السنوات 2027و2028و2029",
+   "descriptif": "",
+   "acheteur": "Office des Logements des Personnels du Ministère de l'Education",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-02",
+   "date_limite": "2026-11-30",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-30",
+   "cautionnement_provisoire_dt": [
+    0,
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104551",
+   "source": "HAICOP",
+   "lu_le": "2026-11-02 14:20",
+   "metier": "Études / conseil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104545": {
+   "numero": "Tender-104545",
+   "objet": "Marché assurance des engins et municipaux municipaux",
+   "descriptif": "",
+   "acheteur": "Municipalite de Sousse",
+   "type_commande": "Services/ Services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-11-02",
+   "date_limite": "2026-12-03",
+   "heure_limite": "14:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    1500,
+    1500
+   ],
+   "cautionnement_total_dt": 3000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104545",
+   "source": "HAICOP",
+   "lu_le": "2026-11-02 14:20",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Sousse"
   }
  },
- "mis_a_jour": "2026-11-02 07:21",
+ "mis_a_jour": "2026-11-02 14:20",
  "dernier_passage": {
-  "date": "2026-11-02 07:21",
+  "date": "2026-11-02 14:20",
   "liste_ok": true,
-  "lus": 0,
+  "lus": 2,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-02 07:21",
+ "derniere_lecture_reussie": "2026-11-02 14:20",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-02 07:21",
+  "depuis": "2026-11-02 14:20",
   "raison": ""
  }
 }

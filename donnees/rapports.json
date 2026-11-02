@@ -6115,6 +6115,68 @@
      "id": "Vente-ea5ad6db42"
     }
    }
+  },
+  "2026-11": {
+   "appels_offres": {
+    "Tender-104545": {
+     "acheteur": "Municipalite de Sousse",
+     "caution": 3000,
+     "date_limite": "2026-12-03",
+     "date_publication": "2026-11-02",
+     "gouvernorat": "Sousse",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104545",
+     "metier": "Transport / véhicules",
+     "numero": "Tender-104545",
+     "objet": "Marché assurance des engins et municipaux municipaux",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104551": {
+     "acheteur": "Office des Logements des Personnels du Ministère de l'Education",
+     "caution": null,
+     "date_limite": "2026-11-30",
+     "date_publication": "2026-11-02",
+     "gouvernorat": "Tunis",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104551",
+     "metier": "Études / conseil",
+     "numero": "Tender-104551",
+     "objet": "تكليف محامين أو شركة مهنية للمحاماة بتونس الكبرى لنيابة ديوان مساكن أعوان وزارة التربية لدى المحاكم وسائر الهيئات القضائية بعنوان السنوات 2027و2028و2029",
+     "procedure": "Appel d’offres ouvert"
+    }
+   },
+   "chiffres": {
+    "acheteurs": {},
+    "appels_offres": 2,
+    "avec_caution": 1,
+    "avec_delai": 2,
+    "caution_mediane": null,
+    "delai_median": null,
+    "derniere_publication": "2026-11-02",
+    "jour_max": [
+     "2026-11-02",
+     2
+    ],
+    "jours_de_publication": 1,
+    "par_gouvernorat": {
+     "Sousse": 1,
+     "Tunis": 1
+    },
+    "par_metier": {
+     "Transport / véhicules": 1,
+     "Études / conseil": 1
+    },
+    "par_procedure": {
+     "Appel d’offres ouvert": 2
+    },
+    "premiere_publication": "2026-11-02",
+    "ventes": 0,
+    "ventes_par_gouvernorat": {}
+   },
+   "complet": true,
+   "cree_le": "2026-11-02",
+   "derniere_date": "2026-11-02",
+   "fige": false,
+   "premier_jour": "2026-11-01",
+   "ventes": {}
   }
  },
  "robot_depuis": "2026-10-04"
