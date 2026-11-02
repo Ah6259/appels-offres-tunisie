@@ -1410,6 +1410,16 @@ def construire(donnees, sortie, jour):
             if not os.path.exists(os.path.join(sortie, rel)):
                 apercus.fabriquer(os.path.join(sortie, rel), titre_img, mois_img, chiffre, sous)
 
+    # sous-pages de rapport qui ne sont plus produites (ex. gouvernorat passé sous le minimum) : effacées,
+    # sinon elles restent en ligne hors du plan du site (robot rouge du 01/11/2026 : 26 sous-pages)
+    mois_faits = {c.split("/")[1] for c in dates_pages if c.startswith("rapports/") and c.count("/") >= 3}
+    for mm_ in mois_faits:
+        for t_ in ("gouvernorat", "metier"):
+            base_ = os.path.join(sortie, "rapports", mm_, t_)
+            for s_ in (os.listdir(base_) if os.path.isdir(base_) else []):
+                if f"rapports/{mm_}/{t_}/{s_}/" not in dates_pages:
+                    shutil.rmtree(os.path.join(base_, s_))
+
     # ---- écriture
     for chemin, contenu in pages:
         ecrire(sortie, chemin + "index.html", contenu)
