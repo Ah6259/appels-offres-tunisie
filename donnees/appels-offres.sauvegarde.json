@@ -15323,19 +15323,19 @@
    "gouvernorat": "Tunis"
   }
  },
- "mis_a_jour": "2026-11-02 07:03",
+ "mis_a_jour": "2026-11-02 07:21",
  "dernier_passage": {
-  "date": "2026-11-02 07:03",
+  "date": "2026-11-02 07:21",
   "liste_ok": true,
-  "lus": 26,
+  "lus": 0,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-02 07:03",
+ "derniere_lecture_reussie": "2026-11-02 07:21",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-02 07:03",
+  "depuis": "2026-11-02 07:21",
   "raison": ""
  }
 }
