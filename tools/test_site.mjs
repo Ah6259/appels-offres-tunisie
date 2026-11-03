@@ -322,9 +322,17 @@ check("recherche : par numéro « Tender-104049 » -> 1 carte", visibles(d).leng
 tape(w, "ETUDE");
 check(`recherche : insensible aux accents et à la casse (« ETUDE » trouve « Étude », ${visibles(d).length} cartes)`,
   visibles(d).length >= 1 && visibles(d).some(c => /Étude/.test(c.querySelector("h3").textContent)));
-tape(w, "AMENAGEMENT SALLE");
-check("recherche : « AMENAGEMENT SALLE » (sans accent) trouve « Aménagement d'une salle de sport » (Tender-103999)",
-  visibles(d).some(c => c.id === "Tender-103999"));
+// Cas pris dans les données du jour (un appel d'offres fixe finit par expirer) : un titre dont les 2 premiers mots ont un accent
+tape(w, "");
+const sansAcc = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+const carteAcc = [...d.querySelectorAll("[id^='Tender-']")].find(c => {
+  const m = c.querySelector("h3")?.textContent.trim().split(/\s+/).slice(0, 2);
+  return m && m.length === 2 && /[éèêàâîôûç]/i.test(m.join(" ")) && m.every(x => x.length > 2);
+});
+const reqAcc = carteAcc ? sansAcc(carteAcc.querySelector("h3").textContent.trim().split(/\s+/).slice(0, 2).join(" ")) : "";
+tape(w, reqAcc);
+check(`recherche : « ${reqAcc} » (sans accent) retrouve le titre accentué (${carteAcc ? carteAcc.id : "aucune carte accentuée"})`,
+  !!carteAcc && visibles(d).some(c => c.id === carteAcc.id));
 tape(w, "تهيئه");
 const nAm = visibles(d).length;
 check(`recherche : en arabe, « تهيئه » trouve « تهيئة » (${nAm} cartes, toutes contiennent le mot)`,
