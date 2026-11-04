@@ -1,6 +1,6 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 01/11/2026 et le 03/11/2026 · 22 appels d'offres encore ouverts · mis à jour le 03/11/2026 à 19:26
+Publiés entre le 01/11/2026 et le 03/11/2026 · 22 appels d'offres encore ouverts · mis à jour le 04/11/2026 à 07:33
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
 
