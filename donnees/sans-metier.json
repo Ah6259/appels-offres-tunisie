@@ -1,8 +1,40 @@
 {
  "maj": "2026-11-04",
  "explication": "Éléments lus par le robot mais rangés dans aucune catégorie (gardés 120 jours) : une routine y cherche les thèmes qui reviennent (règle commune § 40).",
- "nombre": 88,
+ "nombre": 92,
  "elements": [
+  {
+   "cle": "Tender-104583",
+   "texte": "اقتناء تو تركيب و تشغيل وحدة تصفية المياه",
+   "type_commande": "Biens/ Matériel",
+   "acheteur": "Hopital Militaire Principal d’Instruction de Tunis",
+   "premier_vu": "2026-11-04",
+   "dernier_vu": "2026-11-04"
+  },
+  {
+   "cle": "Tender-104582",
+   "texte": "Fourniture chargeuse sur pneus",
+   "type_commande": "Biens/ Autres Fournitures",
+   "acheteur": "Commissariat Régional au Développement Agricole de KEBILI",
+   "premier_vu": "2026-11-04",
+   "dernier_vu": "2026-11-04"
+  },
+  {
+   "cle": "Tender-104581",
+   "texte": "acquisition des tenues de travail",
+   "type_commande": "Biens/ Habillement",
+   "acheteur": "Commissariat Régional au Développement Agricole de Jendouba",
+   "premier_vu": "2026-11-04",
+   "dernier_vu": "2026-11-04"
+  },
+  {
+   "cle": "Tender-104579",
+   "texte": "fourniture des batteries",
+   "type_commande": "Biens/ Autres Fournitures",
+   "acheteur": "Société Régionale de Transport de Médenine",
+   "premier_vu": "2026-11-04",
+   "dernier_vu": "2026-11-04"
+  },
   {
    "cle": "Tender-104572",
    "texte": "fournitures des pneus",

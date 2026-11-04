@@ -16045,21 +16045,330 @@
    "lu_le": "2026-11-03 19:26",
    "metier": "BTP / génie civil",
    "gouvernorat": "Zaghouan"
+  },
+  "Tender-104585": {
+   "numero": "Tender-104585",
+   "objet": "اقتناء و تركيب تجهيزات فولطاضوئية لمحطّات الضّخ",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de Medenine",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MEDNINE",
+   "regions_lots": [
+    "MEDNINE"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-11-26",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-26",
+   "cautionnement_provisoire_dt": [
+    1500
+   ],
+   "cautionnement_total_dt": 1500,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Pose de canalisations hydrauliques",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104585",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Médenine"
+  },
+  "Tender-104584": {
+   "numero": "Tender-104584",
+   "objet": "تجديد قنوات البخار الخاص بالغسالة",
+   "descriptif": "",
+   "acheteur": "Hopital Militaire Principal d’Instruction de Tunis",
+   "type_commande": "Travaux/ Equipements sanitaires",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-07",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-07",
+   "cautionnement_provisoire_dt": [
+    1400
+   ],
+   "cautionnement_total_dt": 1400,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104584",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104583": {
+   "numero": "Tender-104583",
+   "objet": "اقتناء تو تركيب و تشغيل وحدة تصفية المياه",
+   "descriptif": "",
+   "acheteur": "Hopital Militaire Principal d’Instruction de Tunis",
+   "type_commande": "Biens/ Matériel",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-07",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-07",
+   "cautionnement_provisoire_dt": [
+    5000
+   ],
+   "cautionnement_total_dt": 5000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104583",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Autres",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104582": {
+   "numero": "Tender-104582",
+   "objet": "Fourniture chargeuse sur pneus",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de KEBILI",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-07",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-12-07",
+   "cautionnement_provisoire_dt": [
+    3500
+   ],
+   "cautionnement_total_dt": 3500,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104582",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Autres",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104581": {
+   "numero": "Tender-104581",
+   "objet": "acquisition des tenues de travail",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de Jendouba",
+   "type_commande": "Biens/ Habillement",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "JENDOUBA"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-03",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    600,
+    120,
+    250,
+    15,
+    15,
+    150,
+    300,
+    10,
+    20,
+    30
+   ],
+   "cautionnement_total_dt": 1510,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "10",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104581",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Autres",
+   "gouvernorat": "Jendouba"
+  },
+  "Tender-104580": {
+   "numero": "Tender-104580",
+   "objet": "أشغال تثبيت 100 هك من الكثبان الساحلية بمنطقة الزوارع - الدماين بمعتمدية نفزة من ولاية باجة",
+   "descriptif": "Travaux de restauration : Travaux de fixation des dunes littorales dans la région de Nefza au gouvernorat de Béja.",
+   "acheteur": "Comissariat Régional au Développement Agricole de Beja",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "BEJA",
+   "regions_lots": [
+    "BEJA"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-08",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    7500
+   ],
+   "cautionnement_total_dt": 7500,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104580",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Béja"
+  },
+  "Tender-104579": {
+   "numero": "Tender-104579",
+   "objet": "fourniture des batteries",
+   "descriptif": "",
+   "acheteur": "Société Régionale de Transport de Médenine",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MEDNINE",
+   "regions_lots": [
+    "MEDNINE"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-04",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-04",
+   "cautionnement_provisoire_dt": [
+    1000
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104579",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Autres",
+   "gouvernorat": "Médenine"
+  },
+  "Tender-104578": {
+   "numero": "Tender-104578",
+   "objet": "Nourriture des malades et médecins de garde hopital 2027",
+   "descriptif": "",
+   "acheteur": "Hopital Local de Grombalia",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "NABEUL",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-07",
+   "heure_limite": "10:30",
+   "date_ouverture": "2026-12-07",
+   "cautionnement_provisoire_dt": [
+    1000
+   ],
+   "cautionnement_total_dt": 1000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104578",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Alimentation",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104576": {
+   "numero": "Tender-104576",
+   "objet": "Acquisition des tickets restaurants et cadeaux",
+   "descriptif": "",
+   "acheteur": "Société Tunisienne du Gazoduc Transtunisien",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-04",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-04",
+   "cautionnement_provisoire_dt": [
+    2500
+   ],
+   "cautionnement_total_dt": 2500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104576",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "Alimentation",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104575": {
+   "numero": "Tender-104575",
+   "objet": "تهيئة وصيانة وتوسعة بالمدرسة الابتدائية الجميعات السواسي",
+   "descriptif": "",
+   "acheteur": "Commissariat Régionale de l'Education de Mahdia",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MAHDIA",
+   "regions_lots": [
+    "MAHDIA"
+   ],
+   "date_publication": "2026-11-04",
+   "date_limite": "2026-12-08",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    10000
+   ],
+   "cautionnement_total_dt": 10000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104575",
+   "source": "HAICOP",
+   "lu_le": "2026-11-04 13:53",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Mahdia"
   }
  },
- "mis_a_jour": "2026-11-04 07:33",
+ "mis_a_jour": "2026-11-04 13:53",
  "dernier_passage": {
-  "date": "2026-11-04 07:33",
+  "date": "2026-11-04 13:53",
   "liste_ok": true,
-  "lus": 0,
+  "lus": 10,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-04 07:33",
+ "derniere_lecture_reussie": "2026-11-04 13:53",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-04 07:33",
+  "depuis": "2026-11-04 13:53",
   "raison": ""
  }
 }
