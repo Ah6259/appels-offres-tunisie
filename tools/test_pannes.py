@@ -683,6 +683,14 @@ with copie_site() as s:
     ok_d = {"derniere_lecture_reussie": "2026-10-15 06:00"}
     check("alerte entreprises : feuille non branchée -> rien ; branchée et illisible depuis 3 jours -> ÉCHEC",
           SP.en_panne(ok_d, "2026-10-15", {}, "") == [] and len(SP.en_panne(ok_d, "2026-10-15", {"derniere_lecture": "2026-10-12 06:00"}, "https://x")) == 1)
+    # 06/11/2026 (règle commune § 55) : site qui REFUSE la connexion = sommeil (pas d'échec) pendant SOMMEIL_MAX_JOURS, puis alarme ;
+    # une erreur de lecture chez nous (format changé) n'est jamais en sommeil
+    _r = "page injoignable (<urlopen error [Errno 111] Connection refused>)"
+    _f = (dt.date(2026, 10, 21) + dt.timedelta(days=SP.SOMMEIL_MAX_JOURS)).isoformat()
+    check("source dont le site refuse la connexion : en sommeil jusqu'à SOMMEIL_MAX_JOURS, alarme après ; format changé : jamais en sommeil",
+          SP.en_sommeil("2026-10-21 06:00", _r, "2026-11-06") == _f and SP.en_sommeil("2026-10-21", _r, (dt.date.fromisoformat(_f) + dt.timedelta(days=1)).isoformat()) is None
+          and SP.en_sommeil("2026-10-21", "format changé : colonnes manquantes", "2026-11-06") is None and SP.en_sommeil("", _r, "2026-11-06") is None
+          and SP.en_sommeil("2026-10-21", "HTTP Error 403: Forbidden", "2026-11-06") == _f)
     d["derniere_lecture_reussie"] = f"{plus(JOUR, -4)} 06:00"
     ecrire_json(os.path.join(dd, "encheres.json"), d)
     construire(s)
