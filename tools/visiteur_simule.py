@@ -28,8 +28,12 @@ import urllib.parse
 ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.dirname(ICI)
 MAX_PAGES = int(os.environ.get("MAX_PAGES", "40"))
+# Pages d'un AUTRE dépôt servies sous le même domaine (clicvia.com/tableau-bord/) : absentes ici, pas des liens morts (28/10/2026)
+AUTRES_DEPOTS = ("/tableau-bord/",)
 IGNORE = re.compile(r"^(https?:|mailto:|tel:|data:|javascript:|#|//|whatsapp:|sms:)", re.I)
 
+
+NOM_TMP = f"_visiteur_simule_{os.getpid()}.html"   # propre à chaque lancement (21/10/2026 : deux lancements se gênaient)
 
 def chrome():
     for c in (os.environ.get("CHROME"), "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", shutil.which("google-chrome"),
@@ -83,6 +87,8 @@ def liens_morts(pages):
             if not u or IGNORE.match(u) or "{" in u:
                 continue
             u = urllib.parse.unquote(u.split("#")[0].split("?")[0])
+            if u.startswith(AUTRES_DEPOTS):
+                continue
             if not u:
                 continue
             cible = os.path.normpath(os.path.join(RACINE, u.lstrip("/")) if u.startswith("/") else os.path.join(RACINE, os.path.dirname(p), u))
@@ -132,17 +138,40 @@ PC = 1280                                  # largeur d'un écran d'ordinateur (1
 N_PC = 12                                  # pages revues aussi sur PC (accueil d'abord)
 
 
-def visiter(port, liste, nav, largeur=390):
-    shutil.copy(os.path.join(ICI, "visiteur_simule.html"), os.path.join(RACINE, "_visiteur_simule.html"))
+LIMITE_PAQUET = 420                        # secondes pour un paquet de pages (22/10/2026)
+
+
+def visiter(port, liste, nav, largeur=390, sans_images=False):
+    shutil.copy(os.path.join(ICI, "visiteur_simule.html"), os.path.join(RACINE, NOM_TMP))
     try:
-        u = f"http://127.0.0.1:{port}/_visiteur_simule.html?w={largeur}&l=" + urllib.parse.quote(json.dumps(liste))
-        r = subprocess.run([nav, "--headless", "--no-sandbox", "--disable-gpu", f"--window-size={largeur + 10},1400", "--hide-scrollbars",
-                            f"--virtual-time-budget={20000 + 4000 * len(liste)}", "--dump-dom", u], capture_output=True, text=True, encoding="utf-8", errors="replace",
-                           timeout=900).stdout or ""   # UTF-8 : sous Windows, la sortie était lue en cp1252 et perdue (20/10/2026)
+        u = f"http://127.0.0.1:{port}/{NOM_TMP}?w={largeur}&l=" + urllib.parse.quote(json.dumps(liste))
+        cmd = [nav, "--headless", "--no-sandbox", "--disable-gpu", f"--window-size={largeur + 10},1400", "--hide-scrollbars",
+               f"--virtual-time-budget={20000 + 4000 * len(liste)}", "--dump-dom", u]
+        if sans_images:
+            cmd.insert(1, "--blink-settings=imagesEnabled=false")
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                               timeout=LIMITE_PAQUET).stdout or ""   # UTF-8 : sous Windows, la sortie était lue en cp1252 et perdue (20/10/2026)
+        except subprocess.TimeoutExpired:
+            # 22/10/2026 : la photo d'un AUTRE site qui ne répond jamais bloquait le navigateur, l'outil s'arrêtait sans rien dire
+            # (publication de l'immobilier bloquée) -> le paquet est revu SANS les images : mise en page, textes et chiffres
+            # toujours contrôlés ; ses pages sont notées « photos lentes » (à regarder, ne bloque pas). Deuxième dépassement : 0 visite
+            # (le compte des visites le signale, et bloque)
+            if sans_images:
+                return []
+            res = visiter(port, liste, nav, largeur, sans_images=True)
+            for x in res:
+                x["photos_lentes"] = True
+            return res
         t = re.search(r"<title>R(.*?)</title>", r, re.S)
-        return json.loads(html.unescape(t.group(1))) if t else []
+        res = json.loads(html.unescape(t.group(1))) if t else []
+        if sans_images:
+            for x in res:
+                x["images"] = []                   # images coupées exprès : pas « cassées »
+        return res
     finally:
-        os.remove(os.path.join(RACINE, "_visiteur_simule.html"))
+        try: os.remove(os.path.join(RACINE, NOM_TMP))
+        except FileNotFoundError: pass
 
 
 def nombre(texte):
@@ -188,6 +217,7 @@ def main():
                 anomalies.append(f"seulement {len(res)} visites sur {len(urls) + len(sc) + min(N_PC, len(urls))} (navigateur arrêté trop tôt ?)")
             groupes = {}
             lentes += [(r.get("s") or r["u"].replace(base, "")) for r in res if r.get("lent")]
+            lentes += [(r.get("s") or r["u"].replace(base, "")) + " (photos d'autres sites lentes)" for r in res if r.get("photos_lentes")]
             for r in res:
                 nom = (r.get("s") or r["u"].replace(base, "")) + (" (PC 1280 px)" if r.get("pc") else "")
                 if r.get("err"):
