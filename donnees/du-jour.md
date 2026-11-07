@@ -1,37 +1,36 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 04/11/2026 et le 06/11/2026 · 51 appels d'offres encore ouverts · mis à jour le 06/11/2026 à 13:51
+Publiés entre le 05/11/2026 et le 07/11/2026 · 44 appels d'offres encore ouverts · mis à jour le 07/11/2026 à 12:38
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
 
 ## Alimentation (3)
 
-### Nabeul
+### Gafsa
 
-- **Nourriture des malades et médecins de garde hopital 2027** — Hopital Local de Grombalia · Biens/ Autres Fournitures · date limite **07/12/2026 10:30** · caution 1 000 DT · [Tender-104578](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104578) (source : HAICOP)
+- **تزويد المستشفى الجامعي بقفصة بمواد غذائية خلال سنة 2027** — Hopital Régional Houcine Bouzeiene de Gafsa · Biens/ Nourriture · date limite **18/11/2026 10:00** · caution 3 100 DT · [Tender-104651](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104651) (source : HAICOP)
+
+### Sousse
+
+- **طلب عروض وطني لاقتناء مواد غذائية لتسديد حاجياته خلال سنة 2027** — Cité universitaire Ibn Sina Sousse · Biens/ Nourriture · date limite **13/11/2026 10:00** · caution 154 750 DT · [Tender-104650](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104650) (source : HAICOP)
 
 ### Tunis
 
 - **Acquisition de matériaux d'ensachage pour le conditionnement du sucre du thé et du riz** — Office du Commerce de Tunisie · Biens/ Fournitures · date limite **04/12/2026 10:00** · caution 60 304 DT · [Tender-104599](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104599) (source : HAICOP)
-- **Acquisition des tickets restaurants et cadeaux** — Société Tunisienne du Gazoduc Transtunisien · Biens/ Autres Fournitures · date limite **04/12/2026 10:00** · caution 2 500 DT · [Tender-104576](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104576) (source : HAICOP)
 
-## BTP / génie civil (26)
+## BTP / génie civil (22)
 
 ### Ariana
 
 - **Travaux de nettoyage de l'environnement routier - Programme d'entretien 2025/2026** — Direction Régionale de l’Equipement, de l’Habitat et de l’Aménagement du Territoire de l'Ariana · Travaux/ Autres travaux · date limite **07/12/2026 10:00** · caution 8 500 DT · [Tender-104606](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104606) (source : HAICOP)
+- **AO 91 /2026 Achèvement des travaux de revêtement de la voie d’accès au complexe culturel et sportif du quartier Aïchoucha El Matar et la réhabilitation d’une partie du réseau…** — Agence de Réhabilitation et de Rénovation Urbaine · Travaux/ VRD · date limite **08/12/2026 12:00** · caution 2 000 DT · [Tender-104642](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104642) (source : HAICOP)
 - **دراسة و إنجاز حضيرة الطائرة الرئاسيّة** — Office de l'Aviation Civile et des Aéroports · Travaux/ Revêtement routier · date limite **08/12/2026 10:00** · [Tender-104620](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104620) (source : HAICOP)
 - **Travaux d’éclairage public programme 2024** — Municipalité de l'Ariana · Travaux/ Autres travaux · date limite **08/12/2026 10:00** · caution 10 000 DT · [Tender-104605](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104605) (source : HAICOP)
 
 ### Ben Arous
 
-- **modernisation des voiries** — Municipalité Ben Arous · Travaux/ Routes · date limite **07/12/2026 11:00** · caution 30 000 DT · [Tender-104592](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104592) (source : HAICOP)
 - **Acquisition de matériels de propreté et de voiries** — Municipalité Boumhel Bassatine · Biens/ Autres Fournitures · date limite **15/12/2026 10:00** · caution 1 400 DT · [Tender-104634](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104634) (source : HAICOP)
 - **انجاز مشاريع تعبيد الطرقات والمسالك الفلاحية المندرجة ضمن البرنامج الجهوي للتنمية لسنة 2025** — Gouvernorat de Ben Arous · Travaux/ Autres travaux · date limite **15/12/2026 10:00** · caution 25 000 DT · [Tender-104619](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104619) (source : HAICOP)
-
-### Béja
-
-- **أشغال تثبيت 100 هك من الكثبان الساحلية بمنطقة الزوارع - الدماين بمعتمدية نفزة من ولاية باجة** — Comissariat Régional au Développement Agricole de Beja · Travaux/ VRD · date limite **08/12/2026 10:00** · caution 7 500 DT · [Tender-104580](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104580) (source : HAICOP)
 
 ### Gabès
 
@@ -39,20 +38,19 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 ### Jendouba
 
+- **entretien de l'espace sportif du lycée khmais hajri jendouba pour 2 eme fois** — Commissariat régional de l'éducation à Jendouba · Travaux/ Génie Civil · date limite **08/12/2026 10:00** · caution 12 000 DT · [Tender-104643](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104643) (source : HAICOP)
 - **أشغــال تهيئة وتعبيد مسالك ريفية بولاية جندوبة ضمن البرنامج الجهوي للتنمية لسنة 2026 (موزعة على 05 أقساط)** — Gouvernorat de Jendouba · Travaux/ Ascenseur · date limite **09/12/2026 10:00** · caution 109 000 DT · [Tender-104623](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104623) (source : HAICOP)
 
 ### Kasserine
 
 - **Travaux d’Aménagement et de Revêtement de 47.46 Km de Pistes Rurales Dans le Gouvernorat de Kasserine : Lot 6 (20.19 km), Lot 7 (13.19) et Lot 8 (14.08 km)** — Ministère de l'équipement, de l'habitat et de l'aménagement du territoire · Travaux/ Autres travaux · date limite **15/12/2026 09:30** · caution 659 995 DT · [Tender-104627](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104627) (source : HAICOP)
 
-### Mahdia
+### Kébili
 
-- **تهيئة وصيانة وتوسعة بالمدرسة الابتدائية الجميعات السواسي** — Commissariat Régionale de l'Education de Mahdia · Travaux/ Génie Civil · date limite **08/12/2026 09:30** · caution 10 000 DT · [Tender-104575](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104575) (source : HAICOP)
+- **بناء قاعة ألعاب فردية بالقلعة-قبلي** — Gouvernorat de Kebili · Travaux/ Génie Civil · date limite **07/12/2026 10:30** · caution 10 000 DT · [Tender-104640](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104640) (source : HAICOP)
 
 ### Médenine
 
-- **اقتناء و تركيب تجهيزات فولطاضوئية لمحطّات الضّخ** — Commissariat Régional au Développement Agricole de Medenine · Biens/ Autres Fournitures · date limite **26/11/2026 10:00** · caution 1 500 DT · [Tender-104585](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104585) (source : HAICOP)
-- **إحداث بئر إستكشافية " الشرف" بعمق 1000 م بمنطقة الظاهر من معتمدية بني خداش بولاية مدنين** — Commissariat Régional au Développement Agricole de Medenine · Travaux/ Forages hydrauliques · date limite **04/12/2026 10:00** · caution 35 000 DT · [Tender-104595](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104595) (source : HAICOP)
 - **اقتناء وتركيز تجهيزات هيدروميكانيكية و كهربائية على الآبار العميقة** — Commissariat Régional au Développement Agricole de Medenine · Biens/ Autres Fournitures · date limite **07/12/2026 10:00** · caution 2 500 DT · [Tender-104614](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104614) (source : HAICOP)
 - **إحداث شبكة نقاط ري بمياه التحلية ببنيري معتمدية بن قردان** — Commissariat Régional au Développement Agricole de Medenine · Travaux/ Autres travaux · date limite **08/12/2026 10:00** · caution 8 000 DT · [Tender-104611](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104611) (source : HAICOP)
 - **أشغال انجاز محطة التحلية ببنيري من معتمدية بن قردان** — Commissariat Régional au Développement Agricole de Medenine · Travaux/ Autres travaux · date limite **09/12/2026 10:00** · caution 10 000 DT · [Tender-104632](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104632) (source : HAICOP)
@@ -60,7 +58,6 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### Nabeul
 
 - **ACQUISITION DE MATÉRIEL DE PROPRETÉ ET VOIRIES AU PROFIT DU COMMUNE DE BÉNI KHALLED** — Municipalité Béni Khalled · Biens/ Matériel · date limite **03/12/2026 10:00** · caution 6 500 DT · [Tender-104602](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104602) (source : HAICOP)
-- **الصيانة العامة لتجهيزات منظومة الماء الصالح للشرب** — Gouvernorat de Nabeul · Biens/ Matériels électriques · date limite **04/12/2026 10:00** · caution 6 500 DT · [Tender-104596](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104596) (source : HAICOP)
 
 ### Sfax
 
@@ -75,18 +72,16 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **: اشغال تهيئة و تعبيد 02 مسالك ريفية بطول 1.2 كلم بولاية سليانة تهيئة و تعبيد المسلك الريفي ام الزيد من معتمدية قعفور و تهيئة و تعبيد المسلك الريفي اولاد عرفة من معتمدية بورويس.** — Gouvernorat de Siliana · Travaux/ Routes · date limite **02/12/2026 10:00** · caution 6 500 DT · [Tender-104604](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104604) (source : HAICOP)
 
+### Sousse
+
+- **TRAVAUX D’ENTRETIEN DES VOIRIES DANS LE CADRE DU DEUXIEME TRANCHE DU PROGRAMME DU MODERNISATION DES VOIRES A LA COMMUNE D’AKOUDA** — Municipalité de Akouda · Travaux/ Fondation Spéciale · date limite **08/12/2026 10:00** · caution 24 000 DT · [Tender-104649](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104649) (source : HAICOP)
+
 ### Tunis
 
-- **Aménagement du foyer universitaire Ras Tabia Bloc B et D et Entrée principale – tranche 01** — Gouvernorat de Tunis · Travaux/ Génie Civil · date limite **04/12/2026 10:00** · caution 35 000 DT · [Tender-104590](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104590) (source : HAICOP)
-- **تهيئة وتوسعة محكمة الناحية بباب بنات** — Gouvernorat de Tunis · Travaux/ Génie Civil · date limite **04/12/2026 10:00** · caution 10 000 DT · [Tender-104588](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104588) (source : HAICOP)
-- **تجديد قنوات البخار الخاص بالغسالة** — Hopital Militaire Principal d’Instruction de Tunis · Travaux/ Equipements sanitaires · date limite **07/12/2026 10:00** · caution 1 400 DT · [Tender-104584](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104584) (source : HAICOP)
 - **Acquisition de matériels de propreté et de voirie au profit des communes (2ème fois)** — Caisse des Prêts et de Soutien des Collectivités Locales · Biens/ Matériels roulants · date limite **08/12/2026 10:00** · caution 630 500 DT · [Tender-104625](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104625) (source : HAICOP)
+- **هدم وإعادة بناء السور الخارجي للمعهد العالي لإطارات الطفولة بقرطاج درمش** — Gouvernorat de Tunis · Travaux/ Génie Civil · date limite **09/12/2026 10:00** · caution 2 000 DT · [Tender-104646](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104646) (source : HAICOP)
 
 ## Études / conseil (5)
-
-### Ben Arous
-
-- **دراسة مثال التهيئة العمرانية** — Municipalité de Mornag · Etudes/ Etudes · date limite **08/12/2026 09:50** · [Tender-104594](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104594) (source : HAICOP)
 
 ### Bizerte
 
@@ -103,6 +98,7 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### Tunis
 
 - **DESIGNATION D’AVOCATS OU DE CABINETS D'AVOCATS PROFESSIONNELS POUR REPRESENTER L'APIP DEVANT LES TRIBUNAUX ET AUTRES INSTANCES JUDICIAIRES PENDANT DES ANNEES 2027/2029 - EN…** — Agence des Ports et des Installations de la Peche · Services/ Autres services · date limite **04/12/2026 10:30** · [Tender-104598](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104598) (source : HAICOP)
+- **étude géotechnique pour le projet Construction de la centre de la sureté national cité hlal** — Gouvernorat de Tunis · Etudes/ Etudes · date limite **09/12/2026 10:30** · [Tender-104647](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104647) (source : HAICOP)
 
 ## Fournitures de bureau (1)
 
@@ -116,31 +112,32 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **Mise à jour du système de messagerie** — Entreprise Tunisienne des Activités Pétrolières · Biens/ Matériels informatiques · date limite **08/12/2026 09:00** · caution 5 000 DT · [Tender-104621](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104621) (source : HAICOP)
 
-## Médical (2)
+## Médical (3)
 
 ### Tunis
 
+- **Consultation nationale C1/2027 SPECIALITES PHARMACEUTIQUES HOSPITALIERES 2027** — Pharmacie Centrale de Tunisie · Biens/ Produits pharmaceutiques · date limite **03/12/2026 09:00** · caution 3 DT · [Tender-104644](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104644) (source : HAICOP)
 - **achat des matériels pour le laboratoire** — Office du Thermalisme · Biens/ Autres Fournitures · date limite **07/12/2026 10:00** · caution 3 100 DT · [Tender-104568](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104568) (source : HAICOP)
 
 ### Zaghouan
 
 - **التزود بالمعدات و التجهيزات الطبية و الاثاث فى اطار مشروع توسعة المستشفى الجهوي بزغوان** — Hôpital Régional de Zaghoun · Biens/ Matériel Médical · date limite **07/12/2026 10:00** · caution 9 500 DT · [Tender-104635](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104635) (source : HAICOP)
 
-## Nettoyage / gardiennage (2)
-
-### Sfax
-
-- **اقتناء معدات نظافة لفائدة بلدية ساقية الدائر (اعادة القسط 2 و القسط 3)** — Municipalité Sakiet Eddaier · Biens/ Matériel · date limite **30/11/2026 09:00** · caution 2 300 DT · [Tender-104591](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104591) (source : HAICOP)
+## Nettoyage / gardiennage (1)
 
 ### Tunis
 
 - **قصد اكتتاب عقود تأمين متعدد المخاطر لسنوات 2027 و2028 و2029** — Agence Tunisienne de la Formation Professionnelle · Services/ Nettoyage · date limite **09/12/2026 10:00** · caution 140 000 DT · [Tender-104603](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104603) (source : HAICOP)
 
-## Transport / véhicules (3)
+## Transport / véhicules (5)
 
 ### Béja
 
 - **اقتناء وتركيب تجهيزات كهرومائية لضخ الماء الصالح للشرب** — Gouvernorat de Béja · Biens/ Matériels électroniques · date limite **07/12/2026 10:00** · caution 4 DT · [Tender-104626](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104626) (source : HAICOP)
+
+### La Manouba
+
+- **Acquisition des moyens de transport** — Université de la Manouba · Biens/ Matériels roulants · date limite **25/11/2026 11:00** · caution 3 900 DT · [Tender-104641](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104641) (source : HAICOP)
 
 ### Plusieurs gouvernorats
 
@@ -149,31 +146,18 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 ### Tunis
 
 - **L'acquisition de matériels de propreté et de moyens de transport en quatre lots** — Municipalité du Bardo · Services/ Autres services · date limite **07/12/2026 10:00** · caution 6 040 DT · [Tender-104615](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104615) (source : HAICOP)
+- **ACQUISITION DE PIECES DE RECHANGE DES SYSTEMES D’OBSERVATION METEOROLOGIQUE** — Institut National de la Météorologie · Biens/ Autres Fournitures · date limite **11/12/2026 10:00** · caution 2 700 DT · [Tender-104639](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104639) (source : HAICOP)
 
-## Autres (8)
+## Autres (3)
 
 ### Gafsa
 
 - **إقتناء تجهيزات تبريد** — Commissariat Régional au Développement Agricole de Gafsa · Biens/ Autres types de matériels · date limite **19/11/2026 09:00** · [Tender-104601](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104601) (source : HAICOP)
 
-### Jendouba
-
-- **acquisition des tenues de travail** — Commissariat Régional au Développement Agricole de Jendouba · Biens/ Habillement · date limite **03/12/2026 10:00** · caution 1 510 DT · [Tender-104581](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104581) (source : HAICOP)
-
-### Kébili
-
-- **Fourniture chargeuse sur pneus** — Commissariat Régional au Développement Agricole de KEBILI · Biens/ Autres Fournitures · date limite **07/12/2026 09:30** · caution 3 500 DT · [Tender-104582](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104582) (source : HAICOP)
-
-### Médenine
-
-- **fourniture des batteries** — Société Régionale de Transport de Médenine · Biens/ Autres Fournitures · date limite **04/12/2026 09:00** · caution 1 000 DT · [Tender-104579](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104579) (source : HAICOP)
-
 ### Tunis
 
 - **Appel d’offres n°05/2026 selon les Procédures simplifiées LOCATION DE MATRIEL DE SONORISATION, LUMIERE, PROJECTEUR VIDEO, SCENE ET STRUCTURE ALUMINIUM AU PROFIT DES JCC 2026** — Centre national du cinéma et de l'image · Services/ Autres services · date limite **23/11/2026 12:00** · caution 1 500 DT · [Tender-104617](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104617) (source : HAICOP)
-- **La souscription des contrats d'assurances pour les années 2027-2028-2029** — Société Tunisienne du Gazoduc Transtunisien · Services/ Autres services · date limite **04/12/2026 15:00** · caution 3 000 DT · [Tender-104589](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104589) (source : HAICOP)
 - **اقتناء وسائل اتصالية مشخصة2026** — Agence Nationale pour la Maîtrise de l’Energie · Biens/ Autres Fournitures · date limite **07/12/2026 10:00** · caution 1 230 DT · [Tender-104600](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104600) (source : HAICOP)
-- **اقتناء تو تركيب و تشغيل وحدة تصفية المياه** — Hopital Militaire Principal d’Instruction de Tunis · Biens/ Matériel · date limite **07/12/2026 10:00** · caution 5 000 DT · [Tender-104583](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104583) (source : HAICOP)
 
 ---
 Source : HAICOP — Haute Instance de la Commande Publique (www.marchespublics.gov.tn).

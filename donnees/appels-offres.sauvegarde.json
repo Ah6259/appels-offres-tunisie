@@ -17658,21 +17658,371 @@
    "lu_le": "2026-11-06 13:51",
    "metier": "Études / conseil",
    "gouvernorat": "Bizerte"
+  },
+  "Tender-104651": {
+   "numero": "Tender-104651",
+   "objet": "تزويد المستشفى الجامعي بقفصة بمواد غذائية خلال سنة 2027",
+   "descriptif": "تزويد المستشفى الجامعي بقفصة بمواد غذائية خلال سنة 2027",
+   "acheteur": "Hopital Régional Houcine Bouzeiene de Gafsa",
+   "type_commande": "Biens/ Nourriture",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-11-07",
+   "date_limite": "2026-11-18",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-18",
+   "cautionnement_provisoire_dt": [
+    1000,
+    500,
+    100,
+    1000,
+    500
+   ],
+   "cautionnement_total_dt": 3100,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "5",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104651",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:37",
+   "metier": "Alimentation",
+   "gouvernorat": "Gafsa"
+  },
+  "Tender-104650": {
+   "numero": "Tender-104650",
+   "objet": "طلب عروض وطني لاقتناء مواد غذائية لتسديد حاجياته خلال سنة 2027",
+   "descriptif": "طلب عروض وطني لاقتناء مواد غذائية لتسديد حاجياته خلال سنة 2027",
+   "acheteur": "Cité universitaire Ibn Sina Sousse",
+   "type_commande": "Biens/ Nourriture",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-11-13",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-11-13",
+   "cautionnement_provisoire_dt": [
+    1000,
+    250,
+    300,
+    700,
+    150000,
+    500,
+    650,
+    450,
+    600,
+    300
+   ],
+   "cautionnement_total_dt": 154750,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "10",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104650",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:37",
+   "metier": "Alimentation",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104649": {
+   "numero": "Tender-104649",
+   "objet": "TRAVAUX D’ENTRETIEN DES VOIRIES DANS LE CADRE DU DEUXIEME TRANCHE DU PROGRAMME DU MODERNISATION DES VOIRES A LA COMMUNE D’AKOUDA",
+   "descriptif": "",
+   "acheteur": "Municipalité de Akouda",
+   "type_commande": "Travaux/ Fondation Spéciale",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SOUSSE",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-08",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    24000
+   ],
+   "cautionnement_total_dt": 24000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104649",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104647": {
+   "numero": "Tender-104647",
+   "objet": "étude géotechnique pour le projet Construction de la centre de la sureté national cité hlal",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Tunis",
+   "type_commande": "Etudes/ Etudes",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-09",
+   "heure_limite": "10:30",
+   "date_ouverture": "2026-12-09",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104647",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "Études / conseil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104646": {
+   "numero": "Tender-104646",
+   "objet": "هدم وإعادة بناء السور الخارجي للمعهد العالي لإطارات الطفولة بقرطاج درمش",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Tunis",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-09",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-09",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104646",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104644": {
+   "numero": "Tender-104644",
+   "objet": "Consultation nationale C1/2027 SPECIALITES PHARMACEUTIQUES HOSPITALIERES 2027",
+   "descriptif": "CONSULTATION NATIONALE C1-2027 SPECIALITES PHARMACEUTIQUES HOSPITALIERES 2027 LANCE SUR TUNEPS LE 3/11/2026",
+   "acheteur": "Pharmacie Centrale de Tunisie",
+   "type_commande": "Biens/ Produits pharmaceutiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-03",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    1,
+    1,
+    1
+   ],
+   "cautionnement_total_dt": 3,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "3",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104644",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "Médical",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104643": {
+   "numero": "Tender-104643",
+   "objet": "entretien de l'espace sportif du lycée khmais hajri jendouba pour 2 eme fois",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation à Jendouba",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "JENDOUBA",
+   "regions_lots": [
+    "JENDOUBA"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-08",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    12000
+   ],
+   "cautionnement_total_dt": 12000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104643",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Jendouba"
+  },
+  "Tender-104642": {
+   "numero": "Tender-104642",
+   "objet": "AO 91 /2026 Achèvement des travaux de revêtement de la voie d’accès au complexe culturel et sportif du quartier Aïchoucha El Matar et la réhabilitation d’une partie du réseau d’évacuation des eaux usées",
+   "descriptif": "",
+   "acheteur": "Agence de Réhabilitation et de Rénovation Urbaine",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ARIANA",
+   "regions_lots": [
+    "ARIANA"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-08",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-12-08",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "> 5",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104642",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Ariana"
+  },
+  "Tender-104641": {
+   "numero": "Tender-104641",
+   "objet": "Acquisition des moyens de transport",
+   "descriptif": "اقتناء وسائل نقل بيداغوجيّة لفـائدة المؤسّسات الراجعة بالنظر لجامعة منوبة",
+   "acheteur": "Université de la Manouba",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "MANOUBA"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-11-25",
+   "heure_limite": "11:00",
+   "date_ouverture": "2026-11-25",
+   "cautionnement_provisoire_dt": [
+    1700,
+    2200
+   ],
+   "cautionnement_total_dt": 3900,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104641",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "La Manouba"
+  },
+  "Tender-104639": {
+   "numero": "Tender-104639",
+   "objet": "ACQUISITION DE PIECES DE RECHANGE DES SYSTEMES D’OBSERVATION METEOROLOGIQUE",
+   "descriptif": "",
+   "acheteur": "Institut National de la Météorologie",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-11",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-11",
+   "cautionnement_provisoire_dt": [
+    500,
+    550,
+    1200,
+    250,
+    200
+   ],
+   "cautionnement_total_dt": 2700,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "5",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104639",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104640": {
+   "numero": "Tender-104640",
+   "objet": "بناء قاعة ألعاب فردية بالقلعة-قبلي",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Kebili",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-11-06",
+   "date_limite": "2026-12-07",
+   "heure_limite": "10:30",
+   "date_ouverture": "2026-12-07",
+   "cautionnement_provisoire_dt": [
+    10000
+   ],
+   "cautionnement_total_dt": 10000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104640",
+   "source": "HAICOP",
+   "lu_le": "2026-11-07 12:38",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
   }
  },
- "mis_a_jour": "2026-11-06 13:51",
+ "mis_a_jour": "2026-11-07 12:38",
  "dernier_passage": {
-  "date": "2026-11-06 13:51",
+  "date": "2026-11-07 12:38",
   "liste_ok": true,
-  "lus": 23,
+  "lus": 11,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-06 13:51",
+ "derniere_lecture_reussie": "2026-11-07 12:38",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-06 13:51",
+  "depuis": "2026-11-07 12:38",
   "raison": ""
  }
 }
