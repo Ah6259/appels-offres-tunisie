@@ -1,32 +1,44 @@
-# RELANCE DE LA PUBLICATION (kit commun, 08/10/2026) — copié tel quel dans chaque site (ne pas modifier ici).
-# Quand plusieurs sites sont envoyés en même temps, la publication GitHub Pages peut rester bloquée « en file d'attente »
-# puis échouer sans aucune faute du site (cas d'avocats-notaires et de mariage le 08/10). Ce robot la relance tout seul,
-# 3 fois au plus pour la même version ; Ahmed n'est prévenu que si la 3e relance échoue aussi.
+# RELANCE DE LA PUBLICATION (kit commun, 08/10/2026 ; refait le 07/11/2026) — copié tel quel dans chaque site (ne pas modifier ici).
+# Quand plusieurs sites sont envoyés en même temps, la publication GitHub Pages peut échouer (délai dépassé) sans aucune faute
+# du site. Ce robot la relance tout seul, 3 fois au plus pour la même version ; il ne devient rouge que si la 3e relance échoue.
+# 07/11/2026 : l'ancienne version attendait l'événement « workflow_run » de « pages build and deployment » ; GitHub ne l'envoie
+# JAMAIS pour ce robot de publication (aucune relance faite depuis le 08/10 dans aucun dépôt). Elle regarde donc elle-même,
+# chaque heure, si la dernière publication a échoué (règle commune § 55 : une panne qui revient se répare seule).
 name: Relance de la publication
 on:
-  workflow_run:
-    workflows: ["pages build and deployment"]
-    types: [completed]
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
 permissions:
   pages: write
   actions: read
+concurrency:
+  group: relance-pages
+  cancel-in-progress: false
 jobs:
   relancer:
-    if: github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Relancer la publication (3 fois au plus pour la même version)
+      - name: Relancer la publication si la dernière a échoué (3 fois au plus pour la même version)
         env:
           GH_TOKEN: ${{ github.token }}
-          SHA: ${{ github.event.workflow_run.head_sha }}
+          R: ${{ github.repository }}
         run: |
-          echecs=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=50" \
+          derniere=$(gh api "repos/$R/actions/runs?per_page=30" \
+                     -q '[.workflow_runs[] | select(.name == "pages build and deployment")][0] | "\(.status) \(.conclusion) \(.head_sha)"' 2>/dev/null || true)
+          echo "Dernière publication : ${derniere:-aucune}"
+          read -r etat conclusion sha <<< "$derniere"
+          if [ "$etat" != "completed" ] || [ "$conclusion" != "failure" ]; then
+            echo "Rien à faire."
+            exit 0
+          fi
+          echecs=$(gh api "repos/$R/actions/runs?head_sha=$sha&per_page=50" \
                    -q '[.workflow_runs[] | select(.name == "pages build and deployment" and .conclusion == "failure")] | length' 2>/dev/null || echo 1)
           echo "Échecs de publication pour cette version : $echecs"
           if [ "$echecs" -gt 3 ]; then
             echo "::error::La publication échoue encore après 3 relances : à regarder."
             exit 1
           fi
-          sleep $((60 * echecs))
-          gh api -X POST "repos/${{ github.repository }}/pages/builds" -q .status
+          gh api -X POST "repos/$R/pages/builds" -q .status
+          echo "Publication relancée."
