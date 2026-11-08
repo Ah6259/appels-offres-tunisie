@@ -51,6 +51,13 @@ const changer = (w, id, v) => { const s = w.document.getElementById(id); s.value
   const exact = (l, avec) => { const n = l.map(norm), att = [...OFFICIELS, ...avec.map(norm)];
     return n.length === att.length && new Set(n).size === n.length && att.every(o => n.includes(o)) && n.every(x => att.includes(x)); };
   const acc = lire("index.html");
+// 08/11/2026 (plan SEO d'Ahmed, tous les sites) : titre <= 70 caractères et description <= 170 sur chaque page construite (Google coupe au-delà)
+{ const dec = x => x.replace(/&#x27;|&#39;|&apos;/g, "’").replace(/&amp;/g, "&").replace(/&quot;/g, '"'), longs = [], toutes = [];
+  const voir = d => { for (const x of readdirSync(join(root, d))) { const p = (d ? d + "/" : "") + x; if (x === "node_modules" || x.startsWith(".")) continue;
+    if (statSync(join(root, p)).isDirectory()) voir(p); else if (x === "index.html") toutes.push(p); } }; voir("");
+  for (const p of toutes) { const h = lire(p); const t = dec((h.match(/<title>([^<]*)<\/title>/) || [])[1] || ""), d = dec((h.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "");
+    if (t.length > 70 || t.length < 10) longs.push(`${p} titre ${t.length}`); if (d.length > 170 || d.length < 40) longs.push(`${p} description ${d.length}`); }
+  check(`SEO : titre de 10 à 70 caractères et description de 40 à 170 sur les ${toutes.length} pages` + (longs.length ? " — " + longs.slice(0, 4).join(" ; ") : ""), toutes.length > 30 && longs.length === 0); }
   const m = acc.match(/<select id="f-gouv"[^>]*>([\s\S]*?)<\/select>/);
   const vals = m ? [...m[1].matchAll(/<option value="([^"]*)"/g)].map(o => o[1]).filter(Boolean) : [];
   check("lieux : liste « Gouvernorat » de l'accueil = les 24 gouvernorats officiels + « national » et « plusieurs », rien d'autre", exact(vals, Object.keys(EXCEPTIONS)));

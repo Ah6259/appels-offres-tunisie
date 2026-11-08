@@ -170,3 +170,10 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   dans le pied de page (page.js) et sur l'accueil (carte « Comment ça marche ? »). Test `FONCTIONS` dans tools/test_site.mjs
   (repère dans le site -> phrase attendue dans la page) : une fonction absente = test rouge. Nouvelle fonction = une ligne dans
   `FONCTIONS` + son explication dans la liste `fonctions` de construire_site.py.
+
+- **08/11/2026 — plan SEO d'Ahmed appliqué à ce site (phase 2, contrôle commun `outils visibilite/controle_seo.mjs` de projets-ahmed ;
+  plan : `consignes des taches/seo-appels-offres.md`)** : `titre_seo()` / `desc_seo()` dans `page()` (titre <= 70 caractères, description <= 165 :
+  suffixe « | Alertes appels d'offres » retiré, coupe à un séparateur ou en fin de phrase) ; titres de l'accueil, des métiers et des
+  gouvernorats raccourcis (« Appels d'offres Tunisie : N ouverts, consultation gratuite ») ; h2 « La liste » au-dessus des cartes (plus
+  de saut h1 -> h3) ; test « SEO : titre de 10 à 70 caractères et description de 40 à 170 ». Les tests du site ont besoin de
+  `node --max-old-space-size=6144` ici (mémoire). Reste (phase 2 point 7) : une adresse par langue (FR et AR mêlés sous lang="fr").

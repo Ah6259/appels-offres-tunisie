@@ -468,19 +468,26 @@ def filtres(aos, avec_metier=True, avec_gouv=True):
     return f'<section class="carte filtres">{"".join(blocs)}</section>'
 
 
+def titre70(long, court):
+    """SEO (08/11/2026) : Google coupe les titres vers 60-70 caractères -> version courte si la longue dépasse."""
+    return long if len(long) <= 70 else court
+
+
 def liste_html(aos, racine, jour, vide_fr, vide_ar, unite=None, cartes_html=None):
     """Liste filtrable. unite = (singulier FR, pluriel FR, arabe) pour le compteur (défaut : appels d'offres)."""
     cartes = cartes_html if cartes_html is not None else "\n".join(carte(a, racine, jour) for a in aos)
     n = len(aos)
+    # SEO (08/11/2026) : un h2 au-dessus des cartes (h3) : aucun niveau de titre sauté après le h1
+    h2 = f'<h2 class="titre-section titre-liste">{L("La liste", "القائمة")}</h2>\n'
     if unite:
         u1, un, uar = unite
-        return f"""<p class="compte" id="compte" aria-live="polite" data-un="{E(u1)}" data-pl="{E(un)}" data-ar="{E(uar)}"><span>{n} {E(u1 if n <= 1 else un)}</span></p>
+        return h2 + f"""<p class="compte" id="compte" aria-live="polite" data-un="{E(u1)}" data-pl="{E(un)}" data-ar="{E(uar)}"><span>{n} {E(u1 if n <= 1 else un)}</span></p>
 <div class="liste" id="liste">
 {cartes}
 </div>
 <button type="button" class="plus" id="plus" hidden>Afficher plus</button>
 <p class="carte vide" id="vide"{' hidden' if aos else ''}>{L(vide_fr, vide_ar)}</p>"""
-    return f"""<p class="compte" id="compte" aria-live="polite"><span>{n} appel{'s' if n > 1 else ''} d'offres ouvert{'s' if n > 1 else ''}</span></p>
+    return h2 + f"""<p class="compte" id="compte" aria-live="polite"><span>{n} appel{'s' if n > 1 else ''} d'offres ouvert{'s' if n > 1 else ''}</span></p>
 <div class="liste" id="liste">
 {cartes}
 </div>
@@ -544,7 +551,32 @@ AVIS = """<section class="carte avis" id="avis" aria-labelledby="avis-titre">
 </section>"""
 
 
+def titre_seo(t, maxi=70):
+    """SEO (08/11/2026, plan d'Ahmed pour tous les sites) : Google coupe les titres vers 60-70 caractères. Le suffixe « | Alertes appels
+    d'offres » saute si le titre dépasse ; s'il dépasse encore, coupé au dernier mot entier avec « … »."""
+    if len(t) <= maxi:
+        return t
+    t = t.split(" | ")[0].strip()
+    if len(t) <= maxi:
+        return t
+    for sep in (" : ", " — ", " (", " – "):
+        i = t.rfind(sep, 0, maxi)
+        if i >= 25:
+            return t[:i].rstrip(" ,;:—-")
+    return t[:maxi - 1].rsplit(" ", 1)[0].rstrip(" ,;:—-(") + "…"
+
+
+def desc_seo(d, maxi=165):
+    """Description <= 165 caractères : fin de la dernière phrase entière, sinon dernier mot entier + « … »."""
+    if len(d) <= maxi:
+        return d
+    coupe = d[:maxi]
+    i = coupe.rfind(". ")
+    return coupe[:i + 1] if i >= 60 else coupe[:maxi - 1].rsplit(" ", 1)[0].rstrip(" ,;:—-(") + "…"
+
+
 def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=(), og_image="assets/og-image-v6.jpg", og_type="website"):
+    titre, description = titre_seo(titre), desc_seo(description)
     canon = URL_SITE + chemin
     return f"""<!doctype html>
 <html lang="fr" dir="ltr" translate="no" data-racine="{racine}">
@@ -1154,9 +1186,9 @@ def construire(donnees, sortie, jour):
   <p class="lien-comment"><a href="a-propos/">{L("Comment fonctionne le site ?", "كيف يعمل الموقع؟")}</a></p>
 </section>"""
     contenu += "\n" + AVIS
-    titre = f"Appels d'offres Tunisie aujourd'hui — {len(vis)} ouverts, consultation gratuite | Alertes appels d'offres"
-    desc = ("Les nouveaux appels d'offres publics tunisiens chaque jour (source officielle HAICOP), triés par métier et par gouvernorat, "
-            "avec date limite et caution. Gratuit, sans inscription. طلبات العروض العمومية في تونس.")
+    titre = f"Appels d'offres Tunisie : {len(vis)} ouverts, consultation gratuite"      # <= 70 caractères (SEO)
+    desc = ("Les appels d'offres publics tunisiens du jour (source officielle HAICOP), par métier et gouvernorat, avec date limite et caution. "
+            "Gratuit, sans inscription.")
     hero = hero_carte(hero, cg, "")
     pages.append(("", page("", "", titre, desc, hero, contenu, v, etat, jsonld, " hero-photo")))
 
@@ -1172,9 +1204,8 @@ def construire(donnees, sortie, jour):
 {liste_html(sel, "../../", jour, f"Aucun appel d'offres « {E(fr)} » ouvert en ce moment. Revenez demain : la liste est mise à jour chaque jour.", f"لا يوجد حاليًا طلب عروض مفتوح في «{ar}». عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres métiers", "اختصاصات أخرى")}</h2>
 {grille(items_m, slug, "../../", "metier", cm, "grille-metiers", True)}"""
-        titre = f"Appels d'offres {fr} Tunisie — {len(sel)} ouverts, consultation gratuite | Alertes appels d'offres"
-        desc = (f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche officielle HAICOP. Gratuit, sans inscription. "
-                f"طلبات العروض: {ar}.")
+        titre = titre70(f"Appels d'offres {fr} Tunisie : {len(sel)} ouverts, consultation gratuite", f"Appels d'offres {fr} Tunisie : {len(sel)} ouverts")
+        desc = f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche HAICOP. Gratuit, sans inscription."
         pages.append((f"metier/{slug}/", page(f"metier/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
     # ---- une page par gouvernorat
@@ -1191,9 +1222,9 @@ def construire(donnees, sortie, jour):
 {liste_html(sel, "../../", jour, "Aucun appel d'offres ouvert en ce moment pour ce gouvernorat. Revenez demain : la liste est mise à jour chaque jour.", "لا يوجد حاليًا طلب عروض مفتوح في هذه الولاية. عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres gouvernorats", "ولايات أخرى")}</h2>
 {grille(items_g, slug, "../../", "gouvernorat", cg, "grille-gouv")}"""
-        titre = f"{h_fr} (Tunisie) — {len(sel)} ouverts, consultation gratuite | Alertes appels d'offres"
+        titre = titre70(f"{h_fr} (Tunisie) : {len(sel)} ouverts, consultation gratuite", f"{h_fr} : {len(sel)} ouverts")
         desc = (f"Appels d'offres publics {'— ' + nom.lower() if special else 'dans le gouvernorat de ' + nom}, encore ouverts, triés par date limite, "
-                f"avec caution et lien vers la fiche officielle HAICOP. Gratuit, sans inscription. {h_ar}.")
+                f"avec caution et lien vers la fiche HAICOP. Gratuit, sans inscription.")
         if not special:
             hero = hero_carte(hero, cg, "../../", slug)
         pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
