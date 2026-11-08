@@ -101,7 +101,7 @@ j = await essai({ page: "video/index.html", cible: "[data-partager-video]" });
 check("page vidéo : le bouton « Partager la vidéo » partage la page vidéo", (j.partages[0] || {}).url === SITE + "video/" && !(j.partages[0] || {}).files);
 const autre = ["fr", "ar", "en"].find(l => l !== DEFAUT && (pv.includes(`data-v${l}=`)));
 if (autre) {
-j = await essai({ query: "?lang=" + autre });
+j = existsSync(join(root, autre + "/index.html")) ? await essai({ page: autre + "/index.html" }) : await essai({ query: "?lang=" + autre });   // une adresse par langue (08/11/2026)
 check(`Partager (page en « ${autre} ») : page vidéo dans la même langue`, (j.partages[0] || {}).url === SITE + "video/?lang=" + autre);
 // 5. page vidéo dans l'autre langue (textes, vidéo de la langue)
 {

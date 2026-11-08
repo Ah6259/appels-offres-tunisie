@@ -71,6 +71,7 @@ function ressources() {
   return new Chargeur();
 }
 async function ouvrir(chemin, { lang = "fr" } = {}) {
+  if (lang === "ar" && existsSync(join(root, "ar", chemin))) chemin = "ar/" + chemin;   // une adresse par langue (08/11/2026)
   const fautes = [];
   const vc = new VirtualConsole();
   vc.on("jsdomError", e => { if (!/Not implemented|Could not load (img|link|script)/.test(e.message)) fautes.push(e.message); });
@@ -96,7 +97,7 @@ let w = await ouvrir("index.html"), d = w.document;
 check("accueil : aucune erreur JavaScript" + (w.fautes.length ? " — " + w.fautes[0] : ""), !w.fautes.length);
 const sec = d.getElementById("avis"), form = d.getElementById("avis-form");
 check("accueil : section #avis présente avec le formulaire #avis-form", !!sec && !!form && sec.contains(form));
-check("section : titre et textes en français ET en arabe", !!sec && /Votre avis/.test(sec.innerHTML) && /[؀-ۿ]/.test(sec.querySelector('[data-l="ar"]')?.textContent || ""));
+check("section : titre et textes en français sur la page française (l'arabe est sur ar/, une adresse par langue)", !!sec && /Votre avis/.test(sec.innerHTML) && !sec.querySelector('[data-l="ar"]'));
 check("formulaire : action = " + FORMSPREE + ", méthode POST", form?.getAttribute("action") === FORMSPREE && /post/i.test(form?.getAttribute("method") || ""));
 const msg = form?.querySelector("textarea[name=message]"), mail = form?.querySelector("input[name=email]");
 check("message : obligatoire, 1000 caractères max", !!msg && msg.required && msg.maxLength === 1000);
@@ -185,7 +186,8 @@ for (const p of pages) {
   const pied = ww.document.getElementById("pied") || ww.document.querySelector("footer");
   const liens = pied ? [...pied.querySelectorAll("a[href]")] : [];
   const ok = liens.some(l => { const u = new URL(l.getAttribute("href"), ww.location.href);
-    return u.hash === "#avis" && (u.origin + u.pathname).replace(/index\.html$/, "") === BASE && /Votre avis/.test(l.textContent); });
+    const cible = (u.origin + u.pathname).replace(/index\.html$/, "");
+    return u.hash === "#avis" && (cible === BASE || (p.startsWith("ar/") && cible === BASE + "ar/")) && /Votre avis|رأيك/.test(l.textContent); });   // page arabe : l'accueil arabe
   if (!ok) sansLien.push(p);
   if (ww.fautes.length) fautes.push(p + " : " + ww.fautes[0]);
   ww.close();

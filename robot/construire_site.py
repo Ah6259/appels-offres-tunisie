@@ -39,6 +39,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ICI)
 import glossaire   # noqa: E402  résumé traduit des objets (glossaire maison)
 import reglages    # noqa: E402  adresses à remplir par Ahmed (canal Telegram, formulaire…)
+import langues as LG     # noqa: E402  une adresse par langue (08/11/2026)
 
 RACINE_SITE = os.path.dirname(ICI)          # le dossier site/ (= racine du dépôt GitHub)
 URL_SITE = "https://appels-offres.clicvia.com/"
@@ -575,9 +576,14 @@ def desc_seo(d, maxi=165):
     return coupe[:i + 1] if i >= 60 else coupe[:maxi - 1].rsplit(" ", 1)[0].rstrip(" ,;:—-(") + "…"
 
 
+DESC_AR = {}      # description arabe propre à une page (chemin -> texte), lue par robot/langues.py pour la page ar/<chemin> (08/11/2026)
+
+
 def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=(), og_image="assets/og-image-v6.jpg", og_type="website"):
     titre, description = titre_seo(titre), desc_seo(description)
     canon = URL_SITE + chemin
+    desc_ar = DESC_AR.get(chemin)
+    meta_ar = f'\n<meta name="description-ar" content="{E(desc_ar)}">' if desc_ar else ""
     return f"""<!doctype html>
 <html lang="fr" dir="ltr" translate="no" data-racine="{racine}">
 <head>
@@ -588,7 +594,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noai, noimageai">
 <title>{E(titre)}</title>
-<meta name="description" content="{E(description)}">
+<meta name="description" content="{E(description)}">{meta_ar}
 <link rel="canonical" href="{canon}">
 <link rel="icon" href="{racine}assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="{racine}favicon.ico" sizes="32x32">
@@ -629,7 +635,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <div class="alerte-panne{' on' if etat['panne'] else ''}" id="alerte-panne" role="status">{E(etat['message'])}</div>
 {contenu}
 </main>
-<footer id="pied"><div class="wrap"><p>Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.</p></div></footer>
+<footer id="pied"><div class="wrap"><p>{L("Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.", "المصدر: الهيئة العليا للطلب العمومي HAICOP (marchespublics.gov.tn) · © 2026 طلبات العروض تونس — جميع الحقوق محفوظة.")}</p></div></footer>
 <script data-goatcounter="{COMPTEUR}/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
@@ -1206,6 +1212,7 @@ def construire(donnees, sortie, jour):
 {grille(items_m, slug, "../../", "metier", cm, "grille-metiers", True)}"""
         titre = titre70(f"Appels d'offres {fr} Tunisie : {len(sel)} ouverts, consultation gratuite", f"Appels d'offres {fr} Tunisie : {len(sel)} ouverts")
         desc = f"Appels d'offres publics « {fr} » en Tunisie, encore ouverts, triés par date limite, avec caution et lien vers la fiche HAICOP. Gratuit, sans inscription."
+        DESC_AR[f"metier/{slug}/"] = f"طلبات العروض العمومية في اختصاص {ar} في تونس: {len(sel)} طلب عروض مفتوح، مرتبة حسب آخر أجل، مع الضمان ورابط البطاقة الرسمية في HAICOP. مجانًا، دون تسجيل."
         pages.append((f"metier/{slug}/", page(f"metier/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
     # ---- une page par gouvernorat
@@ -1227,6 +1234,7 @@ def construire(donnees, sortie, jour):
                 f"avec caution et lien vers la fiche HAICOP. Gratuit, sans inscription.")
         if not special:
             hero = hero_carte(hero, cg, "../../", slug)
+        DESC_AR[f"gouvernorat/{slug}/"] = f"{h_ar}: {len(sel)} طلب عروض مفتوح، مرتبة حسب آخر أجل، مع الضمان ورابط البطاقة الرسمية في HAICOP. مجانًا، دون تسجيل."
         pages.append((f"gouvernorat/{slug}/", page(f"gouvernorat/{slug}/", "../../", titre, desc, hero, contenu, v, etat)))
 
     # ---- « Comment fonctionne le site ? » (règle commune § 44, Ahmed 25/10/2026) : à mettre à jour à CHAQUE modification visible,
@@ -1264,7 +1272,7 @@ def construire(donnees, sortie, jour):
          "<b>تقارير الشهر</b>: طلبات العروض بالأرقام (حسب الاختصاص والولاية والمشترين)، مع زر «شارك هذا التقرير»."),
         ("<b>Alertes Pro</b> sur Telegram (payant) : voir plus bas.", "<b>تنبيهات Pro</b> على تيليغرام (بمقابل): انظر أسفله."),
         ("Bouton <b>Partager</b> en haut de chaque page (menu de partage du téléphone).", "زر <b>شارك</b> في أعلى كل صفحة (قائمة المشاركة في الهاتف)."),
-        ("Bouton <b>ع / Fr</b> : tout le site en arabe ou en français.", "زر <b>ع / Fr</b>: كل الموقع بالعربية أو بالفرنسية."),
+        ("Bouton <b>ع / Fr</b> : chaque page existe en français (son adresse normale) et en arabe (adresse qui commence par <code>ar/</code>) ; le bouton passe de l'une à l'autre.", "زر <b>ع / Fr</b>: كل صفحة موجودة بالفرنسية (عنوانها العادي) وبالعربية (عنوان يبدأ بـ <code>ar/</code>)؛ الزر ينقلك من واحدة إلى الأخرى."),
         ("<b>Vidéo de présentation</b> du site (lien en bas de l'accueil).", "<b>فيديو تقديمي</b> للموقع (رابط أسفل الصفحة الرئيسية)."),
         ("<b>Votre avis</b> : un petit formulaire pour nous écrire.", "<b>رأيك</b>: استمارة صغيرة لمراسلتنا."),
         ("<b>Installer le site</b> sur l'écran d'accueil du téléphone ; les pages déjà vues s'ouvrent même sans connexion.",
@@ -1451,14 +1459,20 @@ def construire(donnees, sortie, jour):
                 if f"rapports/{mm_}/{t_}/{s_}/" not in dates_pages:
                     shutil.rmtree(os.path.join(base_, s_))
 
-    # ---- écriture
+    # ---- écriture : UNE ADRESSE PAR LANGUE (08/11/2026, robot/langues.py) : <chemin> en français seul, ar/<chemin> en arabe seul
+    LG.MIROIR.clear(); LG.MIROIR.update(c for c, _ in pages)
     for chemin, contenu in pages:
-        ecrire(sortie, chemin + "index.html", contenu)
+        fr, ar = LG.versions(contenu, chemin)
+        ecrire(sortie, chemin + "index.html", fr)
+        ecrire(sortie, "ar/" + chemin + "index.html", ar)
+    LG.nettoyer(sortie)                      # page arabe sans page française du jour = retirée
     lastmod = jour
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for chemin, _ in pages:
         # rapports : la date de leurs chiffres (un mois figé garde sa date) ; autres pages : le jour de construction
         sitemap.append(f"  <url><loc>{URL_SITE}{chemin}</loc><lastmod>{dates_pages.get(chemin) or lastmod}</lastmod></url>")
+    for chemin, _ in pages:
+        sitemap.append(f"  <url><loc>{URL_SITE}ar/{chemin}</loc><lastmod>{dates_pages.get(chemin) or lastmod}</lastmod></url>")
     sitemap.append("</urlset>")
     ecrire(sortie, "sitemap.xml", "\n".join(sitemap) + "\n")
     # pages vidéo (video/) tirées de la page À propos : mêmes en-tête, pied, CSP et ?v= (tools/page_video.py)

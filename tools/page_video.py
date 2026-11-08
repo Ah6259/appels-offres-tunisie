@@ -38,6 +38,7 @@ def pages_video(root, cfg=None):
         h = re.sub(r'<script type="application/ld\+json">[\s\S]*?</script>\s*', "", modele)
         h = re.sub(r'<link rel="canonical"[^>]*>\s*', "", h)
         h = re.sub(r'<link rel="alternate" hreflang[^>]*>\s*', "", h)   # la page vidéo n'est pas une traduction de la page modèle
+        h = re.sub(r' data-langue-fixe="[^"]*" data-autre-langue="[^"]*"', "", h, count=1)   # une seule adresse (?lang=ar), pas de langue fixe (08/11/2026)
         h = re.sub(r'<meta (property="og:[^"]*"|name="twitter:[^"]*")[^>]*>\s*', "", h)
         h = re.sub(r"<title>[\s\S]*?</title>", lambda m: f"<title>{_esc(titre)} | {_esc(nom)}</title>", h, count=1)
         h = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + _esc(desc) + m.group(2), h, count=1)

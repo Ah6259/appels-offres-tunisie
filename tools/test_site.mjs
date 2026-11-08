@@ -26,6 +26,8 @@ check(`données : ${ouverts.length} appels d'offres ouverts le ${JOUR} (au moins
 
 // ---- Chargement d'une page comme un navigateur ---------------------------------
 async function page(chemin, params = "") {
+  // UNE ADRESSE PAR LANGUE (08/11/2026) : la version arabe d'une page est ar/<chemin> (video/ garde ?lang=)
+  if (/(^|&)lang=ar(&|$)/.test(params) && !chemin.startsWith("ar/") && existsSync(join(root, "ar", chemin))) chemin = "ar/" + chemin;
   // chaque <script src> est remplacé par son contenu, puis tout s'exécute dans l'ordre de la page
   const dossier = dirname(join(root, chemin));
   // (les scripts externes, comme GoatCounter, ne sont pas chargés)
@@ -126,7 +128,7 @@ check("accueil : « dans N jours » calculé", cartes.every(c => /jours|aujourd|
 check("accueil : compteur « nouveaux » présent", /^\d+$/.test(texte(d.querySelector("#r-nouveaux b"))) && /nouveaux/.test(texte(d.querySelector("#r-nouveaux span"))));
 check("accueil : compteur des ouverts = cartes", +texte(d.querySelector("#r-ouverts b")) === ouverts.length);
 check("accueil : plus de rangée de badges sans lien ; « Gratuit, sans inscription » dans le texte d'intro (FR + AR)",
-  !d.querySelector(".confiance, .badge-c") && /Gratuit, sans inscription/.test(texte(d.querySelector(".intro"))) && /مجاني، دون تسجيل/.test(texte(d.querySelector(".intro"))));
+  !d.querySelector(".confiance, .badge-c") && /Gratuit, sans inscription/.test(texte(d.querySelector(".intro"))) && /مجاني، دون تسجيل/.test(texte((await page("index.html", `lang=ar&jour=${JOUR}`)).document.querySelector(".intro"))));   // l'arabe est sur ar/ (08/11/2026)
 check("accueil : pastille « Mis à jour le … » avec la date de la dernière lecture",
   texte(d.querySelector('.maj [data-l="fr"]')) === "Mis à jour le" && /\d\d\/\d\d\/\d{4}/.test(texte(d.querySelector(".maj"))));
 check("accueil : pas d'avertissement quand les données sont du jour", !d.getElementById("alerte-panne").classList.contains("on"));
@@ -242,11 +244,14 @@ for (const u of urls) {
   if (!existsSync(join(root, chemin))) { okFichiers = false; console.log("   page manquante : " + chemin); continue; }
   const h = lire(chemin);
   const seo = /<title>[^<]{20,}<\/title>/.test(h) && /<meta name="description" content="[^"]{50,}"/.test(h) &&
-    h.includes(`<link rel="canonical" href="${u}">`) && (/^rapports\/\d{4}-\d{2}\//.test(chemin) ? h.includes(`property="og:image" content="${u}apercu-`) : h.includes(`property="og:image" content="${URL_SITE}${chemin === "video/index.html" ? "assets/video/apercu-video.jpg" : "assets/og-image-v6.jpg"}"`)) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
+    h.includes(`<link rel="canonical" href="${u}">`) && (/^(ar\/)?rapports\/\d{4}-\d{2}\//.test(chemin) ? h.includes(`property="og:image" content="${u.replace(URL_SITE + "ar/", URL_SITE)}apercu-`) : h.includes(`property="og:image" content="${URL_SITE}${chemin === "video/index.html" ? "assets/video/apercu-video.jpg" : "assets/og-image-v6.jpg"}"`)) && h.includes(`<meta property="og:image:type" content="image/jpeg">`) &&
     /property="og:title"/.test(h) && /name="viewport"/.test(h);
   if (!seo) { okSeo = false; console.log("   SEO incomplet : " + chemin); }
   if (!(h.match(/\?v=([0-9a-f]+)/g) || []).every(x => x === "?v=" + v)) { okV = false; console.log("   ?v= périmé : " + chemin); }
-  if (!/<h1><span data-l="fr">[^<]+<\/span><span data-l="ar">[^<]+<\/span><\/h1>/.test(h) && !(chemin === "video/index.html" && /<h1 data-vfr="[^"]+" data-var="[^"]+">/.test(h))) { okH1 = false; console.log("   h1 FR+AR : " + chemin); }
+  // une adresse par langue (08/11/2026) : page française = H1 français seul ; sa page ar/ = H1 arabe seul
+  const estAr = chemin.startsWith("ar/");
+  if (!(estAr ? /<h1><span data-l="ar">[^<]+<\/span><\/h1>/.test(h) && !/data-l="fr"/.test(h) : /<h1><span data-l="fr">[^<]+<\/span><\/h1>/.test(h) && !/data-l="ar"/.test(h))
+      && !(chemin === "video/index.html" && /<h1 data-vfr="[^"]+" data-var="[^"]+">/.test(h))) { okH1 = false; console.log("   h1 une langue : " + chemin); }
   if (!/HAICOP/.test(h) || !/marchespublics\.gov\.tn/.test(h)) okSrc = false;
   if (!/©/.test(h)) okCopy = false;
   const morts = tuilesSansLien(new JSDOM(h).window.document);
@@ -254,6 +259,40 @@ for (const u of urls) {
   if (!/<html [^>]*translate="no"/.test(h) || !h.includes('<meta name="google" content="notranslate">')) { okTrad = false; console.log("   traduction automatique non bloquée : " + chemin); }
 }
 check("toutes les pages du sitemap existent", okFichiers);
+// ---- UNE ADRESSE PAR LANGUE (08/11/2026, plan SEO d'Ahmed, phase 2 point 7 ; robot/langues.py) ----------
+{ const dec = x => x.replace(/&#x27;|&#39;|&apos;/g, "’").replace(/&amp;/g, "&").replace(/&quot;/g, '"');
+  const existe = (depuis, rel) => { const c = rel.split("#")[0].split("?")[0]; if (!c) return true; return existsSync(join(root, dirname(depuis), c, c.endsWith("/") ? "index.html" : "")); };
+  const pb = [], titres = new Map(), descs = new Map();
+  const frs = urls.filter(u => !u.includes("/ar/") && !u.endsWith("/video/")).map(u => u.replace(URL_SITE, "") + "index.html");
+  for (const p of frs) {
+    const ar = "ar/" + p, chemin = p.replace("index.html", "");
+    if (!existsSync(join(root, ar))) { pb.push(`${p} : pas de page arabe`); continue; }
+    if (!urls.includes(URL_SITE + "ar/" + chemin)) pb.push(`${p} : page arabe absente du plan du site`);
+    const f = lire(p), a = lire(ar);
+    if (!/<html lang="fr" dir="ltr"[^>]*data-langue-fixe="fr"[^>]*data-autre-langue="([^"]*)"/.test(f)) pb.push(`${p} : data-langue-fixe`);
+    if (!/<html lang="ar" dir="rtl"[^>]*data-site="[^"]*"[^>]*data-langue-fixe="ar"[^>]*data-autre-langue="([^"]*)"/.test(a)) pb.push(`${ar} : lang / dir / data-langue-fixe`);
+    const versAr = (f.match(/data-autre-langue="([^"]*)"/) || [])[1], versFr = (a.match(/data-autre-langue="([^"]*)"/) || [])[1];
+    if (!versAr || !existe(p, versAr) || !/ar\//.test(versAr)) pb.push(`${p} : bouton de langue -> ${versAr}`);
+    if (!versFr || !existe(ar, versFr) || /ar\//.test(versFr)) pb.push(`${ar} : bouton de langue -> ${versFr}`);
+    for (const [page_, url] of [[f, URL_SITE + chemin], [a, URL_SITE + "ar/" + chemin]]) {
+      if (!page_.includes(`<link rel="canonical" href="${url}">`)) pb.push(`${url} : canonical`);
+      if (!page_.includes(`<link rel="alternate" hreflang="fr" href="${URL_SITE}${chemin}">`) || !page_.includes(`<link rel="alternate" hreflang="ar" href="${URL_SITE}ar/${chemin}">`)
+          || !page_.includes(`<link rel="alternate" hreflang="x-default" href="${URL_SITE}${chemin}">`)) pb.push(`${url} : hreflang`);
+      const t = dec((page_.match(/<title>([^<]*)<\/title>/) || [])[1] || ""), dsc = dec((page_.match(/name="description" content="([^"]*)"/) || [])[1] || "");
+      if (t.length < 10 || t.length > 70) pb.push(`${url} : titre de ${t.length} caractères`);
+      if (dsc.length < 30 || dsc.length > 165) pb.push(`${url} : description de ${dsc.length} caractères`);
+      if (titres.has(t)) pb.push(`${url} : même titre que ${titres.get(t)}`); titres.set(t, url);
+      if (descs.has(dsc)) pb.push(`${url} : même description que ${descs.get(dsc)}`); descs.set(dsc, url);
+    }
+    if (!/[\u0600-\u06FF]/.test((a.match(/<title>([^<]*)<\/title>/) || [])[1] || "")) pb.push(`${ar} : titre pas en arabe`);
+    if (/application\/ld\+json/.test(a)) pb.push(`${ar} : données Google françaises laissées sur la page arabe`);
+    for (const m of a.matchAll(/\b(?:href|src|poster)="([^"]*)"/g)) { const u = m[1]; if (/^(https?:|mailto:|tel:|data:|#|\?)/.test(u) || /^\//.test(u)) continue; if (!existe(ar, u)) pb.push(`${ar} : ${u} introuvable`); }
+  }
+  check(`une adresse par langue : ${frs.length} pages françaises, chacune avec sa page arabe ar/ (une langue par page, hreflang, canonical, titres et descriptions <= 70 / 165 uniques, titres arabes, liens valides)` + (pb.length ? " — " + pb.slice(0, 6).join(" ; ") : ""), pb.length === 0);
+  const wa = await page("index.html", "lang=ar"), allees = []; wa.allerVers = u => allees.push(u);
+  wa.document.querySelector("#entete .langue").dispatchEvent(new wa.window.Event("click"));
+  check("page arabe ar/ : lang=ar, en-tête en arabe, menu vers les pages arabes, bouton de langue -> page française", wa.document.documentElement.lang === "ar"
+    && /طلبات العروض/.test(texte(wa.document.getElementById("entete"))) && wa.document.querySelector('#pied a[href="rapports/"]') !== null && allees[0] === "../"); }
 check("toutes les pages : titre, description, canonical, og:image, og:title, viewport", okSeo);
 check(`toutes les pages : ?v=${v} (empreinte des fichiers assets, change à chaque modification)`, okV);
 check("toutes les pages : titre h1 en français ET en arabe", okH1);
@@ -510,7 +549,7 @@ for (const [chemin, lien] of [["index.html", "abonnement/"], ["metier/informatiq
   check(`en-tête de ${chemin} : bouton doré « Alertes Pro » vers abonnement/ (FR + AR)`, !!b && b.getAttribute("href") === lien &&
     texte(b) === "Alertes Pro" && !!ba && texte(ba) === "تنبيهات Pro" && b.href === URL_SITE + "abonnement/");
 }
-check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(lire("assets/page.js")) && /\$\{racine\}abonnement\/">\$\{T\("Alertes Pro \(abonnement\)"/.test(lire("assets/page.js")));
+check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(lire("assets/page.js")) && /\$\{site\}abonnement\/">\$\{T\("Alertes Pro \(abonnement\)"/.test(lire("assets/page.js")));
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
 const gros = d.querySelector(".hero #btn-pro-accueil");
@@ -635,6 +674,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   const pagesHtml = fichiers.map(f => f.replace(/\\/g, "/").replace(/^\.\//, "")).filter(f => /(^|\/)index\.html$/.test(f));
   const ko = [];
   for (const p of pagesHtml) for (const lang of ["fr", "ar"]) {
+    if (p.startsWith("ar/") && lang === "fr") continue;        // une page arabe est arabe (une adresse par langue, 08/11/2026)
     const wx = await page(p, "lang=" + lang), b = wx.document.querySelector("#entete button.partager");
     if (!b || b.getAttribute("aria-label") !== (lang === "fr" ? "Partager cette page" : "شارك هذه الصفحة") || !b.querySelector("svg")) ko.push(p + " " + lang);
   }
@@ -728,7 +768,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   check(`page « Comment fonctionne le site ? » à jour : chaque fonction du site y est expliquée (${FONCTIONS.length} fonctions)` + (manque.length ? " — manque : " + manque.join(", ") : ""),
     manque.length === 0);
   check("page « Comment fonctionne le site ? » : titre h1, lien dans le pied de page (page.js) et sur l'accueil, dans le plan du site",
-    /<h1><span data-l="fr">Comment fonctionne le site \?<\/span><span data-l="ar">كيف يعمل الموقع؟<\/span><\/h1>/.test(apx)
+    /<h1><span data-l="fr">Comment fonctionne le site \?<\/span><\/h1>/.test(apx) && /<h1><span data-l="ar">كيف يعمل الموقع؟<\/span><\/h1>/.test(lire("ar/a-propos/index.html"))
     && /a-propos\/">\$\{T\("Comment fonctionne le site \?"/.test(lire("assets/page.js")) && /<a href="a-propos\/"><span data-l="fr">Comment fonctionne le site \?/.test(acc2)
     && lire("sitemap.xml").includes("https://appels-offres.clicvia.com/a-propos/")); }
 

@@ -10,5 +10,7 @@
  {"page": "metier/informatique/", "nom": "page Informatique : nombre d'appels d'offres", "lire": "#compte"},
  {"page": "encheres/", "nom": "enchères des douanes : recherche « voiture »", "etapes": [{"sel": "#f-q", "valeur": "voiture"}], "lire": "#compte"},
  {"page": "abonnement/", "nom": "Alertes Pro : prix affiché (lecture seule, rien n'est envoyé)", "lire": "#abo-prix"},
- {"page": "rapports/2026-10/", "nom": "rapport d'octobre (tableau des chiffres)", "lire": "table"}
+ {"page": "rapports/2026-10/", "nom": "rapport d'octobre (tableau des chiffres)", "lire": "table"},
+ {"page": "ar/", "nom": "accueil arabe (ar/) : nombre d'appels d'offres ouverts", "lire": "#r-ouverts b"},
+ {"page": "ar/metier/informatique/", "nom": "page Informatique en arabe : nombre d'appels d'offres", "lire": "#compte"}
 ]

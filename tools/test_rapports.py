@@ -144,7 +144,7 @@ for p in pages_r:
         ok_sm = False
         print("   absente du plan du site ou mauvaise date :", p)
 check(f"plan du site : les {len(pages_r)} pages des rapports, lastmod = date de leurs chiffres", ok_sm and len(pages_r) >= 2)
-check("pied de page : lien « Rapports du mois » (FR + AR)", '${racine}rapports/">${T("Rapports du mois", "تقارير الشهر")}' in lire(SITE, "assets/page.js"))
+check("pied de page : lien « Rapports du mois » (FR + AR)", '${site}rapports/">${T("Rapports du mois", "تقارير الشهر")}' in lire(SITE, "assets/page.js"))
 check("robot GitHub : les pages rapports/ sont enregistrées par maj.yml et ce test y est lancé",
       re.search(r"git add [^\n]*\brapports\b", lire(SITE, ".github/workflows/maj.yml")) is not None
       and "tools/test_rapports.py" in lire(SITE, ".github/workflows/maj.yml") and "tools/test_rapports.py" in lire(SITE, ".github/workflows/tests.yml"))

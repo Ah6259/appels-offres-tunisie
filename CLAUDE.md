@@ -177,3 +177,19 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   gouvernorats raccourcis (« Appels d'offres Tunisie : N ouverts, consultation gratuite ») ; h2 « La liste » au-dessus des cartes (plus
   de saut h1 -> h3) ; test « SEO : titre de 10 à 70 caractères et description de 40 à 170 ». Les tests du site ont besoin de
   `node --max-old-space-size=6144` ici (mémoire). Reste (phase 2 point 7) : une adresse par langue (FR et AR mêlés sous lang="fr").
+
+- **08/11/2026 — UNE ADRESSE PAR LANGUE (plan SEO d'Ahmed, phase 2 point 7, « suivant » d'Ahmed ; méthode de l'Immobilier et de Concours)** :
+  `robot/langues.py` (copie adaptée) : chaque page fabriquée par `page()` est écrite deux fois par `construire()` : `<chemin>/` en français seul
+  (lang="fr", data-langue-fixe="fr", data-autre-langue) et `ar/<chemin>/` en arabe seul (lang="ar" dir="rtl", titre = H1 arabe + « | طلبات
+  العروض تونس », description = `DESC_AR[chemin]` (métiers, gouvernorats, rapports du mois et leurs sous-pages : une description arabe propre
+  à chaque page, sinon le 1er paragraphe arabe), canonical et og:url ar/, données Google françaises retirées, fichiers pris à la racine :
+  data-racine un niveau plus bas, data-site = dossier des pages), hreflang fr / ar / x-default sur les deux ; `LG.MIROIR` = pages du jour
+  (video/ garde une seule adresse `?lang=ar` : `tools/page_video.py` retire data-langue-fixe du modèle) ; `LG.nettoyer()`. Plan du site :
+  pages FR + AR. Pied statique de `page()` en deux langues. Titres des bilans du mois : le mois en tête (« Bilan d’octobre 2026 : … »), sinon
+  la coupe à 70 caractères donnait le même titre à tous les mois. `retirer_langue` laisse un espace à la place d'un texte retiré (sinon
+  « civil » + « Kairouan » se collaient dans le texte lu : la recherche au son le voyait). `assets/page.js` : langue de l'adresse, bouton
+  de langue = autre adresse (`window.allerVers` pour les tests), ancien lien `?lang=ar` renvoyé, langue gardée renvoyée seulement en venant du
+  site ; liens des pages de l'en-tête / du pied = `${site}` (`window.racinePages()`). Tests : `page(…, "lang=ar")` ouvre ar/<chemin> ;
+  bloc « une adresse par langue » (hreflang, canonical, titres et descriptions uniques, liens valides, bouton) ; test_avis, test_video,
+  test_rapports adaptés ; 2 scénarios du visiteur simulé sur ar/. Page a-propos : ligne « ع / Fr » mise à jour.
+

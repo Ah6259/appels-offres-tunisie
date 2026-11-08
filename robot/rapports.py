@@ -583,12 +583,14 @@ def pages_mois(cs, hist, m, v, etat, images=False):
         faq.append((f"Quel gouvernorat a le plus d'appels d'offres en {mfr} ?",
                     f"{rg[0][0]}, avec {nb(rg[0][1])} appels d'offres sur {nb(total)} relevés."))
     fil_items = [("Accueil", cs.URL_SITE), ("Rapports du mois", cs.URL_SITE + "rapports/"), (mfr, url)]
-    titre = f"{titre_fr} ({nb(total)} relevés) | Alertes appels d'offres"
+    # SEO (08/11/2026) : le mois en tête, sinon la coupe à 70 caractères donnait le même titre à tous les mois
+    titre = f"Bilan {'de ' + mfr if mfr[0] not in 'aeiouéo' else 'd’' + mfr} : appels d'offres publics en Tunisie ({nb(total)} relevés) | Alertes appels d'offres"
     desc = (f"Bilan de {mfr} des appels d'offres publics tunisiens relevés sur le portail officiel HAICOP : {nb(total)} appels d'offres, "
             f"par métier, par gouvernorat et par acheteur public. Chiffres vérifiables, gratuit. {titre_ar}.")
     ap = apercu(f"rapports/{m}/", "Appels d’offres publics en Tunisie", m, f"{nb(total)} appels d’offres relevés",
                 f"Portail officiel HAICOP · {au_ou_definitif(cs, e)}") if images else None
     img = ap[0] if ap else IMAGE_GENERALE
+    cs.DESC_AR[f"rapports/{m}/"] = f"حصيلة {titre_ar}: {nb(total)} طلب عروض عمومي مرصود في البوابة الرسمية HAICOP، حسب الاختصاص والولاية والمشتري العمومي. أرقام قابلة للتثبت، مجانًا."
     html = cs.page(f"rapports/{m}/", racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq, img),
                    og_image=img, og_type="article")
     pages = [(f"rapports/{m}/", html, e["derniere_date"], ap)]
@@ -661,6 +663,7 @@ def page_sous(cs, hist, m, e, t, nom, slug, lfr, lar, v, etat, images=False):
                 (f"{pct(n, total)} % des {nb(total)} relevés en Tunisie" if t == "gouvernorat" else f"{pct(n, total)} % des {nb(total)} relevés, tous métiers")
                 + f" · {au_ou_definitif(cs, e)}") if images else None
     img = ap[0] if ap else IMAGE_GENERALE
+    cs.DESC_AR[chemin] = f"{titre_ar}: {nb(n)} طلب عروض عمومي مرصود في البوابة الرسمية HAICOP، حسب المشتري، مع القائمة ورابط كل بطاقة رسمية. أرقام قابلة للتثبت، مجانًا."
     html = cs.page(chemin, racine, titre, description_rapport(desc), hero, contenu, v, etat, jsonld(cs, url, titre_fr, e, fil_items, faq, img),
                    og_image=img, og_type="article")
     return (chemin, html, e["derniere_date"], ap)
