@@ -18010,19 +18010,19 @@
    "gouvernorat": "Kébili"
   }
  },
- "mis_a_jour": "2026-11-07 12:38",
+ "mis_a_jour": "2026-11-08 12:49",
  "dernier_passage": {
-  "date": "2026-11-07 12:38",
+  "date": "2026-11-08 12:49",
   "liste_ok": true,
-  "lus": 11,
+  "lus": 0,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-07 12:38",
+ "derniere_lecture_reussie": "2026-11-08 12:49",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-07 12:38",
+  "depuis": "2026-11-08 12:49",
   "raison": ""
  }
 }
