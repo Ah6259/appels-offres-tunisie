@@ -289,6 +289,12 @@ check("toutes les pages du sitemap existent", okFichiers);
     for (const m of a.matchAll(/\b(?:href|src|poster)="([^"]*)"/g)) { const u = m[1]; if (/^(https?:|mailto:|tel:|data:|#|\?)/.test(u) || /^\//.test(u)) continue; if (!existe(ar, u)) pb.push(`${ar} : ${u} introuvable`); }
   }
   check(`une adresse par langue : ${frs.length} pages françaises, chacune avec sa page arabe ar/ (une langue par page, hreflang, canonical, titres et descriptions <= 70 / 165 uniques, titres arabes, liens valides)` + (pb.length ? " — " + pb.slice(0, 6).join(" ; ") : ""), pb.length === 0);
+// 08/11/2026 (leçon de Concours, robot Tests rouge) : TOUTE page française du site qui annonce une page arabe (hreflang ar) doit l'avoir sur le
+// disque, même hors des pages du jour (langues.nettoyer ne retire une page arabe que si la page française a disparu).
+{ const orphelines = []; (function parcourir(d, rel) { for (const f of readdirSync(d)) { if (f === "node_modules" || f === ".git" || f === "ar" || f === "tools") continue;
+    const c = join(d, f), r = rel ? rel + "/" + f : f;
+    if (statSync(c).isDirectory()) parcourir(c, r); else if (f === "index.html" && /hreflang="ar"/.test(readFileSync(c, "utf8")) && !existsSync(join(root, "ar", r))) orphelines.push(r); } })(root, "");
+  check("une adresse par langue : toute page française qui annonce une page arabe l'a bien sur le disque" + (orphelines.length ? " — " + orphelines.slice(0, 5).join(" ; ") : ""), orphelines.length === 0); }
   const wa = await page("index.html", "lang=ar"), allees = []; wa.allerVers = u => allees.push(u);
   wa.document.querySelector("#entete .langue").dispatchEvent(new wa.window.Event("click"));
   check("page arabe ar/ : lang=ar, en-tête en arabe, menu vers les pages arabes, bouton de langue -> page française", wa.document.documentElement.lang === "ar"

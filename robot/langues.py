@@ -222,7 +222,7 @@ def nettoyer(racine):
         if "index.html" in fichiers:
             rel = os.path.relpath(dossier, base)
             fr = os.path.join(racine, "index.html") if rel == "." else os.path.join(racine, rel, "index.html")
-            if not os.path.exists(fr) or (MIROIR and ("" if rel == "." else rel.replace(os.sep, "/") + "/") not in MIROIR):
+            if not os.path.exists(fr):           # 08/11/2026 (leçon de Concours) : seulement si la page française a disparu du disque (une page française gardée hors des pages du jour garde sa page arabe : hreflang et bouton de langue)
                 os.remove(os.path.join(dossier, "index.html"))
                 retirees.append(rel)
         if dossier != base and not os.listdir(dossier):

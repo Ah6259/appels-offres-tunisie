@@ -193,3 +193,6 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   bloc « une adresse par langue » (hreflang, canonical, titres et descriptions uniques, liens valides, bouton) ; test_avis, test_video,
   test_rapports adaptés ; 2 scénarios du visiteur simulé sur ar/. Page a-propos : ligne « ع / Fr » mise à jour.
 
+- **08/11/2026 (soir, leçon de Concours)** : `langues.nettoyer()` ne retire une page arabe que si sa page FRANÇAISE a disparu du disque (plus
+  jamais « hors des pages du jour » : à Concours, les pages arabes de 10 anciens concours avaient été retirées alors que leurs pages françaises
+  restaient, liens hreflang morts, robot Tests rouge). Test « toute page française qui annonce une page arabe l'a sur le disque » (tout le site).
