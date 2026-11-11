@@ -804,5 +804,15 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     && /a-propos\/">\$\{T\("Comment fonctionne le site \?"/.test(lire("assets/page.js")) && /<a href="a-propos\/"><span data-l="fr">Comment fonctionne le site \?/.test(acc2)
     && lire("sitemap.xml").includes("https://appels-offres.clicvia.com/a-propos/")); }
 
+// ---- Robot : il enregistre TOUS les dossiers de pages qu'il fabrique (11/11/2026 : « ar » oublié depuis le 08/11,
+// des pages françaises annonçaient des pages arabes jamais publiées) ----------------------------------
+if (existsSync(join(root, ".github/workflows/maj.yml"))) {
+  const ligne = (lire(".github/workflows/maj.yml").match(/^\s*git add (.+)$/m) || ["", ""])[1].split(/\s+/);
+  const dossiers = readdirSync(root).filter(n => !n.startsWith(".") && n !== "node_modules" && n !== "captures"
+    && statSync(join(root, n)).isDirectory() && existsSync(join(root, n, "index.html")));
+  const oublies = dossiers.filter(n => !ligne.includes(n));
+  check(`robot maj : « git add » enregistre chaque dossier de pages (${dossiers.join(", ")})` + (oublies.length ? ` — oubliés : ${oublies.join(", ")}` : ""), dossiers.length > 0 && !oublies.length);
+}
+
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);
