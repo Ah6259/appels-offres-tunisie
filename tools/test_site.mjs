@@ -7,6 +7,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { createHash } from "crypto";
+import { execFileSync } from "child_process";
 
 const i = process.argv.indexOf("--racine");
 const root = i > 0 ? process.argv[i + 1] : join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -365,12 +366,27 @@ check(".gitignore : node_modules et captures", /node_modules/.test(lire(".gitign
 const tape = (w, v) => { const q = w.document.getElementById("f-q"); q.value = v; q.dispatchEvent(new w.Event("input")); };
 const norm = t => t.toLowerCase().normalize("NFKD").replace(/[\p{M}ـ]/gu, "")
   .replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
+// Appels d'offres de référence pris dans les données du jour (un numéro fixe finit par expirer : 11/11/2026, Tender-104049) :
+// le résumé ATTENDU de chaque objet ouvert est calculé par le glossaire du robot lui-même (robot/glossaire.py).
+const OUV = Object.entries(brut.appels_offres).filter(([, a]) => ouverts.includes(a)).map(([k, a]) => ({ ...a, id: k }));   // la clé = numéro (id de la carte)
+const RESUMES = JSON.parse(execFileSync(process.env.PYTHON || "python3", ["-c",
+  "import json,sys; sys.path.insert(0, sys.argv[1]); import glossaire; " +
+  "d = json.load(sys.stdin); print(json.dumps({k: glossaire.resumer(v) for k, v in d.items()}))", join(root, "robot")],
+  { input: JSON.stringify(Object.fromEntries(OUV.map(a => [a.id, a.objet || ""]))), encoding: "utf8" }));
+const motsFr = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/[^a-z]+/).filter(m => m.length >= 5);
+// objet en arabe avec un résumé français dont un mot (≥ 5 lettres) n'est pas dans l'objet : 104049 (« Grombalia ») tant qu'il est ouvert
+const refAr = ["Tender-104049", ...OUV.map(a => a.id)].map(id => OUV.find(a => a.id === id))
+  .find(a => a && RESUMES[a.id] && RESUMES[a.id].langue === "fr" && motsFr(RESUMES[a.id].texte).some(m => !motsFr(a.objet || "").includes(m)));
+const ID_AR = refAr ? refAr.id : "(aucun)";
+const MOT_TRAD = refAr ? motsFr(RESUMES[ID_AR].texte).find(m => !motsFr(refAr.objet || "").includes(m)) : "zzz";
+const sansResume = ["Tender-104043", ...OUV.map(a => a.id)].find(id => OUV.some(a => a.id === id) && RESUMES[id] === null);
+check(`données : un objet arabe avec résumé français (${ID_AR}, mot « ${MOT_TRAD} ») et un objet sans résumé (${sansResume})`, !!refAr && !!sansResume);
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
 check("recherche : champ présent sur l'accueil, les pages métier, gouvernorat et enchères",
   !!d.getElementById("f-q") && ["metier/btp-genie-civil/index.html", "gouvernorat/sfax/index.html", "encheres/index.html"].every(c => /id="f-q"/.test(lire(c))));
-tape(w, "Tender-104049");
-check("recherche : par numéro « Tender-104049 » -> 1 carte", visibles(d).length === 1 && visibles(d)[0].id === "Tender-104049");
+tape(w, ID_AR);
+check(`recherche : par numéro « ${ID_AR} » -> 1 carte`, visibles(d).length === 1 && visibles(d)[0].id === ID_AR);
 tape(w, "ETUDE");
 check(`recherche : insensible aux accents et à la casse (« ETUDE » trouve « Étude », ${visibles(d).length} cartes)`,
   visibles(d).length >= 1 && visibles(d).some(c => /Étude/.test(c.querySelector("h3").textContent)));
@@ -389,9 +405,9 @@ tape(w, "تهيئه");
 const nAm = visibles(d).length;
 check(`recherche : en arabe, « تهيئه » trouve « تهيئة » (${nAm} cartes, toutes contiennent le mot)`,
   nAm >= 3 && visibles(d).every(c => norm(c.textContent).includes(norm("تهيئه"))));
-tape(w, "Grombalia");
-check("recherche : trouve aussi dans le résumé traduit (« Grombalia » -> objet en arabe Tender-104049)",
-  visibles(d).some(c => c.id === "Tender-104049") && !/Grombalia/.test(d.getElementById("Tender-104049").querySelector("h3").textContent));
+tape(w, MOT_TRAD);
+check(`recherche : trouve aussi dans le résumé traduit (« ${MOT_TRAD} » -> objet en arabe ${ID_AR})`,
+  visibles(d).some(c => c.id === ID_AR) && !motsFr(d.getElementById(ID_AR).querySelector("h3").textContent).includes(MOT_TRAD));
 tape(w, "travaux bizerte");
 check("recherche : plusieurs mots = tous présents", visibles(d).length >= 1 && visibles(d).every(c => /travaux/.test(norm(c.textContent)) && /bizerte|بنزرت/.test(norm(c.textContent))));
 tape(w, "nabeul");
@@ -401,15 +417,25 @@ tape(w, "zzzqqq");
 check("recherche sans résultat : message « aucun » + compteur 0", visibles(d).length === 0 && !d.getElementById("vide").hidden && texte(d.getElementById("compte")).startsWith("0"));
 d.getElementById("effacer").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
 check("« Tout afficher » vide aussi la recherche", d.getElementById("f-q").value === "" && visibles(d).length === ouverts.length);
-w = await page("index.html", `lang=fr&jour=${JOUR}&q=Tender-104049`);
-check("recherche dans l'adresse (?q=…)", visibles(w.document).length === 1);
+w = await page("index.html", `lang=fr&jour=${JOUR}&q=${ID_AR}`);
+check("recherche dans l'adresse (?q=…)", visibles(w.document).length === 1 && visibles(w.document)[0].id === ID_AR);
 
 // ---- 7. Résumé traduit (glossaire maison) --------------------------------------
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
-const tr = d.querySelector("#Tender-104049 .trad");
-check("résumé traduit : objet arabe -> « Aménagement — centre pour personnes âgées — Grombalia »",
-  !!tr && tr.lang === "fr" && texte(tr.querySelector(".trad-t")) === "≈ Aménagement — centre pour personnes âgées — Grombalia");
+const tr = d.querySelector(`#${ID_AR} .trad`);
+check(`résumé traduit : objet arabe -> « ${refAr ? RESUMES[ID_AR].texte : ""} » (${ID_AR})`,
+  !!tr && tr.lang === "fr" && texte(tr.querySelector(".trad-t")) === "≈ " + RESUMES[ID_AR].texte);
+// le glossaire lui-même reste vérifié sur l'exemple connu (indépendant des données du jour)
+check("résumé traduit : glossaire « مشروع تهيئة مركز رعاية المسنين بقرمبالية » -> « Aménagement — centre pour personnes âgées — Grombalia »",
+  JSON.parse(execFileSync(process.env.PYTHON || "python3", ["-c", "import json,sys; sys.path.insert(0, sys.argv[1]); import glossaire; print(json.dumps(glossaire.resumer(sys.argv[2])))",
+    join(root, "robot"), "مشروع تهيئة مركز رعاية المسنين بقرمبالية"], { encoding: "utf8" }))?.texte === "Aménagement — centre pour personnes âgées — Grombalia");
+// chaque carte affichée a exactement le résumé calculé par le glossaire (ou aucun)
+const cartesTrad = [...d.querySelectorAll("#liste .ao[id^='Tender-']")];
+check(`résumé traduit : chaque carte ouverte = résumé du glossaire (ou rien) (${cartesTrad.length} cartes)`, cartesTrad.length >= 10 && cartesTrad.every(c => {
+  const r = RESUMES[c.id], t = c.querySelector(".trad .trad-t");
+  return r === undefined || (r === null ? !t : !!t && texte(t) === "≈ " + r.texte);
+}));
 check("résumé traduit : mention « traduction automatique approximative » sur chaque résumé",
   d.querySelectorAll(".trad").length >= 10 && [...d.querySelectorAll(".trad")].every(t => /traduction automatique approximative/.test(texte(t))));
 // un appel d'offres de l'exemple (104006, Carthage) peut être expiré un jour : sinon on prend un objet français quelconque affiché avec un résumé
@@ -419,7 +445,7 @@ check("résumé traduit : objet français -> résumé arabe (rtl)", (() => {
   const autres = [...d.querySelectorAll("#liste .ao .trad")].filter(x => x.dir === "rtl" && /[؀-ۿ]/.test(x.textContent));
   return autres.length > 0;
 })());
-check("résumé traduit : rien d'affiché quand l'objet est trop peu reconnu (Tender-104043)", !d.querySelector("#Tender-104043 .trad"));
+check(`résumé traduit : rien d'affiché quand l'objet est trop peu reconnu (${sansResume})`, !!sansResume && !!d.getElementById(sansResume) && !d.querySelector(`#${sansResume} .trad`));
 
 // ---- 8. Rappels avant la date limite (date du téléphone) -------------------------
 const ref = ouverts.filter(a => a.date_limite).sort((a, b) => a.date_limite.localeCompare(b.date_limite)).pop();
