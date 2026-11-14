@@ -21303,21 +21303,351 @@
    "lu_le": "2026-11-13 13:59",
    "metier": "Études / conseil",
    "gouvernorat": "Tunis"
+  },
+  "Tender-104781": {
+   "numero": "Tender-104781",
+   "objet": "Réfection électrique de l’unité de cathétérisme cardiaque",
+   "descriptif": "",
+   "acheteur": "Hôpital Universitaire Farhat Hached Sousse",
+   "type_commande": "Travaux/ Electricité",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SOUSSE",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-11-14",
+   "date_limite": "2026-12-03",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    1800
+   ],
+   "cautionnement_total_dt": 1800,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Electricité",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104781",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "Électricité",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104779": {
+   "numero": "Tender-104779",
+   "objet": "AO 97 /2026 Travaux de réhabilitation du quartier El Waha Commune Dgueche Gouvernorat Tozeur",
+   "descriptif": "",
+   "acheteur": "Agence de Réhabilitation et de Rénovation Urbaine",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TOZEUR",
+   "regions_lots": [
+    "TOZEUR"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-16",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-12-16",
+   "cautionnement_provisoire_dt": [
+    10000
+   ],
+   "cautionnement_total_dt": 10000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104779",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tozeur"
+  },
+  "Tender-104778": {
+   "numero": "Tender-104778",
+   "objet": "AO 96 /2026 Travaux des Quartiers Sfaxi Oued Dabegh dans la commune de Douar Hicher Gouvernorat de Mannouba",
+   "descriptif": "",
+   "acheteur": "Agence de Réhabilitation et de Rénovation Urbaine",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MANOUBA",
+   "regions_lots": [
+    "MANOUBA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-16",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-12-16",
+   "cautionnement_provisoire_dt": [
+    16000
+   ],
+   "cautionnement_total_dt": 16000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104778",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "La Manouba"
+  },
+  "Tender-104777": {
+   "numero": "Tender-104777",
+   "objet": "mission de contrôle et assistance technique des travaux de construction d'un ouvrage d'art sur oued Gabes sur RN1 au PK 406+200",
+   "descriptif": "mission de suivi, controle et assistance technique des travaux de dédoublement de la RN1 du PK 405+500 au PK 407+000 et travaux de construction d'un OA sur RN1 au PK 406+200 sur oued Gabès.",
+   "acheteur": "Direction Régionale de l’Equipement, de l’Habitat et de l’Aménagement du Territoire de Gabes",
+   "type_commande": "Etudes/ Contrôle et assistance technique",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GABES",
+   "regions_lots": [
+    "GABES"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-15",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-12-15",
+   "cautionnement_provisoire_dt": [
+    160000
+   ],
+   "cautionnement_total_dt": 160000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104777",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "Études / conseil",
+   "gouvernorat": "Gabès"
+  },
+  "Tender-104776": {
+   "numero": "Tender-104776",
+   "objet": "travaux d'entretient et d'aménagement du l'école préparatoire ghardimaou",
+   "descriptif": "",
+   "acheteur": "Commissariat régional de l'éducation à Jendouba",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "JENDOUBA",
+   "regions_lots": [
+    "JENDOUBA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-16",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-16",
+   "cautionnement_provisoire_dt": [
+    20000
+   ],
+   "cautionnement_total_dt": 20000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "3",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104776",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Jendouba"
+  },
+  "Tender-104775": {
+   "numero": "Tender-104775",
+   "objet": "Fourniture de tuyaux en polyéthylène haute densité au Complexe Kalaat Andalous – Ras Jebel",
+   "descriptif": "",
+   "acheteur": "Société d'Exploitation du Canal et Adduction des Eaux du Nord",
+   "type_commande": "Biens/ Matériels Hydrauliques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "ARIANA",
+   "regions_lots": [
+    "ARIANA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-14",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-14",
+   "cautionnement_provisoire_dt": [
+    2500
+   ],
+   "cautionnement_total_dt": 2500,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104775",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:01",
+   "metier": "Autres",
+   "gouvernorat": "Ariana"
+  },
+  "Tender-104774": {
+   "numero": "Tender-104774",
+   "objet": "EQUIPEMENT DU POSTE TRANSFORMATEUR HT/BT DE LA STATION DE POMPAGE DU PERIMETRE IRRIGUE EN EUT EL GUETAR",
+   "descriptif": "EQUIPEMENT DU POSTE TRANSFORMATEUR HT/BT DE LA STATION DE POMPAGE DU PERIMETRE IRRIGUE EN EUT EL GUETAR",
+   "acheteur": "Commissariat Régional au Développement Agricole de Gafsa",
+   "type_commande": "Biens/ Autres types de matériels",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GAFSA",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-11-27",
+   "heure_limite": "09:30",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104774",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:02",
+   "metier": "Électricité",
+   "gouvernorat": "Gafsa"
+  },
+  "Tender-104773": {
+   "numero": "Tender-104773",
+   "objet": "travaux d'aménagement en enrobé de la cour du parc du CRDA de Monastir,",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de Monastir",
+   "type_commande": "Travaux/ Terrassement",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "MONASTIR",
+   "regions_lots": [
+    "MONASTIR"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-14",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-14",
+   "cautionnement_provisoire_dt": [
+    3500
+   ],
+   "cautionnement_total_dt": 3500,
+   "specialite": "Routes (R)",
+   "categorie": "Terrassement",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104773",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:02",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Monastir"
+  },
+  "Tender-104772": {
+   "numero": "Tender-104772",
+   "objet": "تركيز أنظمة فولطاضوئية بمقر ولاية نابل و المعتمديات التابعة لها – قسط عدد 01 مقر الولاية و المسكن الوظيفي",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Nabeul",
+   "type_commande": "Travaux/ Electricité",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "NABEUL",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-04",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-04",
+   "cautionnement_provisoire_dt": [
+    2000
+   ],
+   "cautionnement_total_dt": 2000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Electricité",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104772",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:02",
+   "metier": "Électricité",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104771": {
+   "numero": "Tender-104771",
+   "objet": "إنجاز تحاليل لعينات من المياه المستعملة المعالجة والمستعملة في أغراض فلاحية في المنطقة السقوية العقيلة",
+   "descriptif": "إنجاز تحاليل لعينات من المياه المستعملة المعالجة والمستعملة في أغراض فلاحية في المنطقة السقوية العقيلة",
+   "acheteur": "Commissariat Régional au Développement Agricole de Gafsa",
+   "type_commande": "Services/ Autres services",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GAFSA",
+   "regions_lots": [
+    "GAFSA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-11-27",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-11-27",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104771",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:02",
+   "metier": "Autres",
+   "gouvernorat": "Gafsa"
+  },
+  "Tender-104769": {
+   "numero": "Tender-104769",
+   "objet": "اقتناء معدات اعلامية",
+   "descriptif": "",
+   "acheteur": "Commissariat Régional au Développement Agricole de Siliana",
+   "type_commande": "Biens/ Matériels informatiques",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SILIANA",
+   "regions_lots": [
+    "SILIANA"
+   ],
+   "date_publication": "2026-11-13",
+   "date_limite": "2026-12-17",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-17",
+   "cautionnement_provisoire_dt": [
+    1300
+   ],
+   "cautionnement_total_dt": 1300,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104769",
+   "source": "HAICOP",
+   "lu_le": "2026-11-14 13:02",
+   "metier": "Informatique",
+   "gouvernorat": "Siliana"
   }
  },
- "mis_a_jour": "2026-11-13 13:59",
+ "mis_a_jour": "2026-11-14 13:02",
  "dernier_passage": {
-  "date": "2026-11-13 13:59",
+  "date": "2026-11-14 13:02",
   "liste_ok": true,
-  "lus": 15,
+  "lus": 11,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-13 13:59",
+ "derniere_lecture_reussie": "2026-11-14 13:02",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-13 13:59",
+  "depuis": "2026-11-14 13:02",
   "raison": ""
  }
 }
