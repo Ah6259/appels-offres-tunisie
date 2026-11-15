@@ -21635,19 +21635,19 @@
    "gouvernorat": "Siliana"
   }
  },
- "mis_a_jour": "2026-11-14 13:02",
+ "mis_a_jour": "2026-11-15 13:37",
  "dernier_passage": {
-  "date": "2026-11-14 13:02",
+  "date": "2026-11-15 13:37",
   "liste_ok": true,
-  "lus": 11,
+  "lus": 0,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-14 13:02",
+ "derniere_lecture_reussie": "2026-11-15 13:37",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-14 13:02",
+  "depuis": "2026-11-15 13:37",
   "raison": ""
  }
 }
