@@ -21635,19 +21635,19 @@
    "gouvernorat": "Siliana"
   }
  },
- "mis_a_jour": "2026-11-15 13:37",
+ "mis_a_jour": "2026-11-16 19:08",
  "dernier_passage": {
-  "date": "2026-11-15 13:37",
-  "liste_ok": true,
+  "date": "2026-11-16 19:08",
+  "liste_ok": false,
   "lus": 0,
-  "echecs": 0,
+  "echecs": 40,
   "formats_inconnus": 0,
-  "reussi": true
+  "reussi": false
  },
  "derniere_lecture_reussie": "2026-11-15 13:37",
  "statut_source": {
-  "etat": "ok",
-  "depuis": "2026-11-15 13:37",
-  "raison": ""
+  "etat": "panne",
+  "depuis": "2026-11-16 19:08",
+  "raison": "liste des appels d'offres illisible ou presque vide (0 numéros au lieu de 40) ; 40 fiches injoignables"
  }
 }

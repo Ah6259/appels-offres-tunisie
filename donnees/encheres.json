@@ -1333,6 +1333,6 @@
  "statut_source": {
   "etat": "panne",
   "depuis": "2026-10-22 11:01",
-  "raison": "page injoignable (<urlopen error [Errno 111] Connection refused>)"
+  "raison": "page injoignable (code HTTP 403)"
  }
 }
