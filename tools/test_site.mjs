@@ -210,7 +210,10 @@ w = await page("index.html", `lang=fr&jour=${plus(dernier, 1)}`);
 d = w.document;
 check("tout expiré : plus aucune carte à date limite, message « aucun appel d'offres » si rien d'autre, site non vide (grilles, sources)",
   visibles(d).length === sansDate && affichees(d).length === sansDate && (sansDate > 0 || !d.getElementById("vide").hidden) && d.querySelectorAll("#grille-metiers a").length === 10);
-w = await page("index.html", `lang=fr&jour=${plus(JOUR, 1)}`);
+// le lendemain de la DERNIÈRE LECTURE RÉUSSIE (pas du jour de construction : le 16/11/2026, source HAICOP en panne d'un jour,
+// le test prenait « construit le + 1 » = 2 jours après la lecture et sonnait rouge à tort ; règle § 51 : panne d'un jour = pas d'alerte)
+const LU = (etat.derniere_lecture_reussie || JOUR).slice(0, 10);
+w = await page("index.html", `lang=fr&jour=${plus(LU, 1)}`);
 check("données d'hier : pas encore d'avertissement", !w.document.getElementById("alerte-panne").classList.contains("on"));
 
 // ---- 2. Arabe -------------------------------------------------------------------
