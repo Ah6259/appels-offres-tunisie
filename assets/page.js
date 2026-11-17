@@ -66,6 +66,8 @@
           <a href="${site}a-propos/">${T("Comment fonctionne le site ?", "كيف يعمل الموقع؟")}</a>
           <a href="${site}#avis">${T("Votre avis", "رأيك")}</a>
         <a href="https://clicvia.com/" rel="noopener" target="_blank">${T("Tous nos services", "كل خدماتنا")}</a>
+        <a href="${T("https://clicvia.com/confidentialite/", "https://clicvia.com/ar/confidentialite/")}" rel="noopener">${T("Confidentialité", "الخصوصية")}</a>
+        <a href="${T("https://clicvia.com/conditions/", "https://clicvia.com/ar/conditions/")}" rel="noopener">${T("Conditions d'utilisation", "شروط الاستعمال")}</a>
         </nav>
         <p>${T(`Source : <a href="https://www.marchespublics.gov.tn/fr/appels-doffres" rel="noopener">HAICOP — Haute Instance de la Commande Publique</a> (marchespublics.gov.tn). Chaque annonce renvoie à sa fiche officielle.`,
                `المصدر: <a href="https://www.marchespublics.gov.tn/ar/appels-doffres" rel="noopener">الهيئة العليا للطلب العمومي</a> (${iso("marchespublics.gov.tn")}). كل إعلان مرفق برابط بطاقته الرسمية.`)}</p>

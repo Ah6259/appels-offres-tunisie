@@ -635,7 +635,8 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <div class="alerte-panne{' on' if etat['panne'] else ''}" id="alerte-panne" role="status">{E(etat['message'])}</div>
 {contenu}
 </main>
-<footer id="pied"><div class="wrap"><p>{L("Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.", "المصدر: الهيئة العليا للطلب العمومي HAICOP (marchespublics.gov.tn) · © 2026 طلبات العروض تونس — جميع الحقوق محفوظة.")}</p></div></footer>
+<footer id="pied"><div class="wrap"><p>{L("Source : HAICOP (marchespublics.gov.tn) · © 2026 Alertes appels d'offres Tunisie — tous droits réservés.", "المصدر: الهيئة العليا للطلب العمومي HAICOP (marchespublics.gov.tn) · © 2026 طلبات العروض تونس — جميع الحقوق محفوظة.")}</p>
+<p>{L('<a href="https://clicvia.com/confidentialite/" rel="noopener">Confidentialité</a> · <a href="https://clicvia.com/conditions/" rel="noopener">Conditions d&#39;utilisation</a>', '<a href="https://clicvia.com/ar/confidentialite/" rel="noopener">الخصوصية</a> · <a href="https://clicvia.com/ar/conditions/" rel="noopener">شروط الاستعمال</a>')}</p></div></footer>
 <script data-goatcounter="{COMPTEUR}/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
@@ -1352,6 +1353,7 @@ def construire(donnees, sortie, jour):
   {li("Pas de compte à créer pour consulter le site. Votre téléphone garde seulement la langue choisie.", "لا حساب لإنشائه لتصفح الموقع. هاتفك يحفظ فقط اللغة المختارة.")}
   {li("Statistiques de visite anonymes, sans cookies (GoatCounter).", "إحصائيات زيارات مجهولة، دون ملفات تعريف الارتباط (⁨GoatCounter⁩).")}
   {li("Votre avis et l'inscription aux Alertes Pro ne sont envoyés que si vous touchez « Envoyer » (service Formspree). Vos coordonnées servent seulement à l'abonnement : elles ne sont jamais publiées ni vendues.", "رأيك والتسجيل في تنبيهات Pro لا يُرسلان إلا إذا لمست «أرسل» (خدمة ⁨Formspree⁩). بياناتك تُستعمل للاشتراك فقط: لا تُنشر ولا تُباع أبدًا.")}
+  {li("Confidentialité et conditions d'utilisation : pages communes à tous nos sites (clicvia.com), liens en bas de chaque page.", "الخصوصية وشروط الاستعمال: صفحات مشتركة بين كل مواقعنا (⁨clicvia.com⁩)، روابطها أسفل كل صفحة.")}
   </ul>
 </section>
 <section class="carte">

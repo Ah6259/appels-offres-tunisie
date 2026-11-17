@@ -798,6 +798,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     ["installation sur le téléphone (service worker)", existsSync(join(root, "sw.js")) && /serviceWorker/.test(js), /Installer le site/],
     ["vos données (GoatCounter, Formspree)", true, /GoatCounter[\s\S]*Formspree/],
     ["mises à jour automatiques", true, /Mises à jour automatiques/],
+    ["confidentialité et conditions d'utilisation (pages communes)", true, /Confidentialité et conditions d(&#x27;|&#39;|')utilisation/],
     ["site indépendant", true, /Ce site est indépendant/]];
   const manque = FONCTIONS.filter(([, sur, re]) => sur && !re.test(apx)).map(([n]) => n);
   check(`page « Comment fonctionne le site ? » à jour : chaque fonction du site y est expliquée (${FONCTIONS.length} fonctions)` + (manque.length ? " — manque : " + manque.join(", ") : ""),
@@ -815,6 +816,29 @@ if (existsSync(join(root, ".github/workflows/maj.yml"))) {
     && statSync(join(root, n)).isDirectory() && existsSync(join(root, n, "index.html")));
   const oublies = dossiers.filter(n => !ligne.includes(n));
   check(`robot maj : « git add » enregistre chaque dossier de pages (${dossiers.join(", ")})` + (oublies.length ? ` — oubliés : ${oublies.join(", ")}` : ""), dossiers.length > 0 && !oublies.length);
+}
+
+// ---- Page 404 du site + liens Confidentialité / Conditions en bas de CHAQUE page (17/11/2026, règle commune § 58 ; § 55 : test qui bloque) ----
+check("page 404 du site : 404.html + 404.js (« Recherche de la page »)", existsSync(join(root, "404.html")) && existsSync(join(root, "404.js"))
+  && /src="\/404\.js"/.test(lire("404.html")) && /Recherche de la page/.test(lire("404.js")));
+{
+  const LIENS = { fr: ["https://clicvia.com/confidentialite/", "https://clicvia.com/conditions/"], ar: ["https://clicvia.com/ar/confidentialite/", "https://clicvia.com/ar/conditions/"] };
+  const pages = [];
+  const parcourir = d => { for (const n of readdirSync(join(root, d))) { const r = d ? d + "/" + n : n;
+    if (["node_modules", "tools", "captures", ".git"].includes(n)) continue;
+    if (statSync(join(root, r)).isDirectory()) parcourir(r); else if (n === "index.html") pages.push(r); } };
+  parcourir("");
+  const sans = pages.filter(p => { const h = lire(p); const pied = (h.match(/<footer id="pied">[\s\S]*?<\/footer>/) || [""])[0];
+    const l = /<html[^>]*lang="ar"/.test(h) ? "ar" : "fr"; return !LIENS[l].every(u => pied.includes(`href="${u}"`)); });
+  check(`pied de page : liens Confidentialité + Conditions d'utilisation sur les ${pages.length} pages` + (sans.length ? " — manquent : " + sans.slice(0, 5).join(", ") : ""), pages.length > 50 && !sans.length);
+  const js = lire("assets/page.js");
+  check("pied de page (page.js) : liens Confidentialité + Conditions d'utilisation, FR et AR",
+    js.includes('T("https://clicvia.com/confidentialite/", "https://clicvia.com/ar/confidentialite/")') && js.includes('T("https://clicvia.com/conditions/", "https://clicvia.com/ar/conditions/")')
+    && js.includes('T("Confidentialité", "الخصوصية")') && js.includes(`T("Conditions d'utilisation", "شروط الاستعمال")`));
+  for (const [ch, l, mot] of [["index.html", "fr", "Confidentialité"], ["ar/index.html", "ar", "الخصوصية"]]) {
+    const w = await page(ch); const p = w.document.getElementById("pied");
+    check(`pied affiché (${ch}) : « ${mot} » et conditions vers clicvia.com`, LIENS[l].every(u => p.querySelector(`a[href="${u}"]`)) && texte(p).includes(mot));
+  }
 }
 
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));

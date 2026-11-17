@@ -196,3 +196,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **08/11/2026 (soir, leçon de Concours)** : `langues.nettoyer()` ne retire une page arabe que si sa page FRANÇAISE a disparu du disque (plus
   jamais « hors des pages du jour » : à Concours, les pages arabes de 10 anciens concours avaient été retirées alors que leurs pages françaises
   restaient, liens hreflang morts, robot Tests rouge). Test « toute page française qui annonce une page arabe l'a sur le disque » (tout le site).
+
+## Page 404 + Confidentialité / Conditions (17/11/2026, règle commune § 58)
+- `404.html` + `404.js` à la racine = page 404 COMMUNE (`outils communs/page-404/installer.py`, projets-ahmed) : ne pas les modifier ici, réinstaller.
+- Liens « Confidentialité » et « Conditions d'utilisation » (pages communes clicvia.com, FR / AR) dans le pied de CHAQUE page
+  (pied statique de `construire_site.py` + pied de `assets/page.js`). Test qui bloque dans `tools/test_site.mjs` ; test_sw / test_avis ignorent 404.html.
+- Sur le PC : `PYTHON=python node tools/test_site.mjs` (sinon « python3 » de Windows ne répond pas et 4 tests de recherche échouent).

@@ -39,7 +39,7 @@ const pages = [];
     const p = d ? d + "/" + n : n;
     if (IGNORER.includes(p) || IGNORER.includes(n) && !d) continue;
     if (statSync(join(root, p)).isDirectory()) parcourir(p);
-    else if (n.endsWith(".html") && !n.startsWith("google")) pages.push(p);
+    else if (n.endsWith(".html") && !n.startsWith("google") && n !== "404.html") pages.push(p);   // 404.html : page commune (outils communs/page-404), testée par test_site.mjs
   }
 })("");
 check(`pages trouvées (${pages.length})`, pages.length > 0);
