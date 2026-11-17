@@ -202,3 +202,9 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Liens « Confidentialité » et « Conditions d'utilisation » (pages communes clicvia.com, FR / AR) dans le pied de CHAQUE page
   (pied statique de `construire_site.py` + pied de `assets/page.js`). Test qui bloque dans `tools/test_site.mjs` ; test_sw / test_avis ignorent 404.html.
 - Sur le PC : `PYTHON=python node tools/test_site.mjs` (sinon « python3 » de Windows ne répond pas et 4 tests de recherche échouent).
+
+## Certificat EXPIRÉ de la HAICOP (17/11/2026, décision d'Ahmed : « lire malgré le certificat »)
+- Le certificat de www.marchespublics.gov.tn a expiré le 16/11/2026 à 9h : plus aucun relevé depuis le 15/11, robot rouge (§ 51, > 2 jours).
+- `telecharger()` de `robot/lire_haicop.py` refait l'essai SANS vérification du certificat SEULEMENT si la raison est « certificate has
+  expired » ET l'adresse commence par `PREFIXE_SITE` (même méthode que la Douane) ; tout autre défaut de certificat ou autre domaine = panne.
+  Dès que la HAICOP renouvelle son certificat, la lecture vérifiée repasse seule. Tests : 3 scénarios dans `tools/test_pannes.py`.

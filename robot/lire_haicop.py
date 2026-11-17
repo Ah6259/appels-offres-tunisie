@@ -20,6 +20,7 @@ import html
 import json
 import os
 import re
+import ssl
 import sys
 import time
 import unicodedata
@@ -28,6 +29,7 @@ import urllib.parse
 import urllib.request
 
 BASE = "https://www.marchespublics.gov.tn/fr/appels-doffres"
+PREFIXE_SITE = "https://www.marchespublics.gov.tn/"   # seul domaine accepté avec un certificat EXPIRÉ (décision d'Ahmed du 17/11/2026)
 UA = "Mozilla/5.0 (compatible; alertes-ao-tunisie; robot lent, 1 page / 2 s)"
 # Lecture suspecte : relue jusqu'à 3 fois (2 puis 4 min d'écart, 8 min au plus) avant la panne ; la meilleure lecture est gardée
 # (règle commune § 38, venue du site Concours le 20/10/2026 : une liste coupée une seule fois mettait le robot au rouge à tort).
@@ -58,8 +60,23 @@ def telecharger(url, json_attendu=False):
         entetes["X-Requested-With"] = "XMLHttpRequest"
     req = urllib.request.Request(url, headers=entetes)
     try:
-        with urllib.request.urlopen(req, timeout=40) as r:
-            return r.status, r.read().decode("utf-8", errors="replace")
+        try:
+            with urllib.request.urlopen(req, timeout=40) as r:
+                return r.status, r.read().decode("utf-8", errors="replace")
+        except urllib.error.URLError as e:
+            # 17/11/2026, DÉCISION D'AHMED (« lire malgré le certificat ») : le certificat de www.marchespublics.gov.tn a EXPIRÉ le 16/11
+            # à 9h (oubli de l'administration, pas un blocage) ; sans relevé depuis le 15/11, robot rouge. Lecture publique, rien n'est
+            # envoyé : nouvel essai sans vérification du certificat, SEULEMENT si la raison est « expiré » et SEULEMENT pour ce domaine
+            # (même méthode que la Douane, lire_douane.py). Dès que le site renouvelle son certificat, la lecture vérifiée repasse
+            # d'elle-même. Test : tools/test_pannes.py (autre domaine ou autre défaut de certificat = toujours une panne).
+            if isinstance(e, urllib.error.HTTPError) or "certificate has expired" not in str(e) or not url.startswith(PREFIXE_SITE):
+                raise
+            print("  (certificat EXPIRÉ chez marchespublics.gov.tn : lecture publique sans vérification du certificat, décision d'Ahmed)")
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            with urllib.request.urlopen(req, timeout=40, context=ctx) as r:
+                return r.status, r.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         return e.code, ""
     finally:

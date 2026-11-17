@@ -754,5 +754,41 @@ for ph in CS.PHOTOS:
     else:
         print(f"   (preuves hors dépôt absentes sur cette machine : vérification sautée pour {ph['fichier']})")
 
+# 17/11/2026 (décision d'Ahmed) : certificat EXPIRÉ de marchespublics.gov.tn -> lecture publique sans vérification, SEULEMENT pour ce
+# domaine et cette raison ; toute autre erreur de certificat (ou un autre domaine) reste une panne.
+import urllib.error as _ue
+import urllib.request as _ur
+import importlib as _il
+_il.reload(R)          # les scénarios plus haut remplacent R.telecharger par un faux : on reprend le vrai
+_vrai_ouvrir, _vraie_pause = _ur.urlopen, R.PAUSE
+class _Rep:
+    status = 200
+    def read(self): return b'{"ok": 1}'
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+def _faux(raison):
+    def ouvrir(req, timeout=None, context=None):
+        if context is None:
+            raise _ue.URLError(f"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: {raison} (_ssl.c:1011)")
+        return _Rep()
+    return ouvrir
+R.PAUSE = 0
+try:
+    _ur.urlopen = _faux("certificate has expired")
+    check("certificat EXPIRÉ de la HAICOP : lecture faite quand même (décision d'Ahmed, ce domaine seulement)", R.telecharger(R.BASE)[0] == 200)
+    try:
+        R.telecharger("https://autre-site.tn/page"); _ok = False
+    except _ue.URLError:
+        _ok = True
+    check("certificat expiré d'un AUTRE domaine : refusé (panne)", _ok)
+    _ur.urlopen = _faux("self signed certificate")
+    try:
+        R.telecharger(R.BASE); _ok = False
+    except _ue.URLError:
+        _ok = True
+    check("autre défaut de certificat de la HAICOP (pas « expiré ») : refusé (panne)", _ok)
+finally:
+    _ur.urlopen, R.PAUSE = _vrai_ouvrir, _vraie_pause
+
 print(f"\n{total - erreurs}/{total} scénarios réussis" + (f" — {erreurs} ÉCHEC(S) : ne pas publier." if erreurs else " — tout est bon."))
 sys.exit(1 if erreurs else 0)
