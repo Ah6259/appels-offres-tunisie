@@ -208,3 +208,11 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - `telecharger()` de `robot/lire_haicop.py` refait l'essai SANS vérification du certificat SEULEMENT si la raison est « certificate has
   expired » ET l'adresse commence par `PREFIXE_SITE` (même méthode que la Douane) ; tout autre défaut de certificat ou autre domaine = panne.
   Dès que la HAICOP renouvelle son certificat, la lecture vérifiée repasse seule. Tests : 3 scénarios dans `tools/test_pannes.py`.
+
+- **19/11/2026 — ACCUEIL LÉGER (Ahmed, CV.3)** : l'accueil écrivait ses 443 appels d'offres (833 Ko FR, 860 Ko AR, 17 600 éléments : 9 s avant d'être
+  utilisable sur un téléphone moyen). Toute liste de plus de `SEUIL_LISTE` (60) n'a que les `PREMIERES_LISTE` (30) dates limites les plus proches dans la
+  page ; le reste est écrit entre les repères `RESTE_DEBUT`/`RESTE_FIN`, puis APRÈS `LG.versions()` (langue et liens déjà adaptés) retiré de chaque
+  version et enregistré dans `liste.json` / `ar/<chemin>liste.json` (`separer_reste()`). app.js le charge au 1er geste (filtre, tri, recherche, « Afficher
+  plus », lien #Tender-…) ou TOUT DE SUITE si la page date d'un autre jour que le visiteur (`data-jour`) ; avant : compteurs, carte et résumé = chiffres
+  de la construction. Tests : page() du test charge le reste (sauf { leger: true }) ; test_rapports lit aussi liste.json.
+- Sur le PC, les tests de recherche ont besoin de `PYTHONUTF8=1 PYTHON=python` (sans UTF-8, le glossaire renvoie un JSON illisible : 4 échecs + arrêt du test).

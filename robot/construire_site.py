@@ -474,22 +474,48 @@ def titre70(long, court):
     return long if len(long) <= 70 else court
 
 
+# 19/11/2026 (Ahmed, CV.3 « accueils lourds ») : l'accueil écrivait ses 443 appels d'offres (833 Ko, 17 600 éléments : 9 s avant d'être
+# utilisable sur un téléphone moyen). Une liste de plus de SEUIL_LISTE annonces n'a dans la page que les PREMIERES_LISTE dont la date
+# limite est la plus proche ; les autres sont écrites entre les repères RESTE_DEBUT / RESTE_FIN, puis, APRÈS la séparation des langues
+# (robot/langues.py : textes et liens déjà adaptés), retirées de chaque version et enregistrées dans « liste.json » à côté de la page
+# (ar/<chemin>liste.json pour l'arabe). assets/app.js les charge au 1er geste. Chaque annonce garde sa fiche officielle et ses pages.
+SEUIL_LISTE, PREMIERES_LISTE = 60, 30
+RESTE_DEBUT, RESTE_FIN = "<!--reste-de-la-liste-->", "<!--fin-du-reste-->"
+
+
+def separer_reste(page_html):
+    """(page sans le reste, reste ou None) : le reste est enlevé de la page et rendu à part."""
+    i = page_html.find(RESTE_DEBUT)
+    if i < 0:
+        return page_html, None
+    j = page_html.index(RESTE_FIN, i)
+    return page_html[:i] + page_html[j + len(RESTE_FIN):], page_html[i + len(RESTE_DEBUT):j].strip("\n")
+
+
 def liste_html(aos, racine, jour, vide_fr, vide_ar, unite=None, cartes_html=None):
     """Liste filtrable. unite = (singulier FR, pluriel FR, arabe) pour le compteur (défaut : appels d'offres)."""
-    cartes = cartes_html if cartes_html is not None else "\n".join(carte(a, racine, jour) for a in aos)
     n = len(aos)
+    attrs = ""
+    if cartes_html is None and n > SEUIL_LISTE:
+        tries = sorted(aos, key=lambda a: (a["date_limite"] or "9999", -numero(a["numero"])))   # même ordre que la liste du robot
+        tete, reste = tries[:PREMIERES_LISTE], tries[PREMIERES_LISTE:]
+        cartes = ("\n".join(carte(a, racine, jour) for a in tete) + "\n" + RESTE_DEBUT + "\n"
+                  + "\n".join(carte(a, racine, jour) for a in reste) + "\n" + RESTE_FIN)
+        attrs = f' data-reste="liste.json?j={jour}" data-total="{n}" data-jour="{jour}"'
+    else:
+        cartes = cartes_html if cartes_html is not None else "\n".join(carte(a, racine, jour) for a in aos)
     # SEO (08/11/2026) : un h2 au-dessus des cartes (h3) : aucun niveau de titre sauté après le h1
     h2 = f'<h2 class="titre-section titre-liste">{L("La liste", "القائمة")}</h2>\n'
     if unite:
         u1, un, uar = unite
         return h2 + f"""<p class="compte" id="compte" aria-live="polite" data-un="{E(u1)}" data-pl="{E(un)}" data-ar="{E(uar)}"><span>{n} {E(u1 if n <= 1 else un)}</span></p>
-<div class="liste" id="liste">
+<div class="liste" id="liste"{attrs}>
 {cartes}
 </div>
 <button type="button" class="plus" id="plus" hidden>Afficher plus</button>
 <p class="carte vide" id="vide"{' hidden' if aos else ''}>{L(vide_fr, vide_ar)}</p>"""
     return h2 + f"""<p class="compte" id="compte" aria-live="polite"><span>{n} appel{'s' if n > 1 else ''} d'offres ouvert{'s' if n > 1 else ''}</span></p>
-<div class="liste" id="liste">
+<div class="liste" id="liste"{attrs}>
 {cartes}
 </div>
 <button type="button" class="plus" id="plus" hidden>Afficher plus</button>
@@ -1465,8 +1491,13 @@ def construire(donnees, sortie, jour):
     LG.MIROIR.clear(); LG.MIROIR.update(c for c, _ in pages)
     for chemin, contenu in pages:
         fr, ar = LG.versions(contenu, chemin)
-        ecrire(sortie, chemin + "index.html", fr)
-        ecrire(sortie, "ar/" + chemin + "index.html", ar)
+        for dossier, version in ((chemin, fr), ("ar/" + chemin, ar)):
+            version, reste = separer_reste(version)          # accueil léger (19/11/2026) : reste de la liste à part
+            ecrire(sortie, dossier + "index.html", version)
+            if reste is not None:
+                ecrire(sortie, dossier + "liste.json", json.dumps({"html": reste}, ensure_ascii=False, separators=(",", ":")))
+            elif os.path.exists(os.path.join(sortie, dossier + "liste.json")):
+                os.remove(os.path.join(sortie, dossier + "liste.json"))
     LG.nettoyer(sortie)                      # page arabe sans page française du jour = retirée
     lastmod = jour
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']

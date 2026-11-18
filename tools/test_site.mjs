@@ -26,7 +26,9 @@ const ouverts = tous.filter(a => a.date_limite ? a.date_limite >= JOUR : (a.date
 check(`données : ${ouverts.length} appels d'offres ouverts le ${JOUR} (au moins 1)`, ouverts.length > 0);
 
 // ---- Chargement d'une page comme un navigateur ---------------------------------
-async function page(chemin, params = "") {
+// 19/11/2026 (accueil léger, CV.3) : une longue liste n'a que ses 30 premières annonces dans la page, le reste dans liste.json (même
+// langue) chargé au 1er geste. Le faux navigateur lit ce fichier (fetch) ; page() charge la liste complète sauf avec { leger: true }.
+async function page(chemin, params = "", { leger = false } = {}) {
   // UNE ADRESSE PAR LANGUE (08/11/2026) : la version arabe d'une page est ar/<chemin> (video/ garde ?lang=)
   if (/(^|&)lang=ar(&|$)/.test(params) && !chemin.startsWith("ar/") && existsSync(join(root, "ar", chemin))) chemin = "ar/" + chemin;
   // chaque <script src> est remplacé par son contenu, puis tout s'exécute dans l'ordre de la page
@@ -36,7 +38,10 @@ async function page(chemin, params = "") {
     (_, a, src) => `<script>${readFileSync(join(dossier, src), "utf8")}</script>`);
   const dom = new JSDOM(html, { url: URL_SITE + chemin.replace("index.html", "") + "?" + params,
                                runScripts: "dangerously", pretendToBeVisual: true });
+  dom.window.fetch = async u => { const f = join(dossier, String(u).split("?")[0]); return existsSync(f) ? { ok: true, json: async () => JSON.parse(readFileSync(f, "utf8")) } : { ok: false, status: 404 }; };
   await new Promise(ok => dom.window.addEventListener("load", ok));
+  const l = dom.window.document.getElementById("liste"), q = dom.window.document.getElementById("f-q");
+  if (!leger && l && l.dataset.reste && q) { q.dispatchEvent(new dom.window.Event("focus")); await new Promise(r => setTimeout(r, 80)); }
   return dom.window;
 }
 const texte = el => (el ? el.textContent : "").replace(/[⁦-⁩ ]/g, " ").replace(/\s+/g, " ").trim();
@@ -71,6 +76,16 @@ const changer = (w, id, v) => { const s = w.document.getElementById(id); s.value
     tous.every(a => OFFICIELS.includes(norm(a.gouvernorat)) || Object.values(EXCEPTIONS).includes(a.gouvernorat))); }
 
 // ---- 1. Accueil ----------------------------------------------------------------
+for (const [f, lg] of [["index.html", "fr"], ["ar/index.html", "ar"]]) {
+  const wl = await page(f, `lang=${lg}&jour=${JOUR}`, { leger: true }), dl = wl.document, l = dl.getElementById("liste");
+  const reste = f.replace("index.html", "liste.json"), jr = existsSync(join(root, reste)) ? JSON.parse(lire(reste)).html : "";
+  check(`accueil léger (${lg}) : 30 annonces au plus dans la page, le reste dans ${reste} (même langue), vrai total affiché`,
+    !!l.dataset.reste && dl.querySelectorAll("#liste .ao").length <= 30 && dl.querySelectorAll("#liste .ao").length + (jr.match(/<article class="ao/g) || []).length === ouverts.length
+    && texte(dl.getElementById("compte")).includes(String(ouverts.length))
+    && (lg === "ar" ? !/data-l="fr"/.test(jr) : !/data-l="ar"/.test(jr)));
+  changer(wl, "f-tri", "recent"); await new Promise(r => setTimeout(r, 80));
+  check(`accueil léger (${lg}) : un filtre ou un tri charge toute la liste`, dl.querySelectorAll("#liste .ao").length === ouverts.length);
+}
 let w = await page("index.html", `lang=fr&jour=${JOUR}`);
 let d = w.document;
 let cartes = visibles(d);
@@ -107,7 +122,7 @@ const bulles = [...d.querySelectorAll(".carte-tn .tn-b")];
     /class="hero-carte"/.test(acc) && acc.indexOf('class="hero-carte"') < acc.indexOf('id="liste"')
     && G24.every(g => (h => h.indexOf('class="hero-carte petite"') > 0 && h.indexOf('class="hero-carte petite"') < h.indexOf('id="liste"')
       && new RegExp(`class="tn-b[^"]*actif" data-gouv="${g}"`).test(h))(lire(`gouvernorat/${g}/index.html`))));
-  check("carte : nombres recalculés par le navigateur seulement sur l'accueil", /if \(document\.getElementById\("f-gouv"\)\) document\.querySelectorAll\("\.tn-b\[data-gouv\] text"\)/.test(lire("assets/app.js"))); }
+  check("carte : nombres recalculés par le navigateur seulement sur l'accueil", /if \((charge && )?document\.getElementById\("f-gouv"\)\) document\.querySelectorAll\("\.tn-b\[data-gouv\] text"\)/.test(lire("assets/app.js"))); }
 check("carte de la Tunisie : 24 gouvernorats, chacun lien vers sa page", bulles.length === 24 &&
   bulles.every(b => b.getAttribute("href") === `gouvernorat/${b.dataset.gouv}/`));
 check("carte de la Tunisie : nombre de chaque bulle = appels d'offres ouverts du gouvernorat", bulles.every(b => {

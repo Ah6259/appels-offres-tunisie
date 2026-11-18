@@ -122,6 +122,9 @@ for m in mois:
             ok_liste = False
         # mêmes classements que la page du site (pour les appels d'offres encore ouverts)
         page_site = lire(SITE, f"{t}/{slug}/index.html")
+        # accueil léger (19/11/2026) : une longue liste a le reste de ses cartes dans liste.json à côté de la page
+        if os.path.exists(os.path.join(SITE, t, slug, "liste.json")):
+            page_site += json.loads(lire(SITE, f"{t}/{slug}/liste.json"))["html"]
         cartes = set(re.findall(r'<article class="ao[^"]*" id="(Tender-\d+)"', page_site))
         ouverts = [r["numero"] for r in sel if r["date_limite"] and r["date_limite"] >= etat["construit_le"]]
         if not all(n in cartes for n in ouverts):

@@ -27,6 +27,22 @@
   const PAR_PAGE = 15;          // cartes montrées d'abord (téléphone) ; « Afficher plus » pour la suite
   const RAPPEL = 7;             // étiquette « J-N » jusqu'à 7 jours avant la date limite
   let pret = false, cartes = [], prives = [], liste = null, montrees = PAR_PAGE, cible = "";
+  // 19/11/2026 (accueil léger, CV.3) : une longue liste n'a dans la page que ses premières annonces ; le reste (data-reste, liste.json
+  // de la même langue) est chargé au 1er geste — ou tout de suite si la page date d'un autre jour que celui du visiteur (les chiffres
+  // doivent suivre SA date) — puis tout est recalculé. Avant : compteurs, carte et résumé = chiffres de la construction.
+  let charge = true, enCours = null;
+  function charger() {
+    if (charge) return Promise.resolve();
+    if (!enCours) enCours = fetch(liste.dataset.reste).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+      liste.insertAdjacentHTML("beforeend", d.html);
+      cartes = Array.from(liste.querySelectorAll(".ao"));
+      cartes.forEach(texteCarte);
+      charge = true;
+      appliquer();
+      if (location.hash) allerA();
+    }).catch(() => { enCours = null; });
+    return enCours;
+  }
 
   function rappel(reste) {
     if (reste === null || reste < 0 || reste > RAPPEL) return null;
@@ -62,7 +78,7 @@
     if (!sel) return;
     const ouvertes = cartes.filter(c => !c.dataset.expire);
     sel.querySelectorAll("option").forEach(o => {
-      const n = o.value ? ouvertes.filter(c => c.dataset[cle] === o.value).length : ouvertes.length;
+      const n = !charge ? o.dataset.n : o.value ? ouvertes.filter(c => c.dataset[cle] === o.value).length : ouvertes.length;
       o.textContent = T(o.dataset.fr, o.dataset.ar) + " (" + n + ")";
     });
   }
@@ -92,6 +108,8 @@
     if (fq) fq.placeholder = T(fq.dataset.fr, fq.dataset.ar);
     const m = fm ? fm.value : "", g = fg ? fg.value : "", tri = ft ? ft.value : "limite";
     const tape = fq ? fq.value : "", mots = normaliser(tape).split(" ").filter(Boolean);
+    const filtre = !!(m || g || mots.length || tri !== "limite");
+    if (!charge && filtre) charger();
     const garde = c => !c.dataset.expire && (!m || c.dataset.metier === m) && (!g || c.dataset.gouv === g) &&
       cherche(c, mots, tape);
     let visibles = 0;
@@ -100,6 +118,7 @@
       c.dataset.ok = ok ? "1" : "";
       if (ok) visibles++;
     });
+    if (!charge && !filtre) visibles = +liste.dataset.total;   // vrai total tant que le reste n'est pas chargé
     // la carte suit le filtre (règle commune § 11.11, 18/10/2026) : sur l'accueil, le gouvernorat choisi est entouré
     if (fg) document.querySelectorAll(".carte-tn .tn-b[data-gouv]").forEach(b => b.classList.toggle("actif", b.dataset.gouv === g));
     // Tri : date limite la plus proche d'abord (sans date à la fin), ou plus récents d'abord
@@ -143,7 +162,7 @@
 
     // Résumé du jour (accueil)
     const ouvertes = cartes.filter(c => !c.dataset.expire);
-    const rN = document.getElementById("r-nouveaux");
+    const rN = charge && document.getElementById("r-nouveaux");
     if (rN) {
       const pubs = ouvertes.map(c => c.dataset.pub).filter(Boolean).sort();
       const dernier = pubs[pubs.length - 1] || "";
@@ -154,14 +173,14 @@
       rN.querySelector("span").textContent = auj ? T("nouveaux aujourd'hui", "جديدة اليوم")
         : dernier ? T(`nouveaux le ${jm(jourAff)}`, `جديدة يوم ${iso(jm(jourAff))}`) : T("nouveaux", "جديدة");
     }
-    const rO = document.getElementById("r-ouverts");
+    const rO = charge && document.getElementById("r-ouverts");
     if (rO) rO.querySelector("b").textContent = ouvertes.length;
     // Carte de la Tunisie : nombres recalculés avec la date du visiteur, seulement sur l'accueil (qui a TOUS les appels d'offres) ;
     // sur une page de gouvernorat la liste ne contient que ce gouvernorat : on garde les nombres du robot
-    if (document.getElementById("f-gouv")) document.querySelectorAll(".tn-b[data-gouv] text").forEach(t => {
+    if (charge && document.getElementById("f-gouv")) document.querySelectorAll(".tn-b[data-gouv] text").forEach(t => {
       t.textContent = ouvertes.filter(c => c.dataset.gouv === t.parentNode.dataset.gouv).length;
     });
-    const rU = document.getElementById("r-urgent");
+    const rU = charge && document.getElementById("r-urgent");
     if (rU) rU.querySelector("b").textContent = ouvertes.filter(c => c.classList.contains("urgent")).length;
 
     // « Clôturent bientôt » (accueil) : les 5 dates limites les plus proches, dans les 7 jours
@@ -215,6 +234,7 @@
     let id = "";
     try { id = decodeURIComponent((location.hash || "").slice(1)); } catch (e) { return; }
     const c = id && document.getElementById(id);
+    if (!charge && id && !c) { charger(); return; }           // annonce dans le reste de la liste : chargée puis visée
     if (!c || !c.classList.contains("ao") || c.parentNode !== liste) return;
     cible = id;
     appliquer();
@@ -228,6 +248,10 @@
       liste = document.getElementById("liste");
       if (!liste) return;
       cartes = Array.from(liste.querySelectorAll(".ao"));
+      if (liste.dataset.reste) {
+        charge = false;
+        ["f-metier", "f-gouv"].forEach(id => { const s = document.getElementById(id); if (s) s.querySelectorAll("option").forEach(o => { o.dataset.n = (o.textContent.match(/\((\d+)\)\s*$/) || [])[1] || ""; }); });
+      }
       const lp = document.getElementById("liste-prives");
       prives = lp ? Array.from(lp.querySelectorAll(".ao")) : [];
       cartes.concat(prives).forEach(texteCarte);
@@ -239,9 +263,10 @@
       if (fq) {
         if (params.get("q")) fq.value = params.get("q").slice(0, 100);
         fq.addEventListener("input", () => { montrees = PAR_PAGE; appliquer(); });
+        fq.addEventListener("focus", charger, { once: true });
       }
       const plus = document.getElementById("plus");
-      if (plus) plus.addEventListener("click", () => { montrees += PAR_PAGE; appliquer(); });
+      if (plus) plus.addEventListener("click", () => { montrees += PAR_PAGE; charger().then(appliquer); appliquer(); });
       document.addEventListener("click", e => {
         if (e.target.id !== "effacer") return;
         ["f-metier", "f-gouv", "f-q"].forEach(id => { const s = document.getElementById(id); if (s) s.value = ""; });
@@ -255,6 +280,7 @@
       });
       window.addEventListener("hashchange", allerA);
       pret = true;
+      if (!charge && liste.dataset.jour !== aujourdHui()) charger();   // page d'un autre jour : tout recalculer avec la date du visiteur
     }
     appliquer();
     if (location.hash) allerA();
