@@ -22454,21 +22454,302 @@
    "lu_le": "2026-11-17 16:53",
    "metier": "Autres",
    "gouvernorat": "Tunis"
+  },
+  "Tender-104827": {
+   "numero": "Tender-104827",
+   "objet": "اقتناء نقل ووضع قنوات حديدية قطر 1000 مم ببلي 01 من معتمدية قرمبالية .",
+   "descriptif": "طــــــــلب عروض وطني عدد21/2026اقتناء نقل ووضع قنوات حديدية قطر 1000 مم ببلي 01 من معتمدية قرمبالية .العدد على منظومة تونبس20261101607",
+   "acheteur": "Commissariat Régional au Développement Agricole de Nabeul",
+   "type_commande": "Travaux/ Ascenseur",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "NABEUL",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-22",
+   "heure_limite": "15:00",
+   "date_ouverture": "2026-12-22",
+   "cautionnement_provisoire_dt": [
+    4000
+   ],
+   "cautionnement_total_dt": 4000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104827",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104823": {
+   "numero": "Tender-104823",
+   "objet": "صفقة التغذية الخاصة بمركبات الطفولة صفاقس 2027",
+   "descriptif": "",
+   "acheteur": "COMMISSARIAT REGIONAL DES AFFAIRES DE LA FEMME ET DE LA FAMILLE DE SFAX",
+   "type_commande": "Biens/ Nourriture",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "SFAX"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-18",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-18",
+   "cautionnement_provisoire_dt": [
+    853,
+    556,
+    1001,
+    927,
+    334
+   ],
+   "cautionnement_total_dt": 3671,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "5",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104823",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Alimentation",
+   "gouvernorat": "Sfax"
+  },
+  "Tender-104826": {
+   "numero": "Tender-104826",
+   "objet": "AO 98 /2026 Travaux de réhabilitation de quartier Dkhilet Toujene-Commune Dkhilet Toujene-Gouvernorat de GABES",
+   "descriptif": "",
+   "acheteur": "Agence de Réhabilitation et de Rénovation Urbaine",
+   "type_commande": "Travaux/ VRD",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "GABES",
+   "regions_lots": [
+    "GABES"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-18",
+   "heure_limite": "12:00",
+   "date_ouverture": "2026-12-18",
+   "cautionnement_provisoire_dt": [
+    15000
+   ],
+   "cautionnement_total_dt": 15000,
+   "specialite": "Les voiries et réseaux divers (VRD)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "2",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104826",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Gabès"
+  },
+  "Tender-104825": {
+   "numero": "Tender-104825",
+   "objet": "acquisition des équipement dentaires",
+   "descriptif": "acquisition des équipements dentaires",
+   "acheteur": "Direction régionale de la santé de Sousse",
+   "type_commande": "Biens/ Matériel Médical",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-25",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-25",
+   "cautionnement_provisoire_dt": [
+    2000,
+    2000
+   ],
+   "cautionnement_total_dt": 4000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "2",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104825",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Médical",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104824": {
+   "numero": "Tender-104824",
+   "objet": "بلاغ للمهندسين المعماريين والمهندسين المستشارين ومكاتب الدراسات حول تحيين قائمة المصممين لسنة 2027 والمؤهلين لممارسة نشاطهم طبقا للتراتيب الجارية بها العمل",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Sousse",
+   "type_commande": "Etudes/ Autres études",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "SOUSSE",
+   "regions_lots": [
+    "SOUSSE"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2027-01-05",
+   "heure_limite": "10:00",
+   "date_ouverture": "2027-01-05",
+   "cautionnement_provisoire_dt": [
+    0
+   ],
+   "cautionnement_total_dt": 0,
+   "specialite": "Autres",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104824",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Études / conseil",
+   "gouvernorat": "Sousse"
+  },
+  "Tender-104821": {
+   "numero": "Tender-104821",
+   "objet": "Prestations de Transport Terrestre",
+   "descriptif": "",
+   "acheteur": "Manufacture Tunisienne des Tabacs de Kairouan",
+   "type_commande": "Services/ Transport / Déménage",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "KAIROUAN"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-03",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-03",
+   "cautionnement_provisoire_dt": [
+    1500,
+    200,
+    600,
+    1000,
+    2000,
+    6500
+   ],
+   "cautionnement_total_dt": 11800,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "6",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104821",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Kairouan"
+  },
+  "Tender-104820": {
+   "numero": "Tender-104820",
+   "objet": "Acquisition Matériel de transport",
+   "descriptif": "",
+   "acheteur": "Office des Terres Domaniales",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-18",
+   "heure_limite": "09:00",
+   "date_ouverture": "2026-12-18",
+   "cautionnement_provisoire_dt": [
+    2000,
+    20000,
+    5000,
+    37000
+   ],
+   "cautionnement_total_dt": 64000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "4",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104820",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Transport / véhicules",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104819": {
+   "numero": "Tender-104819",
+   "objet": "Acquisition d'une voiture de service électrique (04/2026 2ème fois)",
+   "descriptif": "Acquisition d'une voiture de service électrique",
+   "acheteur": "Caisse des Prêts et de Soutien des Collectivités Locales",
+   "type_commande": "Biens/ Matériels roulants",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-18",
+   "date_limite": "2026-12-22",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-22",
+   "cautionnement_provisoire_dt": [
+    700
+   ],
+   "cautionnement_total_dt": 700,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104819",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Électricité",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104818": {
+   "numero": "Tender-104818",
+   "objet": "FOURNITURE, INSTALLATION ET MISE EN SERVICE DE 3 SYSTEMES DE CAMERAS FLUORESCENCE ICG",
+   "descriptif": "",
+   "acheteur": "Institut Salah Azaïez",
+   "type_commande": "Biens/ Matériel Médical",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-17",
+   "date_limite": "2026-12-21",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-21",
+   "cautionnement_provisoire_dt": [
+    5000
+   ],
+   "cautionnement_total_dt": 5000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104818",
+   "source": "HAICOP",
+   "lu_le": "2026-11-18 14:47",
+   "metier": "Médical",
+   "gouvernorat": "Tunis"
   }
  },
- "mis_a_jour": "2026-11-17 16:53",
+ "mis_a_jour": "2026-11-18 14:47",
  "dernier_passage": {
-  "date": "2026-11-17 16:53",
+  "date": "2026-11-18 14:47",
   "liste_ok": true,
-  "lus": 26,
+  "lus": 9,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-17 16:53",
+ "derniere_lecture_reussie": "2026-11-18 14:47",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-17 16:53",
+  "depuis": "2026-11-18 14:47",
   "raison": ""
  }
 }
