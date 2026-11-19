@@ -81,7 +81,8 @@ async function ouvrir(chemin, { lang = "fr" } = {}) {
     runScripts: "dangerously", resources: ressources(), pretendToBeVisual: true, virtualConsole: vc,
     beforeParse(w) {
       // faux fetch : on note chaque envoi, rien ne part sur Internet
-      w.fetch = (url, opts = {}) => { appels.push({ url: String(url), opts }); return (w.__reseau || (() => Promise.resolve({ ok: true, status: 200 })))(url, opts); };
+      w.fetch = (url, opts = {}) => { if (!/(^|\/)liste\.json(\?|$)/.test(String(url))) appels.push({ url: String(url), opts });   // 19/11/2026 : le chargement du reste de la liste (accueil léger) n'est pas un envoi
+       return (w.__reseau || (() => Promise.resolve({ ok: true, status: 200 })))(url, opts); };
     }
   });
   await new Promise(ok => dom.window.addEventListener("load", ok));
