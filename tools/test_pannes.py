@@ -686,6 +686,9 @@ with copie_site() as s:
     # 06/11/2026 (règle commune § 55) : site qui REFUSE la connexion = sommeil (pas d'échec) pendant SOMMEIL_MAX_JOURS, puis alarme ;
     # une erreur de lecture chez nous (format changé) n'est jamais en sommeil
     _r = "page injoignable (<urlopen error [Errno 111] Connection refused>)"
+    check("alerte : Douane retirée par Ahmed (A.10, 21/11/2026) = plus d'alarme ; la feuille des entreprises reste surveillée",
+          SP.retirer(SP.en_panne({"derniere_lecture_reussie": "2026-10-01 06:00"}, "2026-10-15")) == []
+          and len(SP.retirer(SP.en_panne({"derniere_lecture_reussie": "2026-10-01"}, "2026-10-15", {"derniere_lecture": "2026-10-12"}, "https://x"))) == 1)
     _f = (dt.date(2026, 10, 21) + dt.timedelta(days=SP.SOMMEIL_MAX_JOURS)).isoformat()
     check("source dont le site refuse la connexion : en sommeil jusqu'à SOMMEIL_MAX_JOURS, alarme après ; format changé : jamais en sommeil",
           SP.en_sommeil("2026-10-21 06:00", _r, "2026-11-06") == _f and SP.en_sommeil("2026-10-21", _r, (dt.date.fromisoformat(_f) + dt.timedelta(days=1)).isoformat()) is None
