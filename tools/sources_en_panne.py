@@ -21,6 +21,15 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # lecture réussie (ligne « SOMMEIL »), puis l'alarme sonne (décider de la retirer). Une erreur de lecture CHEZ NOUS (page
 # changée, liste trop courte…) sonne toujours après JOURS jours.
 SOMMEIL_MAX_JOURS = 30
+# SOURCES RETIRÉES DE L'ALARME (décision d'Ahmed du 21/11/2026, point A.10 : « retire-les ») : la page des ventes aux enchères de la
+# Douane ne répond plus à GitHub ; elle est encore essayée à chaque passage (les enchères reviennent seules si elle répond), mais sa
+# panne ne met plus le robot en rouge. Pour la remettre sous alarme : la retirer de cet ensemble.
+RETIREES = {"ventes aux enchères (Douane)"}
+
+
+def retirer(pannes):
+    """Pannes qui sonnent encore : sans les sources retirées par Ahmed."""
+    return [x for x in pannes if x[0] not in RETIREES]
 EXTERNE = re.compile(r"refused|reset by peer|timed? ?out|Errno (101|104|110|111|113)|HTTP Error (403|429|5\d\d)|injoignable|"
                      r"Temporary failure|Name or service not known|unreachable|No route to host|Cloudflare", re.I)
 
@@ -53,6 +62,9 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.join(RACINE, "robot"))
     import reglages
     p = en_panne(lire("encheres.json"), dt.date.today().isoformat(), lire("prives.json"), getattr(reglages, "CSV_PRIVES_URL", ""))
+    for s_, d_, r_ in [x for x in p if x[0] in RETIREES]:
+        print(f"RETIRÉE source {s_} : en panne depuis le {d_ or 'jamais'} ({r_}) — encore essayée, sans alarme (décision d'Ahmed du 21/11/2026)")
+    p = retirer(p)
     auj = dt.date.today().isoformat()
     dors = [x for x in p if en_sommeil(x[1], x[2], auj)]
     p = [x for x in p if x not in dors]
