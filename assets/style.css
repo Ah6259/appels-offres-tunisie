@@ -2,7 +2,7 @@
 :root{
   --bg:#F3F6F9; --carte:#FFFFFF; --texte:#0F1E2E; --doux:#5A6878; --ligne:#E0E6ED;
   --bleu:#24476B; --bleu-fonce:#16304A; --bleu-clair:#E6EDF5; --bleu-tres-clair:#F2F6FA;
-  --accent:#2F6FB3; --rouge:#C2412F; --rouge-clair:#FBEAE7; --or:#B7791F; --or-clair:#FBF1DF; --vert:#0B7A53; --vert-clair:#E3F3EC;
+  --accent:#2F6FB3; --rouge:#B23A29; --rouge-clair:#FBEAE7; --or:#8F5D14; --or-clair:#FBF1DF; --vert:#0B7A53; --vert-clair:#E3F3EC;
   --hero1:#2B5580; --hero2:#16304A;
   --ombre:0 1px 2px rgba(15,30,46,.06),0 8px 24px rgba(15,30,46,.06);
   --rayon:18px;
@@ -221,7 +221,7 @@ html[lang="ar"] .trad small{font-family:"Noto Kufi Arabic",Figtree,sans-serif}
 .alertes-btn{display:grid;gap:8px;margin:0 0 14px}
 .btn-alerte{display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;font-weight:800;font-size:15px;border-radius:14px;padding:12px 14px;color:#fff;background:#229ED9}
 .btn-alerte svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.btn-whatsapp{background:#1F9D55}
+.btn-whatsapp{background:#15803D}
 
 /* ---- entreprises privées ---- */
 .bloc-prives[hidden]{display:none}
@@ -307,7 +307,7 @@ img,svg{-webkit-user-drag:none}
 .btn-pro:disabled{opacity:.55;cursor:default}
 .btn-clair{display:block;text-align:center;font-weight:800;font-size:15px;color:var(--bleu);background:var(--carte);border:1.5px solid var(--bleu);
   border-radius:12px;padding:11px 14px;cursor:pointer}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:800;font-size:15px;color:#fff;background:#1F9D55;
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:800;font-size:15px;color:#fff;background:#15803D;
   border-radius:12px;padding:12px 14px;margin:10px 0}
 .btn-wa svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .offre-pro{position:relative;background:var(--carte);border:2px solid #F2B33D;border-radius:var(--rayon);padding:22px 18px 18px;margin:12px 0 14px;box-shadow:var(--ombre)}
