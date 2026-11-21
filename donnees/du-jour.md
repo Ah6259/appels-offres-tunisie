@@ -1,20 +1,24 @@
 # Appels d'offres publics — Tunisie
 
-Publiés entre le 18/11/2026 et le 20/11/2026 · 55 appels d'offres encore ouverts · mis à jour le 20/11/2026 à 14:57
+Publiés entre le 18/11/2026 et le 20/11/2026 · 60 appels d'offres encore ouverts · mis à jour le 21/11/2026 à 14:21
 
 _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fiche officielle fait foi. Cahier des charges à retirer sur TUNEPS._
 
-## Alimentation (2)
+## Alimentation (3)
 
 ### Ben Arous
 
 - **التزود بالمواد الغذائية لفائدة مطعم فوج النظام المركزي بنعسان لسنة 2027** — Gouvernorat de Ben Arous · Services/ Autres services · date limite **22/12/2026 10:00** · caution 4 060 000 DT · [Tender-104865](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104865) (source : HAICOP)
 
+### Jendouba
+
+- **تزويد قوات الامن الوطني بولاية جندوبة بالمواد العطرية خلال الفترة المتبقية لسنة 2026** — Gouvernorat de Jendouba · Biens/ Nourriture · date limite **27/11/2026 09:58** · caution 1 500 DT · [Tender-104886](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104886) (source : HAICOP)
+
 ### Sfax
 
 - **صفقة التغذية الخاصة بمركبات الطفولة صفاقس 2027** — COMMISSARIAT REGIONAL DES AFFAIRES DE LA FEMME ET DE LA FAMILLE DE SFAX · Biens/ Nourriture · date limite **18/12/2026 09:00** · caution 3 671 DT · [Tender-104823](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104823) (source : HAICOP)
 
-## BTP / génie civil (19)
+## BTP / génie civil (22)
 
 ### Ariana
 
@@ -48,7 +52,12 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **3ème avis d'appel d'offres de Travaux de construction de la résidence « LA PERLE » à Sidi abdelhamid à Sousse, composée de 30 logements sociaux collectifs, Rez de chaussée et 6…** — Société Nationale Immobilière Snit Centre · Travaux/ Génie Civil · date limite **04/12/2026 10:00** · caution 40 000 DT · [Tender-104836](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104836) (source : HAICOP)
 - **réparation et amenagement du sol du marché quotidien du cité comercial du msaken** — Municipalité de Msaken · Travaux/ Travaux de Rehabilitation · date limite **16/12/2026 10:00** · caution 2 000 DT · [Tender-104863](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104863) (source : HAICOP)
+- **Travaux de construction de 20 appartements à la résidence Yassmine s 2 à Sahloul 4 sousse** — Société Nationale Immobilière Snit Centre · Travaux/ Génie Civil · date limite **21/12/2026 10:00** · caution 35 000 DT · [Tender-104885](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104885) (source : HAICOP)
 - **Acquisition de matériel de propreté et de voirie** — Municipalité de Msaken · Biens/ Autres Fournitures · date limite **24/12/2026 10:00** · caution 19 500 DT · [Tender-104830](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104830) (source : HAICOP)
+
+### Tataouine
+
+- **أشغال تهيئة وصيانة بمركز التكوين والتدريب المهني بتطاوين** — Agence Tunisienne de la Formation Professionnelle · Travaux/ Génie Civil · date limite **04/01/2027 10:00** · caution 40 000 000 DT · [Tender-104884](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104884) (source : HAICOP)
 
 ### Tozeur
 
@@ -59,6 +68,7 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 - **AMENAGEMENT ET MISE EN CONFORMITE SALLE SERVEUR DE L’INSTITUT SALAH AZAIEZ** — Institut Salah Azaïez · Travaux/ Génie Civil · date limite **14/12/2026 10:00** · caution 4 000 DT · [Tender-104881](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104881) (source : HAICOP)
 - **TRAVAUX D’AMENAGEMENT ET DE MISE EN CONFORMITE DE LA SALLE BLANCHE DE L’INSTITUT SALAH AZAIEZ** — Institut Salah Azaïez · Travaux/ Fondation Spéciale · date limite **14/12/2026 10:00** · caution 3 500 DT · [Tender-104880](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104880) (source : HAICOP)
+- **IMPRESSION, RELIURE ET FINITION DES MANUELS SCOLAIRES 2027** — Centre National Pédagogique · Biens/ Autres Fournitures · date limite **21/12/2026 14:00** · caution 40 000 DT · [Tender-104879](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104879) (source : HAICOP)
 - **Amélioration du trafic de circulation dans la zone municipale de la Marsa pour l année 2027(pour les petites entreprises)** — Municipalité de la Marsa · Travaux/ Autres travaux · date limite **21/12/2026 11:00** · caution 9 000 000 DT · [Tender-104850](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104850) (source : HAICOP)
 
 ### Zaghouan
@@ -85,7 +95,7 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 - **Acquisition d'une voiture de service électrique (04/2026 2ème fois)** — Caisse des Prêts et de Soutien des Collectivités Locales · Biens/ Matériels roulants · date limite **22/12/2026 10:00** · caution 700 DT · [Tender-104819](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104819) (source : HAICOP)
 - **اقتناء معدات تكوين في كهرباء البناء والأنظمة الذكية (الدوموتيك) لـستة عشرة (16)مركزا** — Agence Tunisienne de la Formation Professionnelle · Biens/ Autres Fournitures · date limite **06/01/2027 10:00** · caution 98 575 DT · [Tender-104869](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104869) (source : HAICOP)
 
-## Études / conseil (8)
+## Études / conseil (9)
 
 ### Gabès
 
@@ -97,6 +107,7 @@ _Source : HAICOP (www.marchespublics.gov.tn). Résumé indicatif : seule la fich
 
 ### Sousse
 
+- **استشارة تعيين مراقب حسابات لسنوات 2023/2024/2025** — Société de Transport du Sahel · Services/ Autres services · date limite **16/12/2026 17:00** · [Tender-104883](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104883) (source : HAICOP)
 - **Acquisition d’équipements pour la formation en plasturgie pour le centre sectoriel de formation en soudure, outillage et plasturgie de Sousse** — Agence Tunisienne de la Formation Professionnelle · Biens/ Autres Fournitures · date limite **24/12/2026 10:00** · caution 7 356 DT · [Tender-104856](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104856) (source : HAICOP)
 - **إقتناء تجهيزات تكوين في الإلكترونيات البحرية لفائدة المركز القطاعي للتكوين في الإلكترونيك بسوسة** — Agence Tunisienne de la Formation Professionnelle · Etudes/ Activité littéraire et artistique · date limite **29/12/2026 10:00** · caution 5 442 DT · [Tender-104861](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104861) (source : HAICOP)
 - **بلاغ للمهندسين المعماريين والمهندسين المستشارين ومكاتب الدراسات حول تحيين قائمة المصممين لسنة 2027 والمؤهلين لممارسة نشاطهم طبقا للتراتيب الجارية بها العمل** — Gouvernorat de Sousse · Etudes/ Autres études · date limite **05/01/2027 10:00** · [Tender-104824](https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104824) (source : HAICOP)

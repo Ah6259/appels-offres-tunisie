@@ -9479,6 +9479,18 @@
      "objet": "eclairage public de l entree nord cote route de sousse",
      "procedure": "Appel d’offres ouvert"
     },
+    "Tender-104879": {
+     "acheteur": "Centre National Pédagogique",
+     "caution": 40000,
+     "date_limite": "2026-12-21",
+     "date_publication": "2026-11-20",
+     "gouvernorat": "Tunis",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104879",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104879",
+     "objet": "IMPRESSION, RELIURE ET FINITION DES MANUELS SCOLAIRES 2027",
+     "procedure": "Appel d’offres ouvert"
+    },
     "Tender-104880": {
      "acheteur": "Institut Salah Azaïez",
      "caution": 3500,
@@ -9514,11 +9526,59 @@
      "numero": "Tender-104882",
      "objet": "FOURNITURE, INSTALLATION ET MISE EN SERVICE DES EQUIPEMENTS MEDICAUX",
      "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104883": {
+     "acheteur": "Société de Transport du Sahel",
+     "caution": null,
+     "date_limite": "2026-12-16",
+     "date_publication": "2026-11-20",
+     "gouvernorat": "Sousse",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104883",
+     "metier": "Études / conseil",
+     "numero": "Tender-104883",
+     "objet": "استشارة تعيين مراقب حسابات لسنوات 2023/2024/2025",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104884": {
+     "acheteur": "Agence Tunisienne de la Formation Professionnelle",
+     "caution": 40000000,
+     "date_limite": "2027-01-04",
+     "date_publication": "2026-11-20",
+     "gouvernorat": "Tataouine",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104884",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104884",
+     "objet": "أشغال تهيئة وصيانة بمركز التكوين والتدريب المهني بتطاوين",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104885": {
+     "acheteur": "Société Nationale Immobilière Snit Centre",
+     "caution": 35000,
+     "date_limite": "2026-12-21",
+     "date_publication": "2026-11-20",
+     "gouvernorat": "Sousse",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104885",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104885",
+     "objet": "Travaux de construction de 20 appartements à la résidence Yassmine s 2 à Sahloul 4 sousse",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104886": {
+     "acheteur": "Gouvernorat de Jendouba",
+     "caution": 1500,
+     "date_limite": "2026-11-27",
+     "date_publication": "2026-11-20",
+     "gouvernorat": "Jendouba",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104886",
+     "metier": "Alimentation",
+     "numero": "Tender-104886",
+     "objet": "تزويد قوات الامن الوطني بولاية جندوبة بالمواد العطرية خلال الفترة المتبقية لسنة 2026",
+     "procedure": "Appel d’offres ouvert"
     }
    },
    "chiffres": {
     "acheteurs": {
-     "Agence Tunisienne de la Formation Professionnelle": 9,
+     "Agence Tunisienne de la Formation Professionnelle": 10,
      "Agence de Réhabilitation et de Rénovation Urbaine": 14,
      "Centre national du cinéma et de l'image": 4,
      "Commissariat Régional au Développement Agricole Kasserine": 4,
@@ -9532,9 +9592,9 @@
      "Office de la Marine Marchande et des Ports": 5,
      "Office du Commerce de Tunisie": 6
     },
-    "appels_offres": 283,
-    "avec_caution": 246,
-    "avec_delai": 282,
+    "appels_offres": 288,
+    "avec_caution": 250,
+    "avec_delai": 287,
     "caution_mediane": 5000,
     "delai_median": 31,
     "derniere_publication": "2026-11-20",
@@ -9550,7 +9610,7 @@
      "Béja": 4,
      "Gabès": 10,
      "Gafsa": 7,
-     "Jendouba": 4,
+     "Jendouba": 5,
      "Kairouan": 9,
      "Kasserine": 7,
      "Kébili": 3,
@@ -9565,27 +9625,27 @@
      "Sfax": 10,
      "Sidi Bouzid": 2,
      "Siliana": 6,
-     "Sousse": 23,
-     "Tataouine": 3,
+     "Sousse": 25,
+     "Tataouine": 4,
      "Tozeur": 3,
-     "Tunis": 85,
+     "Tunis": 86,
      "Zaghouan": 6
     },
     "par_metier": {
-     "Alimentation": 13,
+     "Alimentation": 14,
      "Autres": 51,
-     "BTP / génie civil": 105,
+     "BTP / génie civil": 108,
      "Fournitures de bureau": 6,
      "Informatique": 8,
      "Médical": 19,
      "Nettoyage / gardiennage": 10,
      "Transport / véhicules": 17,
      "Électricité": 17,
-     "Études / conseil": 37
+     "Études / conseil": 38
     },
     "par_procedure": {
      "Appel d'offres avec concours": 1,
-     "Appel d’offres ouvert": 281,
+     "Appel d’offres ouvert": 286,
      "Marché négocié": 1
     },
     "premiere_publication": "2026-11-02",
@@ -9594,7 +9654,7 @@
    },
    "complet": true,
    "cree_le": "2026-11-02",
-   "derniere_date": "2026-11-20",
+   "derniere_date": "2026-11-21",
    "fige": false,
    "premier_jour": "2026-11-01",
    "ventes": {}
