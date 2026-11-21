@@ -216,3 +216,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   plus », lien #Tender-…) ou TOUT DE SUITE si la page date d'un autre jour que le visiteur (`data-jour`) ; avant : compteurs, carte et résumé = chiffres
   de la construction. Tests : page() du test charge le reste (sauf { leger: true }) ; test_rapports lit aussi liste.json.
 - Sur le PC, les tests de recherche ont besoin de `PYTHONUTF8=1 PYTHON=python` (sans UTF-8, le glossaire renvoie un JSON illisible : 4 échecs + arrêt du test).
+- **21/11/2026 — mode sombre lisible (capture d'Ahmed, même correction que Concours)** : sur `abonnement/`, les étapes du paiement (`ol.paie-etapes`)
+  gardaient un fond clair fixe (#EEF3F8) sous un texte devenu clair, et `var(--p)` n'existait pas (rond numéroté et liens D17 / IZI sans couleur).
+  Fin de `assets/style.css` : `--p`, `--p-clair`, `--p-tres-clair`, `--p-sur` définis ; en sombre, texte foncé (#0D141D) sur `.btn-publier`,
+  `.btn-video-site`, `.avis-envoyer`, `.rappel.fort` (J-1 / J-2). Contrôle de contraste (sombre ET clair) : 0 texte sous 3.
