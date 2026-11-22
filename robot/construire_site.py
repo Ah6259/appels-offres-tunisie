@@ -1182,10 +1182,15 @@ def construire(donnees, sortie, jour):
         ("Où retirer le cahier des charges ?",
          "Le cahier des charges se retire sur TUNEPS (www.tuneps.tn), selon les indications de la fiche officielle. Seule la fiche officielle fait foi."),
     ]
+    site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": "Alertes appels d'offres Tunisie", "alternateName": "طلبات العروض تونس",
+               "url": URL_SITE, "inLanguage": ["fr", "ar"],
+               "description": "Les appels d'offres publics tunisiens du jour (source officielle HAICOP), par métier et par gouvernorat, avec date limite et caution.",
+               "publisher": {"@type": "Organization", "name": "Clicvia", "url": "https://clicvia.com/", "sameAs": ["https://www.facebook.com/1327283777142447"]}}
     jsonld = ('<script type="application/ld+json">\n' + json.dumps({
         "@context": "https://schema.org", "@type": "FAQPage",
         "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": r}} for q, r in faq]},
-        ensure_ascii=False) + "\n</script>\n")
+        ensure_ascii=False) + "\n</script>\n"
+              + '<script type="application/ld+json">\n' + json.dumps(site_ld, ensure_ascii=False) + "\n</script>\n")   # 2e : site + éditeur Clicvia
     contenu = f"""<section class="carte resume" aria-label="Résumé">
   <div class="r-nouveaux" id="r-nouveaux"><b>{n_nouv}</b><span>{lib_nouv}</span></div>
   <div class="r-ouverts" id="r-ouverts"><b>{len(vis)}</b><span>{L("appels d'offres ouverts", "طلبات عروض مفتوحة")}</span></div>
@@ -1390,6 +1395,8 @@ def construire(donnees, sortie, jour):
 <section class="carte">
   <h2>{L("Un site indépendant", "موقع مستقل")}</h2>
   <p>{L("Ce site est indépendant : il n'est lié ni à la HAICOP ni à TUNEPS ni à la Douane.", "هذا الموقع مستقل: لا علاقة له بالهيئة العليا للطلب العمومي ولا بمنظومة " + ISO("TUNEPS") + " ولا بالديوانة.")}</p>
+  <p>{L('Publié par <b>Clicvia</b> (<a href="https://clicvia.com/" rel="noopener">clicvia.com</a>), qui réunit des services pratiques et gratuits pour la Tunisie. Pour nous écrire : le formulaire « Votre avis » en bas de l’accueil.',
+        'ينشره ' + ISO("Clicvia") + ' (<a href="https://clicvia.com/ar/" rel="noopener">clicvia.com</a>)، الذي يجمع خدمات عملية مجانية لتونس. لتكتب لنا: استمارة « رأيك » في أسفل الصفحة الرئيسية.')}</p>
 </section>
 <section class="carte" id="credits-photos">
   <h2>{L("Crédits des photos", "حقوق الصور")}</h2>

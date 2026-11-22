@@ -225,3 +225,10 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - **21/11/2026 — Douane retirée de l'alarme (décision d'Ahmed, point A.10 : « retire-les »)** : la page des ventes aux enchères ne répond plus
   à GitHub ; `RETIREES` + `retirer()` de `tools/sources_en_panne.py` : encore essayée à chaque passage (les enchères reviennent seules), mais
   sa panne ne met plus `maj` en rouge (ligne « RETIRÉE » au journal) ; HAICOP et feuille des entreprises toujours surveillées. Test (99/99).
+
+## 21-22/11/2026 — Google + IA (demande d'Ahmed : « que Google et les IA indexent nos sites »)
+- État Search Console (21/11) : accueil « Discovered - currently not indexed » (Google ne l'a pas encore visité ; trouvé depuis clicvia.com).
+- Accueil : 2e JSON-LD « WebSite » (nom FR/AR, éditeur `Organization` Clicvia + page Facebook) APRÈS la FAQ (les tests lisent la 1re balise
+  = FAQ) ; test « JSON-LD WebSite avec l'éditeur Clicvia » + 7 balises <script> sur l'accueil (test_site.mjs). Page arabe : retiré par langues.py.
+- `llms.txt` réécrit à la main SANS chiffre (l'ancien de l'outil commun du 13/10 disait « 179 ouverts », « 22 enchères »).
+- « Comment fonctionne le site ? » (FR + AR) : « Publié par Clicvia… pour nous écrire : Votre avis » (carte « Un site indépendant »).
