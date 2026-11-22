@@ -332,7 +332,13 @@ try {
   const ld = JSON.parse(lire("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   check("accueil : FAQ JSON-LD valide", ld["@type"] === "FAQPage" && ld.mainEntity.length >= 3);
 } catch (e) { check("accueil : FAQ JSON-LD valide", false); }
-check("accueil : seulement 6 balises <script> dont GoatCounter, son.js et avis.js (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 6);
+check("accueil : seulement 7 balises <script> dont GoatCounter, son.js, avis.js et 2 données Google (aucun script venu des données)", (lire("index.html").match(/<script/g) || []).length === 7);
+// 21/11/2026 (Google + IA) : données Google du site avec son éditeur Clicvia (signal de confiance)
+try {
+  const lds = [...lire("index.html").matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => JSON.parse(m[1]));
+  const ws = lds.find(j => j["@type"] === "WebSite");
+  check("accueil : JSON-LD WebSite avec l'éditeur Clicvia (Organization, clicvia.com)", !!ws && ws.url === "https://appels-offres.clicvia.com/" && ws.publisher && ws.publisher["@type"] === "Organization" && ws.publisher.url === "https://clicvia.com/");
+} catch (e) { check("accueil : JSON-LD WebSite avec l'éditeur Clicvia (Organization, clicvia.com)", false); }
 
 // ---- 4. Pages métier et gouvernorat ------------------------------------------
 let okM = true, okG = true;
