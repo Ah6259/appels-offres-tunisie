@@ -24494,19 +24494,19 @@
    "gouvernorat": "Sousse"
   }
  },
- "mis_a_jour": "2026-11-21 14:21",
+ "mis_a_jour": "2026-11-22 14:13",
  "dernier_passage": {
-  "date": "2026-11-21 14:21",
+  "date": "2026-11-22 14:13",
   "liste_ok": true,
-  "lus": 5,
+  "lus": 0,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-21 14:21",
+ "derniere_lecture_reussie": "2026-11-22 14:13",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-21 14:21",
+  "depuis": "2026-11-22 14:13",
   "raison": ""
  }
 }
