@@ -287,19 +287,6 @@
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
-  "Vente-65911b9893": {
-   "id": "Vente-65911b9893",
-   "date_publication": "2026-09-16",
-   "bureau": "Bureau frontalier des douanes de Ras Jedir",
-   "objet": "Avis de vente aux enchères sous plis fermés N°15/2026 d'une quantité de produits alimentaires.",
-   "date_limite": "2026-09-23",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/09/2026-09-16_AV_OP_ras-jdir_15-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Médenine",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
   "Vente-efd9fd6d5a": {
    "id": "Vente-efd9fd6d5a",
    "date_publication": "2026-09-16",
@@ -349,32 +336,6 @@
    "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/09/2026-09-10_AV_OP_sfax-port_15-2026.pdf",
    "lien_cahier": "",
    "gouvernorat": "Sfax",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-38b5f58cfc": {
-   "id": "Vente-38b5f58cfc",
-   "date_publication": "2026-09-08",
-   "bureau": "Bureau frontalier des douanes de Zarzis",
-   "objet": "Avis de vente aux enchères sous plis fermés N°02/2026 Pour deux lots comprenant une voiture, des téléviseurs, des pièces détachées d'occasion et des carreaux de sol",
-   "date_limite": "2026-09-23",
-   "heure": "17:00",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/09/2026-09-08_AV_OP_bfd_02-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Médenine",
-   "source": "Douane tunisienne",
-   "lu_le": "2026-10-05 01:36"
-  },
-  "Vente-85f69ec738": {
-   "id": "Vente-85f69ec738",
-   "date_publication": "2026-09-07",
-   "bureau": "Bureau frontalier des douanes de Tunis-Carthage",
-   "objet": "Avis de vente aux enchères sous plis fermés N°11/2026 En 14 versements répartis en deux groupes, une quantité de montres de luxe, dont la plupart sont serties de pierres précieuses.",
-   "date_limite": "2026-09-23",
-   "heure": "",
-   "lien_avis": "https://www.douane.gov.tn/wp-content/uploads/2026/09/2026-09-07_AV_OP_tc_11-2026.pdf",
-   "lien_cahier": "",
-   "gouvernorat": "Tunis",
    "source": "Douane tunisienne",
    "lu_le": "2026-10-05 01:36"
   },
@@ -731,10 +692,10 @@
   }
  },
  "lignes_lues": 355,
- "derniere_lecture_reussie": "2026-11-22 14:13",
+ "derniere_lecture_reussie": "2026-11-23 19:04",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-22 14:13",
+  "depuis": "2026-11-23 19:04",
   "raison": ""
  }
 }
