@@ -22,6 +22,10 @@ const JOUR = etat.construit_le;
 const plus = (d, n) => new Date(Date.parse(d + "T00:00:00Z") + n * 86400000).toISOString().slice(0, 10);
 const brut = JSON.parse(lire("donnees/appels-offres.json"));
 const tous = Object.values(brut.appels_offres);
+// Métiers du site = liste METIERS de robot/construire_site.py (un nouveau métier ne casse plus les tests ; 23/11/2026, Assurances)
+const METIERS_SITE = (() => { const b = lire("robot/construire_site.py").split("\nMETIERS = [")[1].split("\n]")[0];
+  return [...b.matchAll(/^\s*\("[^"]*",\s*"([^"]+)"/gm)].map(m => m[1]); })();
+const NB_METIERS = METIERS_SITE.length;
 const ouverts = tous.filter(a => a.date_limite ? a.date_limite >= JOUR : (a.date_publication && a.date_publication >= plus(JOUR, -30)));
 check(`données : ${ouverts.length} appels d'offres ouverts le ${JOUR} (au moins 1)`, ouverts.length > 0);
 
@@ -100,7 +104,7 @@ if (ouverts.length > 15) {
 // Images : icône du métier sur chaque carte, sprite, carte de la Tunisie, illustration
 check("images : icône du métier sur chaque carte (symbole existant)", cartes.every(c => {
   const u = c.querySelector(".ic-m use"); return u && d.getElementById(u.getAttribute("href").slice(1)) && u.getAttribute("href") === "#i-" + c.dataset.metier; }));
-check("images : 10 icônes de métier dans la page", d.querySelectorAll("symbol[id^='i-']").length === 10);
+check(`images : ${NB_METIERS} icônes de métier dans la page (une par métier de METIERS, au moins 10)`, NB_METIERS >= 10 && d.querySelectorAll("symbol[id^='i-']").length === NB_METIERS);
 // Vraies photos : chaque fichier de assets/photos a un crédit (auteur + licence) sous la photo ET dans « À propos »
 const photos = existsSync(join(root, "assets/photos")) ? readdirSync(join(root, "assets/photos")).filter(f => /\.(jpe?g|webp|png)$/i.test(f)) : [];
 const cssPhotos = lire("assets/style.css").replace(/\s+/g, "");
@@ -149,7 +153,7 @@ check("accueil : pastille « Mis à jour le … » avec la date de la dernière 
   texte(d.querySelector('.maj [data-l="fr"]')) === "Mis à jour le" && /\d\d\/\d\d\/\d{4}/.test(texte(d.querySelector(".maj"))));
 check("accueil : pas d'avertissement quand les données sont du jour", !d.getElementById("alerte-panne").classList.contains("on"));
 check("accueil : liens vers les pages métiers et gouvernorats",
-  d.querySelectorAll("#grille-metiers a").length === 10 && d.querySelectorAll("#grille-gouv a").length === 26);
+  d.querySelectorAll("#grille-metiers a").length === NB_METIERS && d.querySelectorAll("#grille-gouv a").length === 26);
 check("accueil : aucun lien vide ou javascript:", [...d.querySelectorAll("a")].every(a => a.getAttribute("href") && !/^javascript:/i.test(a.getAttribute("href"))));
 
 // Filtre métier
@@ -224,7 +228,7 @@ const sansDate = ouverts.filter(a => !a.date_limite).length;
 w = await page("index.html", `lang=fr&jour=${plus(dernier, 1)}`);
 d = w.document;
 check("tout expiré : plus aucune carte à date limite, message « aucun appel d'offres » si rien d'autre, site non vide (grilles, sources)",
-  visibles(d).length === sansDate && affichees(d).length === sansDate && (sansDate > 0 || !d.getElementById("vide").hidden) && d.querySelectorAll("#grille-metiers a").length === 10);
+  visibles(d).length === sansDate && affichees(d).length === sansDate && (sansDate > 0 || !d.getElementById("vide").hidden) && d.querySelectorAll("#grille-metiers a").length === NB_METIERS);
 // le lendemain de la DERNIÈRE LECTURE RÉUSSIE (pas du jour de construction : le 16/11/2026, source HAICOP en panne d'un jour,
 // le test prenait « construit le + 1 » = 2 jours après la lecture et sonnait rouge à tort ; règle § 51 : panne d'un jour = pas d'alerte)
 const LU = (etat.derniere_lecture_reussie || JOUR).slice(0, 10);
@@ -652,8 +656,8 @@ check("abonnement : formulaire Formspree (mwlpakqj) nom, entreprise, téléphone
   fa && fa.getAttribute("action") === "https://formspree.io/f/mwlpakqj" && fa.method.toLowerCase() === "post" &&
   ["nom", "entreprise", "telephone", "email"].every(n => fa.querySelector(`[name="${n}"]`)?.required) && fa.querySelector('[name="telephone"]').getAttribute("pattern") === "[0-9 ]{8,11}" &&
   fa.querySelector('[name="email"]').type === "email" && fa.querySelector('[name="site"]').value === "Alertes appels d'offres Tunisie" && !!fa.querySelector('[name="_gotcha"]'));
-check(`abonnement : cases des 10 métiers du site + 24 gouvernorats + « Toute la Tunisie »`,
-  nomsM.length === 10 && metiersSite.every(m => nomsM.includes(m)) && nomsG.length === 25 && nomsG[0] === "tous" && nomsG.includes("sfax") && !nomsG.includes("national"));
+check(`abonnement : cases des ${NB_METIERS} métiers du site + 24 gouvernorats + « Toute la Tunisie »`,
+  nomsM.length === NB_METIERS && METIERS_SITE.every(m => nomsM.includes(m)) && metiersSite.every(m => nomsM.includes(m)) && nomsG.length === 25 && nomsG[0] === "tous" && nomsG.includes("sfax") && !nomsG.includes("national"));
 const radios = [...fa.querySelectorAll('[name="formule"]')];
 check("abonnement : choix « 1 mois » (par défaut) ou « 1 an », plus de formule « essai »", radios.length === 2 && radios[0].checked && radios[0].value === "1 mois" && radios[1].value === "1 an");
 const cond = fa.querySelector('[name="conditions"]');
