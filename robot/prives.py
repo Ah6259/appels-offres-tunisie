@@ -45,7 +45,7 @@ METIERS = {
     "btp / genie civil": "btp-genie-civil", "electricite": "electricite", "informatique": "informatique",
     "fournitures et mobilier": "fournitures-bureau", "nettoyage / gardiennage": "nettoyage-gardiennage",
     "alimentation": "alimentation", "medical / pharmacie": "medical", "transport / vehicules": "transport-vehicules",
-    "etudes / conseil": "etudes-conseil", "autres": "autres",
+    "etudes / conseil": "etudes-conseil", "assurances": "assurances", "autres": "autres",
 }
 GOUVERNORATS = {
     "ariana": "ariana", "beja": "beja", "ben arous": "ben-arous", "bizerte": "bizerte", "gabes": "gabes", "gafsa": "gafsa",

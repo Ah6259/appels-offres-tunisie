@@ -60,6 +60,7 @@ METIERS = [
     ("Médical", "medical", "Médical / pharmacie", "الطبي والصيدلي"),
     ("Transport / véhicules", "transport-vehicules", "Transport / véhicules", "النقل والعربات"),
     ("Études / conseil", "etudes-conseil", "Études / conseil", "الدراسات والاستشارات"),
+    ("Assurances", "assurances", "Assurances", "التأمين"),
     ("Autres", "autres", "Autres", "أخرى"),
 ]
 GOUVERNORATS = [
@@ -219,6 +220,7 @@ ICONES_METIER = {
     "medical": ('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>', "#C2412F"),
     "transport-vehicules": ('<path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 10h4l3 3.2V16h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', "#3D6A99"),
     "etudes-conseil": ('<path d="M9 3.5h6v3H9z"/><path d="M7 5H5v15.5h14V5h-2"/><path d="M9 16.5v-3M12 16.5v-6M15 16.5v-4"/>', "#8A6A2F"),
+    "assurances": ('<path d="M3.5 12a8.5 8.5 0 0 1 17 0z"/><path d="M12 12v6.5a2 2 0 0 0 4 0"/><path d="M12 3.5V2"/>', "#7A4FA0"),
     "autres": ('<rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/>', "#5A6878"),
 }
 SPRITE = ('<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>'

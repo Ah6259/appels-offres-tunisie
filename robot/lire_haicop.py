@@ -247,6 +247,7 @@ METIERS = [
     ("Études / conseil", ["etude", "conseil", "assistance technique", "audit", "formation", "controle technique",
                           "maitrise d'oeuvre", "دراسه", "دراسات", "استشار", "تدقيق", "تكوين", "مراقبه فنيه",
                           "مكتب دراسات", "avocat", "محامي"]),
+    ("Assurances", ["assurance", "assurances", "تامين", "عقد تامين", "عقود تامين"]),
     ("BTP / génie civil", ["travaux", "genie civil", "batiment", "construction", "amenagement", "route", "voirie",
                            "assainissement", "rehabilitation", "hydraulique", "اشغال", "تهيئه", "بناء", "هدم",
                            "طرقات", "طريق", "مسالك", "تعبيد", "ترميم", "تبليط", "تطهير", "مرابض", "مربض",
