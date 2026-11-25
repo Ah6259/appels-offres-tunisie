@@ -76,7 +76,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 1. `node tools/test_site.mjs` (155 vérifications), `node tools/test_sw.mjs` (service worker), `node tools/test_avis.mjs` (Votre avis) `python tools/test_pannes.py` (86 scénarios) et `python tools/test_rapports.py` (50 vérifications, Rapports du mois).
    Construire avec la date des données (`--aujourdhui AAAA-MM-JJ` = jour de la dernière lecture) sinon le test « données d'hier » échoue.
    jsdom : `npm install --no-save --no-package-lock jsdom` (node_modules ignoré).
-2. Le `?v=` est automatique (empreinte de style.css, page.js, son.js, app.js, avis.js, abonnement.js) : **reconstruire** après toute modification de ces fichiers.
+2. Le `?v=` est automatique (empreinte de style.css, page.js, son.js, app.js, avis.js, pass-commun.js, pass-reglages.js) : **reconstruire** après toute modification de ces fichiers.
 3. `bash tools/captures.sh` si l'affichage change (340/390 px, FR + AR), regarder les images.
 4. Image d'aperçu `assets/og-image-v6.jpg` : si on la change, **nouveau nom** (-v7). Toujours en **JPEG < 250 Ko**
    (capture PNG de `tools/og-image.html` puis conversion Pillow qualité 88) : au-delà, WhatsApp n'affiche qu'une petite vignette.
@@ -99,7 +99,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Page `abonnement/` : prix + avantages tout de suite, `<details id="paiement">` « Paiement » (D17, IZI au 24 321 390, montant,
   motif = nom de l'entreprise), bouton vert « Envoyer la preuve de paiement par WhatsApp » (wa.me/21624321390, texte prérempli),
   formulaire Formspree `mwlpakqj` (nom, entreprise, téléphone 8 chiffres, e-mail, cases métiers, cases gouvernorats + « Toute la
-  Tunisie », essai ou paiement direct, case conditions). `assets/abonnement.js` (externe, chargé seulement sur cette page) envoie
+  Tunisie », essai ou paiement direct, case conditions). `assets/pass-commun.js` + `assets/pass-reglages.js` (module commun, voir le 25/11/2026 en bas ; externes, chargés seulement sur cette page) envoient
   métiers / gouvernorats en une ligne + `pour_activer` (à recopier dans le bouton du dépôt privé), puis montre `#apres-abo`
   (confirmation, paiement, WhatsApp avec le nom de l'entreprise, instructions Telegram). `abonnement/conditions/` : page sobre.
 - Réglage `TELEGRAM_ROBOT_ALERTES` (robot/reglages.py) : nom du robot sans @ ; vide -> « le lien Telegram vous est envoyé à l'activation ».
@@ -152,7 +152,7 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - `python tools/visiteur_simule.py` (outil COMMUN, copie identique dans chaque site : ne pas le modifier ici) : liens/images morts, puis Chromium à 390 px (page trop large, image cassée, « NaN/undefined », page vide) + scénarios `tools/scenarios-visiteur.json` (recherche, filtres, résultat affiché, groupes « croissant »). Lancé par tests.yml. Nouvelle recherche, nouveau filtre ou nouveau formulaire → ajouter un scénario. Page `video/` : `preload="none"` (la couverture reste affichée ; la page finit de charger sans attendre la vidéo, moins de données sur téléphone ; le visiteur simulé la voyait « non chargée » avec `metadata`).
 
 ## Code personnel des Alertes Pro (18/10/2026, contrôle commun « case du code »)
-- Ce site n'a AUCUNE case où le visiteur tape un code : `abonnement/` CRÉE le code (6 caractères, `assets/abonnement.js`), l'affiche
+- Ce site n'a AUCUNE case où le visiteur tape un code : `abonnement/` CRÉE le code (6 caractères, module commun `assets/pass-commun.js` réglé par `assets/pass-reglages.js`), l'affiche
   (`#abo-code`) et le met dans le lien Telegram ; rien dans localStorage. Plus d'essai gratuit depuis le 20/10/2026.
 - Corrigé : le bloc « Paiement », le libellé « Entreprise (motif du paiement et facture) » et les conditions disaient « motif = nom de
   l'entreprise » alors que les étapes disent « Motif : votre code personnel » -> partout « code personnel » ; libellé « Entreprise
@@ -241,3 +241,14 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   = FAQ) ; test « JSON-LD WebSite avec l'éditeur Clicvia » + 7 balises <script> sur l'accueil (test_site.mjs). Page arabe : retiré par langues.py.
 - `llms.txt` réécrit à la main SANS chiffre (l'ancien de l'outil commun du 13/10 disait « 179 ouverts », « 22 enchères »).
 - « Comment fonctionne le site ? » (FR + AR) : « Publié par Clicvia… pour nous écrire : Votre avis » (carte « Un site indépendant »).
+
+## 25/11/2026 — PASS.1 : parcours d'achat par le MODULE COMMUN (règle commune § 70.8, 2e site migré après Concours)
+- `assets/abonnement.js` est SUPPRIMÉ. La page `abonnement/` (FR + ar/) charge `assets/pass-commun.js` (COPIE EXACTE du module
+  `outils communs/pass-commun/pass-commun.js` de projets-ahmed : **ne jamais la modifier ici**) puis `assets/pass-reglages.js` (ce qui
+  est propre au site : nom, formules 1 mois / 1 an, code 6 caractères sans O/0/I/1, entreprise, métiers, gouvernorats, « Toute la Tunisie »,
+  lien Telegram, ligne `pour_activer`, champs de l'e-mail, nom de l'ENTREPRISE dans le message WhatsApp ; `emailAuto: true`).
+  `assets/pass-commun.empreinte` = empreinte écrite par `synchroniser.py` ; test_site.mjs échoue si la copie est modifiée (et, si projets-ahmed
+  est à côté — ou `PROJETS_AHMED=<dossier>` —, si elle diffère du module) ; la demande d'e-mail reste vérifiée par le vrai `verifier()`.
+- Améliorer le parcours : modifier le module dans projets-ahmed, `python3 "outils communs/pass-commun/synchroniser.py"`, reconstruire, tests,
+  envoyer CHAQUE site (LISEZMOI.md du module). Rien n'a changé pour le visiteur (comparaison avant / après, FR + AR : 110 étapes identiques ;
+  seule différence voulue : piège anti-robot rempli = la commande n'est plus gardée dans le téléphone).

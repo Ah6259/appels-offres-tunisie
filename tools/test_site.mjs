@@ -39,7 +39,7 @@ async function page(chemin, params = "", { leger = false } = {}) {
   const dossier = dirname(join(root, chemin));
   // (les scripts externes, comme GoatCounter, ne sont pas chargés)
   const html = lire(chemin).replace(/<script([^>]*) src="(?!https?:)([^"?]+)(\?[^"]*)?"([^>]*)><\/script>/g,
-    (_, a, src) => `<script>${readFileSync(join(dossier, src), "utf8")}</script>`);
+    (_, a, src) => `<script>${readFileSync(join(dossier, src), "utf8").replace(/<\/script/gi, "<\\/script")}</script>`);   // « </script> » écrit dans un commentaire (pass-commun.js) ne coupe pas la balise
   const dom = new JSDOM(html, { url: URL_SITE + chemin.replace("index.html", "") + "?" + params,
                                runScripts: "dangerously", pretendToBeVisual: true });
   dom.window.fetch = async u => { const f = join(dossier, String(u).split("?")[0]); return existsSync(f) ? { ok: true, json: async () => JSON.parse(readFileSync(f, "utf8")) } : { ok: false, status: 404 }; };
@@ -48,6 +48,8 @@ async function page(chemin, params = "", { leger = false } = {}) {
   if (!leger && l && l.dataset.reste && q) { q.dispatchEvent(new dom.window.Event("focus")); await new Promise(r => setTimeout(r, 80)); }
   return dom.window;
 }
+const PASS_JS = readFileSync(join(root, "assets/pass-commun.js"), "utf8") + "\n" + readFileSync(join(root, "assets/pass-reglages.js"), "utf8");
+const EMAIL_AUTO_OK = /emailAuto: true,/.test(readFileSync(join(root, "assets/pass-reglages.js"), "utf8"));   // e-mail automatique en service (A.17)
 const texte = el => (el ? el.textContent : "").replace(/[⁦-⁩ ]/g, " ").replace(/\s+/g, " ").trim();
 // cartes retenues par les filtres (les 15 premières sont affichées, la suite avec « Afficher plus »)
 const visibles = d => [...d.querySelectorAll("#liste .ao")].filter(c => c.dataset.ok === "1");
@@ -260,7 +262,7 @@ const tuilesSansLien = doc => [...doc.body.querySelectorAll("*")].filter(el => {
 const sitemap = lire("sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 check("sitemap : au moins 43 pages (accueil, 10 métiers, 26 gouvernorats, à propos, publier, enchères, abonnement, conditions, page vidéo)", urls.length >= 43 && urls.includes(URL_SITE + "video/"));
-const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "son.js", "app.js", "avis.js", "abonnement.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
+const v = createHash("sha1").update(Buffer.concat(["style.css", "page.js", "son.js", "app.js", "avis.js", "pass-commun.js", "pass-reglages.js"].map(f => Buffer.from(readFileSync(join(root, "assets", f), "latin1").replace(/\r\n/g, "\n"), "latin1")))).digest("hex").slice(0, 8);
 let okSeo = true, okSrc = true, okV = true, okH1 = true, okFichiers = true, okCopy = true, okTrad = true, okTuiles = true;
 for (const u of urls) {
   const chemin = u.replace(URL_SITE, "") + "index.html";
@@ -665,8 +667,19 @@ check("abonnement : case obligatoire « J'accepte les conditions » avec lien ve
   cond?.type === "checkbox" && cond.required && cond.closest("label").querySelector("a")?.href === URL_SITE + "abonnement/conditions/" && existsSync(join(root, "abonnement/conditions/index.html")));
 check("abonnement : confirmation cachée avant l'envoi + style : [hidden] reste caché, fieldset min-width:0 (pas de débordement en arabe)",
   d.getElementById("apres-abo").hidden && /\[hidden\]\{display:none!important\}/.test(css) && /\.abofieldset\{[^}]*min-width:0/.test(css));
-check("abonnement : script externe abonnement.js (seulement sur cette page), aucun script en ligne",
-  /<script src="\.\.\/assets\/abonnement\.js\?v=/.test(lire("abonnement/index.html")) && !/abonnement\.js/.test(lire("index.html")));
+// 25/11/2026 (PASS.1, module commun du parcours d'achat) : assets/pass-commun.js = COPIE EXACTE du module de projets-ahmed
+// (« outils communs/pass-commun/pass-commun.js », recopié par synchroniser.py) ; assets/pass-reglages.js = ce qui est propre au site.
+check("abonnement : module commun du Pass (pass-commun.js) puis réglage du site (pass-reglages.js), seulement sur cette page (FR + AR), ancien abonnement.js retiré, aucun script en ligne",
+  ["abonnement/index.html", "ar/abonnement/index.html"].every(f => /<script src="\.\.\/(\.\.\/)?assets\/pass-commun\.js\?v=[^"]+"><\/script>\s*<script src="\.\.\/(\.\.\/)?assets\/pass-reglages\.js\?v=/.test(lire(f)))
+  && !/pass-commun\.js|pass-reglages\.js|abonnement\.js/.test(lire("index.html")) && !existsSync(join(root, "assets/abonnement.js")) && !/abonnement\.js/.test(lire("abonnement/index.html")));
+{ // la copie du module n'est jamais modifiée dans le site : empreinte écrite par synchroniser.py ; projets-ahmed à côté (PC, cloud) = copie identique au module ; absent (GitHub) = contrôle sauté
+  const copie = readFileSync(join(root, "assets/pass-commun.js")), emp = createHash("sha256").update(copie).digest("hex");
+  const attendue = existsSync(join(root, "assets/pass-commun.empreinte")) ? lire("assets/pass-commun.empreinte").trim() : "";
+  check("module commun du Pass : assets/pass-commun.js NON modifié dans le site (empreinte écrite par synchroniser.py)", emp === attendue);
+  const original = [process.env.PROJETS_AHMED, join(root, "..", "projets-ahmed"), join(root, "..", "..", "projets-ahmed"), join(root, "..", ".."), "/home/user/projets-ahmed"]
+    .filter(Boolean).map(x => join(x, "outils communs", "pass-commun", "pass-commun.js")).find(x => existsSync(x));
+  if (original) check("module commun du Pass : copie identique au module de projets-ahmed (sinon : python3 synchroniser.py)", readFileSync(original).equals(copie));
+  else console.log("SAUTÉ copie du module commun : projets-ahmed absent (normal sur GitHub)"); }
 // « Toute la Tunisie » et les gouvernorats s'excluent
 const caseG = v => fa.querySelector(`[name="gouvernorats"][value="${v}"]`);
 const cocher = (el, val = true) => { el.checked = val; el.dispatchEvent(new w.Event("change", { bubbles: true })); };
@@ -686,7 +699,7 @@ const envoyerAbo = async () => { fa.dispatchEvent(new w.Event("submit", { bubble
 { // 25/11/2026 : e-mail automatique EN SERVICE -> l'étiquette et l'erreur annoncent « vous y recevez votre code et les étapes du paiement »
   const cache = d.querySelector('label[for="abo-email"] [data-email-auto]');
   check("formulaire (FR) : étiquette « E-mail » + promesse « vous y recevez votre code et les étapes du paiement » AFFICHÉE (EMAIL_AUTO = true)",
-    cache && !cache.hidden && /vous y recevez votre code et les étapes du paiement/.test(cache.textContent) && /var EMAIL_AUTO = true;/.test(lire("assets/abonnement.js")));
+    cache && !cache.hidden && /vous y recevez votre code et les étapes du paiement/.test(cache.textContent) && EMAIL_AUTO_OK);
   fa.querySelector('[name="email"]').value = "";
   await envoyerAbo();
   check("abonnement : sans e-mail -> « Indiquez votre e-mail : vous y recevez votre code et les étapes du paiement. », rien n'est envoyé (ni Formspree, ni e-mail)",
@@ -739,7 +752,7 @@ check("abonnement : après l'envoi -> inscription IMMÉDIATE : code de 6 caract�
   const abo = lire("abonnement/index.html"), aboAr = lire("ar/abonnement/index.html");
   const revenir = (html, url, valeur) => { const dd = new JSDOM(html, { runScripts: "outside-only", url, pretendToBeVisual: true });
     if (valeur) dd.window.localStorage.setItem("pass-commande", valeur); dd.window.fetch = () => Promise.resolve({ ok: true });
-    dd.window.eval(lire("assets/page.js")); dd.window.eval(lire("assets/abonnement.js")); dd.window.document.dispatchEvent(new dd.window.Event("DOMContentLoaded")); return dd.window; };
+    dd.window.eval(lire("assets/page.js")); dd.window.eval(PASS_JS); dd.window.document.dispatchEvent(new dd.window.Event("DOMContentLoaded")); return dd.window; };
   { const w2 = revenir(abo, URL_SITE + "abonnement/", memo), d2 = w2.document, at = d2.getElementById("abo-attente");
     check("retour sur la page (FR) : bandeau « Votre commande en attente : code … — 1 mois » + 3 étapes du paiement (motif = code) + WhatsApp avec le code + « Ouvrir Telegram » (même lien), formulaire caché",
       !at.hidden && d2.getElementById("abo-form").hidden && /Votre commande en attente :/.test(texte(at)) && at.querySelector("[data-code]").textContent === codeA
@@ -896,7 +909,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
 // chaque fonction visible du site (repère dans les pages ou le code) doit être expliquée dans a-propos/ ; nouvelle fonction = une ligne ici + la page
 { const apx = lire("a-propos/index.html"), acc2 = lire("index.html"), js = lire("assets/app.js") + lire("assets/page.js");
   const FONCTIONS = [
-    ["e-mail de confirmation automatique (A.17, 25/11/2026)", /var EMAIL_AUTO = true;/.test(lire("assets/abonnement.js")), /E-mail de confirmation/],
+    ["e-mail de confirmation automatique (A.17, 25/11/2026)", EMAIL_AUTO_OK, /E-mail de confirmation/],
     ["résumé du jour (ouverts, nouveaux, bientôt)", /id="r-nouveaux"/.test(acc2), /Résumé du jour/],
     ["carte de la Tunisie", /class="carte-tn"/.test(acc2), /Carte de la Tunisie/],
     ["clôturent bientôt + étiquettes J-7 / Dernier jour", /id="bientot"/.test(acc2) && /Dernier jour/.test(js), /Clôturent bientôt<\/b>[\s\S]*Dernier jour/],
@@ -911,8 +924,8 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     ["appels d'offres privés / publier", existsSync(join(root, "publier/index.html")), /Appels d'offres d'entreprises privées<\/b>|Appels d&#x27;offres d&#x27;entreprises privées<\/b>/],
     ["rapports du mois", existsSync(join(root, "rapports/index.html")), /Rapports du mois<\/b>/],
     ["Alertes Pro payantes (Telegram)", existsSync(join(root, "abonnement/index.html")), /Payant : Alertes Pro sur Telegram/],
-    ["paiement avec le code personnel, sans renouvellement automatique", /abo-code/.test(lire("abonnement/index.html") + lire("assets/abonnement.js")), /code personnel[\s\S]*Pas de renouvellement automatique/],
-    ["commande en attente gardée par le téléphone (code, paiement, WhatsApp, Telegram)", /pass-commande/.test(lire("assets/abonnement.js")) && /id="abo-attente"/.test(lire("abonnement/index.html")), /Commande en attente<\/b>[\s\S]*numéro de commande[\s\S]*60.jours[\s\S]*Nouvelle commande/],
+    ["paiement avec le code personnel, sans renouvellement automatique", /abo-code/.test(lire("abonnement/index.html") + PASS_JS), /code personnel[\s\S]*Pas de renouvellement automatique/],
+    ["commande en attente gardée par le téléphone (code, paiement, WhatsApp, Telegram)", /pass-commande/.test(PASS_JS) && /id="abo-attente"/.test(lire("abonnement/index.html")), /Commande en attente<\/b>[\s\S]*numéro de commande[\s\S]*60.jours[\s\S]*Nouvelle commande/],
     ["bouton Partager", /class="partager"/.test(js), /Partager<\/b>/],
     ["français / arabe", /class="langue"/.test(js), /ع \/ Fr/],
     ["vidéo de présentation", existsSync(join(root, "video/index.html")), /Vidéo de présentation/],

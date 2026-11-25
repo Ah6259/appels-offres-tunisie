@@ -841,7 +841,7 @@ ABO = {
     "formspree": "https://formspree.io/f/mwlpakqj",
 }
 # 25/11/2026 (parcours commun des Pass, règle commune § 70) : message « Voici ma preuve de paiement — <site> — code <CODE> — <entreprise> — <formule> » ;
-# après l'inscription, assets/abonnement.js le refait avec le code, le nom de l'entreprise (lu dans le formulaire, jamais gardé par le
+# après l'inscription, assets/pass-reglages.js (module commun assets/pass-commun.js) le refait avec le code, le nom de l'entreprise (lu dans le formulaire, jamais gardé par le
 # téléphone) et la formule (le client n'a rien à recopier) ; au retour sur la page (nom inconnu) : code + formule seulement
 TEXTE_PREUVE = "Voici ma preuve de paiement — Alertes appels d'offres Tunisie — code "
 ICONE_CLOCHE = '<svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.8 1.8H4.2z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>'
@@ -880,7 +880,7 @@ AIDE_TRANSFERT = '<details class="aide-transfert"><summary title="Voir comment f
 
 
 def liste_paiements(avec_code=False):
-    """avec_code : le motif affiche le code de la commande (rempli par assets/abonnement.js, attribut data-code)."""
+    """avec_code : le motif affiche le code de la commande (rempli par le module commun assets/pass-commun.js, attribut data-code)."""
     # paiement en 3 étapes numérotées + phrase de confiance (demande d'Ahmed, 08/10/2026 : simple, rassurant)
     applis = "".join(f'<a class="appli-btn" href="{APPLIS[m][0]}" target="_blank" rel="noopener noreferrer">{logo_appli(m)}</a>' for m in ABO["paiements"])
     ios = " · ".join(f'<a class="appli" href="{APPLIS[m][1]}" target="_blank" rel="noopener noreferrer">{m}</a>' for m in ABO["paiements"])
@@ -901,7 +901,7 @@ def liste_paiements(avec_code=False):
 # Parcours commun des Pass (règle commune § 70, 25/11/2026) : textes de la page « Dernière étape » et du bandeau « commande en attente »
 PHRASE_CODE = L("C'est votre numéro de commande : écrivez-le dans le motif du paiement, il nous sert à reconnaître votre paiement.",
                 "هذا رقم طلبك: اكتبه في خانة سبب الدفع، يساعدنا على التعرّف على دفعتك.")
-# « reçu aussi par e-mail » : attribut hidden + data-email-auto dans la page ; montrée par assets/abonnement.js quand EMAIL_AUTO = true
+# « reçu aussi par e-mail » : attribut hidden + data-email-auto dans la page ; montrée par le module commun quand emailAuto: true (assets/pass-reglages.js)
 # (e-mail automatique EN SERVICE depuis le 25/11/2026, A.17)
 PHRASE_EMAIL = L("Vous le recevez aussi par e-mail.", "يصلك أيضًا عبر البريد الإلكتروني.")
 FILET = L("Vous avez oublié le code dans le motif ? Ce n'est pas grave : envoyez quand même la preuve sur WhatsApp, nous retrouvons votre demande.",
@@ -909,7 +909,7 @@ FILET = L("Vous avez oublié le code dans le motif ? Ce n'est pas grave : envoye
 
 
 def bandeau_attente(robot):
-    """Bandeau « Votre commande en attente » (caché ; montré par assets/abonnement.js si le téléphone garde une commande)."""
+    """Bandeau « Votre commande en attente » (caché ; montré par le module commun assets/pass-commun.js si le téléphone garde une commande)."""
     tg = (f'<p>{L("Pas encore touché <b>DÉMARRER</b> dans Telegram ? Le bouton ci-dessous ouvre notre robot avec vos choix.", "لم تلمس <b>ابدأ</b> في تيليغرام بعد؟ الزر أسفله يفتح برنامجنا باختياراتك.")}</p>\n'
           f'    <a class="btn-tg-essai" id="abo-attente-tg" data-tg href="https://t.me/{E(robot)}" target="_blank" rel="noopener">{L("Ouvrir Telegram", "افتح تيليغرام")}</a>') if robot else ""
     return f"""<div class="abo-attente" id="abo-attente" hidden>
@@ -1068,7 +1068,7 @@ def pages_abonnement(adr, v, etat):
     desc = (f"Recevez chaque matin sur Telegram les nouveaux appels d'offres tunisiens de vos métiers et de vos gouvernorats. "
             f"{pm} DT / mois ou {pa} DT / an, sans renouvellement automatique. "
             "تنبيهات طلبات العروض على تيليغرام.")
-    res = [("abonnement/", page("abonnement/", "../", titre, desc, hero, contenu, v, etat, scripts=("abonnement.js",)))]
+    res = [("abonnement/", page("abonnement/", "../", titre, desc, hero, contenu, v, etat, scripts=("pass-commun.js", "pass-reglages.js")))]
 
     # ---- conditions de l'abonnement (sobre)
     hero = f"""    <p class="fil"><a href="../../">{L("Accueil", "الرئيسية")}</a> › <a href="../">{L("Alertes Pro", "تنبيهات Pro")}</a> › {L("Conditions", "الشروط")}</p>
@@ -1117,7 +1117,7 @@ def pages_abonnement(adr, v, etat):
 # ------------------------------------------------------------ construction
 def version_assets(sortie):
     h = hashlib.sha1()
-    for f in ("style.css", "page.js", "son.js", "app.js", "avis.js", "abonnement.js"):
+    for f in ("style.css", "page.js", "son.js", "app.js", "avis.js", "pass-commun.js", "pass-reglages.js"):
         p = os.path.join(sortie, "assets", f)
         if os.path.exists(p):
             with open(p, "rb") as fh:
