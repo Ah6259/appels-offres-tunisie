@@ -18,7 +18,7 @@
    (jamais la balise fermante écrite ici : certains tests recopient ce fichier DANS la page), où pass-reglages.js appelle  PassCommun.brancher({ … réglage du site … })  (forme du réglage : LISEZMOI.md). */
 (function () {
   "use strict";
-  var VERSION = "2026-11-25b";
+  var VERSION = "2026-11-25c";
   var FORMSPREE = "https://formspree.io/f/mwlpakqj";
   var EMAIL_API = "https://api-email.clicvia.com/inscription";
   var WHATSAPP = "21624321390";
@@ -161,7 +161,7 @@
     // commande gardée : code au bon format, formule lisible, lien Telegram à nous, moins de 60 jours ; sinon effacée
     function relire() {
       var c = null;
-      try { c = JSON.parse(localStorage.getItem(CLE) || "null"); } catch (e) { c = null; }
+      try { c = JSON.parse(localStorage.getItem(CLE) || "null"); } catch (e) { oublier(); return null; }   // abîmée : effacée
       if (!c) return null;
       var t = Date.parse(String(c.date || "") + "T00:00:00Z");
       if (!FORMAT.test(c.code || "") || typeof c.formule !== "string" || !(t > 0) || Date.now() - t > JOURS * 864e5
