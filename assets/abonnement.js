@@ -21,22 +21,28 @@
   var EMAIL_AUTO = false;
   var CLE = "pass-commande", JOURS = 60, FORMAT = /^[A-HJ-NP-Z2-9]{6}$/;
   var formuleLue = function (f) { return T(f, FORMULES_AR[f] || f); };
-  // message WhatsApp de la preuve de paiement : le client n'a rien à recopier (code + formule déjà dedans)
-  function lienWa(code, formule) {
+  // message WhatsApp de la preuve de paiement : le client n'a rien à recopier (code + nom de l'entreprise + formule déjà dedans, 25/11/2026).
+  // Le nom vient du formulaire au moment de l'envoi ; il n'est JAMAIS gardé par le téléphone : au retour (bandeau), code + formule seulement.
+  function lienWa(code, formule, nom) {
+    var n = nom ? " — " + nom : "";
     return "https://wa.me/" + WA + "?text=" + encodeURIComponent(T(
-      "Voici ma preuve de paiement — " + SITE_FR + " — code " + code + " — " + formuleLue(formule),
-      "هذا وصل الدفع — " + SITE_AR + " — الرمز " + code + " — " + formuleLue(formule)));
+      "Voici ma preuve de paiement — " + SITE_FR + " — code " + code + n + " — " + formuleLue(formule),
+      "هذا وصل الدفع — " + SITE_AR + " — الرمز " + code + n + " — " + formuleLue(formule)));
+  }
+  // phrases « vous y recevez votre code… » : montrées seulement quand l'e-mail automatique marche
+  function emailAuto() {
+    var x = document.querySelectorAll("[data-email-auto]");
+    for (var i = 0; i < x.length; i++) x[i].hidden = !EMAIL_AUTO;
   }
   // remplit toute la page : code (gros + motif), formule, liens WhatsApp, liens Telegram
-  function remplir(code, formule, tg) {
+  function remplir(code, formule, tg, nom) {
     var i, x = document.querySelectorAll("[data-code]");
     for (i = 0; i < x.length; i++) x[i].textContent = code;
     x = document.querySelectorAll("[data-formule]");
     for (i = 0; i < x.length; i++) x[i].textContent = formuleLue(formule);
     x = document.querySelectorAll("a.btn-wa");
-    for (i = 0; i < x.length; i++) x[i].setAttribute("href", lienWa(code, formule));
-    x = document.querySelectorAll("[data-email-auto]");
-    for (i = 0; i < x.length; i++) x[i].hidden = !EMAIL_AUTO;
+    for (i = 0; i < x.length; i++) x[i].setAttribute("href", lienWa(code, formule, nom));
+    emailAuto();
     x = document.querySelectorAll("a[data-tg]");
     for (i = 0; i < x.length; i++) if (tg) x[i].setAttribute("href", tg);
   }
@@ -93,6 +99,7 @@
     var form = document.getElementById("abo-form");
     if (!form || form.getAttribute("data-branche")) return;
     form.setAttribute("data-branche", "1");
+    emailAuto();
     var statut = document.getElementById("abo-status");
     var bouton = form.querySelector("button[type=submit]");
     var apres = document.getElementById("apres-abo");
@@ -132,6 +139,11 @@
       if (!val("nom")) { dire("err", "Indiquez votre nom.", "اكتب اسمك."); champ("nom").focus(); return; }
       if (!val("entreprise")) { dire("err", "Indiquez le nom de votre entreprise.", "اكتب اسم مؤسستك."); champ("entreprise").focus(); return; }
       if (!tel) { dire("err", "Téléphone : 8 chiffres, par exemple 24 321 390.", "الهاتف: ⁦8⁩ أرقام، مثال ⁦24 321 390⁩."); champ("telephone").focus(); return; }
+      if (!val("email")) {
+        if (EMAIL_AUTO) dire("err", "Indiquez votre e-mail : vous y recevez votre code et les étapes du paiement.", "اكتب بريدك الإلكتروني: يصلك عليه رمزك وخطوات الدفع.");
+        else dire("err", "Indiquez votre e-mail.", "اكتب بريدك الإلكتروني.");
+        champ("email").focus(); return;
+      }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val("email"))) { dire("err", "Indiquez une adresse e-mail valide.", "اكتب بريدًا إلكترونيًا صحيحًا."); champ("email").focus(); return; }
       if (!metiers.length) { dire("err", "Cochez au moins un métier.", "اختر اختصاصًا واحدًا على الأقل."); return; }
       if (!gouv.length) { dire("err", "Cochez au moins un gouvernorat (ou « Toute la Tunisie »).", "اختر ولاية واحدة على الأقل (أو «كل الولايات»)."); return; }
@@ -143,7 +155,7 @@
       var coche = form.querySelector('input[name="formule"]:checked'), formule = coche ? coche.value : "1 mois";
       var tg = form.getAttribute("data-robot") ? lien : "";
       var fini = function () {
-        remplir(code, formule, tg);                            // code en gros, motif, WhatsApp pré-rempli, « Ouvrir Telegram »
+        remplir(code, formule, tg, val("entreprise") || val("nom")); // code en gros, motif, WhatsApp pré-rempli (code + entreprise), « Ouvrir Telegram »
         memoriser(code, formule, tg);                          // le téléphone se souvient de la commande (rien de personnel)
         form.hidden = true;
         if (apres) { apres.hidden = false; if (apres.scrollIntoView) try { apres.scrollIntoView({ block: "start" }); } catch (x) {} }
