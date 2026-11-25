@@ -1089,5 +1089,50 @@ check("page 404 du site : 404.html + 404.js (« Recherche de la page »)", exist
   }
 }
 
+
+// ---- 25/11/2026 (plan Google B.1 + B.2) : plan du site HONNÊTE.
+//      B.2 : <lastmod> = dernier VRAI changement de la page (robot/lastmod.py, mémoire donnees/lastmod.json), jamais « aujourd'hui » partout ;
+//      B.1 : page maigre (enchères sans aucune vente ouverte) = en ligne, mais noindex et hors du plan du site.
+{
+  const sm = lire("sitemap.xml");
+  const urls = [...sm.matchAll(/<url><loc>([^<]+)<\/loc>(?:<lastmod>([^<]+)<\/lastmod>)?/g)];
+  const jour = new Date().toISOString().slice(0, 10), datesSm = urls.map(m => m[2]);
+  check(`plan du site : chaque adresse a sa date (${urls.length} adresses)`, urls.length > 10 && datesSm.every(d => /^\d{4}-\d{2}-\d{2}$/.test(d)));
+  check("plan du site : les dates ne sont pas toutes celles du jour, ni toutes identiques (date du dernier vrai changement)",
+    !datesSm.every(d => d === jour) && new Set(datesSm).size > 1);
+  const LMJ = existsSync(join(root, "donnees/lastmod.json")) ? JSON.parse(lire("donnees/lastmod.json")) : {};
+  const fichierDe = u => u.replace(URL_SITE, "") + "index.html";
+  const faux = urls.filter(m => !/\/rapports\//.test(m[1]) && (!LMJ[fichierDe(m[1])] || LMJ[fichierDe(m[1])].date !== m[2])).map(m => m[1]);
+  check("plan du site : la date de chaque page = celle de donnees/lastmod.json (rapports du mois : date de leurs chiffres)" + (faux.length ? " — " + faux.slice(0, 3).join(", ") : ""), !faux.length);
+  const cs = lire("robot/construire_site.py");
+  check("robot/construire_site.py : dates fabriquées par robot/lastmod.py (pas la date du jour pour tout)", /import lastmod as LM/.test(cs) && !/lastmod = jour\n/.test(cs));
+  const noidx = f => /<meta name="robots" content="[^"]*noindex/.test(lire(f));
+  const avecNoindex = urls.filter(m => existsSync(join(root, fichierDe(m[1]))) && noidx(fichierDe(m[1]))).map(m => m[1]);
+  check("plan du site : aucune page en noindex" + (avecNoindex.length ? " — " + avecNoindex.slice(0, 3).join(", ") : ""), !avecNoindex.length);
+  const jamais = ["index.html", "a-propos/index.html", "abonnement/index.html", "rapports/index.html", ...readdirSync(join(root, "gouvernorat")).map(g => `gouvernorat/${g}/index.html`),
+    ...readdirSync(join(root, "metier")).map(g => `metier/${g}/index.html`)].flatMap(f => [f, "ar/" + f]).filter(f => existsSync(join(root, f.replace(/^ar\//, ""))) && (!existsSync(join(root, f)) || noidx(f)));
+  check("accueil, gouvernorats, métiers, alertes, a-propos, rapports : jamais en noindex" + (jamais.length ? " — " + jamais.slice(0, 3).join(", ") : ""), !jamais.length);
+  const nVentes = (lire("encheres/index.html").match(/<article class="ao/g) || []).length;
+  check(`enchères : noindex seulement si aucune vente n'est ouverte (${nVentes} aujourd'hui), sinon dans le plan du site`,
+    ["encheres/index.html", "ar/encheres/index.html"].every(f => noidx(f) === (nVentes === 0)) && sm.includes(URL_SITE + "encheres/</loc>") === (nVentes > 0));
+  // données inventées : une page inchangée garde sa date (même si sa date / heure de relevé, son ?v= et son compte à rebours changent)
+  const { mkdtempSync, writeFileSync, mkdirSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const tmp = mkdtempSync(join(tmpdir(), "lastmod-"));
+  try {
+    mkdirSync(join(tmp, "a"), { recursive: true }); mkdirSync(join(tmp, "b"), { recursive: true });
+    writeFileSync(join(tmp, "a/index.html"), '<p>Mis à jour le 01/11/2026 16:42</p><small class="reste">encore 5 jours</small><link href="s.css?v=1">');
+    writeFileSync(join(tmp, "b/index.html"), "<p>Appel d'offres 12 : informatique</p>");
+    const py = jr => JSON.parse(execFileSync(process.platform === "win32" ? "python" : "python3", ["-c",
+      `import sys,json,re;sys.path.insert(0,${JSON.stringify(join(root, "robot"))});import lastmod;print(json.dumps(lastmod.dates(${JSON.stringify(tmp)},["a/index.html","b/index.html"],"${jr}","m.json",[re.compile(r'<small class="reste">.*?</small>')])))`], { encoding: "utf-8" }));
+    const j1 = py("2026-11-01");
+    writeFileSync(join(tmp, "a/index.html"), '<p>Mis à jour le 02/11/2026 07:05</p><small class="reste">encore 4 jours</small><link href="s.css?v=2">');
+    writeFileSync(join(tmp, "b/index.html"), "<p>Appel d'offres 12 : travaux</p>");
+    const j2 = py("2026-11-02");
+    check("robot/lastmod.py (données inventées) : page dont seuls la date, l'heure, le ?v= et le compte à rebours changent = date gardée ; contenu changé = date du jour",
+      j1["a/index.html"] === "2026-11-01" && j2["a/index.html"] === "2026-11-01" && j2["b/index.html"] === "2026-11-02");
+  } catch (e) { check("robot/lastmod.py (données inventées) : " + e.message, false); }
+  finally { rmSync(tmp, { recursive: true, force: true }); }
+}
 console.log(`\n${total - erreurs}/${total} vérifications réussies` + (erreurs ? ` — ${erreurs} ÉCHEC(S) : ne pas publier.` : " — tout est bon."));
 process.exit(erreurs ? 1 : 0);

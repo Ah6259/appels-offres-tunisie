@@ -268,3 +268,12 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
   `abonnement-a-propos` (« Voir les Alertes Pro » d'a-propos/). Dans GoatCounter : chercher « clic/ ».
 - « Comment fonctionne le site ? » (FR + AR) : ligne de l'encadré + « nous comptons aussi les clics… » (Vos données) ; FONCTIONS + tests
   (bloc « 25/11/2026 (décision d'Ahmed : amener les visiteurs vers la page d'achat » de tools/test_site.mjs ; 5 sabotages tous vus).
+
+## 25/11/2026 — plan Google (chute d'octobre, fiche `memoire claude/chute-google-octobre-2026.md` de projets-ahmed)
+- **B.2 lastmod honnête** : `robot/lastmod.py` (même fichier que dans Alerte Concours) appelé par construire_site.py : date d'une page = dernier
+  VRAI changement (empreinte du HTML sans dates, heure, ?v=, compte à rebours ni bandeau de panne ; mémoire `donnees/lastmod.json` ; page inconnue =
+  date retrouvée dans git) ; les rapports gardent la date de leurs chiffres. La page vidéo a maintenant aussi sa date (fabriquée avant le plan).
+- **B.1 pages maigres** : `encheres/` (FR + ar/) est en `noindex, follow` et hors du plan du site tant qu'AUCUNE vente n'est ouverte (`indexer` de
+  `page()`) ; elle revient seule. Pas de page par appel d'offres (donc pas de fiches expirées). Plan du site : 181 -> 179 adresses.
+- Tests (test_site.mjs, vérifiés par sabotage) : dates pas toutes du jour, date = donnees/lastmod.json, aucune page noindex dans le plan, accueil /
+  gouvernorats / métiers… jamais noindex, règle des enchères, lastmod.py avec données inventées.

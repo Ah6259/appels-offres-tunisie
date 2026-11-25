@@ -608,7 +608,8 @@ def desc_seo(d, maxi=165):
 DESC_AR = {}      # description arabe propre à une page (chemin -> texte), lue par robot/langues.py pour la page ar/<chemin> (08/11/2026)
 
 
-def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=(), og_image="assets/og-image-v6.jpg", og_type="website"):
+def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", classe_hero="", scripts=(), og_image="assets/og-image-v6.jpg", og_type="website",
+         indexer=True):
     titre, description = titre_seo(titre), desc_seo(description)
     canon = URL_SITE + chemin
     desc_ar = DESC_AR.get(chemin)
@@ -621,7 +622,7 @@ def page(chemin, racine, titre, description, hero, contenu, v, etat, jsonld="", 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="{CSP}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="robots" content="noai, noimageai">
+<meta name="robots" content="{'noai, noimageai' if indexer else 'noindex, follow, noai, noimageai'}">
 <title>{E(titre)}</title>
 <meta name="description" content="{E(description)}">{meta_ar}
 <link rel="canonical" href="{canon}">
@@ -1556,7 +1557,8 @@ def construire(donnees, sortie, jour):
     titre = f"Ventes aux enchères publiques Tunisie (Douane) — {len(encheres)} ouvertes, consultation gratuite | Alertes appels d'offres"
     desc = ("Ventes aux enchères publiques de la Douane tunisienne encore ouvertes : marchandises, véhicules, bétail, avec échéance et lien "
             "vers l'avis officiel. Gratuit, sans inscription. البيوعات بالمزاد العلني للديوانة التونسية.")
-    pages.append(("encheres/", page("encheres/", "../", titre, desc, hero, contenu, v, etat_encheres)))
+    # plan Google B.1 (25/11/2026) : page MAIGRE tant qu'aucune vente n'est ouverte -> en ligne, mais noindex et hors du plan du site
+    pages.append(("encheres/", page("encheres/", "../", titre, desc, hero, contenu, v, etat_encheres, indexer=bool(encheres))))
 
     # ---- Alertes Pro (abonnement payant) et ses conditions
     pages += pages_abonnement(adr, v, etat)
@@ -1608,20 +1610,25 @@ def construire(donnees, sortie, jour):
             elif os.path.exists(os.path.join(sortie, dossier + "liste.json")):
                 os.remove(os.path.join(sortie, dossier + "liste.json"))
     LG.nettoyer(sortie)                      # page arabe sans page française du jour = retirée
-    lastmod = jour
-    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for chemin, _ in pages:
-        # rapports : la date de leurs chiffres (un mois figé garde sa date) ; autres pages : le jour de construction
-        sitemap.append(f"  <url><loc>{URL_SITE}{chemin}</loc><lastmod>{dates_pages.get(chemin) or lastmod}</lastmod></url>")
-    for chemin, _ in pages:
-        sitemap.append(f"  <url><loc>{URL_SITE}ar/{chemin}</loc><lastmod>{dates_pages.get(chemin) or lastmod}</lastmod></url>")
-    sitemap.append("</urlset>")
-    ecrire(sortie, "sitemap.xml", "\n".join(sitemap) + "\n")
     # pages vidéo (video/) tirées de la page À propos : mêmes en-tête, pied, CSP et ?v= (tools/page_video.py)
     sys.path.insert(0, os.path.join(RACINE_SITE, "tools"))
     from page_video import pages_video
     with open(os.path.join(RACINE_SITE, "tools", "page_video.json"), encoding="utf-8") as fv:
-        pages_video(sortie, json.load(fv))
+        videos = pages_video(sortie, json.load(fv))
+    # plan du site (25/11/2026, plan Google) : B.1 une page en noindex n'y est jamais ; B.2 date = dernier VRAI changement de chaque
+    # page (robot/lastmod.py, mémoire donnees/lastmod.json : empreinte sans dates, ?v= ni compte à rebours), jamais « aujourd'hui » pour
+    # tout ; un rapport du mois garde la date de ses chiffres
+    import lastmod as LM
+    noindex = lambda c: re.search(r'<meta name="robots" content="[^"]*noindex', open(os.path.join(sortie, c + "index.html"), encoding="utf-8").read())
+    adresses_sm = [(c, c) for c, _ in pages] + [("ar/" + c, c) for c, _ in pages] + [(c, c) for c in videos]
+    adresses_sm = [(a, c) for a, c in adresses_sm if os.path.exists(os.path.join(sortie, a + "index.html")) and not noindex(a)]
+    compte_a_rebours = [re.compile(r'<small class="reste">.*?</small>', re.S), re.compile(r'data-panne="\d"'), re.compile(r'<div class="alerte-panne[^"]*" id="alerte-panne"[^>]*>.*?</div>', re.S), re.compile(r"\((?:encore \d+ jours|demain|aujourd’hui)\)")]
+    DATES = LM.dates(sortie, [a + "index.html" for a, _ in adresses_sm], jour, "donnees/lastmod.json", compte_a_rebours)
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for a, c in adresses_sm:
+        sitemap.append(f"  <url><loc>{URL_SITE}{a}</loc><lastmod>{dates_pages.get(c) or DATES.get(a + 'index.html') or jour}</lastmod></url>")
+    sitemap.append("</urlset>")
+    ecrire(sortie, "sitemap.xml", "\n".join(sitemap) + "\n")
     print(f"  {len(pages)} pages, {len(vis)} appels d'offres ouverts (sur {len(aos)} en mémoire), "
           f"version {v}{', AVERTISSEMENT : ' + raison if panne else ''}")
     return 0
