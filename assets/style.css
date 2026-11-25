@@ -498,4 +498,5 @@ html[dir="rtl"] .encadre-abo{border-left:1px solid var(--ligne);border-right:5px
 .encadre-abo .encadre-prix{font-size:13.5px;color:var(--texte);margin:0}
 .abo-repris[hidden]{display:none}
 .abo-repris{margin:0 0 12px}
-#inscription,.abo-repris{scroll-margin-top:76px}
+/* en-tête collant de 61 px (60 + bordure) : le titre « Inscription » reste visible à l'arrivée sur #inscription */
+#inscription,.abo-repris{scroll-margin-top:72px}

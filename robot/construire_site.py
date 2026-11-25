@@ -968,8 +968,9 @@ def encadre_abo(texte_fr, texte_ar, adresse, clic, racine="../../"):
     """Encadré « 🔔 … » au-dessus de la liste des pages métier et gouvernorat (25/11/2026, décision d'Ahmed : amener vers la page
     d'achat, PAS de gratuité). Vrai lien (bouton doré) vers abonnement/ où les choix sont déjà cochés (assets/pass-reglages.js) ;
     le clic est compté dans GoatCounter par assets/page.js (attribut data-clic)."""
-    prix = L(f"Alertes Pro sur Telegram : {ABO['prix_mois']}\u00a0DT / mois ou {ABO['prix_an']}\u00a0DT / an.",
-             f"تنبيهات Pro على تيليغرام: {ISO(ABO['prix_mois'])} دينار / شهر أو {ISO(ABO['prix_an'])} دينار / سنة.")
+    # prix jamais coupé au téléphone (25/11/2026) : espaces insécables entre nombre, unité et « / mois », « / an » (FR et AR)
+    prix = L(f"Alertes Pro sur Telegram\u00a0: {ABO['prix_mois']}\u00a0DT\u00a0/\u00a0mois ou {ABO['prix_an']}\u00a0DT\u00a0/\u00a0an.",
+             f"تنبيهات Pro على تيليغرام: {ISO(ABO['prix_mois'])}\u00a0دينار\u00a0/\u00a0شهر أو {ISO(ABO['prix_an'])}\u00a0دينار\u00a0/\u00a0سنة.")
     return (f'<!--encadre-abo--><section class="carte encadre-abo" id="encadre-abo">'
             f'<p class="encadre-texte">🔔 {L(texte_fr, texte_ar)}</p>'
             f'<a class="btn-pro" id="encadre-btn" href="{racine}{E(adresse)}" data-clic="{clic}">{L("Recevoir ces alertes", "تلقَّ هذه التنبيهات")}</a>'

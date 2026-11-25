@@ -53,8 +53,10 @@
       var info = document.getElementById("abo-repris");
       if (fait && info) {
         info.hidden = false;
-        // l'arrivée sur #inscription a lieu avant la fin du chargement : on montre la phrase une fois la page prête
-        var voir = function () { if (typeof info.scrollIntoView === "function") info.scrollIntoView({ block: "start" }); };
+        // l'arrivée sur #inscription a lieu avant la fin du chargement : une fois la page prête, on montre le HAUT de la carte
+        // « Inscription » (titre puis phrase), sous l'en-tête collant (scroll-margin-top de #inscription dans style.css)
+        var cible = document.getElementById("inscription") || info;
+        var voir = function () { if (typeof cible.scrollIntoView === "function") cible.scrollIntoView({ block: "start" }); };
         if (document.readyState === "complete") setTimeout(voir, 50); else window.addEventListener("load", function () { setTimeout(voir, 50); });
       }
     },

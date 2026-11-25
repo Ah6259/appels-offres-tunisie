@@ -924,13 +924,26 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
         const n = pref ? (e.match(/⁦(\d+)⁩ طلب عروض/) || [])[1] : (e.match(/🔔 <span data-l="fr">(\d+) appels? d'offres/) || [])[1];
         const nombreOk = compte > 0 ? Number(n) === compte : (pref ? /لا يوجد اليوم/.test(e) : /Aucun appel d'offres/.test(e));
         const attendu = "../../abonnement/" + (dos === "gouvernorat" && SPECIAUX.includes(s) ? "" : `?${cle}=${s}`) + "#inscription";
-        const langueOk = pref ? /تلقَّ الطلبات القادمة كل صباح على تيليغرام/.test(e) && !/Recevez|Recevoir/.test(e) && /⁦25⁩ دينار \/ شهر أو ⁦199⁩ دينار \/ سنة/.test(e)
-                              : /Recevez les prochains chaque matin sur Telegram/.test(e) && !/[؀-ۿ]/.test(e) && /25.DT \/ mois ou 199.DT \/ an/.test(e);
+        const langueOk = pref ? /تلقَّ الطلبات القادمة كل صباح على تيليغرام/.test(e) && !/Recevez|Recevoir/.test(e) && /⁦25⁩.دينار.\/.شهر أو ⁦199⁩.دينار.\/.سنة/.test(e)
+                              : /Recevez les prochains chaque matin sur Telegram/.test(e) && !/[؀-ۿ]/.test(e) && /25.DT.\/.mois ou 199.DT.\/.an/.test(e);
         // au-dessus de la liste, une seule fois
         const avant = h.indexOf("<!--encadre-abo-->") >= 0 && h.indexOf("<!--encadre-abo-->") < h.indexOf('id="liste"') && (h.match(/id="encadre-abo"/g) || []).length === 1;
         if (!nombreOk || href !== attendu || c !== clic || !langueOk || !avant) ko.push(`${f} (${n} / ${compte}, ${href}, ${c})`);
       }
   check(`encadré Alertes Pro au-dessus de la liste des ${vus} pages métier et gouvernorat (FR + ar/) : N = le nombre de la liste, texte de la langue, prix, vrai bouton vers abonnement/?metier= ou ?gouv= (rien pour « national » / « plusieurs »), clic compté` + (ko.length ? " — " + ko.slice(0, 4).join(" ; ") : ""), vus > 60 && !ko.length);
+  // prix de l'encadré jamais coupé au téléphone (25/11/2026) : nombre, unité et « / mois », « / an » collés par des espaces insécables (FR et AR)
+  { const prixKo = [];
+    for (const f of ["metier/informatique/index.html", "ar/metier/informatique/index.html", "gouvernorat/sfax/index.html", "ar/gouvernorat/national/index.html"]) {
+      const p = ((enc(lire(f)).match(/class="encadre-prix">([\s\S]*?)<\/p>/) || [])[1] || "").replace(/<[^>]+>/g, "");
+      const morceaux = p.match(/⁦?\d+⁩?[\s\u00a0]*(DT|دينار)[\s\u00a0]*\/[\s\u00a0]*(mois|an|شهر|سنة)/g) || [];
+      if (morceaux.length !== 2 || morceaux.some(m => / /.test(m))) prixKo.push(f + " : " + JSON.stringify(morceaux)); }
+    check("encadré : « 25 DT / mois » et « 199 DT / an » jamais coupés (espaces insécables, FR + AR)" + (prixKo.length ? " — " + prixKo.join(" ; ") : ""), !prixKo.length); }
+  // arrivée sur abonnement/#inscription : le titre « Inscription » sous l'en-tête collant, jamais caché (25/11/2026)
+  { const css = lire("assets/style.css").replace(/\s+/g, "");
+    const hEntete = Number((css.match(/\.entete\.wrap\{[^}]*height:(\d+)px/) || [])[1] || 0) + 1;     // + bordure du bas
+    const marge = Number((css.match(/#inscription[^{]*\{scroll-margin-top:(\d+)px/) || [])[1] || 0);
+    check(`abonnement/#inscription : scroll-margin-top (${marge} px) > hauteur de l'en-tête collant (${hEntete} px) et la page fait défiler vers la carte « Inscription » (titre visible)`,
+      hEntete > 40 && marge >= hEntete + 8 && /getElementById\("inscription"\)[^;]*;\s*var voir = function \(\) \{ if \(typeof cible\.scrollIntoView/.test(lire("assets/pass-reglages.js"))); }
   // N = vrai nombre des données (indépendant de la page)
   const nM = ouverts.filter(a => a.metier === "Informatique").length;
   check(`metier/informatique : l'encadré annonce ${nM} appels d'offres, le nombre des données`, !nM || enc(lire("metier/informatique/index.html")).includes(`>${nM} appel`));
