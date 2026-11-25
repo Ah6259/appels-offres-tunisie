@@ -18,7 +18,7 @@
    (jamais la balise fermante écrite ici : certains tests recopient ce fichier DANS la page), où pass-reglages.js appelle  PassCommun.brancher({ … réglage du site … })  (forme du réglage : LISEZMOI.md). */
 (function () {
   "use strict";
-  var VERSION = "2026-11-25d";
+  var VERSION = "2026-11-25e";
   var FORMSPREE = "https://formspree.io/f/mwlpakqj";
   var EMAIL_API = "https://api-email.clicvia.com/inscription";
   var WHATSAPP = "21624321390";
@@ -115,7 +115,8 @@
         idAttente = ids.attente || "commande-attente", idNouvelle = ids.nouvelle || "nouvelle-commande";
     var alphabet = (R.code && R.code.alphabet) || "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     var longueur = (R.code && R.code.longueur) || 6;
-    var FORMAT = new RegExp("^[" + echapperRe(alphabet).replace(/-/g, "\\-") + "]{" + longueur + "}$");
+    // format du code gardé dans le téléphone ; code.format (facultatif, Immobilier) : le site donne le sien (codes INV-… / VEN-…)
+    var FORMAT = (R.code && R.code.format) || new RegExp("^[" + echapperRe(alphabet).replace(/-/g, "\\-") + "]{" + longueur + "}$");
     var emailAutoOn = R.emailAuto !== false;
     var gratuit = R.type === "alertes-gratuit";
     var modeEchec = R.echec || (R.type === "pass-code" ? "reessayer" : "continuer");
@@ -188,7 +189,12 @@
       var apres = document.getElementById(idApres);
       var attente = document.getElementById(idAttente);
       var enCours = null;                         // commande du formulaire (même code si l'envoi est refait)
-      function dire(classe, t) { if (!statut) return; statut.className = classe; statut.textContent = typeof t === "string" ? t : choisir(t); }
+      // classeStatut (facultatif, Immobilier « achat-statut ») : classe de la zone de message gardée devant « err » / « ok »
+      function dire(classe, t) {
+        if (!statut) return;
+        statut.className = R.classeStatut ? R.classeStatut + (classe ? " " + classe : "") : classe;
+        statut.textContent = typeof t === "string" ? t : choisir(t);
+      }
       function champ(n) { return form.querySelector('[name="' + n + '"]'); }
       function val(n) { var x = champ(n); return x ? String(x.value || "").trim() : ""; }
       // état de la commande au retour ; classesEtat (facultatif) : classe CSS de la ligne selon l'état (ex. { attenteImpossible: "err" })
@@ -240,8 +246,9 @@
         if (bouton && bouton.disabled) return;
         var c = { form: form, champ: champ, val: val, langue: langue(), nom: val("nom"), email: val("email"), extra: {} };
         c.tel = R.telephone === "international" ? telephoneInternational(val("telephone")) : telephoneTn(val("telephone"));
-        var coche = form.querySelector('input[name="formule"]:checked');
-        c.formule = coche ? coche.value : (R.formuleDefaut || "");
+        // formule : case cochée (radios), ou liste <select name="formule"> (Immobilier), sinon formule par défaut du site
+        var coche = form.querySelector('input[name="formule"]:checked'), liste = form.querySelector('select[name="formule"]');
+        c.formule = coche ? coche.value : (liste && String(liste.value || "").trim()) || R.formuleDefaut || "";
         if (R.lire) R.lire(c);
         // vérifications dans l'ordre du site : les 5 communes (noms) et celles du site (fonctions : null = bon, sinon { fr, ar, en, champ })
         for (var i = 0; i < etapes.length; i++) {
@@ -253,7 +260,7 @@
             if (!c.email) { err = emailAutoOn ? "emailVide" : "emailVideSansAuto"; foc = "email"; }
             else if (!EMAIL_OK.test(c.email)) { err = "emailInvalide"; foc = "email"; }
           }
-          else if (et === "formule") { if (!c.formule) err = "formule"; }
+          else if (et === "formule") { if (!c.formule) { err = "formule"; if (liste) foc = "formule"; } }   // liste : le curseur y va
           else if (et === "conditions") { var cc = champ("conditions"); if (!cc || !cc.checked) err = "conditions"; }
           if (err) {
             dire("err", typeof err === "string" ? texte(err) : err);
@@ -263,16 +270,24 @@
         }
 
         // formulaire valide : le code de commande est créé maintenant (le même si l'envoi doit être refait)
-        if (!enCours || enCours.formule !== c.formule) enCours = { code: nouveauCode(alphabet, longueur), formule: c.formule, email: false };
+        // code.fournir (facultatif, Immobilier) : le site DONNE le code complet (INV-… / VEN-…, déjà créé ou à créer : il le garde
+        // lui-même d'un essai à l'autre) ; un autre code = une autre commande (e-mail redemandé)
+        if (R.code && R.code.fournir) {
+          var donne = String(R.code.fournir(c) || "");
+          if (!enCours || enCours.code !== donne) enCours = { code: donne, formule: c.formule, email: false };
+        } else if (!enCours || enCours.formule !== c.formule) enCours = { code: nouveauCode(alphabet, longueur), formule: c.formule, email: false };
         c.brut = enCours.code;
         c.code = affiche(c.brut, c.formule);
         c.tg = R.telegram ? (R.telegram(c) || "") : "";
         var cmdNouvelle = { code: c.brut, formule: c.formule, tg: c.tg };
         var nomWa = R.nomWa ? R.nomWa(c) : c.nom;
         var fini = function (robot) {
-          remplir(cmdNouvelle, nomWa);            // code en gros, motif, WhatsApp pré-rempli (code + nom), « Ouvrir Telegram »
           if (!robot) memoriser(cmdNouvelle);     // le téléphone se souvient de la commande (rien de personnel)
           enCours = null;
+          // derniereEtape (facultatif, Immobilier) : le SITE écrit lui-même la page « Dernière étape » (et le retour sur la page) ;
+          // x = { code (affiché), brut, formule, nom, robot }
+          if (R.derniereEtape) { R.derniereEtape({ code: c.code, brut: c.brut, formule: c.formule, nom: c.nom, robot: !!robot }); return; }
+          remplir(cmdNouvelle, nomWa);            // code en gros, motif, WhatsApp pré-rempli (code + nom), « Ouvrir Telegram »
           form.hidden = true;
           if (attente) attente.hidden = true;
           if (apres) { apres.hidden = false; if (apres.scrollIntoView) try { apres.scrollIntoView({ block: "start" }); } catch (x) {} }
