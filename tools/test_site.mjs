@@ -676,7 +676,7 @@ check("abonnement : module commun du Pass (pass-commun.js) puis réglage du site
   const copie = readFileSync(join(root, "assets/pass-commun.js")), emp = createHash("sha256").update(copie).digest("hex");
   const attendue = existsSync(join(root, "assets/pass-commun.empreinte")) ? lire("assets/pass-commun.empreinte").trim() : "";
   check("module commun du Pass : assets/pass-commun.js NON modifié dans le site (empreinte écrite par synchroniser.py)", emp === attendue);
-  const original = [process.env.PROJETS_AHMED, join(root, "..", "projets-ahmed"), join(root, "..", "..", "projets-ahmed"), join(root, "..", ".."), "/home/user/projets-ahmed"]
+  const original = [process.env.PROJETS_AHMED, join(root, "..", "projets-ahmed"), join(root, "..", "..", "projets-ahmed"), join(root, "..", "..")]   // dépôts VOISINS seulement (un vieux clone ailleurs ne compte pas)
     .filter(Boolean).map(x => join(x, "outils communs", "pass-commun", "pass-commun.js")).find(x => existsSync(x));
   if (original) check("module commun du Pass : copie identique au module de projets-ahmed (sinon : python3 synchroniser.py)", readFileSync(original).equals(copie));
   else console.log("SAUTÉ copie du module commun : projets-ahmed absent (normal sur GitHub)"); }
