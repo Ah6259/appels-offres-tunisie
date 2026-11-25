@@ -479,3 +479,13 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
   :root:not([data-theme="light"]) .appli-btn:has(img){background:#fff}
   :root:not([data-theme="light"]) .btn-video-partager{background:var(--carte)}
 }
+/* Parcours commun des Pass (règle commune § 70, 25/11/2026) : code de commande en gros, commande en attente gardée par le téléphone */
+.code-commande{text-align:center;background:var(--carte);border:2px dashed var(--or);border-radius:12px;padding:12px;margin:6px 0 12px}
+.code-commande .abo-code{display:inline-block;font-size:30px;font-weight:800;margin-bottom:8px;padding:4px 14px}
+.code-motif{font-weight:800;letter-spacing:.06em;direction:ltr;unicode-bidi:isolate}
+.filet{margin-top:8px}
+.abo-attente{background:var(--or-clair);border:1.5px solid var(--or);border-radius:14px;padding:16px;margin-bottom:14px}
+.abo-attente p{margin:0 0 8px}
+.abo-attente .attente-titre{font-size:16.5px}
+.abo-attente .btn-tg-essai{margin:10px 0}
+.abo-attente .abo-nouvelle{width:100%;max-width:340px;margin-top:10px;cursor:pointer;font-family:inherit}
