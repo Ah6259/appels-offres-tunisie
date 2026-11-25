@@ -18,7 +18,7 @@
    (jamais la balise fermante écrite ici : certains tests recopient ce fichier DANS la page), où pass-reglages.js appelle  PassCommun.brancher({ … réglage du site … })  (forme du réglage : LISEZMOI.md). */
 (function () {
   "use strict";
-  var VERSION = "2026-11-25c";
+  var VERSION = "2026-11-25d";
   var FORMSPREE = "https://formspree.io/f/mwlpakqj";
   var EMAIL_API = "https://api-email.clicvia.com/inscription";
   var WHATSAPP = "21624321390";
@@ -200,6 +200,10 @@
       if (R.brancher) R.brancher({ form: form, champ: champ, val: val });
 
       // retour sur la page : la commande en attente est montrée à la place du formulaire
+      // attendreRetour (facultatif) : promesse du site à attendre avant (ex. revérification du Pass déjà gardé) ;
+      // si le visiteur a déjà envoyé le formulaire entre-temps, le retour n'est plus montré
+      function retour() {
+      if (form.hidden || enCours) return;
       var cmd = relire();
       if (cmd && R.dejaActif && R.dejaActif(cmd, affiche(cmd.code, cmd.formule))) { oublier(); cmd = null; }
       if (cmd && attente) {
@@ -219,6 +223,10 @@
           else etatCommande("attenteImpossible");
         }
       }
+      }
+      var attendu = null;
+      try { attendu = R.attendreRetour ? R.attendreRetour() : null; } catch (e) { attendu = null; }
+      if (attendu && attendu.then) attendu.then(retour, retour); else retour();
       var nouvelle = document.getElementById(idNouvelle);
       if (nouvelle) nouvelle.addEventListener("click", function () {
         oublier(); enCours = null;
