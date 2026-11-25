@@ -36,6 +36,27 @@
           if (c !== tous && c.checked && tous) tous.checked = false;
         }
       });
+      // 25/11/2026 : venu d'une page métier ou gouvernorat (abonnement/?metier=…&gouv=…#inscription) -> ces choix sont déjà cochés.
+      // Seules les cases qui existent sont cochées : une valeur inconnue est ignorée sans erreur.
+      var q;
+      try { q = new URLSearchParams(location.search); } catch (e) { return; }
+      var fait = false;
+      function cocher(nom, valeurs) {
+        var cases = form.querySelectorAll('input[name="' + nom + '"]');
+        for (var i = 0; i < cases.length; i++)
+          if (valeurs.indexOf(cases[i].value) >= 0) { cases[i].checked = true; fait = true; }
+      }
+      function liste(n) { return (q.get(n) || "").toLowerCase().split(",").filter(function (x) { return /^[a-z-]{2,30}$/.test(x); }).slice(0, 12); }
+      cocher("metiers", liste("metier"));
+      var gv = liste("gouv");
+      cocher("gouvernorats", gv.indexOf("tous") >= 0 ? ["tous"] : gv);       // « Toute la Tunisie » et un gouvernorat s'excluent
+      var info = document.getElementById("abo-repris");
+      if (fait && info) {
+        info.hidden = false;
+        // l'arrivée sur #inscription a lieu avant la fin du chargement : on montre la phrase une fois la page prête
+        var voir = function () { if (typeof info.scrollIntoView === "function") info.scrollIntoView({ block: "start" }); };
+        if (document.readyState === "complete") setTimeout(voir, 50); else window.addEventListener("load", function () { setTimeout(voir, 50); });
+      }
     },
     // champs du site : métiers et gouvernorats cochés
     lire: function (c) {

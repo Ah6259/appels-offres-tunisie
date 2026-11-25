@@ -252,3 +252,19 @@ Fichier lu automatiquement par Claude Code au début de chaque session dans ce d
 - Améliorer le parcours : modifier le module dans projets-ahmed, `python3 "outils communs/pass-commun/synchroniser.py"`, reconstruire, tests,
   envoyer CHAQUE site (LISEZMOI.md du module). Rien n'a changé pour le visiteur (comparaison avant / après, FR + AR : 110 étapes identiques ;
   seule différence voulue : piège anti-robot rempli = la commande n'est plus gardée dans le téléphone).
+
+## 25/11/2026 — Vers la page d'achat (AO.1 + C.1) : encadrés sur les pages métier / gouvernorat, clics comptés — PAS de gratuité
+- **Décision d'Ahmed (25/11/2026)** : amener les visiteurs vers `abonnement/` avec des encadrés liés au contenu de la page et compter les
+  clics ; **aucune gratuité** (ni essai, ni formule, ni canal gratuit ; prix inchangés 25 DT / mois, 199 DT / an). Modèle : Alerte Concours (550bb92).
+- **AO.1** : `encadre_metier()` / `encadre_gouv()` / `encadre_abo()` de `robot/construire_site.py` : au-dessus de la liste de chaque page
+  `metier/<slug>/` et `gouvernorat/<slug>/` (FR + ar/), « N appels d'offres « Métier » ouverts. Recevez les prochains chaque matin sur Telegram. »
+  (N = nombre de la liste ; 0 = « Aucun appel d'offres … ouvert aujourd'hui »), prix écrit, vrai bouton doré `a.btn-pro#encadre-btn` vers
+  `abonnement/?metier=<slug>#inscription` ou `?gouv=<slug>` (`_adresse_abo()` ; rien pour « national » / « plusieurs », toujours compris).
+  `assets/pass-reglages.js` (fonction `brancher`) coche ces cases d'après l'adresse (valeurs inconnues ignorées, « tous » exclusif) et montre
+  `#abo-repris` (« Vos choix de la page précédente sont déjà cochés… »). `assets/pass-commun.js` (module commun) NON modifié.
+- **C.1** : `assets/page.js` compte tout lien `a[data-clic]` en ÉVÉNEMENT GoatCounter `/appels-offres-tunisie/clic/<nom>` (seulement si
+  `window.goatcounter.count` existe ; rien de cassé si bloqué ; pas de script en ligne). Noms : `abonnement-entete` (bouton doré de l'en-tête),
+  `abonnement-pied` (lien du pied), `abonnement-accueil` (gros bouton de l'accueil), `abonnement-metier`, `abonnement-gouvernorat` (encadrés),
+  `abonnement-a-propos` (« Voir les Alertes Pro » d'a-propos/). Dans GoatCounter : chercher « clic/ ».
+- « Comment fonctionne le site ? » (FR + AR) : ligne de l'encadré + « nous comptons aussi les clics… » (Vos données) ; FONCTIONS + tests
+  (bloc « 25/11/2026 (décision d'Ahmed : amener les visiteurs vers la page d'achat » de tools/test_site.mjs ; 5 sabotages tous vus).

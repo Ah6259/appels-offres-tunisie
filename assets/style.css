@@ -489,3 +489,13 @@ html[dir="rtl"] .paie-etapes>li::before{left:auto;right:12px}
 .abo-attente .attente-titre{font-size:16.5px}
 .abo-attente .btn-tg-essai{margin:10px 0}
 .abo-attente .abo-nouvelle{width:100%;max-width:340px;margin-top:10px;cursor:pointer;font-family:inherit}
+/* 25/11/2026 — encadré « Recevez les prochains chaque matin sur Telegram » (pages métier et gouvernorat) vers les Alertes Pro */
+.encadre-abo{border-left:5px solid #F2B33D;background:var(--or-clair)}
+html[dir="rtl"] .encadre-abo{border-left:1px solid var(--ligne);border-right:5px solid #F2B33D}
+.encadre-abo p{margin:0 0 8px}
+.encadre-abo .encadre-texte{font-weight:700;font-size:16px;line-height:1.45;color:var(--texte)}
+.encadre-abo .btn-pro{margin:4px 0 10px;max-width:420px}
+.encadre-abo .encadre-prix{font-size:13.5px;color:var(--texte);margin:0}
+.abo-repris[hidden]{display:none}
+.abo-repris{margin:0 0 12px}
+#inscription,.abo-repris{scroll-margin-top:76px}

@@ -45,7 +45,7 @@
             <small>${T("Tunisie · source officielle HAICOP", "تونس · المصدر الرسمي: الهيئة العليا للطلب العمومي")}</small></span>
         </a>
         <div class="entete-boutons">
-          <a class="entete-pro" href="${site}abonnement/">${T("Alertes Pro", "تنبيهات Pro")}</a>
+          <a class="entete-pro" href="${site}abonnement/" data-clic="abonnement-entete">${T("Alertes Pro", "تنبيهات Pro")}</a>
           <button class="partager" type="button" aria-label="${T("Partager cette page", "شارك هذه الصفحة")}" title="${T("Partager", "شارك")}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
           <button class="langue" type="button" aria-label="${T("Lire en arabe", "Lire en français")}" title="${T("العربية", "Français")}">${T("ع", "Fr")}</button>
         </div>
@@ -62,7 +62,7 @@
           <a href="${site}encheres/">${T("Ventes aux enchères", "البيوعات بالمزاد")}</a>
           <a href="${site}rapports/">${T("Rapports du mois", "تقارير الشهر")}</a>
           <a href="${site}publier/">${T("Publier un appel d'offres", "نشر طلب عروض")}</a>
-          <a href="${site}abonnement/">${T("Alertes Pro (abonnement)", "تنبيهات Pro (اشتراك)")}</a>
+          <a href="${site}abonnement/" data-clic="abonnement-pied">${T("Alertes Pro (abonnement)", "تنبيهات Pro (اشتراك)")}</a>
           <a href="${site}a-propos/">${T("Comment fonctionne le site ?", "كيف يعمل الموقع؟")}</a>
           <a href="${site}#avis">${T("Votre avis", "رأيك")}</a>
         <a href="https://clicvia.com/" rel="noopener" target="_blank">${T("Tous nos services", "كل خدماتنا")}</a>
@@ -160,6 +160,24 @@
       return;
     }
     copier(b, p);
+  });
+})();
+
+/* Clics vers la page d'achat (25/11/2026, décision d'Ahmed) : tout lien data-clic="<nom>" (bouton doré de l'en-tête, lien du pied de page,
+   bouton de l'accueil, encadrés des pages métier et gouvernorat, page « Comment fonctionne le site ? ») est compté dans GoatCounter comme
+   un ÉVÉNEMENT « /appels-offres-tunisie/clic/<nom> » (préfixe du site dans le compteur commun). Rien si GoatCounter est absent ou bloqué ;
+   le lien s'ouvre toujours normalement. Fichier externe : aucun script en ligne (CSP). */
+(function () {
+  var TITRES = { "abonnement-entete": "Clic vers les Alertes Pro (bouton de l'en-tête)", "abonnement-pied": "Clic vers les Alertes Pro (pied de page)",
+    "abonnement-accueil": "Clic vers les Alertes Pro (bouton de l'accueil)", "abonnement-metier": "Clic vers les Alertes Pro (page d'un métier)",
+    "abonnement-gouvernorat": "Clic vers les Alertes Pro (page d'un gouvernorat)", "abonnement-a-propos": "Clic vers les Alertes Pro (Comment fonctionne le site ?)" };
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest && e.target.closest("a[data-clic]");
+    if (!a) return;
+    var nom = (a.getAttribute("data-clic") || "").replace(/[^a-z-]/g, "");
+    if (!nom) return;
+    try { if (window.goatcounter && typeof window.goatcounter.count === "function")
+      window.goatcounter.count({ path: "/appels-offres-tunisie/clic/" + nom, title: TITRES[nom] || "Clic " + nom, event: true }); } catch (x) {}
   });
 })();
 

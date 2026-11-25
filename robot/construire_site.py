@@ -949,8 +949,63 @@ def bouton_pro_accueil(racine=""):
     titre = L("Alertes Pro : vos appels d'offres chaque matin sur Telegram", "تنبيهات Pro: طلبات عروضك كل صباح على تيليغرام")
     sous = L(f"Seulement vos métiers et vos gouvernorats · {ABO['prix_mois']} DT / mois",
              f"اختصاصاتك وولاياتك فقط · {ISO(ABO['prix_mois'])} دينار / شهر")
-    return (f'    <a class="btn-pro-grand" id="btn-pro-accueil" href="{racine}abonnement/">{ICONE_CLOCHE}'
+    return (f'    <a class="btn-pro-grand" id="btn-pro-accueil" href="{racine}abonnement/" data-clic="abonnement-accueil">{ICONE_CLOCHE}'
             f'<span>{titre}<small>{sous}</small></span></a>')
+
+
+def _adresse_abo(metier=None, gouv=None):
+    """Adresse de la page abonnement/ avec les choix déjà cochés (25/11/2026, demande d'Ahmed) : seules les vraies clés passent
+    (« national » et « plusieurs » ne sont pas des cases : ces appels d'offres sont toujours compris dans les Alertes Pro)."""
+    q = []
+    if metier in M_PAR_SLUG:
+        q.append(f"metier={metier}")
+    if gouv in G_PAR_SLUG and gouv not in ("plusieurs", "national"):
+        q.append(f"gouv={gouv}")
+    return "abonnement/" + ("?" + "&".join(q) if q else "") + "#inscription"
+
+
+def encadre_abo(texte_fr, texte_ar, adresse, clic, racine="../../"):
+    """Encadré « 🔔 … » au-dessus de la liste des pages métier et gouvernorat (25/11/2026, décision d'Ahmed : amener vers la page
+    d'achat, PAS de gratuité). Vrai lien (bouton doré) vers abonnement/ où les choix sont déjà cochés (assets/pass-reglages.js) ;
+    le clic est compté dans GoatCounter par assets/page.js (attribut data-clic)."""
+    prix = L(f"Alertes Pro sur Telegram : {ABO['prix_mois']}\u00a0DT / mois ou {ABO['prix_an']}\u00a0DT / an.",
+             f"تنبيهات Pro على تيليغرام: {ISO(ABO['prix_mois'])} دينار / شهر أو {ISO(ABO['prix_an'])} دينار / سنة.")
+    return (f'<!--encadre-abo--><section class="carte encadre-abo" id="encadre-abo">'
+            f'<p class="encadre-texte">🔔 {L(texte_fr, texte_ar)}</p>'
+            f'<a class="btn-pro" id="encadre-btn" href="{racine}{E(adresse)}" data-clic="{clic}">{L("Recevoir ces alertes", "تلقَّ هذه التنبيهات")}</a>'
+            f'<p class="encadre-prix">{prix}</p></section><!--/encadre-abo-->')
+
+
+def encadre_metier(slug, fr, ar, n):
+    """Page d'un métier : « <N> appels d'offres « métier » ouverts » (N = le nombre de la liste de la page)."""
+    suite_fr, suite_ar = "Recevez les prochains chaque matin sur Telegram.", "تلقَّ الطلبات القادمة كل صباح على تيليغرام."
+    if n:
+        t_fr = f"{n} appel{'s' if n > 1 else ''} d'offres «\u00a0{E(fr)}\u00a0» ouvert{'s' if n > 1 else ''}. {suite_fr}"
+        t_ar = f"{ISO(n)} طلب عروض «{ar}» مفتوح. {suite_ar}"
+    else:
+        t_fr = f"Aucun appel d'offres «\u00a0{E(fr)}\u00a0» ouvert aujourd'hui. {suite_fr}"
+        t_ar = f"لا يوجد اليوم طلب عروض «{ar}» مفتوح. {suite_ar}"
+    return encadre_abo(t_fr, t_ar, _adresse_abo(metier=slug), "abonnement-metier")
+
+
+def encadre_gouv(slug, nom, ar, n):
+    """Page d'un gouvernorat : « <N> appels d'offres ouverts à <gouvernorat> » (N = le nombre de la liste de la page)."""
+    pl = "s" if n > 1 else ""
+    suite_fr, suite_ar = "Recevez les prochains chaque matin sur Telegram", "تلقَّ الطلبات القادمة كل صباح على تيليغرام"
+    if slug in ("plusieurs", "national"):
+        lieu_fr, lieu_ar = f"«\u00a0{E(nom.lower())}\u00a0»", f"«{ar}»"
+        plus_fr = " (toujours compris dans les Alertes Pro, quel que soit votre gouvernorat)."
+        plus_ar = " (مضمّنة دائمًا في تنبيهات Pro، مهما كانت ولايتك)."
+    else:
+        lieu_fr, lieu_ar = f"à {E(nom)}", f"في ولاية {ar}"
+        plus_fr, plus_ar = ".", "."
+    if n:
+        t_fr = f"{n} appel{pl} d'offres ouvert{pl} {lieu_fr}. {suite_fr}{plus_fr}"
+        t_ar = f"{ISO(n)} طلب عروض مفتوح {lieu_ar}. {suite_ar}{plus_ar}"
+    else:
+        t_fr = f"Aucun appel d'offres ouvert {lieu_fr} aujourd'hui. {suite_fr}{plus_fr}"
+        t_ar = f"لا يوجد اليوم طلب عروض مفتوح {lieu_ar}. {suite_ar}{plus_ar}"
+    return encadre_abo(t_fr, t_ar, _adresse_abo(gouv=slug), "abonnement-gouvernorat")
 
 
 def pages_abonnement(adr, v, etat):
@@ -1008,6 +1063,7 @@ def pages_abonnement(adr, v, etat):
   {bandeau_attente(adr['robot'])}
   <form id="abo-form" action="{ABO['formspree']}" method="POST" novalidate data-robot="{E(adr['robot'])}"
         data-metiers="{','.join(sorted(slug for _, slug, _, _ in METIERS))}" data-gouv="{','.join(sorted(slug for _, slug, _ in GOUVERNORATS if slug not in ('plusieurs', 'national')))}">
+    <p class="avert abo-repris" id="abo-repris" hidden>{L("Vos choix de la page précédente sont déjà cochés plus bas (métier ou gouvernorat) : vérifiez-les, puis remplissez le reste.", "اختياراتك من الصفحة السابقة محدّدة أسفله (الاختصاص أو الولاية): تحقّق منها ثم أكمل الباقي.")}</p>
     <label class="abo-etiquette" for="abo-nom">{L("Votre nom", "اسمك")}</label>
     <input id="abo-nom" name="nom" required maxlength="100" autocomplete="name">
     <label class="abo-etiquette" for="abo-entreprise">{L("Entreprise (pour la facture)", "المؤسسة (للفاتورة)")}</label>
@@ -1278,6 +1334,7 @@ def construire(donnees, sortie, jour):
     <p class="intro">{L(f"{len(sel)} appel{'s' if len(sel) > 1 else ''} d'offres ouvert{'s' if len(sel) > 1 else ''} en Tunisie, triés par date limite. Source officielle : HAICOP.",
                         f"{ISO(len(sel))} طلب عروض مفتوح في تونس، مرتبة حسب آخر أجل. المصدر الرسمي: الهيئة العليا للطلب العمومي.")}</p>"""
         contenu = f"""{filtres(sel, avec_metier=False)}
+{encadre_metier(slug, fr, ar, len(sel))}
 {liste_html(sel, "../../", jour, f"Aucun appel d'offres « {E(fr)} » ouvert en ce moment. Revenez demain : la liste est mise à jour chaque jour.", f"لا يوجد حاليًا طلب عروض مفتوح في «{ar}». عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres métiers", "اختصاصات أخرى")}</h2>
 {grille(items_m, slug, "../../", "metier", cm, "grille-metiers", True)}"""
@@ -1297,6 +1354,7 @@ def construire(donnees, sortie, jour):
     <p class="intro">{L(f"{len(sel)} appel{'s' if len(sel) > 1 else ''} d'offres ouvert{'s' if len(sel) > 1 else ''}, triés par date limite. Source officielle : HAICOP.",
                         f"{ISO(len(sel))} طلب عروض مفتوح، مرتبة حسب آخر أجل. المصدر الرسمي: الهيئة العليا للطلب العمومي.")}</p>"""
         contenu = f"""{filtres(sel, avec_gouv=False)}
+{encadre_gouv(slug, nom, ar, len(sel))}
 {liste_html(sel, "../../", jour, "Aucun appel d'offres ouvert en ce moment pour ce gouvernorat. Revenez demain : la liste est mise à jour chaque jour.", "لا يوجد حاليًا طلب عروض مفتوح في هذه الولاية. عُد غدًا: القائمة تُحيَّن يوميًا.")}
 <h2 class="titre-section">{L("Autres gouvernorats", "ولايات أخرى")}</h2>
 {grille(items_g, slug, "../../", "gouvernorat", cg, "grille-gouv")}"""
@@ -1342,6 +1400,8 @@ def construire(donnees, sortie, jour):
         ("<b>Rapports du mois</b> : les appels d'offres en chiffres (par métier, par gouvernorat, acheteurs), avec un bouton « Partager ce rapport ».",
          "<b>تقارير الشهر</b>: طلبات العروض بالأرقام (حسب الاختصاص والولاية والمشترين)، مع زر «شارك هذا التقرير»."),
         ("<b>Alertes Pro</b> sur Telegram (payant) : voir plus bas.", "<b>تنبيهات Pro</b> على تيليغرام (بمقابل): انظر أسفله."),
+        ("Encadré <b>« Recevez les prochains chaque matin sur Telegram »</b> au-dessus de la liste de chaque page de métier et de gouvernorat : il dit combien d'appels d'offres sont ouverts, et son bouton « Recevoir ces alertes » ouvre la page des Alertes Pro (payantes) avec ce métier ou ce gouvernorat déjà cochés.",
+         "إطار <b>«تلقَّ الطلبات القادمة كل صباح على تيليغرام»</b> فوق قائمة كل صفحة اختصاص وولاية: يذكر عدد طلبات العروض المفتوحة، وزرّه «تلقَّ هذه التنبيهات» يفتح صفحة تنبيهات Pro (بمقابل) مع هذا الاختصاص أو هذه الولاية محدّدين مسبقًا."),
         ("Bouton <b>Partager</b> en haut de chaque page (menu de partage du téléphone).", "زر <b>شارك</b> في أعلى كل صفحة (قائمة المشاركة في الهاتف)."),
         ("Bouton <b>ع / Fr</b> : chaque page existe en français (son adresse normale) et en arabe (adresse qui commence par <code>ar/</code>) ; le bouton passe de l'une à l'autre.", "زر <b>ع / Fr</b>: كل صفحة موجودة بالفرنسية (عنوانها العادي) وبالعربية (عنوان يبدأ بـ <code>ar/</code>)؛ الزر ينقلك من واحدة إلى الأخرى."),
         ("<b>Vidéo de présentation</b> du site (lien en bas de l'accueil).", "<b>فيديو تقديمي</b> للموقع (رابط أسفل الصفحة الرئيسية)."),
@@ -1417,13 +1477,13 @@ def construire(donnees, sortie, jour):
         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ مع ذكر <b>رمزك الشخصي</b> المعطى في صفحة تنبيهات Pro. لا تجديد آلي: تذكير قبل النهاية بـ{ISO(ABO['rappel_jours'])} أيام، ثم يتوقف التنبيه ببساطة.")}</p>
   <p>{L("<b>Commande en attente</b> : après l'inscription, la page « Dernière étape » montre votre code en gros (c'est votre numéro de commande, à écrire dans le motif du paiement), les 3" + NB + "étapes du paiement et un bouton WhatsApp où le code et le nom de votre entreprise sont déjà écrits. Votre téléphone se souvient de la commande pendant 60" + NB + "jours (seulement le code, la formule et la date, jamais votre nom, entreprise, téléphone ou e-mail) : en revenant sur la page Alertes Pro, vous retrouvez le code, le paiement, WhatsApp et « Ouvrir Telegram » ; « Nouvelle commande » l'efface. Code oublié dans le motif ? Envoyez quand même la preuve sur WhatsApp, nous retrouvons votre demande. <b>E-mail de confirmation</b> : dans la minute qui suit l'inscription, vous recevez aussi tout cela par e-mail (code, prix, paiement, boutons WhatsApp et Telegram), dans la langue de la page.",
         "<b>طلب في الانتظار</b>: بعد التسجيل، تعرض صفحة «الخطوة الأخيرة» رمزك بخط كبير (هو رقم طلبك، اكتبه في خانة سبب الدفع)، وخطوات الدفع الثلاث وزر واتساب مكتوب فيه الرمز واسم مؤسستك. يتذكر هاتفك الطلب مدة " + ISO(60) + " يومًا (الرمز والصيغة والتاريخ فقط، لا اسمك ولا مؤسستك ولا هاتفك ولا بريدك أبدًا): عند العودة إلى صفحة تنبيهات Pro تجد الرمز والدفع وواتساب و«افتح تيليغرام»؛ و«طلب جديد» يمحوه. نسيت الرمز في سبب الدفع؟ أرسل الوصل على واتساب وسنجد طلبك. <b>بريد التأكيد</b>: خلال دقيقة من التسجيل يصلك كل هذا أيضًا عبر البريد الإلكتروني (الرمز، الثمن، الدفع، زرّا واتساب وتيليغرام) بلغة الصفحة.")}</p>
-  <a class="btn" href="../abonnement/">{L("Voir les Alertes Pro", "اطّلع على تنبيهات Pro")}</a>
+  <a class="btn" href="../abonnement/" data-clic="abonnement-a-propos">{L("Voir les Alertes Pro", "اطّلع على تنبيهات Pro")}</a>
 </section>
 <section class="carte">
   <h2>{L("Vos données", "بياناتك")}</h2>
   <ul>
   {li("Pas de compte à créer pour consulter le site. Votre téléphone garde seulement la langue choisie.", "لا حساب لإنشائه لتصفح الموقع. هاتفك يحفظ فقط اللغة المختارة.")}
-  {li("Statistiques de visite anonymes, sans cookies (GoatCounter).", "إحصائيات زيارات مجهولة، دون ملفات تعريف الارتباط (⁨GoatCounter⁩).")}
+  {li("Statistiques de visite anonymes, sans cookies (GoatCounter) : nous comptons aussi, sans savoir qui vous êtes, les clics sur les boutons qui mènent aux Alertes Pro.", "إحصائيات زيارات مجهولة، دون ملفات تعريف الارتباط (⁨GoatCounter⁩): نحسب أيضًا، دون معرفة هويتك، النقرات على الأزرار التي تؤدي إلى تنبيهات Pro.")}
   {li("Votre avis et l'inscription aux Alertes Pro ne sont envoyés que si vous touchez « Envoyer » (service Formspree). Vos coordonnées servent seulement à l'abonnement : elles ne sont jamais publiées ni vendues. L'e-mail de confirmation part par notre service d'envoi (Resend) ; rien n'est gardé.", "رأيك والتسجيل في تنبيهات Pro لا يُرسلان إلا إذا لمست «أرسل» (خدمة ⁨Formspree⁩). بياناتك تُستعمل للاشتراك فقط: لا تُنشر ولا تُباع أبدًا. بريد التأكيد يُرسل عبر خدمة الإرسال لدينا (⁨Resend⁩)؛ ولا يُحفظ شيء.")}
   {li("Confidentialité et conditions d'utilisation : pages communes à tous nos sites (clicvia.com), liens en bas de chaque page.", "الخصوصية وشروط الاستعمال: صفحات مشتركة بين كل مواقعنا (⁨clicvia.com⁩)، روابطها أسفل كل صفحة.")}
   </ul>

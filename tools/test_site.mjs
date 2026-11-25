@@ -611,7 +611,7 @@ for (const [chemin, lien] of [["index.html", "abonnement/"], ["metier/informatiq
   check(`en-tête de ${chemin} : bouton doré « Alertes Pro » vers abonnement/ (FR + AR)`, !!b && b.getAttribute("href") === lien &&
     texte(b) === "Alertes Pro" && !!ba && texte(ba) === "تنبيهات Pro" && b.href === URL_SITE + "abonnement/");
 }
-check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(lire("assets/page.js")) && /\$\{site\}abonnement\/">\$\{T\("Alertes Pro \(abonnement\)"/.test(lire("assets/page.js")));
+check("pied de page : lien « Alertes Pro (abonnement) »", /entete-pro/.test(lire("assets/page.js")) && /\$\{site\}abonnement\/" data-clic="abonnement-pied">\$\{T\("Alertes Pro \(abonnement\)"/.test(lire("assets/page.js")));
 w = await page("index.html", `lang=fr&jour=${JOUR}`);
 d = w.document;
 const gros = d.querySelector(".hero #btn-pro-accueil");
@@ -905,6 +905,104 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
   if (mauvaises.length) console.log("   og:locale refusé : " + mauvaises.slice(0, 5).join(", "));
 }
 
+// ---- 25/11/2026 (décision d'Ahmed : amener les visiteurs vers la page d'achat, PAS de gratuité) : encadré au-dessus de la liste des
+//      pages métier et gouvernorat (FR + ar/), « N appels d'offres … ouverts. Recevez les prochains chaque matin sur Telegram »,
+//      vrai bouton vers abonnement/?metier=…|?gouv=…#inscription ; cases cochées d'après l'adresse sur abonnement/ ;
+//      clics vers la page d'achat comptés dans GoatCounter (événements /appels-offres-tunisie/clic/<nom>).
+{ const enc = h => (h.match(/<!--encadre-abo-->([\s\S]*?)<!--\/encadre-abo-->/) || [])[1] || "";
+  const lien = h => ((enc(h).match(/<a class="btn-pro" id="encadre-btn" href="([^"]*)" data-clic="([a-z-]+)">/) || []).slice(1));
+  const SPECIAUX = ["plusieurs", "national"];
+  const ko = [];
+  let vus = 0;
+  for (const [dos, cle, clic] of [["metier", "metier", "abonnement-metier"], ["gouvernorat", "gouv", "abonnement-gouvernorat"]])
+    for (const s of readdirSync(join(root, dos)).filter(n => existsSync(join(root, dos, n, "index.html"))))
+      for (const pref of ["", "ar/"]) {
+        const f = `${pref}${dos}/${s}/index.html`;
+        if (!existsSync(join(root, f))) { ko.push(f + " (absente)"); continue; }
+        const h = lire(f), e = enc(h), [href, c] = lien(h); vus++;
+        const compte = Number((h.match(/id="compte"[^>]*><span>(\d+) appel/) || [])[1]);
+        const n = pref ? (e.match(/⁦(\d+)⁩ طلب عروض/) || [])[1] : (e.match(/🔔 <span data-l="fr">(\d+) appels? d'offres/) || [])[1];
+        const nombreOk = compte > 0 ? Number(n) === compte : (pref ? /لا يوجد اليوم/.test(e) : /Aucun appel d'offres/.test(e));
+        const attendu = "../../abonnement/" + (dos === "gouvernorat" && SPECIAUX.includes(s) ? "" : `?${cle}=${s}`) + "#inscription";
+        const langueOk = pref ? /تلقَّ الطلبات القادمة كل صباح على تيليغرام/.test(e) && !/Recevez|Recevoir/.test(e) && /⁦25⁩ دينار \/ شهر أو ⁦199⁩ دينار \/ سنة/.test(e)
+                              : /Recevez les prochains chaque matin sur Telegram/.test(e) && !/[؀-ۿ]/.test(e) && /25.DT \/ mois ou 199.DT \/ an/.test(e);
+        // au-dessus de la liste, une seule fois
+        const avant = h.indexOf("<!--encadre-abo-->") >= 0 && h.indexOf("<!--encadre-abo-->") < h.indexOf('id="liste"') && (h.match(/id="encadre-abo"/g) || []).length === 1;
+        if (!nombreOk || href !== attendu || c !== clic || !langueOk || !avant) ko.push(`${f} (${n} / ${compte}, ${href}, ${c})`);
+      }
+  check(`encadré Alertes Pro au-dessus de la liste des ${vus} pages métier et gouvernorat (FR + ar/) : N = le nombre de la liste, texte de la langue, prix, vrai bouton vers abonnement/?metier= ou ?gouv= (rien pour « national » / « plusieurs »), clic compté` + (ko.length ? " — " + ko.slice(0, 4).join(" ; ") : ""), vus > 60 && !ko.length);
+  // N = vrai nombre des données (indépendant de la page)
+  const nM = ouverts.filter(a => a.metier === "Informatique").length;
+  check(`metier/informatique : l'encadré annonce ${nM} appels d'offres, le nombre des données`, !nM || enc(lire("metier/informatique/index.html")).includes(`>${nM} appel`));
+  // pas de gratuité (décision d'Ahmed du 25/11/2026) : aucun encadré ne promet un essai, un canal ou une formule gratuite
+  const textes = ["metier/informatique/index.html", "ar/metier/informatique/index.html", "gouvernorat/sfax/index.html", "gouvernorat/national/index.html"].map(f => enc(lire(f))).join(" ");
+  check("encadrés : aucune gratuité promise (ni essai, ni canal, ni formule gratuite)", textes.length > 500 && !/gratuit|offert|essai|مجان/i.test(textes));
+  // bouton de l'accueil et lien de la page « Comment fonctionne le site ? » marqués pour le comptage
+  check("bouton doré de l'accueil (FR + ar/) et « Voir les Alertes Pro » d'a-propos/ : clics marqués (abonnement-accueil, abonnement-a-propos)",
+    ["index.html", "ar/index.html"].every(f => /id="btn-pro-accueil" href="(\.\.\/)?abonnement\/" data-clic="abonnement-accueil"/.test(lire(f)))
+    && /href="\.\.\/abonnement\/" data-clic="abonnement-a-propos"/.test(lire("a-propos/index.html")));
+  const PAGE_JS = lire("assets/page.js");
+  check("page.js : bouton doré de l'en-tête et lien du pied vers abonnement/ marqués (abonnement-entete, abonnement-pied)",
+    /class="entete-pro" href="\$\{site\}abonnement\/" data-clic="abonnement-entete"/.test(PAGE_JS) && /href="\$\{site\}abonnement\/" data-clic="abonnement-pied"/.test(PAGE_JS));
+  // aucun script en ligne ni onclick= ajouté (CSP)
+  check("encadrés : aucun script en ligne ni gestionnaire onclick= (CSP)", !/onclick=|<script>/.test(textes));
+
+  // abonnement/ : cases cochées d'après l'adresse ; valeurs inconnues ignorées sans erreur ; « tous » exclusif
+  const essaiAbo = (f, q) => {
+    const erreurs = [];
+    const dom = new JSDOM(lire(f).replace(/<script[^>]*src="[^"]*"[^>]*><\/script>/g, ""), { runScripts: "outside-only", url: URL_SITE + f.replace(/index\.html$/, "") + q, pretendToBeVisual: true });
+    const w = dom.window; w.allerVers = () => {}; w.fetch = () => Promise.resolve({ ok: true, json: async () => ({}) });
+    w.addEventListener("error", e => erreurs.push(e.message));
+    try { w.eval(PAGE_JS); w.eval(PASS_JS); w.document.dispatchEvent(new w.Event("DOMContentLoaded")); } catch (e) { erreurs.push(String(e)); }
+    const d = w.document, coches = n => [...d.querySelectorAll(`input[name="${n}"]:checked`)].map(x => x.value);
+    return { m: coches("metiers"), g: coches("gouvernorats"), info: !d.getElementById("abo-repris").hidden, erreurs };
+  };
+  for (const f of ["abonnement/index.html", "ar/abonnement/index.html"]) {
+    const a = essaiAbo(f, "?metier=informatique&gouv=sfax#inscription");
+    check(`${f} : ?metier=informatique&gouv=sfax → « Informatique » et « Sfax » cochés, phrase « vos choix … déjà cochés » affichée`, a.m.join() === "informatique" && a.g.join() === "sfax" && a.info && !a.erreurs.length);
+    const b = essaiAbo(f, "?metier=zzz,%3Cscript%3E&gouv=atlantide");
+    check(`${f} : paramètres inconnus (métier zzz, gouvernorat atlantide) ignorés sans erreur, rien coché, aucune phrase`, !b.m.length && !b.g.length && !b.info && !b.erreurs.length);
+    const c = essaiAbo(f, "?gouv=tous,sfax&metier=informatique,medical");
+    check(`${f} : ?gouv=tous,sfax → seulement « Toute la Tunisie » ; deux métiers cochés`, c.g.join() === "tous" && c.m.join() === "informatique,medical" && !c.erreurs.length);
+    const s = essaiAbo(f, "");
+    check(`${f} : sans paramètre → rien de coché, phrase cachée`, !s.m.length && !s.g.length && !s.info && !s.erreurs.length);
+  }
+  // chaque lien d'encadré ouvre abonnement/ avec les BONNES cases (vrai parcours : adresse lue dans la page)
+  { const ko2 = [];
+    for (const f of ["metier/btp-genie-civil/index.html", "ar/metier/medical/index.html", "gouvernorat/sousse/index.html", "ar/gouvernorat/le-kef/index.html"]) {
+      if (!existsSync(join(root, f))) { ko2.push(f + " (absente)"); continue; }
+      const href = (lien(lire(f))[0] || "").replace(/&amp;/g, "&"), q = href.slice(href.indexOf("?"));
+      const r = essaiAbo((f.startsWith("ar/") ? "ar/" : "") + "abonnement/index.html", q);
+      const m = q.match(/metier=([a-z-]+)/), g = q.match(/gouv=([a-z-]+)/);
+      if (!((m ? r.m.join() === m[1] : !r.m.length) && (g ? r.g.join() === g[1] : !r.g.length) && r.info)) ko2.push(`${f} -> ${q} (${r.m}/${r.g})`);
+    }
+    check("lien de l'encadré → abonnement/ avec ce métier ou ce gouvernorat cochés (4 pages FR + ar/)" + (ko2.length ? " — " + ko2.join(" ; ") : ""), !ko2.length); }
+
+  // clic compté (faux GoatCounter) ; rien (et aucune erreur) sans GoatCounter
+  const essaiClic = (f, avecGc, choisir) => {
+    const dom = new JSDOM(lire(f).replace(/<script[^>]*src="[^"]*"[^>]*><\/script>/g, ""), { runScripts: "outside-only", url: URL_SITE + f.replace(/index\.html$/, ""), pretendToBeVisual: true });
+    const w = dom.window, comptes = [], erreurs = []; w.allerVers = () => {};
+    w.addEventListener("error", e => erreurs.push(e.message));
+    w.eval(PAGE_JS);
+    if (avecGc) w.goatcounter.count = o => comptes.push(o); else delete w.goatcounter.count;
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    const a = w.document.querySelector(choisir);
+    if (a) { a.addEventListener("click", e => e.preventDefault()); a.dispatchEvent(new w.MouseEvent("click", { bubbles: true, cancelable: true })); }
+    return { a, comptes, erreurs };
+  };
+  for (const [f, sel, nom] of [["metier/informatique/index.html", "#encadre-btn", "abonnement-metier"], ["ar/gouvernorat/sfax/index.html", "#encadre-btn", "abonnement-gouvernorat"],
+    ["index.html", "#btn-pro-accueil", "abonnement-accueil"], ["gouvernorat/tunis/index.html", "#entete .entete-pro", "abonnement-entete"],
+    ["ar/metier/medical/index.html", '#pied a[data-clic="abonnement-pied"]', "abonnement-pied"], ["a-propos/index.html", 'a[data-clic="abonnement-a-propos"]', "abonnement-a-propos"]]) {
+    const r = essaiClic(f, true, sel);
+    check(`clic compté (faux GoatCounter) sur ${f} ${sel} → événement « /appels-offres-tunisie/clic/${nom} »`,
+      !!r.a && r.comptes.length === 1 && r.comptes[0].path === "/appels-offres-tunisie/clic/" + nom && r.comptes[0].event === true && !!r.comptes[0].title && !r.erreurs.length);
+    const s = essaiClic(f, false, sel);
+    check(`sans GoatCounter (bloqué) sur ${f} ${sel} : aucun compte, aucune erreur`, !!s.a && !s.comptes.length && !s.erreurs.length);
+  }
+  check("a-propos/ arabe : l'encadré vers les Alertes Pro et le comptage des clics expliqués", /إطار <b>«تلقَّ الطلبات القادمة كل صباح على تيليغرام»<\/b>[\s\S]*محدّدين مسبقًا/.test(lire("ar/a-propos/index.html"))
+    && /النقرات على الأزرار التي تؤدي إلى تنبيهات Pro/.test(lire("ar/a-propos/index.html")));
+}
+
 // 25/10/2026 (RÈGLE d'Ahmed : « la page Comment fonctionne le site doit être mise à jour chaque fois qu'on modifie le site », règle commune § 44) :
 // chaque fonction visible du site (repère dans les pages ou le code) doit être expliquée dans a-propos/ ; nouvelle fonction = une ligne ici + la page
 { const apx = lire("a-propos/index.html"), acc2 = lire("index.html"), js = lire("assets/app.js") + lire("assets/page.js");
@@ -924,6 +1022,8 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
     ["appels d'offres privés / publier", existsSync(join(root, "publier/index.html")), /Appels d'offres d'entreprises privées<\/b>|Appels d&#x27;offres d&#x27;entreprises privées<\/b>/],
     ["rapports du mois", existsSync(join(root, "rapports/index.html")), /Rapports du mois<\/b>/],
     ["Alertes Pro payantes (Telegram)", existsSync(join(root, "abonnement/index.html")), /Payant : Alertes Pro sur Telegram/],
+    ["encadré vers les Alertes Pro (pages métier et gouvernorat, choix déjà cochés)", /id="encadre-abo"/.test(lire("metier/informatique/index.html") + lire("gouvernorat/sfax/index.html")), /« Recevez les prochains chaque matin sur Telegram »<\/b>[\s\S]*déjà cochés/],
+    ["clics vers les Alertes Pro comptés (GoatCounter, sans savoir qui)", /\/clic\//.test(lire("assets/page.js")), /clics sur les boutons qui mènent aux Alertes Pro/],
     ["paiement avec le code personnel, sans renouvellement automatique", /abo-code/.test(lire("abonnement/index.html") + PASS_JS), /code personnel[\s\S]*Pas de renouvellement automatique/],
     ["commande en attente gardée par le téléphone (code, paiement, WhatsApp, Telegram)", /pass-commande/.test(PASS_JS) && /id="abo-attente"/.test(lire("abonnement/index.html")), /Commande en attente<\/b>[\s\S]*numéro de commande[\s\S]*60.jours[\s\S]*Nouvelle commande/],
     ["bouton Partager", /class="partager"/.test(js), /Partager<\/b>/],
