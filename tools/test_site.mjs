@@ -675,21 +675,22 @@ check("abonnement : cocher « Toute la Tunisie » décoche les gouvernorats", ca
 cocher(caseG("sfax"));
 check("abonnement : cocher un gouvernorat décoche « Toute la Tunisie »", caseG("sfax").checked && !caseG("tous").checked);
 // envoi simulé (aucun vrai message)
-const envois = [];
-w.fetch = (url, o) => { envois.push([url, o]); return Promise.resolve({ ok: true, status: 200 }); };
+let emailFR = null, emailAR = null;   // JSON envoyés au service d'e-mail (FR, AR), contrôlés plus bas par le vrai verifier() du Worker
+const envois = [], emails = [];   // emails = demandes au service d'e-mail automatique (A.17), gardées à part des envois Formspree
+w.fetch = (url, o) => { if (/api-email\.clicvia\.com/.test(url)) emails.push([url, o]); else envois.push([url, o]); return Promise.resolve({ ok: true, status: 200 }); };
 fa.querySelector('[name="nom"]').value = "Test Essai";
 fa.querySelector('[name="entreprise"]').value = "Société Essai SARL";
 fa.querySelector('[name="telephone"]').value = "24 321 390";
 fa.querySelector('[name="email"]').value = "essai@example.com";
 const envoyerAbo = async () => { fa.dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true })); await new Promise(ok => setTimeout(ok, 30)); };
-{ // 25/11/2026 : l'e-mail automatique n'est pas encore en service -> ni l'étiquette ni l'erreur ne promettent d'e-mail (EMAIL_AUTO = false)
-  const lab = d.querySelector('label[for="abo-email"] [data-l="fr"]'), cache = d.querySelector('label[for="abo-email"] [data-email-auto]');
-  check("formulaire (FR) : étiquette « E-mail » seule, la promesse « vous y recevez votre code et les étapes du paiement » est cachée (EMAIL_AUTO = false)",
-    texte(lab) === "E-mail" && cache && cache.hidden && /vous y recevez votre code et les étapes du paiement/.test(cache.textContent) && /var EMAIL_AUTO = false;/.test(lire("assets/abonnement.js")));
+{ // 25/11/2026 : e-mail automatique EN SERVICE -> l'étiquette et l'erreur annoncent « vous y recevez votre code et les étapes du paiement »
+  const cache = d.querySelector('label[for="abo-email"] [data-email-auto]');
+  check("formulaire (FR) : étiquette « E-mail » + promesse « vous y recevez votre code et les étapes du paiement » AFFICHÉE (EMAIL_AUTO = true)",
+    cache && !cache.hidden && /vous y recevez votre code et les étapes du paiement/.test(cache.textContent) && /var EMAIL_AUTO = true;/.test(lire("assets/abonnement.js")));
   fa.querySelector('[name="email"]').value = "";
   await envoyerAbo();
-  check("abonnement : sans e-mail -> erreur courte « Indiquez votre e-mail. » (aucune promesse), rien n'est envoyé",
-    envois.length === 0 && d.getElementById("abo-status").textContent === "Indiquez votre e-mail.");
+  check("abonnement : sans e-mail -> « Indiquez votre e-mail : vous y recevez votre code et les étapes du paiement. », rien n'est envoyé (ni Formspree, ni e-mail)",
+    envois.length === 0 && emails.length === 0 && d.getElementById("abo-status").textContent === "Indiquez votre e-mail : vous y recevez votre code et les étapes du paiement.");
   fa.querySelector('[name="email"]').value = "essai@example.com"; }
 await envoyerAbo();
 check("abonnement : sans métier coché -> message d'erreur, rien n'est envoyé", envois.length === 0 && d.getElementById("abo-status").className === "err" && /métier/.test(texte(d.getElementById("abo-status"))));
@@ -717,10 +718,18 @@ check("abonnement : après l'envoi -> inscription IMMÉDIATE : code de 6 caract�
   && decodeURIComponent(d.getElementById("abo-preuve-apres").href).includes("— code " + codeA + " —"));
 // 25/11/2026 (parcours commun des Pass, règle commune § 70) : page « Dernière étape » + mémoire « pass-commande » (FR puis AR)
 { const txt = texte(apresA);
-  check("dernière étape (FR) : code en gros + « numéro de commande … motif du paiement » + « Vous le recevez aussi par e-mail » CACHÉ (e-mail automatique pas encore en service, EMAIL_AUTO = false) + motif = le code + filet « oublié le code ? » + code dans « pour_activer »",
+  check("dernière étape (FR) : code en gros + « numéro de commande … motif du paiement » + « Vous le recevez aussi par e-mail » AFFICHÉ (e-mail automatique en service, EMAIL_AUTO = true) + motif = le code + filet « oublié le code ? » + code dans « pour_activer »",
     apresA.querySelector(".code-commande #abo-code").textContent === codeA && txt.includes("C'est votre numéro de commande : écrivez-le dans le motif du paiement, il nous sert à reconnaître votre paiement.")
-    && apresA.querySelectorAll("[data-email-auto]").length === 1 && apresA.querySelector("[data-email-auto]").hidden && /var EMAIL_AUTO = false;/.test(lire("assets/abonnement.js")) && apresA.querySelectorAll(".paie-etapes .code-motif").length === 1 && apresA.querySelector(".paie-etapes .code-motif").textContent === codeA
+    && apresA.querySelectorAll("[data-email-auto]").length === 1 && !apresA.querySelector("[data-email-auto]").hidden && /Vous le recevez aussi par e-mail/.test(apresA.querySelector("[data-email-auto]").textContent) && apresA.querySelectorAll(".paie-etapes .code-motif").length === 1 && apresA.querySelector(".paie-etapes .code-motif").textContent === codeA
     && /Vous avez oublié le code dans le motif \? Ce n'est pas grave/.test(txt) && corps.get("pour_activer").endsWith("code: " + codeA));
+  { const e = emails[0], j = e ? JSON.parse(e[1].body) : {};
+    emailFR = j;
+    check("e-mail automatique (FR) : UNE demande à https://api-email.clicvia.com/inscription (JSON) avec site appels-offres, langue fr, nom, entreprise, e-mail, CE code, métiers, gouvernorats, formule et lien Telegram",
+      emails.length === 1 && e[0] === "https://api-email.clicvia.com/inscription" && e[1].method === "POST" && /application\/json/.test(e[1].headers["Content-Type"])
+      && j.site === "appels-offres" && j.langue === "fr" && j.nom === "Test Essai" && j.entreprise === "Société Essai SARL" && j.email === "essai@example.com" && j.code === codeA
+      && JSON.stringify(j.metiers) === JSON.stringify(["btp-genie-civil", "informatique"]) && j.gouvernorats.join() === "sfax" && j.formule === "1 mois" && j.lien_telegram === lienA); }
+  check("CSP des pages abonnement/ (FR + AR) : connect-src autorise https://api-email.clicvia.com (sinon le navigateur bloque l'e-mail automatique)",
+    /connect-src[^;"]*https:\/\/api-email\.clicvia\.com/.test(lire("abonnement/index.html")) && /connect-src[^;"]*https:\/\/api-email\.clicvia\.com/.test(lire("ar/abonnement/index.html")));
   check("dernière étape (FR) : WhatsApp pré-rempli « Voici ma preuve de paiement — Alertes appels d'offres Tunisie — code <CODE> — <entreprise> — 1 mois » (code ET nom de l'entreprise, 25/11/2026)",
     [...d.querySelectorAll("a.btn-wa")].every(a => decodeURIComponent(a.getAttribute("href")) === `https://wa.me/21624321390?text=Voici ma preuve de paiement — Alertes appels d'offres Tunisie — code ${codeA} — Société Essai SARL — 1 mois`));
   const memo = w.localStorage.getItem("pass-commande"), m = JSON.parse(memo || "{}");
@@ -746,23 +755,28 @@ check("abonnement : après l'envoi -> inscription IMMÉDIATE : code de 6 caract�
       && w4.document.getElementById("abo-attente").hidden && w4.localStorage.getItem("pass-commande") === null); }
   { // page arabe : mêmes protections, textes en arabe
     const envAr = [], wA = revenir(aboAr, URL_SITE + "ar/abonnement/", null), D2 = wA.document;
-    wA.fetch = (url, o) => { envAr.push(o.body); return Promise.resolve({ ok: true }); };
+    const emAr = [];
+    wA.fetch = (url, o) => { if (/api-email\.clicvia\.com/.test(url)) emAr.push(JSON.parse(o.body)); else envAr.push(o.body); return Promise.resolve({ ok: true }); };
     const fA = D2.getElementById("abo-form");
-    { const labA = D2.querySelector('label[for="abo-email"] [data-l="ar"]'), cacheA = D2.querySelector('label[for="abo-email"] [data-email-auto]');
+    { const cacheA = D2.querySelector('label[for="abo-email"] [data-email-auto]');
       fA.querySelector('[name="nom"]').value = "اختبار"; fA.querySelector('[name="entreprise"]').value = "شركة"; fA.querySelector('[name="telephone"]').value = "24321390";
       fA.dispatchEvent(new wA.Event("submit", { cancelable: true })); await new Promise(r => setTimeout(r, 30));
-      check("formulaire (AR) : étiquette « البريد الإلكتروني » seule, promesse « يصلك عليه رمزك وخطوات الدفع » cachée ; erreur courte « اكتب بريدك الإلكتروني. »",
-        labA.textContent === "البريد الإلكتروني" && cacheA && cacheA.hidden && /يصلك عليه رمزك وخطوات الدفع/.test(cacheA.textContent)
-        && D2.getElementById("abo-status").textContent === "اكتب بريدك الإلكتروني." && envAr.length === 0); }
+      check("formulaire (AR) : promesse « يصلك عليه رمزك وخطوات الدفع » AFFICHÉE ; sans e-mail : « اكتب بريدك الإلكتروني: يصلك عليه رمزك وخطوات الدفع. », rien n'est envoyé",
+        cacheA && !cacheA.hidden && /يصلك عليه رمزك وخطوات الدفع/.test(cacheA.textContent)
+        && D2.getElementById("abo-status").textContent === "اكتب بريدك الإلكتروني: يصلك عليه رمزك وخطوات الدفع." && envAr.length === 0 && emAr.length === 0); }
     fA.querySelector('[name="nom"]').value = "اختبار"; fA.querySelector('[name="entreprise"]').value = "شركة"; fA.querySelector('[name="telephone"]').value = "24321390";
     fA.querySelector('[name="email"]').value = "a@example.com"; fA.querySelector('[name="metiers"][value="informatique"]').checked = true;
     fA.querySelector('[name="gouvernorats"][value="sfax"]').checked = true; fA.querySelector('input[name="formule"][value="1 an"]').checked = true; fA.querySelector('[name="conditions"]').checked = true;
     fA.dispatchEvent(new wA.Event("submit", { cancelable: true })); await new Promise(r => setTimeout(r, 30));
     const cA = D2.getElementById("abo-code").textContent, tA = D2.getElementById("apres-abo").textContent;
-    check("dernière étape (AR) : code en gros, « هذا رقم طلبك… » + « يصلك أيضًا… » caché + filet, WhatsApp « هذا وصل الدفع — … — الرمز <CODE> — <المؤسسة> — سنة » (code ET entreprise), code envoyé à Formspree",
-      /^[A-HJ-NP-Z2-9]{6}$/.test(cA) && tA.includes("هذا رقم طلبك: اكتبه في خانة سبب الدفع، يساعدنا على التعرّف على دفعتك.") && D2.querySelector("#apres-abo [data-email-auto]").hidden
+    check("dernière étape (AR) : code en gros, « هذا رقم طلبك… » + « يصلك أيضًا… » affiché + filet, WhatsApp « هذا وصل الدفع — … — الرمز <CODE> — <المؤسسة> — سنة » (code ET entreprise), code envoyé à Formspree",
+      /^[A-HJ-NP-Z2-9]{6}$/.test(cA) && tA.includes("هذا رقم طلبك: اكتبه في خانة سبب الدفع، يساعدنا على التعرّف على دفعتك.") && !D2.querySelector("#apres-abo [data-email-auto]").hidden
       && tA.includes("نسيت الرمز في سبب الدفع؟") && decodeURIComponent(D2.getElementById("abo-preuve-apres").getAttribute("href")) === `https://wa.me/21624321390?text=هذا وصل الدفع — طلبات العروض تونس — الرمز ${cA} — شركة — سنة`
       && envAr.length === 1 && envAr[0].get("code") === cA && envAr[0].get("pour_activer").endsWith("code: " + cA));
+    emailAR = emAr[0];
+    check("e-mail automatique (AR) : demande au service en langue ar, avec CE code, le nom et l'entreprise en arabe, la formule « 1 an », métier et gouvernorat",
+      emAr.length === 1 && emAr[0].site === "appels-offres" && emAr[0].langue === "ar" && emAr[0].code === cA && emAr[0].nom === "اختبار" && emAr[0].entreprise === "شركة"
+      && emAr[0].formule === "1 an" && emAr[0].metiers.join() === "informatique" && emAr[0].gouvernorats.join() === "sfax" && emAr[0].email === "a@example.com");
     const mA = wA.localStorage.getItem("pass-commande"), wB = revenir(aboAr, URL_SITE + "ar/abonnement/", mA), atB = wB.document.getElementById("abo-attente");
     check("retour sur la page (AR) : bandeau « طلبك في الانتظار » avec le code et « سنة », formulaire caché, rien de personnel dans la mémoire",
       !atB.hidden && /طلبك في الانتظار/.test(atB.textContent) && atB.querySelector("[data-code]").textContent === cA && atB.querySelector("[data-formule]").textContent === "سنة"
@@ -773,6 +787,26 @@ w = await page("abonnement/index.html", "lang=ar");
 check("abonnement en arabe : titre, prix en دينار, bouton الدفع", /تنبيهات Pro/.test(texte(w.document.querySelector("h1"))) &&
   /دينار/.test(texte(w.document.getElementById("abo-prix"))) && texte(w.document.querySelector('#paiement summary [data-l="ar"]')) === "الدفع");
 w = await page("abonnement/conditions/index.html", "lang=fr");
+// 25/11/2026 (A.17) : le JSON envoyé par la page est ACCEPTÉ par le vrai verifier() du Worker « email-clients » (worker.js + sites.json
+// du dépôt privé projets-ahmed, assemblés comme deployer.py). Dépôt absent (GitHub) : contrôle sauté, jamais en échec.
+{ const { mkdtempSync, writeFileSync } = await import("fs"), { tmpdir } = await import("os"), { pathToFileURL } = await import("url");
+  const candidats = [process.env.PROJETS_AHMED, join(root, "..", "projets-ahmed"), join(root, "..", "..", "projets-ahmed"), join(root, "..", ".."), "/home/user/projets-ahmed"]
+    .filter(Boolean).map(x => join(x, "outils communs", "email-clients"));
+  const dos = candidats.find(x => existsSync(join(x, "worker.js")) && existsSync(join(x, "sites.json")));
+  if (!dos) console.log("SAUTÉ e-mail automatique : worker.js de projets-ahmed absent (normal sur GitHub)");
+  else {
+    const wk = readFileSync(join(dos, "worker.js"), "utf8"), st = readFileSync(join(dos, "sites.json"), "utf8").trim();
+    const f = join(mkdtempSync(join(tmpdir(), "email-")), "worker.mjs");
+    writeFileSync(f, wk.replace("/*SITES_ICI*/ {}", st));
+    const W = await import(pathToFileURL(f).href), ORI = "https://appels-offres.clicvia.com";
+    for (const [nom, j, langue, formule] of [["FR", emailFR, "fr", "1 mois"], ["AR", emailAR, "ar", "1 an"]]) {
+      const v = j ? W.verifier(j, ORI) : { erreur: "rien envoyé" }, dd = v.d || {};
+      check(`e-mail automatique (${nom}) : le JSON envoyé est ACCEPTÉ par le vrai verifier() du Worker (site appels-offres, origine du site)${v.erreur ? " — refus : " + v.erreur : ""}`,
+        !!v.d && dd.cle === "appels-offres" && dd.langue === langue && dd.code === j.code && dd.formule === formule && dd.valeurs.entreprise === j.entreprise
+        && dd.valeurs.metiers.join() === j.metiers.join() && dd.valeurs.gouvernorats.join() === j.gouvernorats.join() && dd.lienTg === j.lien_telegram);
+    }
+  }
+}
 const tc = texte(w.document.querySelector("main"));
 check("conditions : prix, paiement D17/IZI (période payée dès l'activation), pas de renouvellement automatique, données personnelles, résiliation",
   /25 DT par mois ou 199 DT par an/.test(tc) && /commence le jour de l'activation/.test(tc) && !/gratuits/.test(tc) && /D17 ou IZI/.test(tc) &&
@@ -862,6 +896,7 @@ if (fichiersAbo.length || avecChat.length) console.log("   à retirer : " + [...
 // chaque fonction visible du site (repère dans les pages ou le code) doit être expliquée dans a-propos/ ; nouvelle fonction = une ligne ici + la page
 { const apx = lire("a-propos/index.html"), acc2 = lire("index.html"), js = lire("assets/app.js") + lire("assets/page.js");
   const FONCTIONS = [
+    ["e-mail de confirmation automatique (A.17, 25/11/2026)", /var EMAIL_AUTO = true;/.test(lire("assets/abonnement.js")), /E-mail de confirmation/],
     ["résumé du jour (ouverts, nouveaux, bientôt)", /id="r-nouveaux"/.test(acc2), /Résumé du jour/],
     ["carte de la Tunisie", /class="carte-tn"/.test(acc2), /Carte de la Tunisie/],
     ["clôturent bientôt + étiquettes J-7 / Dernier jour", /id="bientot"/.test(acc2) && /Dernier jour/.test(js), /Clôturent bientôt<\/b>[\s\S]*Dernier jour/],

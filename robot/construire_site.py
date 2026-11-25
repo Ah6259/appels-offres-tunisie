@@ -543,8 +543,9 @@ def grille(items, actuel, racine, dossier, comptes, ident, icones=False):
 COMPTEUR = "https://prix-eaux-tunisie.goatcounter.com"
 # « Votre avis » (règle d'Ahmed du 05/10/2026 : sur chacun de ses sites) : envoi au clic vers Formspree (assets/avis.js)
 FORMSPREE = "https://formspree.io"
+EMAIL_API = "https://api-email.clicvia.com"   # e-mail automatique au client (A.17, 25/11/2026)
 CSP = ("default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-       f"font-src 'self' https://fonts.gstatic.com; img-src 'self' data: {COMPTEUR}; connect-src 'self' {COMPTEUR} {FORMSPREE}; "
+       f"font-src 'self' https://fonts.gstatic.com; img-src 'self' data: {COMPTEUR}; connect-src 'self' {COMPTEUR} {FORMSPREE} {EMAIL_API}; "
        f"form-action 'self' https://docs.google.com {FORMSPREE}; frame-src 'none'; object-src 'none'; base-uri 'self'")
 
 
@@ -900,8 +901,8 @@ def liste_paiements(avec_code=False):
 # Parcours commun des Pass (règle commune § 70, 25/11/2026) : textes de la page « Dernière étape » et du bandeau « commande en attente »
 PHRASE_CODE = L("C'est votre numéro de commande : écrivez-le dans le motif du paiement, il nous sert à reconnaître votre paiement.",
                 "هذا رقم طلبك: اكتبه في خانة سبب الدفع، يساعدنا على التعرّف على دفعتك.")
-# « reçu aussi par e-mail » : l'e-mail automatique n'est pas encore en service -> phrase CACHÉE (attribut hidden + data-email-auto),
-# montrée seulement si EMAIL_AUTO = true dans assets/abonnement.js (consigne du 25/11/2026)
+# « reçu aussi par e-mail » : attribut hidden + data-email-auto dans la page ; montrée par assets/abonnement.js quand EMAIL_AUTO = true
+# (e-mail automatique EN SERVICE depuis le 25/11/2026, A.17)
 PHRASE_EMAIL = L("Vous le recevez aussi par e-mail.", "يصلك أيضًا عبر البريد الإلكتروني.")
 FILET = L("Vous avez oublié le code dans le motif ? Ce n'est pas grave : envoyez quand même la preuve sur WhatsApp, nous retrouvons votre demande.",
           "نسيت الرمز في سبب الدفع؟ لا بأس: أرسل الوصل على واتساب وسنجد طلبك.")
@@ -1414,8 +1415,8 @@ def construire(donnees, sortie, jour):
         f"<b>بمقابل: تنبيهات Pro على تيليغرام</b> ({ISO(ABO['prix_mois'])} دينار في الشهر أو {ISO(ABO['prix_an'])} دينار في السنة). كل صباح، طلبات العروض الجديدة في اختصاصاتك وولاياتك (ومنها «الوطنية» و«لعدة ولايات»).")}</p>
   <p>{L(f"Paiement par D17 ou IZI, avec pour motif votre <b>code personnel</b> donné sur la page Alertes Pro. Pas de renouvellement automatique : rappel {ABO['rappel_jours']}" + NB + "jours avant la fin, puis l'alerte s'arrête simplement.",
         f"الدفع عبر ⁨D17⁩ أو ⁨IZI⁩ مع ذكر <b>رمزك الشخصي</b> المعطى في صفحة تنبيهات Pro. لا تجديد آلي: تذكير قبل النهاية بـ{ISO(ABO['rappel_jours'])} أيام، ثم يتوقف التنبيه ببساطة.")}</p>
-  <p>{L("<b>Commande en attente</b> : après l'inscription, la page « Dernière étape » montre votre code en gros (c'est votre numéro de commande, à écrire dans le motif du paiement), les 3" + NB + "étapes du paiement et un bouton WhatsApp où le code et le nom de votre entreprise sont déjà écrits. Votre téléphone se souvient de la commande pendant 60" + NB + "jours (seulement le code, la formule et la date, jamais votre nom, entreprise, téléphone ou e-mail) : en revenant sur la page Alertes Pro, vous retrouvez le code, le paiement, WhatsApp et « Ouvrir Telegram » ; « Nouvelle commande » l'efface. Code oublié dans le motif ? Envoyez quand même la preuve sur WhatsApp, nous retrouvons votre demande.",
-        "<b>طلب في الانتظار</b>: بعد التسجيل، تعرض صفحة «الخطوة الأخيرة» رمزك بخط كبير (هو رقم طلبك، اكتبه في خانة سبب الدفع)، وخطوات الدفع الثلاث وزر واتساب مكتوب فيه الرمز واسم مؤسستك. يتذكر هاتفك الطلب مدة " + ISO(60) + " يومًا (الرمز والصيغة والتاريخ فقط، لا اسمك ولا مؤسستك ولا هاتفك ولا بريدك أبدًا): عند العودة إلى صفحة تنبيهات Pro تجد الرمز والدفع وواتساب و«افتح تيليغرام»؛ و«طلب جديد» يمحوه. نسيت الرمز في سبب الدفع؟ أرسل الوصل على واتساب وسنجد طلبك.")}</p>
+  <p>{L("<b>Commande en attente</b> : après l'inscription, la page « Dernière étape » montre votre code en gros (c'est votre numéro de commande, à écrire dans le motif du paiement), les 3" + NB + "étapes du paiement et un bouton WhatsApp où le code et le nom de votre entreprise sont déjà écrits. Votre téléphone se souvient de la commande pendant 60" + NB + "jours (seulement le code, la formule et la date, jamais votre nom, entreprise, téléphone ou e-mail) : en revenant sur la page Alertes Pro, vous retrouvez le code, le paiement, WhatsApp et « Ouvrir Telegram » ; « Nouvelle commande » l'efface. Code oublié dans le motif ? Envoyez quand même la preuve sur WhatsApp, nous retrouvons votre demande. <b>E-mail de confirmation</b> : dans la minute qui suit l'inscription, vous recevez aussi tout cela par e-mail (code, prix, paiement, boutons WhatsApp et Telegram), dans la langue de la page.",
+        "<b>طلب في الانتظار</b>: بعد التسجيل، تعرض صفحة «الخطوة الأخيرة» رمزك بخط كبير (هو رقم طلبك، اكتبه في خانة سبب الدفع)، وخطوات الدفع الثلاث وزر واتساب مكتوب فيه الرمز واسم مؤسستك. يتذكر هاتفك الطلب مدة " + ISO(60) + " يومًا (الرمز والصيغة والتاريخ فقط، لا اسمك ولا مؤسستك ولا هاتفك ولا بريدك أبدًا): عند العودة إلى صفحة تنبيهات Pro تجد الرمز والدفع وواتساب و«افتح تيليغرام»؛ و«طلب جديد» يمحوه. نسيت الرمز في سبب الدفع؟ أرسل الوصل على واتساب وسنجد طلبك. <b>بريد التأكيد</b>: خلال دقيقة من التسجيل يصلك كل هذا أيضًا عبر البريد الإلكتروني (الرمز، الثمن، الدفع، زرّا واتساب وتيليغرام) بلغة الصفحة.")}</p>
   <a class="btn" href="../abonnement/">{L("Voir les Alertes Pro", "اطّلع على تنبيهات Pro")}</a>
 </section>
 <section class="carte">
@@ -1423,7 +1424,7 @@ def construire(donnees, sortie, jour):
   <ul>
   {li("Pas de compte à créer pour consulter le site. Votre téléphone garde seulement la langue choisie.", "لا حساب لإنشائه لتصفح الموقع. هاتفك يحفظ فقط اللغة المختارة.")}
   {li("Statistiques de visite anonymes, sans cookies (GoatCounter).", "إحصائيات زيارات مجهولة، دون ملفات تعريف الارتباط (⁨GoatCounter⁩).")}
-  {li("Votre avis et l'inscription aux Alertes Pro ne sont envoyés que si vous touchez « Envoyer » (service Formspree). Vos coordonnées servent seulement à l'abonnement : elles ne sont jamais publiées ni vendues.", "رأيك والتسجيل في تنبيهات Pro لا يُرسلان إلا إذا لمست «أرسل» (خدمة ⁨Formspree⁩). بياناتك تُستعمل للاشتراك فقط: لا تُنشر ولا تُباع أبدًا.")}
+  {li("Votre avis et l'inscription aux Alertes Pro ne sont envoyés que si vous touchez « Envoyer » (service Formspree). Vos coordonnées servent seulement à l'abonnement : elles ne sont jamais publiées ni vendues. L'e-mail de confirmation part par notre service d'envoi (Resend) ; rien n'est gardé.", "رأيك والتسجيل في تنبيهات Pro لا يُرسلان إلا إذا لمست «أرسل» (خدمة ⁨Formspree⁩). بياناتك تُستعمل للاشتراك فقط: لا تُنشر ولا تُباع أبدًا. بريد التأكيد يُرسل عبر خدمة الإرسال لدينا (⁨Resend⁩)؛ ولا يُحفظ شيء.")}
   {li("Confidentialité et conditions d'utilisation : pages communes à tous nos sites (clicvia.com), liens en bas de chaque page.", "الخصوصية وشروط الاستعمال: صفحات مشتركة بين كل مواقعنا (⁨clicvia.com⁩)، روابطها أسفل كل صفحة.")}
   </ul>
 </section>
