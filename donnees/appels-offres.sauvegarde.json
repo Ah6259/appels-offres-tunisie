@@ -26985,21 +26985,158 @@
    "lu_le": "2026-11-27 15:54",
    "metier": "BTP / génie civil",
    "gouvernorat": "Ariana"
+  },
+  "Tender-104981": {
+   "numero": "Tender-104981",
+   "objet": "PROJET DE RENFORCEMENT DES FONDATIONS DU CENTRE DE MATERNITE ET DE NEONATOLOGIE DE TUNIS « CMNT »",
+   "descriptif": "",
+   "acheteur": "Centre de Maternité et de Néonatalogie",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "TUNIS",
+   "regions_lots": [
+    "TUNIS"
+   ],
+   "date_publication": "2026-11-28",
+   "date_limite": "2027-01-15",
+   "heure_limite": "10:00",
+   "date_ouverture": "2027-01-15",
+   "cautionnement_provisoire_dt": [
+    15000
+   ],
+   "cautionnement_total_dt": 15000,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104981",
+   "source": "HAICOP",
+   "lu_le": "2026-11-28 15:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Tunis"
+  },
+  "Tender-104979": {
+   "numero": "Tender-104979",
+   "objet": "اقتناء معدات وتجهيزات ورشات",
+   "descriptif": "",
+   "acheteur": "Société Régionale de Transport Gouvernorat de Nabeul",
+   "type_commande": "Biens/ Autres Fournitures",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "",
+   "regions_lots": [
+    "NABEUL"
+   ],
+   "date_publication": "2026-11-27",
+   "date_limite": "2027-01-22",
+   "heure_limite": "10:00",
+   "date_ouverture": "2027-01-22",
+   "cautionnement_provisoire_dt": [
+    1070,
+    1720,
+    675,
+    750,
+    65,
+    540,
+    110,
+    65,
+    35,
+    30,
+    280,
+    35,
+    45,
+    650,
+    25,
+    120,
+    170,
+    640
+   ],
+   "cautionnement_total_dt": 7025,
+   "specialite": "",
+   "categorie": "",
+   "niveau_specialite": "",
+   "nombre_lots": "18",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104979",
+   "source": "HAICOP",
+   "lu_le": "2026-11-28 15:01",
+   "metier": "Autres",
+   "gouvernorat": "Nabeul"
+  },
+  "Tender-104980": {
+   "numero": "Tender-104980",
+   "objet": "تكملة بناء مقر معتمدية ومسكن وظيفي برجيم معتوق-قبلي",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Kebili",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-11-27",
+   "date_limite": "2026-12-29",
+   "heure_limite": "10:30",
+   "date_ouverture": "2026-12-29",
+   "cautionnement_provisoire_dt": [
+    4500
+   ],
+   "cautionnement_total_dt": 4500,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "1",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104980",
+   "source": "HAICOP",
+   "lu_le": "2026-11-28 15:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
+  },
+  "Tender-104978": {
+   "numero": "Tender-104978",
+   "objet": "أشغال تكملة تجديد المستشفى المحلي بسوق الأحد- قسط عدد 03",
+   "descriptif": "",
+   "acheteur": "Gouvernorat de Kebili",
+   "type_commande": "Travaux/ Génie Civil",
+   "procedure": "Appel d’offres ouvert",
+   "region_execution": "KEBILI",
+   "regions_lots": [
+    "KEBILI"
+   ],
+   "date_publication": "2026-11-27",
+   "date_limite": "2026-12-30",
+   "heure_limite": "10:00",
+   "date_ouverture": "2026-12-30",
+   "cautionnement_provisoire_dt": [
+    20000
+   ],
+   "cautionnement_total_dt": 20000,
+   "specialite": "Bâtiments (B)",
+   "categorie": "Entreprise générale",
+   "niveau_specialite": "3",
+   "nombre_lots": "1",
+   "etat": "Publié",
+   "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104978",
+   "source": "HAICOP",
+   "lu_le": "2026-11-28 15:01",
+   "metier": "BTP / génie civil",
+   "gouvernorat": "Kébili"
   }
  },
- "mis_a_jour": "2026-11-27 15:54",
+ "mis_a_jour": "2026-11-28 15:01",
  "dernier_passage": {
-  "date": "2026-11-27 15:54",
+  "date": "2026-11-28 15:01",
   "liste_ok": true,
-  "lus": 21,
+  "lus": 4,
   "echecs": 0,
   "formats_inconnus": 0,
   "reussi": true
  },
- "derniere_lecture_reussie": "2026-11-27 15:54",
+ "derniere_lecture_reussie": "2026-11-28 15:01",
  "statut_source": {
   "etat": "ok",
-  "depuis": "2026-11-27 15:54",
+  "depuis": "2026-11-28 15:01",
   "raison": ""
  }
 }

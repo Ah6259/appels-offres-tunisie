@@ -10534,6 +10534,54 @@
      "numero": "Tender-104977",
      "objet": "بناء مركز التربية والتأهيل الخاص بالقاصرين عن الحركة العضوية بدوز-قبلي",
      "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104978": {
+     "acheteur": "Gouvernorat de Kebili",
+     "caution": 20000,
+     "date_limite": "2026-12-30",
+     "date_publication": "2026-11-27",
+     "gouvernorat": "Kébili",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104978",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104978",
+     "objet": "أشغال تكملة تجديد المستشفى المحلي بسوق الأحد- قسط عدد 03",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104979": {
+     "acheteur": "Société Régionale de Transport Gouvernorat de Nabeul",
+     "caution": 7025,
+     "date_limite": "2027-01-22",
+     "date_publication": "2026-11-27",
+     "gouvernorat": "Nabeul",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104979",
+     "metier": "Autres",
+     "numero": "Tender-104979",
+     "objet": "اقتناء معدات وتجهيزات ورشات",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104980": {
+     "acheteur": "Gouvernorat de Kebili",
+     "caution": 4500,
+     "date_limite": "2026-12-29",
+     "date_publication": "2026-11-27",
+     "gouvernorat": "Kébili",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104980",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104980",
+     "objet": "تكملة بناء مقر معتمدية ومسكن وظيفي برجيم معتوق-قبلي",
+     "procedure": "Appel d’offres ouvert"
+    },
+    "Tender-104981": {
+     "acheteur": "Centre de Maternité et de Néonatalogie",
+     "caution": 15000,
+     "date_limite": "2027-01-15",
+     "date_publication": "2026-11-28",
+     "gouvernorat": "Tunis",
+     "lien": "https://www.marchespublics.gov.tn/fr/appels-doffres/Tender-104981",
+     "metier": "BTP / génie civil",
+     "numero": "Tender-104981",
+     "objet": "PROJET DE RENFORCEMENT DES FONDATIONS DU CENTRE DE MATERNITE ET DE NEONATOLOGIE DE TUNIS « CMNT »",
+     "procedure": "Appel d’offres ouvert"
     }
    },
    "chiffres": {
@@ -10541,7 +10589,7 @@
      "Agence Tunisienne de la Formation Professionnelle": 10,
      "Agence de Réhabilitation et de Rénovation Urbaine": 14,
      "Commissariat Régional au Développement Agricole de Medenine": 7,
-     "Gouvernorat de Kebili": 6,
+     "Gouvernorat de Kebili": 8,
      "Gouvernorat de Nabeul": 7,
      "Gouvernorat de Sousse": 5,
      "Gouvernorat de Tunis": 8,
@@ -10550,17 +10598,17 @@
      "Office de la Marine Marchande et des Ports": 5,
      "Office du Commerce de Tunisie": 6
     },
-    "appels_offres": 368,
-    "avec_caution": 322,
-    "avec_delai": 367,
+    "appels_offres": 372,
+    "avec_caution": 326,
+    "avec_delai": 371,
     "caution_mediane": 5000,
     "delai_median": 31,
-    "derniere_publication": "2026-11-27",
+    "derniere_publication": "2026-11-28",
     "jour_max": [
      "2026-11-19",
      29
     ],
-    "jours_de_publication": 22,
+    "jours_de_publication": 23,
     "par_gouvernorat": {
      "Ariana": 22,
      "Ben Arous": 20,
@@ -10571,13 +10619,13 @@
      "Jendouba": 8,
      "Kairouan": 10,
      "Kasserine": 7,
-     "Kébili": 11,
+     "Kébili": 13,
      "La Manouba": 4,
      "Le Kef": 4,
      "Mahdia": 14,
      "Monastir": 9,
      "Médenine": 11,
-     "Nabeul": 16,
+     "Nabeul": 17,
      "National / non précisé": 16,
      "Plusieurs gouvernorats": 3,
      "Sfax": 12,
@@ -10586,14 +10634,14 @@
      "Sousse": 28,
      "Tataouine": 7,
      "Tozeur": 3,
-     "Tunis": 106,
+     "Tunis": 107,
      "Zaghouan": 7
     },
     "par_metier": {
      "Alimentation": 20,
      "Assurances": 7,
-     "Autres": 64,
-     "BTP / génie civil": 132,
+     "Autres": 65,
+     "BTP / génie civil": 135,
      "Fournitures de bureau": 7,
      "Informatique": 11,
      "Médical": 28,
@@ -10604,7 +10652,7 @@
     },
     "par_procedure": {
      "Appel d'offres avec concours": 1,
-     "Appel d’offres ouvert": 366,
+     "Appel d’offres ouvert": 370,
      "Marché négocié": 1
     },
     "premiere_publication": "2026-11-02",
@@ -10613,7 +10661,7 @@
    },
    "complet": true,
    "cree_le": "2026-11-02",
-   "derniere_date": "2026-11-27",
+   "derniere_date": "2026-11-28",
    "fige": false,
    "premier_jour": "2026-11-01",
    "ventes": {}
